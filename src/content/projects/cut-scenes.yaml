@@ -1,0 +1,191 @@
+title: cut scenes
+kind: exploration
+status: published
+order: 10
+accent: red
+lead: Film stills cut into puzzles, made to gift.
+intro: Send a scene to a friend, or the film you’re watching together tonight. When the last piece lands, the credits roll.
+teaser: Film stills cut into puzzles, made to gift.
+cover: /images/projects/cut-scenes/desktop-recipient.jpg
+hero: /images/projects/cut-scenes/hero.mp4
+heroLabel: cut scenes
+meta:
+- label: Year
+  value: '2026'
+- label: Type
+  value: Personal exploration
+- label: Role
+  value: Concept, direction, design
+- label: Built
+  value: In pair with Claude
+links:
+- label: View live
+  url: https://cut-scenes.vercel.app/
+- label: Repository
+  url: https://github.com/alidifreijo/cut-scenes
+blocks:
+- discriminant: quote
+  value:
+    eyebrow: Why I made it
+    pill: The idea
+    quote: It has to feel like cinema.
+    body: 'Films, series and puzzles, things I love, turned into something you can give. Not a complex interface: a **simple one, with a loud, direct UI** that could only belong to cinema.'
+    chips:
+    - Simple, loud
+    - Stays in character
+    - Made to gift
+- discriminant: browser
+  value:
+    src: /images/projects/cut-scenes/desktop-puzzle.jpg
+    alt: 'Puzzle half built: Amélie, Easy, 12 pieces'
+    url: cut-scenes.vercel.app
+    tint: ''
+- discriminant: phones
+  value:
+    tint: ''
+    screens:
+    - src: /images/projects/cut-scenes/mobile-home.jpg
+      alt: Home on mobile
+    - src: /images/projects/cut-scenes/mobile-puzzle.jpg
+      alt: Puzzle on mobile
+    - src: /images/projects/cut-scenes/mobile-credits.jpg
+      alt: Credits on mobile
+- discriminant: browser
+  value:
+    src: /images/projects/cut-scenes/desktop-recipient.jpg
+    alt: Recipient view in the inverted theme
+    url: cut-scenes.vercel.app/?p=8fK2xQ
+    tint: '#F3D3CF'
+- discriminant: collection
+  value:
+    eyebrow: Now showing
+    pill: The collection
+    note: Each still comes with credits and one line of opinion. Hover to read it. All stills belong to their studios and filmmakers.
+    items:
+    - src: /images/projects/cut-scenes/stills/amelie.jpg
+      title: Amélie
+      year: '2001'
+      tag: Comedy
+      line: She fixes everyone’s life except her own. The French call this romance.
+    - src: /images/projects/cut-scenes/stills/charade.jpg
+      title: Charade
+      year: '1963'
+      tag: Thriller
+      line: Cary Grant and Audrey Hepburn being charming while everyone around them dies. Priorities.
+    - src: /images/projects/cut-scenes/stills/kaguya.jpg
+      title: Kaguya
+      year: '2013'
+      tag: Animation
+      line: Drawn in charcoal and heartbreak. Bring tissues.
+    - src: /images/projects/cut-scenes/stills/fleabag.jpg
+      title: Fleabag
+      year: '2016'
+      tag: TV
+      line: She falls for a priest. He says it’ll pass. It doesn’t.
+    - src: /images/projects/cut-scenes/stills/royal.jpg
+      title: The Royal Hotel
+      year: '2023'
+      tag: Thriller
+      line: Two backpackers take a bar job in the Outback. Every man there is a red flag.
+    - src: /images/projects/cut-scenes/stills/call.jpg
+      title: The Call
+      year: '2020'
+      tag: Thriller
+      line: Two women, one phone line, twenty years apart. Still better reception than yours.
+    - src: /images/projects/cut-scenes/stills/ladybird.jpg
+      title: Lady Bird
+      year: '2017'
+      tag: Comedy
+      line: A teenager fights her mother for 94 minutes. Then calls her.
+    - src: /images/projects/cut-scenes/stills/mermaid.jpg
+      title: The Little Mermaid
+      year: '1989'
+      tag: Animation
+      line: She gives up her voice for a man. Nobody stopped her.
+    - src: /images/projects/cut-scenes/stills/eyimofe.jpg
+      title: Eyimofe
+      year: '2020'
+      tag: Drama
+      line: Two people in Lagos trying to leave. The city has other plans.
+    - src: /images/projects/cut-scenes/stills/witches.jpg
+      title: The Witches
+      year: '1990'
+      tag: Horror
+      line: Every grandmother’s warning, turned into a horror film. Also, mice.
+    - src: /images/projects/cut-scenes/stills/houseofgames.jpg
+      title: House of Games
+      year: '1987'
+      tag: Thriller
+      line: A psychiatrist meets a con man. Guess who gets analysed.
+    - src: /images/projects/cut-scenes/stills/conan.jpg
+      title: Conan the Destroyer
+      year: '1984'
+      tag: Fantasy
+      line: Muscles, swords, and a script that also skipped leg day.
+- discriminant: videoCard
+  value:
+    src: /images/projects/cut-scenes/flow.mp4
+    caption: 'Four ways in, one ending: play, surprise, gift or make your own. Every path finishes with the credits.'
+    pill: Screen flow
+- discriminant: videoCard
+  value:
+    src: /images/projects/cut-scenes/architecture.mp4
+    caption: Plain HTML, CSS and JS. Supabase for data, Vercel on every push. Anything uploaded waits for my approval.
+    pill: Architecture
+- discriminant: timeline
+  value:
+    eyebrow: Directed by me, built in pair with Claude
+    pill: Build
+    intro: 'I set the brief, the references and the bar; Claude built with me in small steps. I set up the repo, the database and the hosting, and judged every change in the browser against one question: **does this still feel like a night at the movies?**'
+    items:
+    - time: 09:48
+      text: 'First cut: static prototype'
+      key: true
+    - time: '11:52'
+      text: Add Supabase schema
+      key: false
+    - time: '12:03'
+      text: Connect the site to Supabase
+      key: true
+    - time: '12:51'
+      text: Full-screen home, opening-credits preview, invert for recipients
+      key: true
+    - time: '13:02'
+      text: 'README: live URL on Vercel'
+      key: false
+    - time: '13:08'
+      text: Full-width title, favicon and share image
+      key: false
+    - time: '13:16'
+      text: 'Menu: centred, no font swap on hover'
+      key: false
+    - time: '13:18'
+      text: 'Menu: bring back the italic hover, centred on the word'
+      key: false
+    - time: '13:59'
+      text: 'Make your own: film details first, then what it’s for'
+      key: true
+    - time: '14:07'
+      text: Own dropdowns and checkboxes, tidier puzzle bars on mobile
+      key: false
+    - time: '15:54'
+      text: Eight more stills for Now Showing
+      key: true
+    aside: eleven commits, one very long Friday
+- discriminant: details
+  value:
+    eyebrow: Small things that took the longest
+    pill: Details
+    items:
+    - src: /images/projects/cut-scenes/reveal.mp4
+      title: Classified until the end.
+      text: 'Skip ahead and the projectionist judges you: “Coward. Rolling anyway.”'
+    - src: /images/projects/cut-scenes/extreme.mp4
+      title: Extreme, honestly.
+      text: 48 pieces and the outlines disappear.
+    - src: /images/projects/cut-scenes/themes.mp4
+      title: Two themes.
+      text: Red on black, or black on red for whoever receives it.
+    - src: /images/projects/cut-scenes/empty-state.mp4
+      title: Empty states in character.
+      text: “No TV yet.” and a surprise instead of a dead end.

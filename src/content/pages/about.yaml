@@ -1,0 +1,92 @@
+title: about
+grabTitle: grab to know me
+hobbiesLabel: interests & hobbies
+intro: 'Hey there!
+
+
+  I’m a Product Designer who loves **turning messy ideas into things people actually enjoy using.**
+
+
+  I’ve spent the last few years moving between research, UX, and UI — basically trying to **make digital experiences feel a bit more human** (and a lot less frustrating). My background in Industrial Design taught me to **think in systems, not just screens:** caring about how things work, not just how they look. Whether it’s an app, a platform, or something still living in a Figma graveyard, **I like to bring clarity where there’s chaos** — with a decent sense of humour and strong coffee supply.
+
+
+  **I’m curious by default,** allergic to unnecessary complexity, and very into the small details that make users go “oh, nice.” “Final versions” don’t exist, only better ones.
+
+
+  When I’m not designing, **I’m probably doing a crossword, talking to my plants like they’re in the meeting, or convincing myself that reorganising my desktop counts as self-care.**'
+skills:
+- title: Discovery & Research
+  tags:
+  - Product Discovery
+  - Workshop Facilitation
+  - Usability Testing
+  text: I research first, panic later. Discovery, workshops and usability testing, so **decisions are grounded in evidence** and not in whoever talks loudest.
+- title: Visual & UI Design
+  tags:
+  - Visual & UI
+  - WCAG 2.2
+  text: Strong visual layer, low tolerance for misaligned pixels. **Accessible by default** (WCAG 2.2), because pretty that nobody can use is just decoration.
+- title: Team & Collaboration
+  tags:
+  - Ways of Working
+  - Requirements
+  - Client Pitching
+  text: Coordinated UX teams. **Rituals, requirements and meetings that actually end in decisions**, plus pitching to clients without (visibly) sweating.
+- title: Design Systems
+  tags:
+  - Tokens & Variables
+  - Migration & Governance
+  text: 'Tokens, variables, migrations and governance: **the unglamorous plumbing** that keeps complex products consistent and, dare I say, sane.'
+- title: AI & Tooling
+  tags:
+  - Claude & Figma MCP
+  - AI-assisted Workflows
+  text: Claude, Figma MCP and AI-assisted workflows. **I let AI do the boring bits** so the team gets to do the thinking ones.
+teach:
+- years: 2019 — 2020
+  title: Lecturer, Computer II
+  place: ESDi School of Design
+- years: 2017 — 2018
+  title: MSc Product Design & Development
+  place: ELISAVA · University Pompeu Fabra
+- years: 2012 — 2017
+  title: BEng Industrial Design & Product Development
+  place: EUDI · University of A Coruña
+languages:
+- name: Spanish
+  level: Native
+- name: Galician
+  level: CELGA 4
+- name: English
+  level: C1 · CAE
+experience:
+- years: 2026 — now
+  role: Senior Product Designer
+  company: Garaje de Ideas, for Roche
+  tags:
+  - Ways of Working
+  - Requirements
+  - AI Workflows
+  text: '**Responsible for UX on a healthcare platform product** in a regulated environment, where “move fast and break things” is very much not the vibe. Beyond the screens, **I’m improving how the team works:** rituals and meetings that earn their calendar slot, **clearer requirements, UX testing and AI-assisted design workflows.**'
+- years: 2023 — 2026
+  role: Team Lead · Senior Product Designer
+  company: North Digital Studio
+  tags:
+  - Team Coordination
+  - Client Pitching
+  - Visual & UI
+  text: '**Coordinated the UX team** on client projects for **brands like CUPRA and CaixaBank**, sharing decisions with product and client teams. **Drove concept and ideation**, owned a strong visual and UI layer, and **presented work directly to client leads**, including UI improvement proposals. Also learnt that a “small tweak” is never small.'
+- years: 2020 — 2023
+  role: R&D Product Designer
+  company: Capgemini Engineering
+  tags:
+  - Research
+  - Cross-team Collaboration
+  text: '**Designed future-mobility apps and web experiences** within EU-funded R&D projects. **Lots of research and prototyping**, plus coordinating European partners and cross-functional teams across time zones, languages and very different ideas of what “urgent” means.'
+- years: 2018 — 2020
+  role: Product Design Manager
+  company: Ciclus Design Studio
+  tags:
+  - Concept to Delivery
+  - Ecodesign
+  text: 'Involved in **sustainable product projects from concept to delivery**, managing clients and suppliers. Physical products, real deadlines and the very tangible consequences of a wrong measurement: **the best crash course in owning a project end to end.**'

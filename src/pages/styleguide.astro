@@ -1,0 +1,151 @@
+---
+/**
+ * Styleguide · the living design system. Everything here is rendered with
+ * the real tokens and components, so if it looks right here it looks
+ * right everywhere.
+ */
+import Base from '../layouts/Base.astro';
+import Card from '../components/Card.astro';
+import Tag from '../components/Tag.astro';
+import Button from '../components/Button.astro';
+import Media from '../components/Media.astro';
+import DeviceFrame from '../components/DeviceFrame.astro';
+import Tab from '../components/Tab.astro';
+import Blocks from '../components/Blocks.astro';
+import { ACCENTS } from '../lib/utils';
+
+const core = [
+  ['--ink', '#070707', 'Frame, main text'], ['--paper', '#D4D1CB', 'Cards, text on ink'], ['--paper-2', '#ECEAE5', 'Inner tiles'],
+  ['--muted', '#4A4744', 'Secondary text'], ['--brand', '#9E194C', 'Dates, links, focus'], ['--brand-soft', '#FFA4BF', 'Tags, about panel'],
+];
+const accentUse: Record<string, string> = { copper: 'cupra', mint: 'south', lime: 'monexa', sky: 'hmi', red: 'cut scenes', mat: 'cutouts', amber: 'silena', cyan: 'contact' };
+const type = [
+  ['t-display', 'Display · Space Grotesk 700 · 45/1', 'cut scenes'],
+  ['t-title', 'Title · Space Grotesk 700 · 32/1.05', 'work experience'],
+  ['t-heading', 'Heading · Space Grotesk 700 · 20/1.2', 'Senior Product Designer'],
+  ['t-label', 'Label · Space Grotesk 500 · 16/1.2', 'about   work   contact'],
+  ['t-body-l', 'Body L · Satoshi 400 · 16/1.6', 'I bring clarity, keep alignment and make sure it ships as intended.'],
+  ['t-body', 'Body · Satoshi 400/700 · 14/1.6', 'Turning **messy ideas** into things people actually use.'],
+  ['t-small', 'Small · Satoshi 500 · 12/1.5', 'Year 2023 · Company SEAT | CUPRA'],
+  ['t-eyebrow', 'Eyebrow · Space Grotesk 700 · 12 · caps', 'Role responsibilities'],
+];
+const space = [4, 8, 12, 16, 24, 32, 48, 64];
+const radii = [['--r-xs', 'Inputs, cells'], ['--r-sm', 'Chips, small tiles'], ['--r-md', 'Cards, media'], ['--r-lg', 'Panels, frame'], ['--r-pill', 'Tags, buttons']];
+const motion = [
+  ['reveal', 'Fade and rise 12px on scroll. --dur-slow, --ease-out, staggered.'],
+  ['lift', 'Cards rise 3px on hover. --dur-base, --ease-out.'],
+  ['press', 'Buttons scale to 0.97 while pressed. --dur-fast.'],
+  ['raise', 'Faces scale up and come to the front. --dur-base, --ease-in-out.'],
+];
+const sampleBlocks = [
+  { discriminant: 'quote', value: { eyebrow: 'Why I made it', pill: 'The idea', quote: 'It has to feel like cinema.', body: 'A **quote** block: the one rule that holds a project together.', chips: ['Simple, loud', 'Made to gift'] } },
+  { discriminant: 'list', value: { eyebrow: 'What I owned', pill: 'Role responsibilities', columns: 2, items: [{ title: 'Team coordination', text: 'A **list** block, 1 to 3 columns.' }, { title: 'Client alignment', text: 'Bold key phrases with **double asterisks**.' }] } },
+  { discriminant: 'stats', value: { items: [{ value: '83%', label: 'A stats block' }, { value: '10', label: 'Big number + context' }, { value: '2M€', label: 'Uses the accent' }] } },
+];
+---
+<Base title="styleguide" description="The design system behind this portfolio.">
+  <div class="sg" style="--acc: var(--acc-red); --on-acc: var(--on-red)">
+    <header class="sg__hero" style="--acc: var(--brand); --on-acc: var(--paper)">
+      <p class="t-eyebrow">Design system</p>
+      <h1 class="t-display">styleguide</h1>
+      <p class="t-body-l">Tokens, type, motion and components behind this site. Everything below is rendered with the real code, so if it looks right here, it looks right everywhere.</p>
+    </header>
+
+    <Card eyebrow="Tokens" pill="Colour">
+      <div class="sw">
+        {core.map(([t, hex, use]) => (
+          <div class="sw__i"><div class="sw__c" style={`background:var(${t})`}></div><span class="t-mono">{t}</span><span class="t-small muted">{hex} · {use}</span></div>
+        ))}
+      </div>
+      <p class="t-small muted">Project accents: each project picks one, with its own text colour.</p>
+      <div class="acc">
+        {ACCENTS.map((a) => (
+          <div class="acc__i" style={`background:var(--acc-${a});color:var(--on-${a})`}><span class="t-heading">{accentUse[a]}</span><span class="t-mono">--acc-{a}</span></div>
+        ))}
+      </div>
+    </Card>
+
+    <Card eyebrow="Two families, eight styles" pill="Typography">
+      {type.map(([cls, spec, sample]) => (
+        <div class="ty"><span class="t-mono muted">{spec}</span><span class={cls} set:html={sample.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')} /></div>
+      ))}
+    </Card>
+
+    <div class="row">
+      <Card eyebrow="4px scale" pill="Space">
+        {space.map((v, i) => (
+          <div class="sp"><span class="t-mono">--s-{i + 1}</span><span class="t-mono muted">{v}px</span><i style={`width:${v * 4}px`}></i></div>
+        ))}
+      </Card>
+      <Card eyebrow="Five radii, each with a job" pill="Radius">
+        <div class="rd">
+          {radii.map(([t, use]) => (
+            <div><div class="rd__b" style={`border-radius:var(${t})`}></div><span class="t-mono">{t}</span><span class="t-small muted">{use}</span></div>
+          ))}
+        </div>
+      </Card>
+    </div>
+
+    <Card eyebrow="Three durations, two curves, four patterns" pill="Motion">
+      <div class="mo">
+        {motion.map(([n, d]) => (
+          <button class:list={['mo__i', `mo--${n}`]} type="button"><span class="mo__box"><i></i></span><span class="t-mono">{n}</span><span class="t-small muted">{d}</span></button>
+        ))}
+      </div>
+      <p class="t-small muted">Hover or press each tile. All motion turns off for people who ask their system to reduce motion.</p>
+    </Card>
+
+    <Card eyebrow="Built once, used everywhere" pill="Components">
+      <div class="cmp">
+        <div class="cmp__i"><span class="t-mono muted">Button</span><div class="cmp__row"><Button href="#">Primary</Button><Button href="#" variant="secondary">Secondary</Button><Button href="#" variant="ghost">Ghost</Button></div></div>
+        <div class="cmp__i" style="--acc: var(--acc-cyan); --on-acc: var(--on-cyan)"><span class="t-mono muted">Button · tile</span><Button href="#" variant="tile" icon="download">Download CV</Button></div>
+        <div class="cmp__i"><span class="t-mono muted">Tag</span><div class="cmp__row"><Tag variant="brand">brand</Tag><Tag variant="accent">accent</Tag><Tag variant="ink" size="sm">ink</Tag><Tag variant="outline" size="sm">outline</Tag></div></div>
+        <div class="cmp__i"><span class="t-mono muted">Tab · corners</span><div class="tabdemo"><Tab corner="top-left"><span class="t-body">top-left</span></Tab><Tab corner="bottom-right"><span class="t-body">bottom-right</span></Tab></div></div>
+        <div class="cmp__i"><span class="t-mono muted">Media · image with label</span><Media src="/images/projects/cupra/cockpit.jpg" alt="" ratio="16/10" label="cupra" /></div>
+        <div class="cmp__i"><span class="t-mono muted">DeviceFrame · browser and phone</span><div class="cmp__dev"><DeviceFrame src="/images/projects/cut-scenes/desktop-puzzle.jpg" url="cut-scenes.vercel.app" /><DeviceFrame kind="phone" src="/images/projects/cut-scenes/mobile-home.jpg" /></div></div>
+      </div>
+    </Card>
+
+    <Card eyebrow="Project pages are made of blocks" pill="Blocks">
+      <p class="t-body">Each project is a list of blocks you pick in the editor: text, quote, list, stats, media, media pair, browser, phones, collection, video card, timeline and details. A few of them:</p>
+    </Card>
+    <Blocks blocks={sampleBlocks} />
+  </div>
+</Base>
+
+<style>
+  .sg { display: flex; flex-direction: column; gap: var(--s-2); max-width: 1200px; margin: 0 auto; padding-top: 56px; }
+  .sg__hero { background: var(--brand); color: var(--paper); border-radius: var(--r-lg); padding: var(--s-7) var(--s-6) var(--s-6); display: flex; flex-direction: column; gap: var(--s-3); }
+  .sg__hero .t-body-l { max-width: 60ch; }
+  .sw { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--s-2); }
+  .sw__i { display: flex; flex-direction: column; gap: var(--s-1); }
+  .sw__c { height: 72px; border-radius: var(--r-md); box-shadow: inset 0 0 0 1px var(--line); }
+  .acc { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-2); }
+  .acc__i { border-radius: var(--r-md); padding: var(--s-4); display: flex; flex-direction: column; gap: var(--s-5); }
+  .ty { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: var(--s-4); align-items: baseline; padding: var(--s-3) 0; border-top: 1px solid var(--line); }
+  .sp { display: grid; grid-template-columns: 56px 40px minmax(0, 1fr); gap: var(--s-3); align-items: center; }
+  .sp i { height: 10px; background: var(--ink); border-radius: 2px; }
+  .rd { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--s-2); }
+  .rd > div { display: flex; flex-direction: column; gap: var(--s-1); }
+  .rd__b { aspect-ratio: 1; background: var(--ink); }
+  .mo { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-2); }
+  .mo__i { all: unset; cursor: pointer; background: var(--paper-2); border-radius: var(--r-md); padding: var(--s-3); display: flex; flex-direction: column; gap: var(--s-2); }
+  .mo__box { height: 96px; border-radius: var(--r-sm); background: var(--paper-3); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .mo__box i { width: 52px; height: 52px; border-radius: var(--r-md); background: var(--brand); transition: transform var(--dur-base) var(--ease-out), opacity var(--dur-slow) var(--ease-out); }
+  .mo--reveal:hover i { animation: rv var(--dur-slow) var(--ease-out); }
+  @keyframes rv { from { opacity: 0; transform: translateY(12px); } }
+  .mo--lift:hover i { transform: translateY(-6px); }
+  .mo--press:active i { transform: scale(0.9); }
+  .mo--raise:hover i { transform: scale(1.2) rotate(-4deg); transition-timing-function: var(--ease-in-out); }
+  .cmp { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); }
+  .cmp__i { display: flex; flex-direction: column; gap: var(--s-2); }
+  .cmp__row { display: flex; gap: var(--s-2); flex-wrap: wrap; align-items: center; }
+  .tabdemo { position: relative; height: 120px; background: var(--paper-2); border-radius: var(--r-lg); overflow: hidden; }
+  .cmp__dev { display: flex; gap: var(--s-4); align-items: flex-end; background: var(--paper-2); border-radius: var(--r-lg); padding: var(--s-4); }
+  .cmp__dev :global(.browser) { flex: 1; }
+  .cmp__dev :global(.phone) { width: 22%; }
+  @media (max-width: 900px) {
+    .sw, .acc, .mo, .rd { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ty, .cmp { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,60 @@
+title: cupra
+kind: client
+status: published
+order: 1
+accent: copper
+lead: Embedded in Cupra’s digital design team.
+intro: At North, I balanced hands-on infotainment work with exploratory concepts for the **brand’s future vision**. My role is to bring clarity, keep alignment, and make sure what we design actually ships as intended.
+teaser: Infotainment and future concepts, embedded in the brand’s digital design team.
+cover: /images/projects/cupra/card.jpg
+hero: /images/projects/cupra/hero.jpg
+heroLabel: seat | cupra
+meta:
+  - label: Year
+    value: 2023 – 2026
+  - label: Company
+    value: SEAT | CUPRA
+  - label: Role
+    value: Team lead · Product designer
+links: []
+blocks:
+  - discriminant: media
+    value:
+      src: /images/projects/cupra/building.jpg
+      alt: CUPRA headquarters in Barcelona
+      ratio: 16/10
+  - discriminant: list
+    value:
+      eyebrow: What I owned
+      pill: Role responsibilities
+      columns: 1
+      items:
+        - title: Team coordination
+          text: Keeps the design team aligned and moving, making sure **decisions are clear** and everyone knows what matters next.
+        - title: Client alignment
+          text: Leads presentations and discussions with Cupra stakeholders, **translating messy context into direction** the team can act on.
+        - title: Infotainment integration
+          text: Oversees the integration of UX and UI elements into the new infotainment system, ensuring **coherence across interactions, components and behaviours**.
+  - discriminant: mediaPair
+    value:
+      ratio: 4/5
+      a:
+        src: /images/projects/cupra/street.jpg
+        alt: CUPRA campaign photograph
+      b:
+        src: /images/projects/cupra/campaign.mp4
+        alt: No drivers, no Cupra
+  - discriminant: media
+    value:
+      src: /images/projects/cupra/concept-car.jpg
+      alt: CUPRA concept car
+      ratio: 16/10
+  - discriminant: mediaPair
+    value:
+      ratio: 4/3
+      a:
+        src: /images/projects/cupra/cockpit.jpg
+        alt: Concept cockpit
+      b:
+        src: /images/projects/cupra/interior.jpg
+        alt: Interior with the infotainment screen

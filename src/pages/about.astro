@@ -1,0 +1,91 @@
+---
+import Base from '../layouts/Base.astro';
+import HobbyPile from '../components/HobbyPile.astro';
+import Tag from '../components/Tag.astro';
+import { getEntry } from 'astro:content';
+import { rich } from '../lib/utils';
+const a = (await getEntry('pages', 'about'))!.data;
+---
+<Base title="about">
+  <div class="about">
+    <aside class="about__left">
+      <h1 class="t-display about__grab">{a.grabTitle}</h1>
+      <HobbyPile />
+      <p class="t-title about__hob">{a.hobbiesLabel}</p>
+    </aside>
+
+    <section class="about__col about__col--paper">
+      <h2 class="t-display">{a.title}</h2>
+      <div class="t-body rich" set:html={rich(a.intro)} />
+
+      <h2 class="t-title sec">skills</h2>
+      <div class="skills">
+        {a.skills.map((s: any, i: number) => (
+          <div class="skill" data-reveal style={`--i:${i}`}>
+            <h3 class="t-label skill__t">{s.title}</h3>
+            <div class="tags">{s.tags.map((t: string) => <Tag variant="ink" size="sm">{t}</Tag>)}</div>
+            <div class="t-body rich" set:html={rich(s.text)} />
+          </div>
+        ))}
+      </div>
+
+      <h2 class="t-title sec">learn & teach</h2>
+      <div class="rows">
+        {a.teach.map((t: any) => (
+          <div class="r"><span class="t-small muted">{t.years}</span><div><p class="t-label r__t">{t.title}</p><p class="t-small muted">{t.place}</p></div></div>
+        ))}
+      </div>
+
+      <h2 class="t-title sec">languages</h2>
+      <div class="langs">
+        {a.languages.map((l: any) => (
+          <div class="lang"><span class="t-label r__t">{l.name}</span><Tag variant="outline" size="sm">{l.level}</Tag></div>
+        ))}
+      </div>
+    </section>
+
+    <section class="about__col about__col--pink">
+      <h2 class="t-display">work<br />experience</h2>
+      {a.experience.map((e: any, i: number) => (
+        <article class="job" data-reveal style={`--i:${i}`}>
+          <p class="t-label">{e.years}</p>
+          <h3 class="t-heading">{e.role}</h3>
+          <p class="t-small">{e.company}</p>
+          <div class="tags">{e.tags.map((t: string) => <Tag variant="brand" size="sm">{t}</Tag>)}</div>
+          <div class="t-body rich" set:html={rich(e.text)} />
+        </article>
+      ))}
+    </section>
+  </div>
+</Base>
+
+<style>
+  .about { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr) minmax(0, 0.95fr); gap: var(--s-2); align-items: start; }
+  .about__left { position: sticky; top: var(--frame); height: calc(100vh - var(--frame) * 2); display: flex; flex-direction: column; justify-content: space-between; padding: 64px var(--s-3) var(--s-4); color: var(--paper); }
+  .about__grab { max-width: 6ch; }
+  .about__hob { align-self: flex-end; font-weight: 300; font-size: 24px; }
+  .about__col { border-radius: var(--r-lg); padding: 56px var(--s-6) var(--s-6); display: flex; flex-direction: column; gap: var(--s-4); min-height: calc(100vh - var(--frame) * 2); }
+  .about__col--paper { background: var(--paper); }
+  .about__col--pink { background: var(--brand-soft); color: var(--brand); }
+  .sec { margin-top: var(--s-6); padding-bottom: var(--s-3); border-bottom: 1px solid currentColor; }
+  .skills { display: flex; flex-direction: column; gap: var(--s-5); }
+  .skill { display: flex; flex-direction: column; gap: var(--s-2); }
+  .skill__t, .r__t { font-weight: 700; }
+  .tags { display: flex; gap: var(--s-1); flex-wrap: wrap; }
+  .rows { display: flex; flex-direction: column; }
+  .r { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: var(--s-3); padding: var(--s-3) 0; border-bottom: 1px solid var(--line); }
+  .langs { display: flex; flex-direction: column; }
+  .lang { display: flex; justify-content: space-between; align-items: center; padding: var(--s-2) 0; border-bottom: 1px solid var(--line); }
+  .job { display: flex; flex-direction: column; gap: var(--s-2); padding: var(--s-5) 0; border-bottom: 1px solid rgba(158, 25, 76, 0.4); }
+  .job:last-child { border-bottom: 0; }
+  .job .t-body { margin-top: var(--s-1); }
+  @media (max-width: 1100px) {
+    .about { grid-template-columns: 1fr 1fr; }
+    .about__left { grid-column: 1 / -1; position: relative; height: auto; padding-top: 72px; }
+    .about__left :global(.pile) { max-width: 520px; }
+  }
+  @media (max-width: 760px) {
+    .about { grid-template-columns: 1fr; }
+    .about__col { padding: var(--s-6) var(--s-5); min-height: 0; }
+  }
+</style>

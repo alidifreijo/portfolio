@@ -1,0 +1,36 @@
+---
+/**
+ * Project template · used by every client case and exploration.
+ * Left: sticky hero media. Right: header + content blocks + next project.
+ */
+import Base from '../../layouts/Base.astro';
+import Media from '../../components/Media.astro';
+import ProjectHeader from '../../components/ProjectHeader.astro';
+import Blocks from '../../components/Blocks.astro';
+import NextProject from '../../components/NextProject.astro';
+import { getProjects, projectUrl } from '../../lib/projects';
+import { accentVars } from '../../lib/utils';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((p, i) => ({
+    params: { slug: p.id },
+    props: { project: p, next: projects[(i + 1) % projects.length] },
+  }));
+}
+
+const { project, next } = Astro.props;
+const d = project.data;
+---
+<Base title={d.title} description={`${d.lead} ${d.teaser}`} image={d.cover}>
+  <div class="split" style={accentVars(d.accent)}>
+    <div class="split-left">
+      <Media src={d.hero} alt={d.title} label={d.heroLabel || d.title} eager bg="#111212" />
+    </div>
+    <div class="split-right">
+      <ProjectHeader title={d.title} lead={d.lead} intro={d.intro} meta={d.meta} links={d.links} />
+      <Blocks blocks={d.blocks} />
+      <NextProject href={projectUrl(next)} title={next.data.title} line={next.data.teaser} image={next.data.cover} accent={next.data.accent} />
+    </div>
+  </div>
+</Base>

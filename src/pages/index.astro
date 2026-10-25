@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import Faces from '../components/Faces.astro';
+import Tab from '../components/Tab.astro';
+import { getEntry } from 'astro:content';
+const home = (await getEntry('pages', 'home'))!.data;
+---
+<Base>
+  <section class="home">
+    <Faces />
+    <p class="home__line t-label"><strong>{home.lead}</strong> {home.line}<br />{home.sub}</p>
+    <Tab corner="bottom-left"><span class="t-body">{home.name}</span></Tab>
+  </section>
+</Base>
+
+<style>
+  .home {
+    position: relative; height: calc(100vh - var(--frame) * 2); min-height: 560px;
+    background: var(--paper); border-radius: var(--r-lg); overflow: hidden;
+  }
+  .home__line { position: absolute; left: 50%; top: 50%; translate: -50% -50%; text-align: center; width: min(90%, 420px); pointer-events: none; }
+</style>

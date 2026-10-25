@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import Crossword from '../components/Crossword.astro';
+import Button from '../components/Button.astro';
+import { getEntry } from 'astro:content';
+import { rich } from '../lib/utils';
+const c = (await getEntry('pages', 'contact'))!.data;
+---
+<Base title="contact">
+  <div class="contact" style="--acc: var(--acc-cyan); --on-acc: var(--on-cyan)">
+    <section class="contact__play">
+      <header class="contact__head">
+        <h1 class="t-display">{c.playTitle}</h1>
+        <button class="resolve press" type="button" onclick="document.dispatchEvent(new Event('crossword:resolve'))">Resolve</button>
+      </header>
+      <Crossword clues={c.clues} />
+    </section>
+    <aside class="contact__talk">
+      <div class="talk">
+        <h2 class="t-display">{c.talkTitle}</h2>
+        <div class="t-body rich" set:html={rich(c.body)} />
+      </div>
+      <Button href={c.cv} variant="tile" icon="download" download>Download CV</Button>
+      {c.links.map((l: any) => <Button href={l.url} variant="tile" icon={l.icon}>{l.label}</Button>)}
+    </aside>
+  </div>
+</Base>
+
+<style>
+  .contact { display: grid; grid-template-columns: minmax(0, 3fr) minmax(280px, 1fr); gap: var(--s-2); min-height: calc(100vh - var(--frame) * 2); }
+  .contact__play { background: var(--paper); border-radius: var(--r-lg); padding: 64px var(--s-6) var(--s-6); display: flex; flex-direction: column; gap: var(--s-6); }
+  .contact__head { display: flex; justify-content: space-between; align-items: center; gap: var(--s-4); }
+  .resolve { border: 0; cursor: pointer; background: var(--ink); color: var(--paper); border-radius: var(--r-pill); padding: 12px var(--s-5); font-family: var(--font-body); font-weight: 700; font-size: var(--fs-body-l); }
+  .resolve:hover { background: var(--brand); }
+  .contact__talk { display: flex; flex-direction: column; gap: var(--s-2); }
+  .talk { flex: 1; background: var(--acc); color: var(--on-acc); border-radius: var(--r-lg); padding: 64px var(--s-5) var(--s-5); display: flex; flex-direction: column; gap: var(--s-5); }
+  @media (max-width: 900px) {
+    .contact { grid-template-columns: 1fr; }
+    .contact__talk { order: -1; }
+    .contact__play { padding: var(--s-6) var(--s-4); }
+    .talk { padding-top: 72px; }
+  }
+</style>

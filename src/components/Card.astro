@@ -1,0 +1,34 @@
+---
+/**
+ * Card · the grey section card. Eyebrow on the left, pill on the right,
+ * then whatever you put inside.
+ *
+ * <Card eyebrow="Why I made it" pill="The idea">…</Card>
+ * tone: paper (default) · ink (dark) · accent · soft (paper-2)
+ */
+import Tag from './Tag.astro';
+interface Props { eyebrow?: string; pill?: string; tone?: 'paper' | 'ink' | 'accent' | 'soft'; reveal?: boolean; class?: string; pad?: 'md' | 'lg' }
+const { eyebrow, pill, tone = 'paper', reveal = true, class: cls = '', pad = 'md' } = Astro.props;
+---
+<section class:list={['card', `card--${tone}`, `card--${pad}`, cls]} data-reveal={reveal ? '' : undefined}>
+  {(eyebrow || pill) && (
+    <header class="card__head">
+      {eyebrow ? <span class="t-small card__eb">{eyebrow}</span> : <span />}
+      {pill && <Tag variant="accent">{pill}</Tag>}
+    </header>
+  )}
+  <slot />
+</section>
+
+<style>
+  .card { border-radius: var(--r-lg); display: flex; flex-direction: column; gap: var(--s-4); min-width: 0; }
+  .card--md { padding: var(--s-5) var(--s-5) var(--s-5); }
+  .card--lg { padding: var(--s-6); }
+  .card--paper { background: var(--paper); color: var(--ink); }
+  .card--soft { background: var(--paper-2); color: var(--ink); }
+  .card--ink { background: #111212; color: var(--paper); }
+  .card--accent { background: var(--acc); color: var(--on-acc); }
+  .card__head { display: flex; justify-content: space-between; align-items: center; gap: var(--s-3); }
+  .card__eb { opacity: 0.75; }
+  @media (max-width: 520px) { .card--md, .card--lg { padding: var(--s-4); } }
+</style>

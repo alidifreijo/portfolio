@@ -1,0 +1,73 @@
+---
+/**
+ * HobbyPile · "grab to know me". Stickers you can drag around.
+ * x / y are the % position of the sticker centre, w its width in %.
+ */
+const items = [
+  { n: 'books', x: 14, y: 16, w: 22, r: -4 },
+  { n: 'utopia', x: 32, y: 18, w: 21, r: 3 },
+  { n: 'pedro-pascal', x: 46, y: 22, w: 13, r: -2 },
+  { n: 'harry-potter', x: 64, y: 22, w: 19, r: 4 },
+  { n: 'wall-e', x: 84, y: 26, w: 17, r: -6 },
+  { n: 't-shirt', x: 22, y: 45, w: 30, r: -3 },
+  { n: 'animal-crossing', x: 40, y: 48, w: 16, r: 6 },
+  { n: 'headphones', x: 12, y: 56, w: 17, r: -10 },
+  { n: 'gilmore-girls', x: 62, y: 47, w: 16, r: -2 },
+  { n: 'fleabag', x: 50, y: 64, w: 26, r: 2 },
+  { n: 'friends', x: 22, y: 70, w: 24, r: 3 },
+  { n: 'crossword', x: 42, y: 78, w: 28, r: -2 },
+  { n: 'cat', x: 22, y: 82, w: 17, r: -8 },
+  { n: 'parks-and-rec', x: 80, y: 72, w: 26, r: 3 },
+  { n: 'attack-on-titan', x: 80, y: 47, w: 22, r: 5 },
+  { n: 'zorro', x: 66, y: 86, w: 15, r: -5 },
+  { n: 'normal-people', x: 86, y: 92, w: 20, r: 4 },
+  { n: 'coffee', x: 10, y: 92, w: 15, r: 0 },
+  { n: 'ice-cream', x: 32, y: 95, w: 11, r: -6 },
+];
+---
+<div class="pile" data-pile aria-label="Things I love: drag them around">
+  {items.map((it, i) => (
+    <img
+      class="sticker"
+      src={`/images/hobbies/${it.n}.png`}
+      alt={it.n.replace(/-/g, ' ')}
+      draggable="false"
+      loading="lazy"
+      style={`--x:${it.x}%;--y:${it.y}%;--w:${it.w}%;--r:${it.r}deg;z-index:${i + 1}`}
+    />
+  ))}
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-pile]').forEach((pile) => {
+    let z = 100;
+    pile.querySelectorAll<HTMLImageElement>('.sticker').forEach((el) => {
+      let sx = 0, sy = 0, ox = 0, oy = 0, dragging = false;
+      el.addEventListener('pointerdown', (e) => {
+        dragging = true; el.setPointerCapture(e.pointerId);
+        sx = e.clientX; sy = e.clientY;
+        const m = (el.style.translate || '0px 0px').split(' ').map(parseFloat);
+        ox = m[0] || 0; oy = m[1] || 0;
+        el.style.zIndex = String(++z); el.classList.add('is-drag');
+      });
+      el.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        el.style.translate = `${ox + e.clientX - sx}px ${oy + e.clientY - sy}px`;
+      });
+      const end = () => { dragging = false; el.classList.remove('is-drag'); };
+      el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
+    });
+  });
+</script>
+
+<style>
+  .pile { position: relative; width: 100%; aspect-ratio: 1 / 1.02; touch-action: none; }
+  .sticker {
+    position: absolute; left: var(--x); top: var(--y); width: var(--w); height: auto;
+    transform: translate(-50%, -50%) rotate(var(--r)); cursor: grab; user-select: none;
+    transition: scale var(--dur-fast) var(--ease-out), filter var(--dur-fast);
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
+  }
+  .sticker:hover { scale: 1.04; }
+  .sticker.is-drag { cursor: grabbing; scale: 1.08; filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.5)); }
+</style>

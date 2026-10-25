@@ -1,0 +1,140 @@
+---
+/**
+ * Crossword · eight clues that sum me up.
+ * Grid and answers live in src/data/crossword.json; clue texts come from
+ * the contact page content (editable in Keystatic).
+ */
+import data from '../data/crossword.json';
+interface Props { clues: string[] }
+const { clues } = Astro.props;
+
+type Cell = { x: number; y: number; n?: number; a: string; words: number[] };
+const map = new Map<string, Cell>();
+data.words.forEach((w, wi) => {
+  [...w.word].forEach((ch, i) => {
+    const x = w.direction === 'across' ? w.x + i : w.x;
+    const y = w.direction === 'down' ? w.y + i : w.y;
+    const k = `${x},${y}`;
+    const c = map.get(k) ?? { x, y, a: ch, words: [] };
+    c.words.push(wi);
+    if (i === 0) c.n = w.number;
+    map.set(k, c);
+  });
+});
+const cells = [...map.values()];
+const cols = Math.max(...cells.map((c) => c.x)) + 1;
+const rows = Math.max(...cells.map((c) => c.y)) + 1;
+---
+<div class="cw" data-cw data-words={JSON.stringify(data.words)}>
+  <div class="cw__grid" style={`--cols:${cols};--rows:${rows}`} role="grid" aria-label="Crossword">
+    {cells.map((c) => (
+      <label class="cw__cell" style={`grid-column:${c.x + 1};grid-row:${c.y + 1}`} data-x={c.x} data-y={c.y} data-a={c.a} data-words={c.words.join(',')}>
+        {c.n && <span class="cw__n">{c.n}</span>}
+        <input maxlength="1" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label={`Row ${c.y + 1}, column ${c.x + 1}`} />
+      </label>
+    ))}
+  </div>
+  <div class="cw__foot">
+    <p class="t-eyebrow">Clues</p>
+    <ol class="cw__clues">
+      {clues.map((c, i) => (
+        <li data-clue={i}><span class="cw__cn">{String(i + 1).padStart(2, '0')}</span> <span>{c}</span> <em class="t-small">{data.words[i]?.direction}</em></li>
+      ))}
+    </ol>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-cw]').forEach((root) => {
+    const words: { number: number; word: string; direction: string; x: number; y: number }[] = JSON.parse(root.dataset.words!);
+    const cells = [...root.querySelectorAll<HTMLElement>('.cw__cell')];
+    const at = (x: number, y: number) => cells.find((c) => +c.dataset.x! === x && +c.dataset.y! === y);
+    let dir: 'across' | 'down' = 'across';
+    let active = -1;
+
+    const cellsOf = (wi: number) => {
+      const w = words[wi];
+      return [...w.word].map((_, i) => at(w.direction === 'across' ? w.x + i : w.x, w.direction === 'down' ? w.y + i : w.y)!);
+    };
+    const highlight = (wi: number) => {
+      active = wi;
+      cells.forEach((c) => c.classList.remove('is-word'));
+      root.querySelectorAll('[data-clue]').forEach((l) => l.classList.toggle('is-on', +(l as HTMLElement).dataset.clue! === wi));
+      if (wi >= 0) cellsOf(wi).forEach((c) => c.classList.add('is-word'));
+    };
+    const check = () => {
+      words.forEach((_, wi) => {
+        const cs = cellsOf(wi);
+        const ok = cs.every((c) => c.querySelector('input')!.value.toUpperCase() === c.dataset.a);
+        cs.forEach((c) => c.classList.toggle(`ok-${wi}`, ok));
+      });
+      cells.forEach((c) => c.classList.toggle('is-ok', [...c.classList].some((k) => k.startsWith('ok-'))));
+      if (cells.every((c) => c.classList.contains('is-ok'))) root.classList.add('is-solved');
+    };
+    const wordFor = (cell: HTMLElement) => {
+      const ws = cell.dataset.words!.split(',').map(Number);
+      return ws.find((w) => words[w].direction === dir) ?? ws[0];
+    };
+    const move = (cell: HTMLElement, step: number) => {
+      const wi = active >= 0 ? active : wordFor(cell);
+      const cs = cellsOf(wi);
+      const i = cs.indexOf(cell) + step;
+      if (i >= 0 && i < cs.length) cs[i].querySelector('input')!.focus();
+    };
+
+    cells.forEach((cell) => {
+      const input = cell.querySelector('input')!;
+      input.addEventListener('focus', () => {
+        const ws = cell.dataset.words!.split(',').map(Number);
+        if (!ws.includes(active)) { const w = wordFor(cell); dir = words[w].direction as any; highlight(w); }
+        input.select();
+      });
+      input.addEventListener('click', () => {
+        const ws = cell.dataset.words!.split(',').map(Number);
+        if (ws.length > 1) { const other = ws.find((w) => w !== active)!; dir = words[other].direction as any; highlight(other); }
+      });
+      input.addEventListener('input', () => {
+        input.value = input.value.slice(-1).toUpperCase();
+        check();
+        if (input.value) move(cell, 1);
+      });
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !input.value) { e.preventDefault(); move(cell, -1); }
+        const arrows: Record<string, [number, number]> = { ArrowRight: [1, 0], ArrowLeft: [-1, 0], ArrowDown: [0, 1], ArrowUp: [0, -1] };
+        if (arrows[e.key]) {
+          e.preventDefault();
+          const [dx, dy] = arrows[e.key];
+          const n = at(+cell.dataset.x! + dx, +cell.dataset.y! + dy);
+          if (n) { dir = dx ? 'across' : 'down'; active = -1; n.querySelector('input')!.focus(); }
+        }
+      });
+    });
+    root.querySelectorAll<HTMLElement>('[data-clue]').forEach((li) => li.addEventListener('click', () => {
+      const wi = +li.dataset.clue!; dir = words[wi].direction as any; highlight(wi);
+      cellsOf(wi)[0].querySelector('input')!.focus();
+    }));
+    document.addEventListener('crossword:resolve', () => {
+      cells.forEach((c, i) => setTimeout(() => { c.querySelector('input')!.value = c.dataset.a!; check(); }, i * 18));
+    });
+  });
+</script>
+
+<style>
+  .cw { display: flex; flex-direction: column; gap: var(--s-6); height: 100%; }
+  .cw__grid { --cell: min(calc((100cqw) / var(--cols)), 44px); display: grid; grid-template-columns: repeat(var(--cols), var(--cell)); grid-template-rows: repeat(var(--rows), var(--cell)); justify-content: center; container-type: inline-size; }
+  .cw { container-type: inline-size; }
+  .cw__grid { --cell: min(calc(100cqw / var(--cols)), 46px); }
+  .cw__cell { position: relative; border: 1.5px solid var(--ink); margin: -0.75px; background: transparent; transition: background var(--dur-fast); }
+  .cw__cell.is-word { background: rgba(152, 231, 235, 0.45); }
+  .cw__cell.is-ok { background: var(--acc-cyan); }
+  .cw__n { position: absolute; left: 3px; top: 1px; font-size: 9px; font-weight: 500; pointer-events: none; }
+  .cw__cell input { all: unset; width: 100%; height: 100%; text-align: center; font-family: var(--font-display); font-weight: 700; font-size: calc(var(--cell) * 0.5); text-transform: uppercase; caret-color: var(--brand); }
+  .cw__foot { display: flex; flex-direction: column; gap: var(--s-3); }
+  .cw__clues { list-style: none; margin: 0; padding: 0; columns: 3 220px; column-gap: var(--s-6); }
+  .cw__clues li { break-inside: avoid; font-size: var(--fs-body); line-height: 1.45; margin-bottom: var(--s-3); cursor: pointer; border-radius: var(--r-xs); transition: background var(--dur-fast); }
+  .cw__clues li.is-on { background: rgba(152, 231, 235, 0.55); }
+  .cw__clues em { opacity: 0.55; font-style: normal; }
+  .cw__cn { font-family: var(--font-display); font-weight: 700; }
+  .is-solved .cw__grid { animation: pop var(--dur-slow) var(--ease-out); }
+  @keyframes pop { 50% { transform: scale(1.02); } }
+</style>

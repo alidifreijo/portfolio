@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+---
+<Base title="not found">
+  <section class="nf">
+    <img src="/images/faces/messy-hair.png" alt="" width="140" height="140" />
+    <h1 class="t-display">this page is still in a Figma graveyard</h1>
+    <p class="t-body-l muted">Or it never existed. Either way, let’s get you somewhere useful.</p>
+    <div class="nf__b"><Button href="/">Home</Button><Button href="/work" variant="secondary">See the work</Button></div>
+  </section>
+</Base>
+
+<style>
+  .nf { min-height: calc(100vh - var(--frame) * 2); background: var(--paper); border-radius: var(--r-lg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--s-4); text-align: center; padding: var(--s-6); }
+  .nf h1 { max-width: 16ch; }
+  .nf__b { display: flex; gap: var(--s-2); margin-top: var(--s-3); }
+</style>

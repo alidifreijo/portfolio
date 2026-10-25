@@ -1,0 +1,46 @@
+---
+/**
+ * Media · an image or a looping video (picked by file extension), with
+ * rounded corners, lazy loading and an optional corner label.
+ *
+ * <Media src="/images/x.jpg" alt="…" ratio="16/10" label="cupra" />
+ */
+import Tab from './Tab.astro';
+import { isVideo } from '../lib/utils';
+
+interface Props {
+  src: string;
+  alt?: string;
+  ratio?: string;          // e.g. "16/10", "4/5", "1" · omit to fill the parent
+  fit?: 'cover' | 'contain';
+  label?: string;          // black tab in a corner
+  labelCorner?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+  caption?: string;        // small pill over the media
+  bg?: string;
+  lift?: boolean;
+  eager?: boolean;
+  class?: string;
+}
+const { src, alt = '', ratio, fit = 'cover', label, labelCorner = 'bottom-right', caption, bg = 'var(--paper)', lift = false, eager = false, class: cls = '' } = Astro.props;
+const video = isVideo(src);
+---
+<figure class:list={['media', { lift }, cls]} style={`${ratio ? `aspect-ratio:${ratio};` : 'height:100%;'}background:${bg}`}>
+  {video ? (
+    <video src={src} poster={src.replace(/\.mp4$/i, '.poster.jpg')} muted loop playsinline preload="metadata" data-autoplay autoplay={eager} style={`object-fit:${fit}`} aria-label={alt || undefined}></video>
+  ) : (
+    <img src={src} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" style={`object-fit:${fit}`} />
+  )}
+  {caption && <figcaption class="media__cap t-small">{caption}</figcaption>}
+  {label && <Tab corner={labelCorner}><span class="t-body">{label}</span></Tab>}
+</figure>
+
+<style>
+  .media { position: relative; margin: 0; border-radius: var(--r-lg); overflow: hidden; width: 100%; }
+  .media img, .media video { width: 100%; height: 100%; }
+  .media__cap {
+    position: absolute; left: var(--s-3); bottom: var(--s-3); z-index: 2;
+    background: rgba(7, 7, 7, 0.78); color: var(--paper);
+    border-radius: var(--r-pill); padding: var(--s-1) var(--s-3);
+    backdrop-filter: blur(6px);
+  }
+</style>

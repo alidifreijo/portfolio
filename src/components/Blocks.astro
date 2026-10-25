@@ -1,0 +1,196 @@
+---
+/**
+ * Blocks · renders the list of content blocks of a project.
+ * Every block type here has a matching entry in keystatic.config.ts.
+ * To add a new block type: add it in both places and document it in
+ * docs/GUIA.md.
+ */
+import Card from './Card.astro';
+import Media from './Media.astro';
+import DeviceFrame from './DeviceFrame.astro';
+import { rich } from '../lib/utils';
+
+type Block = { discriminant: string; value: any };
+interface Props { blocks: Block[] }
+const { blocks = [] } = Astro.props;
+---
+{blocks.map(({ discriminant: type, value: v }) => {
+  switch (type) {
+    case 'text':
+      return (
+        <Card eyebrow={v.eyebrow} pill={v.pill}>
+          {v.size === 'lead'
+            ? <div class="lead rich" set:html={rich(v.body)} />
+            : <div class="t-body rich" set:html={rich(v.body)} />}
+        </Card>
+      );
+
+    case 'quote':
+      return (
+        <Card eyebrow={v.eyebrow} pill={v.pill}>
+          <p class="t-title">“{v.quote}”</p>
+          {v.body && <div class="t-body rich" set:html={rich(v.body)} />}
+          {v.chips?.length > 0 && <div class="chips">{v.chips.map((c: string) => <span class="chip t-small">{c}</span>)}</div>}
+        </Card>
+      );
+
+    case 'list':
+      return (
+        <Card eyebrow={v.eyebrow} pill={v.pill}>
+          <div class="list" style={`--cols:${v.columns || 1}`}>
+            {v.items?.map((it: any) => (
+              <div class="list__item">
+                <span class="t-label list__t">{it.title}</span>
+                <div class="t-body rich" set:html={rich(it.text)} />
+              </div>
+            ))}
+          </div>
+        </Card>
+      );
+
+    case 'stats':
+      return (
+        <div class="stats" data-reveal>
+          {v.items?.map((s: any) => (
+            <div class="stat"><span class="t-display stat__v">{s.value}</span><span class="t-small stat__l">{s.label}</span></div>
+          ))}
+        </div>
+      );
+
+    case 'media':
+      return <div data-reveal><Media src={v.src} alt={v.alt} ratio={v.ratio || '16/10'} caption={v.caption} label={v.label} lift /></div>;
+
+    case 'mediaPair':
+      return (
+        <div class="row" data-reveal>
+          <Media src={v.a?.src} alt={v.a?.alt} ratio={v.ratio || '4/5'} caption={v.a?.caption} lift />
+          <Media src={v.b?.src} alt={v.b?.alt} ratio={v.ratio || '4/5'} caption={v.b?.caption} lift />
+        </div>
+      );
+
+    case 'browser':
+      return (
+        <div class="tile tile--bottom" data-reveal style={v.tint ? `background:${v.tint}` : ''}>
+          <DeviceFrame kind="browser" src={v.src} alt={v.alt} url={v.url} />
+        </div>
+      );
+
+    case 'phones':
+      return (
+        <div class="tile" data-reveal style={v.tint ? `background:${v.tint}` : ''}>
+          {v.screens?.map((s: any, i: number) => (
+            <DeviceFrame kind="phone" src={s.src} alt={s.alt} style={v.screens.length === 3 && i === 1 ? 'transform:translateY(-14px)' : ''} />
+          ))}
+        </div>
+      );
+
+    case 'collection':
+      return (
+        <Card eyebrow={v.eyebrow} pill={v.pill} tone="ink">
+          <div class="coll">
+            {v.items?.map((it: any) => (
+              <figure class="coll__item">
+                <img src={it.src} alt={it.title} loading="lazy" />
+                <div class="coll__tags"><span>{it.title}{it.year && ` — ${it.year}`}</span>{it.tag && <span>{it.tag}</span>}</div>
+                {it.line && <figcaption class="coll__line">{it.line}</figcaption>}
+              </figure>
+            ))}
+          </div>
+          {v.note && <p class="t-small" style="opacity:.6">{v.note}</p>}
+        </Card>
+      );
+
+    case 'videoCard':
+      return (
+        <div class="vcard" data-reveal>
+          <Media src={v.src} alt={v.caption} ratio="16/10" bg="#0c0c0c" />
+          <div class="vcard__cap"><p class="t-body">{v.caption}</p>{v.pill && <span class="vcard__pill t-small">{v.pill}</span>}</div>
+        </div>
+      );
+
+    case 'timeline':
+      return (
+        <Card eyebrow={v.eyebrow} pill={v.pill}>
+          {v.intro && <div class="t-body rich" set:html={rich(v.intro)} />}
+          <ol class="tl">
+            {v.items?.map((it: any) => (
+              <li class:list={{ key: it.key }}><span class="t-mono">{it.time}</span><i></i><span class="t-small">{it.text}</span></li>
+            ))}
+          </ol>
+          {v.aside && (
+            <div class="aside">
+              <svg viewBox="0 0 400 14" preserveAspectRatio="none" aria-hidden="true"><path d="M2 1 Q2 12 12 12 L388 12 Q398 12 398 1" /></svg>
+              <span>{v.aside}</span>
+            </div>
+          )}
+        </Card>
+      );
+
+    case 'details':
+      return (
+        <Card eyebrow={v.eyebrow} pill={v.pill}>
+          <div class="det">
+            {v.items?.map((it: any) => (
+              <div class="det__item">
+                <Media src={it.src} alt={it.title} ratio="16/10" bg="#111212" />
+                <p class="t-body"><strong>{it.title}</strong> {it.text}</p>
+              </div>
+            ))}
+          </div>
+        </Card>
+      );
+
+    default:
+      return null;
+  }
+})}
+
+<style>
+  .lead { font-family: var(--font-display); font-weight: 500; font-size: 22px; line-height: 1.3; letter-spacing: -0.01em; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { border: 1px solid var(--line); border-color: currentColor; opacity: 0.8; border-radius: var(--r-pill); padding: 3px 10px; }
+  .list { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: var(--s-4) var(--s-5); }
+  .list__item { display: flex; flex-direction: column; gap: var(--s-1); }
+  .list__t { font-weight: 700; }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--s-2); }
+  .stat { background: #111212; color: var(--paper); border-radius: var(--r-md); padding: var(--s-4); display: flex; flex-direction: column; gap: var(--s-1); }
+  .stat__v { color: var(--acc); font-size: 36px; }
+  .stat__l { opacity: 0.75; font-weight: 400; }
+
+  .tile { background: var(--paper-2); border-radius: var(--r-lg); padding: var(--s-6) var(--s-5); display: flex; justify-content: center; align-items: center; gap: var(--s-4); overflow: hidden; }
+  .tile--bottom { padding-bottom: 0; align-items: flex-end; }
+  .tile--bottom :global(.browser) { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+
+  .coll { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-2); }
+  .coll__item { position: relative; margin: 0; border-radius: var(--r-md); overflow: hidden; aspect-ratio: 4 / 3; background: #000; }
+  .coll__item img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease-out), filter var(--dur-base); }
+  .coll__tags { position: absolute; left: 8px; top: 8px; display: flex; gap: 4px; flex-wrap: wrap; }
+  .coll__tags span { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; background: rgba(7, 7, 7, 0.78); color: var(--paper); border-radius: var(--r-pill); padding: 2px 8px; }
+  .coll__line { position: absolute; inset: auto 0 0 0; padding: 24px 10px 9px; font-size: var(--fs-small); line-height: 1.35; color: var(--paper); background: linear-gradient(transparent, rgba(7, 7, 7, 0.9)); opacity: 0; transform: translateY(6px); transition: opacity var(--dur-base), transform var(--dur-base) var(--ease-out); }
+  .coll__item:hover img { transform: scale(1.04); filter: brightness(0.8); }
+  .coll__item:hover .coll__line { opacity: 1; transform: none; }
+
+  .vcard { background: #111212; color: var(--paper); border-radius: var(--r-lg); padding: var(--s-2) var(--s-2) var(--s-4); display: flex; flex-direction: column; gap: var(--s-3); }
+  .vcard :global(.media) { border-radius: 10px; }
+  .vcard__cap { display: flex; justify-content: space-between; align-items: center; gap: var(--s-3); padding: 0 var(--s-2); }
+  .vcard__pill { background: var(--acc); color: var(--on-acc); border-radius: var(--r-pill); padding: 4px 12px; font-weight: 700; white-space: nowrap; }
+
+  .tl { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .tl li { display: grid; grid-template-columns: 44px 12px minmax(0, 1fr); gap: var(--s-3); align-items: center; padding: 3px 0; }
+  .tl i { width: 8px; height: 8px; border-radius: 50%; background: var(--paper-2); box-shadow: 0 0 0 1px rgba(7, 7, 7, 0.3); }
+  .tl li.key i { background: var(--acc); }
+  .tl li.key .t-small { font-weight: 700; }
+  .aside { display: flex; flex-direction: column; align-items: center; padding-top: var(--s-2); }
+  .aside svg { width: 100%; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.2; }
+  .aside span { font-family: 'Caveat', 'Bradley Hand', cursive; font-size: 26px; line-height: 1.1; margin-top: 4px; }
+
+  .det { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
+  .det__item { display: flex; flex-direction: column; gap: var(--s-2); }
+
+  @media (max-width: 760px) {
+    .list, .det { grid-template-columns: 1fr; }
+    .coll { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tile :global(.phone) { width: 30%; }
+  }
+</style>

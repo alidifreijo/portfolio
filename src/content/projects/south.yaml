@@ -1,0 +1,67 @@
+title: south
+kind: client
+status: published
+order: 2
+accent: mint
+lead: An online banking app for ambitious small-business owners.
+intro: South is designed for teams under 50 people. The account can be managed by the **CEO or an assigned manager**, making it flexible for companies where responsibilities shift quickly.
+teaser: A banking app for ambitious small-business owners.
+cover: /images/projects/south/card.jpg
+hero: /images/projects/south/login.mp4
+heroLabel: south · fintech app
+meta:
+  - label: Year
+    value: '2024'
+  - label: Project
+    value: Banking app
+  - label: Service
+    value: UX/UI
+links: []
+blocks:
+  - discriminant: media
+    value:
+      src: /images/projects/south/in-use.jpg
+      alt: South app in use at a café, next to a card reader
+      ratio: 16/10
+  - discriminant: stats
+    value:
+      items:
+        - value: 83%
+          label: of the customers are micro-enterprises
+        - value: '10'
+          label: employees at most
+        - value: 2M€
+          label: annual turnover at most
+  - discriminant: media
+    value:
+      src: /images/projects/south/screens.png
+      alt: South app screens
+      ratio: 4/3
+  - discriminant: list
+    value:
+      eyebrow: Who we designed for
+      pill: User archetype
+      columns: 2
+      items:
+        - title: Responsible role
+          text: |-
+            Company director and/or internal accountant.
+
+            **Pain:** payment delays can lead to fines under the Law on Infringements and Sanctions in the Social Order.
+            **Gain:** online banking and digital paperwork make money faster to access and manage.
+        - title: Employee role
+          text: |-
+            **Pain:** depending on the day and the bank, salaries may only arrive at the start of the month.
+            **Gain:** flexible payment deferral and invoice management let payroll adapt to the month’s expenses and savings.
+  - discriminant: list
+    value:
+      eyebrow: What they need
+      pill: User needs
+      columns: 3
+      items:
+        - title: agile
+          text: Few employees, so no complex features. It needs **versatility and flexibility** in managing payments.
+        - title: fast
+          text: Small companies don’t have a person per function. Processes must be **streamlined so nobody wastes time**.
+        - title: flexible
+          text: Many managers are self-employed owners. They need to **check invoicing easily, from anywhere**.

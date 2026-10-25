@@ -1,0 +1,58 @@
+---
+/**
+ * Tab · the black label that sits in a corner of a panel, with the
+ * inverted (concave) corners that make it look cut out of the frame.
+ * Used for the menu, project labels and the name on the home page.
+ *
+ * <Tab corner="bottom-right">cut scenes</Tab>
+ */
+interface Props {
+  corner?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+  class?: string;
+  as?: 'div' | 'nav';
+  label?: string;
+}
+const { corner = 'bottom-right', class: cls = '', as: Tag = 'div', label } = Astro.props;
+
+const paths = {
+  'top-left': 'M0 0 H16 A16 16 0 0 0 0 16 Z',
+  'top-right': 'M16 0 H0 A16 16 0 0 1 16 16 Z',
+  'bottom-left': 'M0 0 A16 16 0 0 0 16 16 H0 Z',
+  'bottom-right': 'M16 0 V16 H0 A16 16 0 0 0 16 0 Z',
+};
+const d = paths[corner];
+---
+<Tag class:list={['tab', `tab--${corner}`, cls]} aria-label={label}>
+  <slot />
+  <svg class="tab__c tab__c--a" viewBox="0 0 16 16" aria-hidden="true"><path d={d} /></svg>
+  <svg class="tab__c tab__c--b" viewBox="0 0 16 16" aria-hidden="true"><path d={d} /></svg>
+</Tag>
+
+<style>
+  .tab {
+    position: absolute;
+    z-index: 3;
+    background: var(--ink);
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    gap: var(--s-5);
+  }
+  .tab__c { position: absolute; width: var(--tab-corner); height: var(--tab-corner); fill: var(--ink); }
+
+  .tab--top-left { top: 0; left: 0; border-bottom-right-radius: var(--r-lg); padding: var(--s-3) var(--s-5) var(--s-3) var(--s-4); }
+  .tab--top-left .tab__c--a { top: 0; right: calc(var(--tab-corner) * -1); }
+  .tab--top-left .tab__c--b { left: 0; bottom: calc(var(--tab-corner) * -1); }
+
+  .tab--top-right { top: 0; right: 0; border-bottom-left-radius: var(--r-lg); padding: var(--s-2) var(--s-4) var(--s-2) var(--s-4); }
+  .tab--top-right .tab__c--a { top: 0; left: calc(var(--tab-corner) * -1); }
+  .tab--top-right .tab__c--b { right: 0; bottom: calc(var(--tab-corner) * -1); }
+
+  .tab--bottom-left { bottom: 0; left: 0; border-top-right-radius: var(--r-lg); padding: var(--s-2) var(--s-4) var(--s-2) var(--s-3); }
+  .tab--bottom-left .tab__c--a { left: 0; top: calc(var(--tab-corner) * -1); }
+  .tab--bottom-left .tab__c--b { bottom: 0; right: calc(var(--tab-corner) * -1); }
+
+  .tab--bottom-right { bottom: 0; right: 0; border-top-left-radius: var(--r-lg); padding: var(--s-2) var(--s-4) var(--s-2) var(--s-4); }
+  .tab--bottom-right .tab__c--a { right: 0; top: calc(var(--tab-corner) * -1); }
+  .tab--bottom-right .tab__c--b { bottom: 0; left: calc(var(--tab-corner) * -1); }
+</style>

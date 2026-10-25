@@ -1,0 +1,25 @@
+{
+  "name": "alida-portfolio",
+  "version": "1.0.0",
+  "description": "Portfolio of Álida Díaz de Freijo",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "build:static": "PREVIEW=1 astro build && node scripts/relativize.mjs"
+  },
+  "dependencies": {
+    "@astrojs/react": "^7.1.0",
+    "@astrojs/vercel": "^11.0.16",
+    "@fontsource/caveat": "^5.3.0",
+    "@fontsource/dm-mono": "^5.3.0",
+    "@fontsource/space-grotesk": "^5.3.0",
+    "@keystatic/astro": "^6.0.0",
+    "@keystatic/core": "^0.6.9",
+    "astro": "^7.4.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "type": "module",
+  "private": true
+}

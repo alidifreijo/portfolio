@@ -1,0 +1,65 @@
+---
+/**
+ * Base layout · every page uses it. Handles <head>, fonts, the menu,
+ * and the scroll-reveal motion.
+ */
+import '../styles/base.css';
+import Nav from '../components/Nav.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  nav?: boolean;
+}
+const {
+  title,
+  description = 'Álida Díaz de Freijo, senior product designer in Barcelona. Complex things, made to feel simple.',
+  image = '/images/brand/og.png',
+  nav = true,
+} = Astro.props;
+const fullTitle = title ? `${title} · álida díaz de freijo` : 'álida díaz de freijo · product designer';
+---
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#070707" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin />
+    <script is:inline>document.documentElement.classList.remove('no-js');</script>
+  </head>
+  <body>
+    {nav && <Nav />}
+    <main class="frame">
+      <slot />
+    </main>
+    <script>
+      // Reveal on scroll · one observer for the whole site.
+      const els = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }),
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
+        );
+        els.forEach((el) => io.observe(el));
+      } else {
+        els.forEach((el) => el.classList.add('is-in'));
+      }
+      // Pause videos that are off screen, play them when visible.
+      const vids = document.querySelectorAll<HTMLVideoElement>('video[data-autoplay]');
+      const vo = new IntersectionObserver((entries) => entries.forEach((e) => {
+        const v = e.target as HTMLVideoElement;
+        if (e.isIntersecting) v.play().catch(() => {}); else v.pause();
+      }), { threshold: 0.15 });
+      vids.forEach((v) => vo.observe(v));
+    </script>
+  </body>
+</html>

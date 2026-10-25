@@ -1,0 +1,62 @@
+{
+ "cols": 20,
+ "rows": 10,
+ "words": [
+  {
+   "number": 1,
+   "word": "ITERATION",
+   "direction": "down",
+   "x": 9,
+   "y": 0
+  },
+  {
+   "number": 2,
+   "word": "COFFEE",
+   "direction": "down",
+   "x": 1,
+   "y": 1
+  },
+  {
+   "number": 3,
+   "word": "RESEARCH",
+   "direction": "down",
+   "x": 13,
+   "y": 1
+  },
+  {
+   "number": 4,
+   "word": "EMPATHY",
+   "direction": "across",
+   "x": 13,
+   "y": 2
+  },
+  {
+   "number": 5,
+   "word": "DRIVE",
+   "direction": "down",
+   "x": 3,
+   "y": 3
+  },
+  {
+   "number": 6,
+   "word": "CURIOUS",
+   "direction": "across",
+   "x": 7,
+   "y": 3
+  },
+  {
+   "number": 7,
+   "word": "DESIGNSYSTEM",
+   "direction": "across",
+   "x": 0,
+   "y": 5
+  },
+  {
+   "number": 8,
+   "word": "SPARK",
+   "direction": "down",
+   "x": 6,
+   "y": 5
+  }
+ ]
+}

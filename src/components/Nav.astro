@@ -1,0 +1,58 @@
+---
+/**
+ * Nav · the main menu, fixed in the top-left corner of the frame.
+ * Each link rolls up on hover to reveal an italic copy of itself.
+ */
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+const links = [
+  { href: '/about', label: 'about' },
+  { href: '/work', label: 'work' },
+  { href: '/contact', label: 'contact' },
+];
+const isCurrent = (href: string) => path === href || path.startsWith(href + '/');
+---
+<nav class="nav" aria-label="Main">
+  <div class="nav__tab">
+    <a href="/" class="nav__logo" aria-label="Home">á</a>
+    <ul>
+      {links.map((l) => (
+        <li>
+          <a href={l.href} class="nav__link" aria-current={isCurrent(l.href) ? 'page' : undefined}>
+            <span class="nav__roll" aria-hidden="true"><span>{l.label}</span><span class="i">{l.label}</span></span>
+            <span class="sr-only">{l.label}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <svg class="nav__c nav__c--r" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 0 H16 A16 16 0 0 0 0 16 Z" /></svg>
+    <svg class="nav__c nav__c--b" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 0 H16 A16 16 0 0 0 0 16 Z" /></svg>
+  </div>
+</nav>
+
+<style>
+  .nav { position: fixed; top: var(--frame); left: var(--frame); z-index: 50; }
+  .nav__tab {
+    position: relative;
+    display: flex; align-items: center; gap: var(--s-6);
+    background: var(--ink); color: var(--paper);
+    padding: var(--s-3) var(--s-5) var(--s-3) var(--s-4);
+    border-bottom-right-radius: var(--r-lg);
+  }
+  .nav__c { position: absolute; width: var(--tab-corner); height: var(--tab-corner); fill: var(--ink); }
+  .nav__c--r { top: 0; right: calc(var(--tab-corner) * -1); }
+  .nav__c--b { left: 0; bottom: calc(var(--tab-corner) * -1); }
+  .nav__logo { font-family: var(--font-display); font-weight: 500; font-size: 26px; line-height: 1; margin-top: -4px; }
+  ul { display: flex; gap: var(--s-5); list-style: none; margin: 0; padding: 0; }
+  .nav__link { font-family: var(--font-display); font-size: var(--fs-label); line-height: 1.2; display: block; position: relative; }
+  .nav__roll { display: block; height: 1.2em; overflow: hidden; }
+  .nav__roll span { display: block; transition: transform var(--dur-base) var(--ease-out); }
+  .nav__roll .i { font-style: italic; }
+  .nav__link:hover .nav__roll span { transform: translateY(-100%); }
+  .nav__link[aria-current='page']::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -4px; height: 1.5px; background: currentColor; border-radius: 2px;
+  }
+  @media (max-width: 520px) {
+    .nav__tab { gap: var(--s-4); padding: var(--s-3) var(--s-4); }
+    ul { gap: var(--s-4); }
+  }
+</style>

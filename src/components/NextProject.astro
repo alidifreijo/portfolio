@@ -1,0 +1,31 @@
+---
+/** NextProject · teaser for the following project, at the end of each page. */
+import Tab from './Tab.astro';
+interface Props { href: string; title: string; line: string; image: string; accent?: string }
+const { href, title, line, image, accent = 'copper' } = Astro.props;
+---
+<a href={href} class="next" data-reveal style={`--acc: var(--acc-${accent})`}>
+  <div class="next__text">
+    <span class="next__tag t-small">Next</span>
+    <div class="next__body">
+      <p class="t-body">{line}</p>
+      <span class="next__cta t-body">View project</span>
+    </div>
+  </div>
+  <div class="next__img lift">
+    <img src={image} alt="" loading="lazy" />
+    <Tab corner="top-right"><span class="t-body">{title}</span></Tab>
+  </div>
+</a>
+
+<style>
+  .next { display: flex; gap: var(--s-2); align-items: stretch; padding-top: var(--s-6); color: var(--paper); }
+  .next__text { flex: 1 1 0; display: flex; flex-direction: column; justify-content: space-between; gap: var(--s-7); padding: var(--s-1) var(--s-1) var(--s-1) var(--s-2); }
+  .next__tag { align-self: flex-start; background: var(--paper); color: var(--ink); border-radius: 6px; padding: 2px 8px; font-weight: 700; }
+  .next__body { display: flex; flex-direction: column; gap: var(--s-4); max-width: 260px; opacity: 0.9; }
+  .next__cta { text-decoration: underline; text-underline-offset: 3px; }
+  .next__img { flex: 1 1 0; position: relative; aspect-ratio: 4 / 5; border-radius: var(--r-lg); overflow: hidden; background: var(--acc); }
+  .next__img img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease-out); }
+  .next:hover .next__img img { transform: scale(1.03); }
+  .next:hover .next__cta { text-decoration-thickness: 2px; }
+</style>

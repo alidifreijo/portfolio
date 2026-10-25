@@ -1,0 +1,22 @@
+---
+/**
+ * Tag · small pill. Variants:
+ *  brand   pink pill with brand text (about, skills)
+ *  accent  uses the project accent (section pills)
+ *  outline thin border, inherits colour
+ *  ink     black pill
+ */
+interface Props { variant?: 'brand' | 'accent' | 'outline' | 'ink'; size?: 'sm' | 'md'; class?: string }
+const { variant = 'outline', size = 'md', class: cls = '' } = Astro.props;
+---
+<span class:list={['tag', `tag--${variant}`, `tag--${size}`, cls]}><slot /></span>
+
+<style>
+  .tag { display: inline-flex; align-items: center; border-radius: var(--r-pill); font-family: var(--font-body); font-weight: 700; white-space: nowrap; line-height: 1.2; }
+  .tag--md { font-size: var(--fs-small); padding: 6px var(--s-3); }
+  .tag--sm { font-size: 11px; padding: 3px 10px; font-weight: 500; }
+  .tag--brand { background: var(--brand); color: var(--brand-soft); }
+  .tag--accent { background: var(--acc, var(--brand-soft)); color: var(--on-acc, var(--ink)); }
+  .tag--outline { border: 1px solid currentColor; opacity: 0.85; font-weight: 500; }
+  .tag--ink { background: var(--ink); color: var(--paper); }
+</style>

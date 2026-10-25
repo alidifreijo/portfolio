@@ -1,0 +1,55 @@
+---
+/**
+ * Faces · the six self-portraits on the home page.
+ * Hover lifts a face; click or tap brings it to the front and it stays
+ * raised until another one is picked. Positions are % of the panel.
+ */
+const faces = [
+  // x / y: desktop position · mx / my: mobile position
+  { src: '/images/faces/bucket-hat.png', alt: 'Bucket hat', x: 40, y: 31, mx: 28, my: 20 },
+  { src: '/images/faces/messy-hair.png', alt: 'Messy hair', x: 60, y: 25, mx: 70, my: 16 },
+  { src: '/images/faces/cap.png', alt: 'Cap', x: 75, y: 49, mx: 76, my: 36 },
+  { src: '/images/faces/long-hair.png', alt: 'Long hair', x: 65, y: 73, mx: 70, my: 80 },
+  { src: '/images/faces/sprout.png', alt: 'Sprout', x: 42, y: 76, mx: 30, my: 84 },
+  { src: '/images/faces/bob.png', alt: 'Bob', x: 26, y: 57, mx: 24, my: 64 },
+];
+---
+<div class="faces" data-faces>
+  {faces.map((f, i) => (
+    <button class="face" style={`--x:${f.x}%;--y:${f.y}%;--mx:${f.mx}%;--my:${f.my}%;--d:${i * 0.7}s`} aria-label={`Vibe: ${f.alt}`}>
+      <img src={f.src} alt="" draggable="false" />
+    </button>
+  ))}
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-faces]').forEach((root) => {
+    let z = 10;
+    root.querySelectorAll<HTMLButtonElement>('.face').forEach((b) => {
+      b.addEventListener('click', () => {
+        root.querySelectorAll('.face.is-up').forEach((o) => o !== b && o.classList.remove('is-up'));
+        b.classList.toggle('is-up');
+        b.style.zIndex = String(++z);
+      });
+    });
+  });
+</script>
+
+<style>
+  .faces { position: absolute; inset: 0; }
+  .face {
+    all: unset; cursor: pointer; position: absolute; left: var(--x); top: var(--y);
+    width: clamp(84px, 9vw, 128px); aspect-ratio: 1; translate: -50% -50%;
+    transition: scale var(--dur-base) var(--ease-in-out), rotate var(--dur-base) var(--ease-in-out);
+    animation: float 6s var(--ease-in-out) var(--d) infinite alternate;
+  }
+  .face img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; mix-blend-mode: multiply; }
+  .face:hover { scale: 1.12; }
+  .face.is-up { scale: 1.3; rotate: -4deg; animation-play-state: paused; }
+  .face:focus-visible { outline: 2px solid var(--brand); outline-offset: 6px; border-radius: 50%; }
+  @keyframes float { from { transform: translateY(-4px); } to { transform: translateY(4px); } }
+  @media (prefers-reduced-motion: reduce) { .face { animation: none; } }
+  @media (max-width: 760px) {
+    .face { width: 84px; left: var(--mx); top: var(--my); }
+  }
+</style>
