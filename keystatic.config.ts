@@ -116,7 +116,7 @@ const blocks = fields.blocks(
     },
     videoCard: {
       label: 'Video card · flow or architecture',
-      schema: fields.object({ src: media('Video'), caption: fields.text({ label: 'Caption' }), pill: fields.text({ label: 'Pill' }) }),
+      schema: fields.object({ src: media('Video'), caption: fields.text({ label: 'Caption (leave empty for a story video that plays once, pill on the video)' }), pill: fields.text({ label: 'Pill' }) }),
     },
     timeline: {
       label: 'Timeline · build log',

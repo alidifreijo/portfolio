@@ -134,6 +134,14 @@ const { blocks = [] } = Astro.props;
       );
 
     case 'videoCard':
+      // No caption: a story video. It plays once when it scrolls into view and
+      // stops on its last frame; the pill sits on the video. Click to replay.
+      if (!v.caption) return (
+        <figure class="vstory" data-reveal>
+          <video src={v.src} poster={poster(v.src)} muted playsinline preload="auto" data-once title="Replay" aria-label={v.pill || undefined}></video>
+          {v.pill && <span class="vstory__pill t-small">{v.pill}</span>}
+        </figure>
+      );
       return (
         <div class="vcard" data-reveal>
           <Media src={v.src} alt={v.caption} ratio="16/10" bg="#0c0c0c" />
@@ -219,6 +227,9 @@ const { blocks = [] } = Astro.props;
   .coll__item:hover img { transform: scale(1.04); filter: brightness(0.8); }
   .coll__item:hover .coll__line { opacity: 1; transform: none; }
 
+  .vstory { position: relative; margin: 0; aspect-ratio: 16 / 10; border-radius: var(--r-md); overflow: hidden; background: #0c0c0c; }
+  .vstory video { width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer; }
+  .vstory__pill { position: absolute; top: var(--s-3); right: var(--s-3); background: var(--acc); color: var(--on-acc); border-radius: var(--r-pill); padding: 4px 12px; font-weight: 700; white-space: nowrap; pointer-events: none; }
   .vcard { background: var(--surface); color: var(--paper); border-radius: var(--r-sm); padding: var(--s-2) var(--s-2) var(--s-4); display: flex; flex-direction: column; gap: var(--s-3); }
   .vcard :global(.media) { border-radius: var(--r-btn); }
   .vcard__cap { display: flex; justify-content: space-between; align-items: center; gap: var(--s-3); padding: 0 var(--s-2); }

@@ -66,6 +66,18 @@ const fullTitle = title ? `${title} · álida díaz de freijo` : 'álida díaz d
         if (e.isIntersecting) v.play().catch(() => {}); else v.pause();
       }), { threshold: 0.15 });
       vids.forEach((v) => vo.observe(v));
+      // Story videos play once when they come into view and freeze on the last
+      // frame. Scroll past before the end and they start over next time.
+      const once = document.querySelectorAll<HTMLVideoElement>('video[data-once]');
+      const oo = new IntersectionObserver((entries) => entries.forEach((e) => {
+        const v = e.target as HTMLVideoElement;
+        if (e.isIntersecting) { if (!v.ended) v.play().catch(() => {}); }
+        else if (!v.ended) { v.pause(); v.currentTime = 0; }
+      }), { threshold: 0.5 });
+      once.forEach((v) => {
+        oo.observe(v);
+        v.addEventListener('click', () => { v.currentTime = 0; v.play().catch(() => {}); });
+      });
     </script>
   </body>
 </html>

@@ -31,7 +31,6 @@ blocks:
 - discriminant: videoCard
   value:
     src: /images/f/fintech/archetype.mp4
-    caption: '83% of customers are micro-enterprises: up to 10 employees and 2 million euros a year. Two roles meet in every payroll.'
     pill: User archetype
 - discriminant: split
   value:
@@ -72,5 +71,4 @@ blocks:
 - discriminant: videoCard
   value:
     src: /images/f/fintech/kit.mp4
-    caption: 'One kit, every flow: four colours, money-first type and nine components.'
     pill: Brand & components

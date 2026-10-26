@@ -9,7 +9,7 @@ intro: '**Monexa** is a banking platform used by both clients and bank employees
 teaser: Monexa is a banking platform for clients and employees
 cover: /images/f/work/cover-bank.jpg
 hero: /images/f/bank/hero.mp4
-heroStyle: cover
+heroStyle: contain
 heroBg: '#E7E7E7'
 heroLabel: bank platform
 nextLabel: bank platform
@@ -31,12 +31,10 @@ blocks:
 - discriminant: videoCard
   value:
     src: /images/f/bank/brand.mp4
-    caption: 'MON for money, EXA for precision. Deep navy for trust, lime for action.'
     pill: Brand
 - discriminant: videoCard
   value:
     src: /images/f/bank/daynight.mp4
-    caption: 'Day and night from one set of variables: the same screen switches theme without touching a component.'
     pill: Day & night
 - discriminant: split
   value:
@@ -57,10 +55,8 @@ blocks:
 - discriminant: videoCard
   value:
     src: /images/f/bank/ia.mp4
-    caption: 'One home for two audiences, built section by section from the wireframes.'
     pill: Information architecture
 - discriminant: videoCard
   value:
     src: /images/f/bank/academia-flow.mp4
-    caption: 'Acadexa: short lessons in stories format, each one ending in a real action.'
     pill: Client flow
