@@ -5,11 +5,11 @@ order: 3
 accent: lime
 display: '**bank** platform'
 lead: A banking platform used by both clients and bank employees.
-intro: '**Monexa** is a banking platform used by both clients and bank employees. I designed the account platform and the **design system behind it**, from token architecture to light and dark modes, so one product could serve two very different audiences. The story below goes from the brief to the system: who it is for, how it is organised, how a client moves through it, and the identity that holds it together.'
+intro: '**Monexa** is a bank in two surfaces. **Acadexa**, on mobile, teaches clients to manage their money and turns each lesson into an action. On the web, **Exa**, the pink assistant, guides a client through anything that gets stuck, and a **manager view** shows the bank assistant what the client never sees. I designed both, and the system that keeps them one product.'
 teaser: Monexa is a banking platform for clients and employees
 cover: /images/f/work/cover-bank.jpg
 hero: /images/f/bank/hero.mp4
-heroStyle: contain
+heroStyle: cover
 heroBg: '#E7E7E7'
 heroLabel: bank platform
 nextLabel: bank platform
@@ -24,36 +24,35 @@ meta:
   value: UX/UI
 links: []
 blocks:
-- discriminant: image
+- discriminant: split
   value:
     src: /images/f/bank/phone-hand.jpg
     alt: Monexa on a phone
-    pill: 01 · The product
-- discriminant: split
-  value:
-    src: /images/f/bank/desk.jpg
-    alt: Monexa on a laptop at a desk
     imageWidth: 44
     height: 560
     label: ''
-    tag: 02 · Requirements
+    tag: 01 · Two surfaces
     style: spaced
     items:
-    - title: clear
-      text: Clients and employees see the same data with different needs, so hierarchy does the heavy lifting.
-    - title: consistent
-      text: One token system across both experiences and both themes.
-    - title: scalable
-      text: Components built to grow with new products without redesigning from scratch.
-- discriminant: videoCard
-  value:
-    src: /images/f/bank/ia.mp4
-    pill: 03 · Architecture
+    - title: Acadexa · mobile
+      text: Financial education for clients, in short lessons that end in a real action on their money.
+    - title: Exa · web
+      text: The pink assistant. When a client gets stuck, Exa explains what is missing and takes them to the step that fixes it.
+    - title: Manager view · web
+      text: One switch. In lime, everything the bank assistant sees and the client does not.
 - discriminant: videoCard
   value:
     src: /images/f/bank/academia-flow.mp4
-    pill: 04 · Client flow
+    pill: 02 · Acadexa, learn then act
+- discriminant: videoCard
+  value:
+    src: /images/f/bank/exa.mp4
+    pill: 03 · Exa guides the client
+- discriminant: videoCard
+  value:
+    src: /images/f/bank/manager.mp4
+    pill: 04 · Manager view, in lime
 - discriminant: videoCard
   value:
     src: /images/f/bank/identity.mp4
-    pill: 05 · Identity, day & night
+    pill: 05 · One system, day & night

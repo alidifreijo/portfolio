@@ -117,7 +117,7 @@ const blocks = fields.blocks(
     },
     kit: {
       label: 'Live component kit',
-      schema: fields.object({ kit: fields.select({ label: 'Kit', options: [{ label: 'South', value: 'south' }], defaultValue: 'south' }) }),
+      schema: fields.object({ kit: fields.select({ label: 'Kit', options: [{ label: 'South', value: 'south' }], defaultValue: 'south' }), pill: fields.text({ label: 'Pill (optional label, top right)' }) }),
     },
     videoCard: {
       label: 'Video card · flow or architecture',

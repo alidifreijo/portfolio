@@ -139,7 +139,7 @@ const { blocks = [] } = Astro.props;
 
     case 'kit':
       // A live component kit (built in code, interactive). One per brand.
-      return <div data-reveal>{v.kit === 'south' && <KitSouth />}</div>;
+      return <div class="b-kit" data-reveal>{v.kit === 'south' && <KitSouth />}{v.pill && <span class="b-pill t-small">{v.pill}</span>}</div>;
 
     case 'videoCard':
       // No caption: a story video. It plays once when it scrolls into view and
@@ -198,6 +198,7 @@ const { blocks = [] } = Astro.props;
 
 <style>
   /* Case blocks */
+  .b-kit { position: relative; }
   .b-media { position: relative; margin: 0; border-radius: var(--r-sm); overflow: hidden; background: var(--surface); }
   .b-media img, .b-media video { width: 100%; height: auto; }
   .b-gallery { aspect-ratio: 554 / 618; }

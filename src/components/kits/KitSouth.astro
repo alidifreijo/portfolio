@@ -9,28 +9,7 @@
 import SouthMark from './SouthMark.astro';
 ---
 <div class="kit" data-kit="south">
-  <div class="kit__head">
-    <span class="kit__brand"><SouthMark size={22} /> South</span>
-    <span class="kit__hint t-small">07 · Components · try them</span>
-  </div>
-
   <div class="kit__grid">
-    <div class="kc" data-c="button">
-      <span class="kc__name">Primary button</span>
-      <button class="s-btn" type="button" data-btn>Next</button>
-      <span class="kc__props"><b>radius</b> 8 · <b>height</b> 48 · <b>fill</b> mint</span>
-    </div>
-
-    <div class="kc" data-c="chips">
-      <span class="kc__name">Quick actions</span>
-      <div class="s-chips">
-        <button class="s-chip" type="button" data-chip>+ Operate</button>
-        <button class="s-chip" type="button" data-chip>⇄ Send money</button>
-        <button class="s-chip" type="button" data-chip>▦ Calendar</button>
-      </div>
-      <span class="kc__props"><b>border</b> 1.5 moss-light · <b>pressed</b> mint 12%</span>
-    </div>
-
     <div class="kc" data-c="segmented">
       <span class="kc__name">Segmented control</span>
       <div class="s-seg" data-seg>
@@ -56,15 +35,6 @@ import SouthMark from './SouthMark.astro';
         <div class="s-grp__n"><button type="button" aria-label="Remove one" data-dec>−</button><b data-count>5</b><button type="button" aria-label="Add one" data-inc>+</button><small>Total people</small></div>
       </div>
       <span class="kc__props"><b>counter</b> tabular nums · <b>max</b> 10</span>
-    </div>
-
-    <div class="kc" data-c="date">
-      <span class="kc__name">Scheduled payment</span>
-      <button type="button" class="s-date" data-date>
-        <span class="s-date__d"><b data-day>27</b><span>April</span></span>
-        <span class="s-date__t"><b>Employee payroll</b><em>Employee Atelier group</em></span>
-      </button>
-      <span class="kc__props"><b>tap</b> next month · <b>divider</b> 1.5 moss-light</span>
     </div>
 
     <div class="kc" data-c="input">
@@ -97,15 +67,12 @@ import SouthMark from './SouthMark.astro';
 
 <style>
   .kit { --forest: #10382D; --moss: #1E5A46; --moss-l: #3F7A62; --mint: #A3FFA9; --mist: #E6F5EA; --dim: #8FB8A3; --card: #123F32;
-    background: #0C2C23; color: var(--mist); border-radius: var(--r-md); padding: var(--s-4); font-family: var(--font-ui); }
-  .kit__head { display: flex; justify-content: space-between; align-items: center; padding: 4px 6px 14px; }
-  .kit__brand { display: inline-flex; align-items: center; gap: 8px; color: var(--mint); font-size: 16px; }
-  .kit__hint { color: var(--dim); }
-  .kit__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    position: relative; color: var(--mist); font-family: var(--font-ui); }
+  .kit__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2); }
   .kc:last-child:nth-child(odd) { grid-column: 1 / -1; }
   @media (min-width: 1800px) { .kit__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .kc:last-child:nth-child(odd) { grid-column: auto; } }
-  .kc { position: relative; background: var(--card); border-radius: 12px; padding: 44px 14px 36px; box-sizing: border-box; min-width: 0; min-height: 150px; display: flex; align-items: center; justify-content: center; transition: background var(--dur-base); }
-  .kc:hover { background: #154838; }
+  .kc { position: relative; background: #0F362B; border-radius: var(--r-sm); padding: 46px 16px 38px; box-sizing: border-box; min-width: 0; min-height: 170px; display: flex; align-items: center; justify-content: center; transition: background var(--dur-base); }
+  .kc:hover { background: #134635; }
   .kc__name { position: absolute; left: 16px; top: 12px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
   .kc__props { position: absolute; left: 16px; right: 16px; bottom: 11px; font-family: var(--font-mono); font-size: 10px; color: var(--dim); opacity: 0; transform: translateY(4px); transition: opacity var(--dur-base), transform var(--dur-base) var(--ease-out); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .kc__props b { color: var(--mint); font-weight: 400; }
@@ -217,13 +184,29 @@ import SouthMark from './SouthMark.astro';
       // Tab bar.
       const tabs = kit.querySelector('[data-tabs]');
       tabs?.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => { tabs.querySelectorAll('button').forEach((x) => x.classList.remove('is-on')); b.classList.add('is-on'); }));
-      // Confirmation: the tick draws when the card scrolls in, and again on tap.
+      // Confirmation tick, on tap.
       const ok = kit.querySelector<HTMLElement>('[data-ok]');
-      if (ok) {
-        const replay = () => { ok.classList.remove('is-in'); void ok.offsetWidth; ok.classList.add('is-in'); };
-        ok.addEventListener('click', replay);
-        new IntersectionObserver((es, io) => es.forEach((e) => { if (e.isIntersecting) { replay(); io.disconnect(); } }), { threshold: 0.6 }).observe(ok);
-      }
+      const tick = () => { if (!ok) return; ok.classList.remove('is-in'); void ok.offsetWidth; ok.classList.add('is-in'); };
+      ok?.addEventListener('click', tick);
+      // Demo: when the kit scrolls in it plays itself once (thumb slides, an option
+      // is picked, people are added, a name is typed, a tab moves, the tick draws).
+      // Any click stops the demo and hands over.
+      const segBtns = seg ? [...seg.querySelectorAll('button')] : [];
+      const optBtns = opts ? [...opts.querySelectorAll('.s-opt')] : [];
+      const tabBtns = tabs ? [...tabs.querySelectorAll('button')] : [];
+      let stop = false; kit.addEventListener('pointerdown', () => { stop = true; }, { once: true });
+      const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+      const click = (el?: Element | null) => { if (!stop && el) (el as HTMLElement).click(); };
+      const type = async (text: string) => { if (!inp) return; inp.value = ''; for (const ch of text) { if (stop) return; inp.value += ch; inp.dispatchEvent(new Event('input')); await wait(55); } };
+      const demo = async () => {
+        await wait(500); click(segBtns[1]); await wait(600); click(segBtns[3]); await wait(700); click(segBtns[0]);
+        await wait(300); click(optBtns[1]); await wait(500); click(optBtns[0]);
+        await wait(200); step(1); await wait(260); step(1); await wait(260); step(-1);
+        await wait(300); await type('david@atelier.com');
+        await wait(300); click(tabBtns[1]); await wait(350); click(tabBtns[3]); await wait(350); click(tabBtns[0]);
+        await wait(200); if (!stop) tick();
+      };
+      new IntersectionObserver((es, io) => es.forEach((e) => { if (e.isIntersecting) { demo(); io.disconnect(); } }), { threshold: 0.5 }).observe(kit);
     });
   }
   initKit();

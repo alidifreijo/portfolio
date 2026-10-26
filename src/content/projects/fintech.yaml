@@ -73,8 +73,9 @@ blocks:
       alt: Calendar with the scheduled payments
 - discriminant: videoCard
   value:
-    src: /images/f/fintech/kit.mp4
-    pill: 06 · Brand
+    src: /images/f/fintech/identity.mp4
+    pill: 06 · Visual identity
 - discriminant: kit
   value:
     kit: south
+    pill: 07 · Components, live
