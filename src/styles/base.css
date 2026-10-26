@@ -80,8 +80,11 @@ strong, b { font-weight: 700; }
 @media (max-width: 809px) { .row { flex-direction: column; } }
 
 /* Page transitions (ClientRouter). The frame crossfades and rises a little; the nav stays. */
-::view-transition-old(root) { animation: 220ms var(--ease-out) both vt-out; }
-::view-transition-new(root) { animation: 360ms var(--ease-out) both vt-in; }
-@keyframes vt-out { to { opacity: 0; } }
-@keyframes vt-in { from { opacity: 0; transform: translateY(10px); } }
+/* Page changes, as in the Framer original: the page you leave sinks into the
+   black frame, the new one comes up from ~0.82 of its size, dark, and opens
+   to full size and full light. The nav has its own name, so it stays put. */
+::view-transition-old(root) { animation: 280ms cubic-bezier(0.4, 0, 1, 1) both fr-out; }
+::view-transition-new(root) { animation: 480ms cubic-bezier(0.22, 0.75, 0.25, 1) 160ms both fr-in; }
+@keyframes fr-out { to { opacity: 0; filter: brightness(0.3); } }
+@keyframes fr-in { from { opacity: 0.4; transform: scale(0.82); filter: brightness(0.25); } }
 @media (prefers-reduced-motion: reduce) { ::view-transition-old(root), ::view-transition-new(root) { animation: none; } }

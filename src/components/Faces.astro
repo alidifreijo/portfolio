@@ -51,6 +51,7 @@ const items = faces.map((f, i) => {
   {items.map((f) => (
     <a
       href={`/${(f as any).to}`}
+      data-id={f.id}
       data-paint={(f as any).paint}
       data-color={(f as any).paintColor}
       class="face"
@@ -197,19 +198,35 @@ const items = faces.map((f, i) => {
     if (root.dataset.ready) return; root.dataset.ready = '1';
     let z = 10;
     // the nod plays once, a moment after the page appears
-    [...root.querySelectorAll<HTMLElement>('.face')].forEach((f, i) => f.style.setProperty('--d', `${700 + i * 110}ms`));
-    // The nod: on arrival, every time the á is pressed, and again after a
-    // while without anyone touching the page.
+    [...root.querySelectorAll<HTMLElement>('.face')].forEach((f, i) => f.style.setProperty('--d', `${i * 90}ms`));
+    // pop-in order and timing measured on Framer (ms after the panel starts opening)
+    const POP: Record<string, number> = { 'messy-hair': 450, cap: 550, 'long-hair': 600, 'bucket-hat': 700, sprout: 850, bob: 1000 };
+    root.querySelectorAll<HTMLElement>('.face').forEach((f) => f.style.setProperty('--pop', `${POP[f.dataset.id || ''] ?? 600}ms`));
+    // Entry, copied from the Framer original: the panel opens from half its
+    // size out of the dark, then the faces pop in one by one. Plays on the
+    // first visit and every time the á is pressed on the home page. After a
+    // while without anyone touching the page, the faces nod.
     let hintT = 0, idleT = 0;
+    const panel = root.closest<HTMLElement>('.home');
+    const enter = () => {
+      if (!panel || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      root.querySelectorAll('.face').forEach((f) => f.classList.remove('is-on'));
+      panel.classList.remove('is-entering'); void panel.offsetWidth; panel.classList.add('is-entering');
+      setTimeout(() => panel.classList.remove('is-entering'), 1900);
+    };
     const nod = () => {
       if (root.querySelector('.face.is-on, .face.is-drag')) return;
       root.classList.remove('is-hint'); void root.offsetWidth; root.classList.add('is-hint');
       clearTimeout(hintT); hintT = window.setTimeout(() => root.classList.remove('is-hint'), 2600);
     };
     const idle = () => { clearTimeout(idleT); idleT = window.setTimeout(() => { nod(); idle(); }, 12000); };
-    nod(); idle();
+    if (!(window as any).__entered) { (window as any).__entered = true; enter(); }
+    idle();
     root.addEventListener('pointerdown', () => { root.classList.remove('is-hint'); idle(); });
     root.addEventListener('pointermove', idle, { passive: true });
+    const logo = document.querySelector<HTMLAnchorElement>('.nav__logo');
+    logo?.addEventListener('click', (e) => { if (root.isConnected) { e.preventDefault(); enter(); idle(); } });
+
     // Mess up the faces and a "tidy up" appears; it sends them home and the
     // long-haired one has the last word.
     const tidyBtn = root.querySelector<HTMLButtonElement>('.faces__tidy')!;
@@ -242,8 +259,7 @@ const items = faces.map((f, i) => {
     };
     addEventListener('pointermove', onMove, { passive: true });
     document.documentElement.addEventListener('mouseleave', () => { px = py = -1; look(); });
-    const logo = document.querySelector<HTMLAnchorElement>('.nav__logo');
-    logo?.addEventListener('click', (e) => { if (root.isConnected) { e.preventDefault(); nod(); idle(); } });
+
     const faces = [...root.querySelectorAll<HTMLAnchorElement>('.face')];
     // keep the bubble on screen: predict where it lands after the hover
     // scale and nudge it back inside the panel if it would spill over
@@ -389,6 +405,12 @@ const items = faces.map((f, i) => {
   .faces.is-going .face.is-picked .bubble { visibility: hidden; }
   .faces.is-going .faces__tidy { opacity: 0; }
   :global(.home:has(.faces.is-going) .home__intro) { opacity: 0; transition: opacity 240ms var(--ease-out); }
+  /* entry (first visit and á): panel opens out of the dark, faces pop in */
+  :global(.home.is-entering) { animation: panel-in 620ms cubic-bezier(0.3, 0, 0.2, 1) both; }
+  @keyframes panel-in { from { transform: scale(0.5); filter: brightness(0.08); } }
+  :global(.home.is-entering) .face__img { animation: face-pop 700ms var(--spring-face) var(--pop, 600ms) both; }
+  @keyframes face-pop { from { scale: 0.75; opacity: 0; } 30% { opacity: 1; } to { scale: 1; opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { :global(.home.is-entering), :global(.home.is-entering) .face__img { animation: none; } }
   .faces.is-tidy .face { transition: transform 1100ms linear(0, 0.069, 0.243, 0.468, 0.702, 0.912, 1.076, 1.185, 1.24, 1.248, 1.221, 1.173, 1.115, 1.057, 1.008, 0.971, 0.948, 0.938, 0.939, 0.948, 0.961, 0.976, 0.99, 1.001, 1.009, 1.014, 1.016, 1.015, 1.012, 1.009, 1.005, 1.002, 0.999, 0.997, 0.996, 0.996, 0.997, 0.997, 0.998, 0.999, 1); }
 
   /* Bubble: appears instantly, at its own size, light shape under the dark one. */
