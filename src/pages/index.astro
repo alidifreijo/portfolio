@@ -9,9 +9,9 @@ const home = (await getEntry('pages', 'home'))!.data;
   <section class="home">
     <Faces />
     <div class="home__intro">
-      <h1 class="home__title">{home.title}</h1>
+      <h1 class="home__title"><strong>{home.lead}</strong> {home.title}</h1>
       <p class="home__role">{home.role}</p>
-      <p class="home__line"><strong>{home.lead}</strong> {home.line} <span class="only-fine">{home.sub}</span><span class="only-touch">{home.subTouch}</span></p>
+      <p class="home__line">{home.sub}</p>
     </div>
     <Tab corner="bottom-left"><span class="t-body">{home.name}</span></Tab>
   </section>
@@ -29,16 +29,16 @@ const home = (await getEntry('pages', 'home'))!.data;
     width: min(88%, 520px); text-align: center; pointer-events: none;
     display: flex; flex-direction: column; align-items: center; gap: 10px;
   }
-  .home__title { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(22px, 1.9vw, 30px); line-height: 1.1; letter-spacing: -0.01em; }
+  .home__title { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(22px, 1.9vw, 30px); line-height: 1.1; letter-spacing: -0.01em; }
+  .home__title strong { font-weight: 700; }
   .home__role { margin: 0; font-family: var(--font-display); font-size: clamp(15px, 1.15vw, 18px); line-height: 1.3; }
   .home__line { margin: 6px 0 0; font-family: var(--font-display); font-size: var(--fs-small); line-height: 1.4; letter-spacing: 0.4px; color: var(--muted); max-width: 340px; }
-  .only-touch { display: none; }
-  @media (hover: none) { .only-fine { display: none; } .only-touch { display: inline; } }
   /* Phone: the faces take the middle, the intro sits underneath them. */
   @media (max-width: 809px) {
     .home__intro { top: auto; bottom: 64px; translate: -50% 0; width: min(86%, 320px); gap: 6px; }
     .home__title { font-size: 20px; }
-    .home__role { font-size: 14px; }
+    .home__title strong { font-weight: 700; }
+  .home__role { font-size: 14px; }
     .home__line { font-size: 11px; }
   }
 </style>

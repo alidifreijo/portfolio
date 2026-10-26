@@ -188,7 +188,7 @@ export default config({
       label: 'Home',
       path: 'src/content/pages/home',
       format: { data: 'yaml' },
-      schema: { name: fields.text({ label: 'Name tab' }), title: fields.text({ label: 'Title (who I am)' }), role: fields.text({ label: 'Role line' }), lead: fields.text({ label: 'Bold word' }), line: fields.text({ label: 'Line' }), sub: fields.text({ label: 'Hint (mouse)' }), subTouch: fields.text({ label: 'Hint (touch)' }) },
+      schema: { name: fields.text({ label: 'Name tab' }), lead: fields.text({ label: 'Bold word' }), title: fields.text({ label: 'Title' }), role: fields.text({ label: 'Role line' }), sub: fields.text({ label: 'Small line' }) },
     }),
     work: singleton({
       label: 'Work',
