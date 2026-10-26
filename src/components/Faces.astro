@@ -3,7 +3,7 @@
  * Faces · the six self-portraits on the home page.
  * Hover (or tap) a face: it fills with colour, grows with a spring and
  * says something about how I work in a hand-drawn bubble, exactly as in the
- * Framer original. Positions are % of the panel. Bubble drawings live in
+ * Framer original. Positions and hover geometry measured on it. Bubble drawings live in
  * src/data/bubbles.ts; the quote is here, **bold** works.
  */
 import { BUBBLES } from '../data/bubbles';
@@ -12,49 +12,54 @@ import { BUBBLES } from '../data/bubbles';
 const LINE = '';
 
 const faces = [
-  // x / y / w: desktop centre and width (% of the panel) · mx / my / mw: mobile · ar: proportions
-  { id: 'bucket-hat', alt: 'Bucket hat', x: 39.8, y: 31.6, w: 7.77, mx: 22.1, my: 39.0, mw: 30.05, ar: '110/137', o: '135% 139%', g: { W: 110.4, dark: [66.4, 120.6], light: [75.8, 113.6], text: [75.4, 133.6, 197] }, quote: '“**Creative mess,** but beautifully organized.”' },
-  { id: 'messy-hair', alt: 'Messy hair', x: 60.1, y: 25.7, w: 10.95, mx: 24.0, my: 64.8, mw: 30.6, ar: '155/157', g: { W: 154.9, dark: [91.9, 106.3], light: [106.9, 105.2], text: [118.9, 128.3, 154] }, quote: '“**Teamwork** is my coping mechanism.”' },
-  { id: 'cap', alt: 'Cap', x: 75.9, y: 48.9, w: 11.37, mx: 80.1, my: 39.6, mw: 32.24, ar: '161/164', g: { W: 160.9, dark: [96.9, 142.2], light: [101.6, 147.6], text: [108.9, 165.2, 138] }, quote: '“**Research** is my love language.”' },
-  { id: 'long-hair', alt: 'Long hair', x: 65.4, y: 72.6, w: 11.37, mx: 78.1, my: 73.0, mw: 32.24, ar: '161/164', g: { W: 160.9, dark: [-81, 152.3], light: [-77, 157.3], text: [-85, 174.3, 162] }, quote: '“**Chaos?** not on my watch.”' },
-  { id: 'sprout', alt: 'Sprout', x: 42.0, y: 77.2, w: 12.08, mx: 68.0, my: 60.0, mw: 34.97, ar: '171/174', g: { W: 170.9, dark: [93, 142.1], light: [110, 141.4], text: [111, 162.1, 173] }, quote: '“**Empathetic**, caffeinated, slightly existential.”' },
-  { id: 'bob', alt: 'Bob', x: 25.5, y: 56.4, w: 8.62, mx: 50.1, my: 29.5, mw: 21.58, ar: '122/124', g: { W: 121.9, dark: [-118, 137.3], light: [-117.6, 141.8], text: [-117, 160.3, 162] }, quote: '“I find peace in **naming layers.**”' },
+  // x / y / w: centre and width in % of the faces box, measured on the Framer original · mx / my / mw: mobile box · ar: proportions
+  { id: 'bucket-hat', alt: 'Bucket hat', x: 31.25, y: 14.62, w: 13.0, mx: 22, my: 34, mw: 30.0, ar: '110/137', g: {S: 1.18, o: '136% 138%', under: [84.75, -6.5, 84.59, 9.3, 162.7, 70.3], shape: [84.75, -14.4, 84.59, 15.2, 173.7, 50.8], text: [84.75, -6.8, 84.59, 26.3, 167.0, 28.5]}, quote: '“**Creative mess,** but beautifully organized.”' },
+  { id: 'messy-hair', alt: 'Messy hair', x: 65.11, y: 3.5, w: 18.2, mx: 24, my: 72, mw: 28.7, ar: '155/157', g: {S: 1.175, o: '50% 44%', under: [92.02, -40.1, 90.79, -42.6, 149.0, 80.0], shape: [92.02, -52.8, 90.79, -41.7, 164.3, 65.6], text: [92.02, -29.8, 90.79, -23.0, 131.1, 28.6]}, quote: '“**Teamwork** is my coping mechanism.”' },
+  { id: 'cap', alt: 'Cap', x: 91.41, y: 48.02, w: 18.82, mx: 80, my: 35, mw: 28.6, ar: '161/164', g: {S: 1.178, o: '50% 46%', under: [86.84, -41.3, 85.51, -3.4, 129.9, 60.3], shape: [86.84, -45.3, 85.51, -8.0, 137.5, 57.7], text: [86.84, -35.1, 85.51, 11.5, 117.1, 28.5]}, quote: '“**Research** is my love language.”' },
+  { id: 'long-hair', alt: 'Long hair', x: 73.92, y: 93.66, w: 18.82, mx: 78, my: 84, mw: 28.6, ar: '161/164', g: {S: 1.178, o: '50% 46%', under: [13.15, -74.3, 85.52, 4.7, 124.8, 56.9], shape: [13.15, -77.7, 85.52, 0.5, 137.5, 57.7], text: [13.15, -64.35, 85.52, 19.0, 104.0, 28.5]}, quote: '“**Chaos?** not on my watch.”' },
+  { id: 'sprout', alt: 'Sprout', x: 35.01, y: 102.07, w: 19.85, mx: 68, my: 63, mw: 28.6, ar: '171/174', g: {S: 1.197, o: '50% 83%', under: [86.88, -42.6, 85.36, -6.6, 147.0, 83.5], shape: [86.88, -56.8, 85.36, -6.0, 166.2, 70.2], text: [86.88, -41.8, 85.36, 10.7, 144.5, 42.1]}, quote: '“**Empathetic**, caffeinated, slightly existential.”' },
+  { id: 'bob', alt: 'Bob', x: 7.56, y: 62.7, w: 14.8, mx: 50, my: 21, mw: 28.6, ar: '122/124', g: {S: 1.234, o: '52% 21%', under: [-6.38, -75.6, 106.67, -12.1, 128.0, 60.8], shape: [-6.38, -75.8, 106.67, -15.8, 138.6, 55.1], text: [-6.38, -75.0, 106.67, 2.8, 131.3, 27.2]}, quote: '“I find peace in **naming layers.**”' },
 ];
 
 const bold = (s: string) => s.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
 
-// g: bubble geometry measured on the original at 1440px, in px relative to
-// the face's top-left corner (W = face width there). Converted to % of the
-// face width, so bubbles keep the same proportion at any size.
+// g: measured on the Framer original at 1440 and 1920px.
+//   S: hover scale · o: transform-origin of the hover.
+//   under / shape / text: [x% of the face, x px, y% of the face, y px, width px, height px],
+//   in the face's own (unscaled) box, so after the hover scale they land
+//   exactly where Framer puts them. Bubbles keep a fixed size (14px text).
 const items = faces.map((f, i) => {
   const b = BUBBLES[f.id];
-  const u = (px: number) => `${((px / f.g.W) * 100).toFixed(2)}cqw`;
+  const g = f.g as any;
+  const at = (v: number[]) => `left:calc(${v[0]}% + ${v[1]}px);top:calc(${v[2]}% + ${v[3]}px);width:${v[4]}px`;
   const pos = {
-    dark: `left:${u(f.g.dark[0])};top:${u(f.g.dark[1])};width:${u(b.shape.w)};height:${u(b.shape.h)}`,
-    light: `left:${u(f.g.light[0])};top:${u(f.g.light[1])};width:${u(b.under.w)};height:${u(b.under.h)}`,
-    text: `left:${u(f.g.text[0])};top:${u(f.g.text[1])};width:${u(f.g.text[2])};font-size:${u(14)}`,
+    light: `${at(g.under)};height:${g.under[5]}px`,
+    dark: `${at(g.shape)};height:${g.shape[5]}px`,
+    text: `${at([g.text[0], g.text[1] - 3, g.text[2], g.text[3], g.text[4] + 6])};font-size:${(14 / g.S).toFixed(2)}px;letter-spacing:${(0.7 / g.S).toFixed(3)}px`,
   };
   return { ...f, i, b, pos };
 });
 ---
 <div class="faces" data-faces>
+  <div class="faces__box">
   {items.map((f) => (
     <button
       class="face"
-      style={`--x:${f.x}%;--y:${f.y}%;--w:${f.w}%;--mx:${f.mx}%;--my:${f.my}%;--mw:${f.mw}%;--ar:${f.ar};--o:${(f as any).o || '50% 50%'};--ink:${f.b.ink};--light:${f.b.light}`}
+      style={`--x:${f.x}%;--y:${f.y}%;--w:${f.w}%;--mx:${f.mx}%;--my:${f.my}%;--mw:${f.mw}%;--ar:${f.ar};--o:${(f.g as any).o};--s:${(f.g as any).S};--ink:${f.b.ink};--light:${f.b.light}`}
       aria-label={`${f.alt}: ${f.quote.replace(/\*\*/g, '')}`}
     >
       <span class="face__img">
         <img class="face__line" src={`/images/faces/${LINE}${f.id}.png`} alt="" draggable="false" />
         <img class="face__color" src={`/images/faces/color/${f.id}.png`} alt="" draggable="false" loading="lazy" />
-      </span>
       <span class="bubble" aria-hidden="true">
         <svg class="bubble__under" style={f.pos.light} viewBox={`-2 -2 ${f.b.under.w} ${f.b.under.h}`}><path d={f.b.under.d} /></svg>
         <svg class="bubble__shape" style={f.pos.dark} viewBox={`-2 -2 ${f.b.shape.w} ${f.b.shape.h}`}><path d={f.b.shape.d} /></svg>
         <span class="bubble__text" style={f.pos.text} set:html={bold(f.quote)} />
       </span>
+      </span>
     </button>
   ))}
+  </div>
 </div>
 
 <script>
@@ -134,20 +139,23 @@ const items = faces.map((f, i) => {
 
 <style>
   .faces { position: absolute; inset: 0; }
+  /* Same box as in Framer: 60% of the panel (max 1200px), 1.866:1, centred. */
+  .faces__box { position: absolute; width: 60%; max-width: 1200px; aspect-ratio: 1.866; top: 50%; left: 51%; translate: -50% -50%; }
   .face {
-    all: unset; cursor: pointer; position: absolute; left: var(--x); top: var(--y);
+    all: unset; cursor: grab; position: absolute; left: var(--x); top: var(--y);
     width: var(--w); aspect-ratio: var(--ar); translate: -50% -50%;
     container-type: inline-size;
     transform: translate(var(--dx, 0px), var(--dy, 0px));
     touch-action: none; user-select: none; -webkit-user-select: none;
   }
   .face.is-drag { cursor: grabbing; }
-  /* Hover, as in the original: the face swaps to colour at once and grows
-     to ~1.18× with a slow spring (overshoot, settles in ~2s). */
+  /* Hover, measured on the Framer original: the face swaps to colour at once
+     and grows to 1.18× on a quick spring (about 25% overshoot of the move,
+     peak at ~0.22s, settled by ~0.8s). Leaving uses the same spring back. */
   .face__img {
     position: absolute; inset: 0; display: block;
     transform-origin: var(--o);
-    transition: scale 450ms cubic-bezier(0.25, 0.8, 0.3, 1);
+    transition: scale 1000ms linear(0, 0.069, 0.243, 0.468, 0.702, 0.912, 1.076, 1.185, 1.24, 1.248, 1.221, 1.173, 1.115, 1.057, 1.008, 0.971, 0.948, 0.938, 0.939, 0.948, 0.961, 0.976, 0.99, 1.001, 1.009, 1.014, 1.016, 1.015, 1.012, 1.009, 1.005, 1.002, 0.999, 0.997, 0.996, 0.996, 0.997, 0.997, 0.998, 0.999, 1);
   }
   .face__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
   .face__color { opacity: 0; }
@@ -164,8 +172,8 @@ const items = faces.map((f, i) => {
   .bubble__text :global(b) { font-weight: 700; }
 
   .face.is-on .face__img {
-    scale: 1.18;
-    transition: scale 2000ms linear(0, 0.23 12.5%, 0.66 25%, 1 37.5%, 1.17 50%, 1.18 62.5%, 1.12 75%, 1.05 87.5%, 1);
+    scale: var(--s);
+    transition: scale 1000ms linear(0, 0.069, 0.243, 0.468, 0.702, 0.912, 1.076, 1.185, 1.24, 1.248, 1.221, 1.173, 1.115, 1.057, 1.008, 0.971, 0.948, 0.938, 0.939, 0.948, 0.961, 0.976, 0.99, 1.001, 1.009, 1.014, 1.016, 1.015, 1.012, 1.009, 1.005, 1.002, 0.999, 0.997, 0.996, 0.996, 0.997, 0.997, 0.998, 0.999, 1);
   }
   .face.is-on .face__line { opacity: 0; }
   .face.is-on .face__color { opacity: 1; }
@@ -175,7 +183,8 @@ const items = faces.map((f, i) => {
   @media (prefers-reduced-motion: reduce) {
     .face__img, .face.is-on .face__img { transition: none; }
   }
-  @media (max-width: 809px) {
+  @media (max-width: 1199.98px) {
+    .faces__box { width: auto; max-width: none; left: 0; right: 0; aspect-ratio: 0.654; translate: 0 -50%; }
     .face { width: var(--mw); left: var(--mx); top: var(--my); }
   }
 </style>
