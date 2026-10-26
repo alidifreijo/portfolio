@@ -1,42 +1,44 @@
 ---
 /**
  * Faces · the six self-portraits on the home page.
- * Hover (or tap) a face: it fills with colour and says something about
- * how I work in a hand-drawn bubble. Clicking keeps it raised until another
- * one is picked. Positions are % of the panel. Bubbles live in
+ * Hover (or tap) a face: it fills with colour, grows with a spring and
+ * says something about how I work in a hand-drawn bubble, exactly as in the
+ * Framer original. Positions are % of the panel. Bubble drawings live in
  * src/data/bubbles.ts; the quote is here, **bold** works.
  */
 import { BUBBLES } from '../data/bubbles';
 
 const faces = [
   // x / y / w: desktop centre and width (% of the panel) · mx / my / mw: mobile · ar: proportions
-  { id: 'bucket-hat', alt: 'Bucket hat', x: 39.8, y: 31.6, w: 7.77, mx: 22.1, my: 39.0, mw: 30.05, ar: '110/137', quote: '“**Creative mess,** but beautifully organized.”' },
-  { id: 'messy-hair', alt: 'Messy hair', x: 60.1, y: 25.7, w: 10.95, mx: 24.0, my: 64.8, mw: 30.6, ar: '155/157', quote: '“**Teamwork** is my coping mechanism.”' },
-  { id: 'cap', alt: 'Cap', x: 75.9, y: 48.9, w: 11.37, mx: 80.1, my: 39.6, mw: 32.24, ar: '161/164', quote: '“**Research** is my love language.”' },
-  { id: 'long-hair', alt: 'Long hair', x: 65.4, y: 72.6, w: 11.37, mx: 78.1, my: 73.0, mw: 32.24, ar: '161/164', quote: '“**Chaos?** not on my watch.”' },
-  { id: 'sprout', alt: 'Sprout', x: 42.0, y: 77.2, w: 12.08, mx: 68.0, my: 60.0, mw: 34.97, ar: '171/174', quote: '“**Empathetic**, caffeinated, slightly existential.”' },
-  { id: 'bob', alt: 'Bob', x: 25.5, y: 56.4, w: 8.62, mx: 50.1, my: 29.5, mw: 21.58, ar: '122/124', quote: '“I find peace in **naming layers.**”' },
+  { id: 'bucket-hat', alt: 'Bucket hat', x: 39.8, y: 31.6, w: 7.77, mx: 22.1, my: 39.0, mw: 30.05, ar: '110/137', o: '135% 139%', g: { W: 110.4, dark: [66.4, 120.6], light: [75.8, 113.6], text: [75.4, 133.6, 197] }, quote: '“**Creative mess,** but beautifully organized.”' },
+  { id: 'messy-hair', alt: 'Messy hair', x: 60.1, y: 25.7, w: 10.95, mx: 24.0, my: 64.8, mw: 30.6, ar: '155/157', g: { W: 154.9, dark: [91.9, 106.3], light: [106.9, 105.2], text: [118.9, 128.3, 154] }, quote: '“**Teamwork** is my coping mechanism.”' },
+  { id: 'cap', alt: 'Cap', x: 75.9, y: 48.9, w: 11.37, mx: 80.1, my: 39.6, mw: 32.24, ar: '161/164', g: { W: 160.9, dark: [96.9, 142.2], light: [101.6, 147.6], text: [108.9, 165.2, 138] }, quote: '“**Research** is my love language.”' },
+  { id: 'long-hair', alt: 'Long hair', x: 65.4, y: 72.6, w: 11.37, mx: 78.1, my: 73.0, mw: 32.24, ar: '161/164', g: { W: 160.9, dark: [-81, 152.3], light: [-77, 157.3], text: [-85, 174.3, 162] }, quote: '“**Chaos?** not on my watch.”' },
+  { id: 'sprout', alt: 'Sprout', x: 42.0, y: 77.2, w: 12.08, mx: 68.0, my: 60.0, mw: 34.97, ar: '171/174', g: { W: 170.9, dark: [93, 142.1], light: [110, 141.4], text: [111, 162.1, 173] }, quote: '“**Empathetic**, caffeinated, slightly existential.”' },
+  { id: 'bob', alt: 'Bob', x: 25.5, y: 56.4, w: 8.62, mx: 50.1, my: 29.5, mw: 21.58, ar: '122/124', g: { W: 121.9, dark: [-118, 137.3], light: [-117.6, 141.8], text: [-117, 160.3, 162] }, quote: '“I find peace in **naming layers.**”' },
 ];
 
 const bold = (s: string) => s.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
 
+// g: bubble geometry measured on the original at 1440px, in px relative to
+// the face's top-left corner (W = face width there). Converted to % of the
+// face width, so bubbles keep the same proportion at any size.
 const items = faces.map((f, i) => {
   const b = BUBBLES[f.id];
-  // The bubble opens away from its tail on desktop, and towards the centre
-  // of the screen on mobile. If that fights the tail, the drawing is mirrored.
-  const openD = b.tail === 'left' ? 'right' : 'left';
-  const openM = f.mx > 50 ? 'left' : 'right';
-  const flip = (open: string) => ((open === 'left') === (b.tail === 'left') ? -1 : 1);
-  return { ...f, i, b, openD, openM, flipD: flip(openD), flipM: flip(openM) };
+  const u = (px: number) => `${((px / f.g.W) * 100).toFixed(2)}cqw`;
+  const pos = {
+    dark: `left:${u(f.g.dark[0])};top:${u(f.g.dark[1])};width:${u(b.shape.w)};height:${u(b.shape.h)}`,
+    light: `left:${u(f.g.light[0])};top:${u(f.g.light[1])};width:${u(b.under.w)};height:${u(b.under.h)}`,
+    text: `left:${u(f.g.text[0])};top:${u(f.g.text[1])};width:${u(f.g.text[2])};font-size:${u(14)}`,
+  };
+  return { ...f, i, b, pos };
 });
 ---
 <div class="faces" data-faces>
   {items.map((f) => (
     <button
       class="face"
-      style={`--x:${f.x}%;--y:${f.y}%;--w:${f.w}%;--mx:${f.mx}%;--my:${f.my}%;--mw:${f.mw}%;--ar:${f.ar};--d:${f.i * 0.7}s;--ink:${f.b.ink};--light:${f.b.light};--bw:${f.b.shape.w};--bh:${f.b.shape.h};--flip-d:${f.flipD};--flip-m:${f.flipM}`}
-      data-open-d={f.openD}
-      data-open-m={f.openM}
+      style={`--x:${f.x}%;--y:${f.y}%;--w:${f.w}%;--mx:${f.mx}%;--my:${f.my}%;--mw:${f.mw}%;--ar:${f.ar};--o:${(f as any).o || '50% 50%'};--ink:${f.b.ink};--light:${f.b.light}`}
       aria-label={`${f.alt}: ${f.quote.replace(/\*\*/g, '')}`}
     >
       <span class="face__img">
@@ -44,32 +46,32 @@ const items = faces.map((f, i) => {
         <img class="face__color" src={`/images/faces/color/${f.id}.png`} alt="" draggable="false" loading="lazy" />
       </span>
       <span class="bubble" aria-hidden="true">
-        <span class="bubble__art">
-          <svg class="bubble__under" viewBox={`-2 -2 ${f.b.under.w} ${f.b.under.h}`} preserveAspectRatio="none"><path d={f.b.under.d} /></svg>
-          <svg class="bubble__shape" viewBox={`-2 -2 ${f.b.shape.w} ${f.b.shape.h}`} preserveAspectRatio="none"><path d={f.b.shape.d} /></svg>
-        </span>
-        <span class="bubble__text"><span set:html={bold(f.quote)} /></span>
+        <svg class="bubble__under" style={f.pos.light} viewBox={`-2 -2 ${f.b.under.w} ${f.b.under.h}`}><path d={f.b.under.d} /></svg>
+        <svg class="bubble__shape" style={f.pos.dark} viewBox={`-2 -2 ${f.b.shape.w} ${f.b.shape.h}`}><path d={f.b.shape.d} /></svg>
+        <span class="bubble__text" style={f.pos.text} set:html={bold(f.quote)} />
       </span>
     </button>
   ))}
 </div>
 
 <script>
+  // Mouse: hover shows the bubble. Touch: tap toggles it (tap outside closes).
   document.querySelectorAll<HTMLElement>('[data-faces]').forEach((root) => {
     let z = 10;
-    const faces = root.querySelectorAll<HTMLButtonElement>('.face');
-    const raise = (b: HTMLElement) => { b.style.zIndex = String(++z); };
+    const faces = [...root.querySelectorAll<HTMLButtonElement>('.face')];
+    const on = (b: HTMLElement) => { faces.forEach((o) => o !== b && o.classList.remove('is-on')); b.classList.add('is-on'); b.style.zIndex = String(++z); };
     faces.forEach((b) => {
-      b.addEventListener('pointerenter', () => raise(b));
-      b.addEventListener('click', () => {
-        faces.forEach((o) => o !== b && o.classList.remove('is-up'));
-        b.classList.toggle('is-up');
-        raise(b);
+      b.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') on(b); });
+      b.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') b.classList.remove('is-on'); });
+      b.addEventListener('click', (e) => {
+        if ((e as PointerEvent).pointerType === 'mouse') return;
+        b.classList.contains('is-on') ? b.classList.remove('is-on') : on(b);
       });
+      b.addEventListener('focus', () => on(b));
+      b.addEventListener('blur', () => b.classList.remove('is-on'));
     });
-    // Tap outside closes the open bubble.
     document.addEventListener('click', (e) => {
-      if (!(e.target as HTMLElement).closest('.face')) faces.forEach((o) => o.classList.remove('is-up'));
+      if (!(e.target as HTMLElement).closest('.face')) faces.forEach((o) => o.classList.remove('is-on'));
     });
   });
 </script>
@@ -79,62 +81,42 @@ const items = faces.map((f, i) => {
   .face {
     all: unset; cursor: pointer; position: absolute; left: var(--x); top: var(--y);
     width: var(--w); aspect-ratio: var(--ar); translate: -50% -50%;
-    animation: float 6s var(--ease-in-out) var(--d) infinite alternate;
-    --open: var(--open-d); --flip: var(--flip-d);
+    container-type: inline-size;
   }
+  /* Hover, as in the original: the face swaps to colour at once and grows
+     to ~1.18× with a slow spring (overshoot, settles in ~2s). */
   .face__img {
     position: absolute; inset: 0; display: block;
-    transition: scale var(--dur-base) var(--ease-in-out), rotate var(--dur-base) var(--ease-in-out);
+    transform-origin: var(--o);
+    transition: scale 450ms cubic-bezier(0.25, 0.8, 0.3, 1);
   }
   .face__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
-  .face__line { transition: opacity var(--dur-fast) var(--ease-out); }
-  .face__color { opacity: 0; transition: opacity var(--dur-fast) var(--ease-out); }
+  .face__color { opacity: 0; }
 
-  /* The bubble: dark drawn shape with its tail, light shape peeking under it. */
-  .bubble {
-    position: absolute; top: 64%; width: calc(var(--bw) * 0.92px); aspect-ratio: var(--bw) / var(--bh);
-    pointer-events: none; opacity: 0; scale: 0.6; rotate: -6deg;
-    transform-origin: 0 0;
-    transition: opacity var(--dur-fast) var(--ease-out), scale var(--dur-base) var(--ease-out), rotate var(--dur-base) var(--ease-out);
-  }
-  .face[data-open-d='right'] .bubble { left: 52%; }
-  .face[data-open-d='left'] .bubble { right: 52%; transform-origin: 100% 0; rotate: 6deg; }
-  .bubble__art { position: absolute; inset: 0; scale: var(--flip) 1; }
-  .bubble__art svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-  .bubble__under { fill: var(--light); translate: 2% 10%; }
+  /* Bubble: appears instantly, at its own size, light shape under the dark one. */
+  .bubble { position: absolute; inset: 0; pointer-events: none; visibility: hidden; }
+  .bubble svg { position: absolute; overflow: visible; }
+  .bubble__under { fill: var(--light); }
   .bubble__shape { fill: var(--ink); }
   .bubble__text {
-    position: absolute; inset: 22% 11% 14% 11%; display: flex; align-items: center; justify-content: center;
-    text-align: center; color: var(--light); font: 400 13px/1.25 var(--font-display);
-    letter-spacing: 0.01em; text-wrap: balance;
+    position: absolute; text-align: center; color: var(--light);
+    font-family: var(--font-display); font-weight: 400; line-height: 1.2; letter-spacing: 0.05em;
   }
   .bubble__text :global(b) { font-weight: 700; }
 
-  @media (hover: hover) {
-    .face:hover .face__img { scale: 1.08; }
-    .face:hover .face__line { opacity: 0; }
-    .face:hover .face__color { opacity: 1; }
-    .face:hover .bubble { opacity: 1; scale: 1; rotate: 0deg; }
+  .face.is-on .face__img {
+    scale: 1.18;
+    transition: scale 2000ms linear(0, 0.23 12.5%, 0.66 25%, 1 37.5%, 1.17 50%, 1.18 62.5%, 1.12 75%, 1.05 87.5%, 1);
   }
-  .face.is-up .face__img { scale: 1.14; rotate: -3deg; }
-  .face.is-up .face__line { opacity: 0; }
-  .face.is-up .face__color { opacity: 1; }
-  .face.is-up .bubble { opacity: 1; scale: 1; rotate: 0deg; }
-  .face.is-up { animation-play-state: paused; }
+  .face.is-on .face__line { opacity: 0; }
+  .face.is-on .face__color { opacity: 1; }
+  .face.is-on .bubble { visibility: visible; }
   .face:focus-visible { outline: 2px solid var(--brand); outline-offset: 6px; border-radius: 50%; }
-  .face:focus-visible .face__color { opacity: 1; }
-  .face:focus-visible .bubble { opacity: 1; scale: 1; rotate: 0deg; }
 
-  @keyframes float { from { transform: translateY(-4px); } to { transform: translateY(4px); } }
   @media (prefers-reduced-motion: reduce) {
-    .face { animation: none; }
-    .bubble { transition: opacity var(--dur-fast) linear; scale: 1; rotate: 0deg; }
+    .face__img, .face.is-on .face__img { transition: none; }
   }
-  @media (max-width: 760px) {
-    .face { width: var(--mw); left: var(--mx); top: var(--my); --flip: var(--flip-m); }
-    .bubble { width: calc(var(--bw) * 0.78px); top: 74%; }
-    .bubble__text { font-size: 11.5px; }
-    .face[data-open-m='right'] .bubble { left: 40%; right: auto; transform-origin: 0 0; }
-    .face[data-open-m='left'] .bubble { right: 40%; left: auto; transform-origin: 100% 0; }
+  @media (max-width: 809px) {
+    .face { width: var(--mw); left: var(--mx); top: var(--my); }
   }
 </style>
