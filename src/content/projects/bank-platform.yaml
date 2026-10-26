@@ -32,6 +32,10 @@ blocks:
   value:
     src: /images/f/bank/palette.jpg
     alt: 'Colour palette: dark and light neutrals and brand colours'
+- discriminant: image
+  value:
+    src: /images/f/bank/mx-brand.jpg
+    alt: 'Monexa brand board: logo, colours and type'
 - discriminant: video
   value:
     src: /images/f/bank/screens.mp4
@@ -52,6 +56,21 @@ blocks:
       text: One token system across both experiences and both themes.
     - title: scalable
       text: Components built to grow with new products without redesigning from scratch.
+- discriminant: mediaPair
+  value:
+    ratio: 717/610
+    a:
+      src: /images/f/bank/mx-client-home.jpg
+      alt: Architecture of the client home, with the actions only a manager can use
+      caption: Client home · manager actions in blue
+    b:
+      src: /images/f/bank/mx-academia.jpg
+      alt: 'Academia: financial education that leads to practical actions'
+      caption: Academia · learn, then act
+- discriminant: image
+  value:
+    src: /images/f/bank/mx-wires.jpg
+    alt: Wireframes of the main screens
 - discriminant: video
   value:
     src: /images/f/bank/laptop.mp4
@@ -64,3 +83,11 @@ blocks:
   value:
     src: /images/f/bank/variables.mp4
     alt: Variables in Figma
+- discriminant: image
+  value:
+    src: /images/f/bank/mx-docs.jpg
+    alt: Component documentation with usage and states
+- discriminant: image
+  value:
+    src: /images/f/bank/mx-a11y.jpg
+    alt: Accessibility and contrast checks

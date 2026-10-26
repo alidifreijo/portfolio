@@ -32,10 +32,16 @@ blocks:
   value:
     src: /images/f/fintech/archetype.jpg
     alt: 'User archetype: 83% of the customers are micro-enterprises, with a maximum of 10 employees and 2 million euro annual turnover.'
-- discriminant: image
+- discriminant: phones
   value:
-    src: /images/f/fintech/screens.png
-    alt: South app screens
+    tint: '#103429'
+    screens:
+    - src: /images/f/fintech/s-home.jpg
+      alt: South home with the balance and upcoming payments
+    - src: /images/f/fintech/s-transfer-2.jpg
+      alt: Transfer, choosing the amount
+    - src: /images/f/fintech/s-transfer-3.jpg
+      alt: Transfer sent
 - discriminant: image
   value:
     src: /images/f/fintech/roles.jpg
@@ -56,3 +62,17 @@ blocks:
       text: A small company does not have specific employees for each function, many employees often have different responsibilities. This is why these processes have to be facilitated in order not to waste time.
     - title: flexible
       text: Many of the managers of these companies are the managers/self-employed themselves. That is why they need to be able to access and consult the company's invoicing easily and from anywhere.
+- discriminant: phones
+  value:
+    tint: '#A3FFA9'
+    screens:
+    - src: /images/f/fintech/s-payroll-1.jpg
+      alt: Payroll, choosing the type
+    - src: /images/f/fintech/s-payroll-2b.jpg
+      alt: Payroll, checking the employees
+    - src: /images/f/fintech/s-calendar.jpg
+      alt: Calendar with the scheduled payments
+- discriminant: image
+  value:
+    src: /images/f/fintech/screens.png
+    alt: South app screens
