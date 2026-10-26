@@ -23,6 +23,8 @@
 :root {
   /* ---------- Colour · core ---------- */
   --ink: #070707;          /* frame, main text */
+  --chrome: var(--ink);     /* frame, nav and tabs */
+  --on-chrome: #D4D1CB;     /* text on the frame */
   --paper: #D4D1CB;        /* cards, text on ink */
   --paper-2: #ECEAE5;      /* inner tiles */
   --paper-3: #E2DFD9;      /* hover on tiles */

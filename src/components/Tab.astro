@@ -32,15 +32,15 @@ const d = paths[corner];
   .tab {
     position: absolute;
     z-index: 3;
-    background: var(--ink);
-    color: var(--paper);
+    background: var(--chrome);
+    color: var(--on-chrome);
     display: flex;
     align-items: center;
     gap: var(--s-5);
     font-size: var(--fs-body); line-height: var(--lh-body); letter-spacing: var(--ls-tab);
   }
   .tab :global(.t-body) { font-size: var(--fs-body); line-height: var(--lh-body); letter-spacing: var(--ls-tab); }
-  .tab__c { position: absolute; width: var(--tab-corner); height: var(--tab-corner); fill: var(--ink); }
+  .tab__c { position: absolute; width: var(--tab-corner); height: var(--tab-corner); fill: var(--chrome); }
 
   .tab--top-left { top: 0; left: 0; border-bottom-right-radius: var(--r-tab); padding: 10px 16px; }
   .tab--top-left .tab__c--a { top: 0; right: calc(var(--tab-corner) * -1); }

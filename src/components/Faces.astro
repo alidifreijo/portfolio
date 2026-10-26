@@ -8,6 +8,9 @@
  */
 import { BUBBLES } from '../data/bubbles';
 
+// line drawings: '' = original black, 'taupe/' = lines in #A19887 (UI test)
+const LINE = '';
+
 const faces = [
   // x / y / w: desktop centre and width (% of the panel) · mx / my / mw: mobile · ar: proportions
   { id: 'bucket-hat', alt: 'Bucket hat', x: 39.8, y: 31.6, w: 7.77, mx: 22.1, my: 39.0, mw: 30.05, ar: '110/137', o: '135% 139%', g: { W: 110.4, dark: [66.4, 120.6], light: [75.8, 113.6], text: [75.4, 133.6, 197] }, quote: '“**Creative mess,** but beautifully organized.”' },
@@ -42,7 +45,7 @@ const items = faces.map((f, i) => {
       aria-label={`${f.alt}: ${f.quote.replace(/\*\*/g, '')}`}
     >
       <span class="face__img">
-        <img class="face__line" src={`/images/faces/${f.id}.png`} alt="" draggable="false" />
+        <img class="face__line" src={`/images/faces/${LINE}${f.id}.png`} alt="" draggable="false" />
         <img class="face__color" src={`/images/faces/color/${f.id}.png`} alt="" draggable="false" loading="lazy" />
       </span>
       <span class="bubble" aria-hidden="true">
