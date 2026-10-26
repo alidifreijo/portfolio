@@ -88,7 +88,8 @@
   --frame: 12px;          /* black border around everything */
   --tab-corner: 18px;     /* size of the inverted corners */
   --tab-h: 42px;          /* height of tabs and the menu */
-  --split: 850fr 554fr;   /* project + work: big panel / column */
+  --split: 850fr 554fr;   /* work index: big panel / column */
+  --split-case: minmax(0, 1fr) minmax(0, 1fr);   /* project pages: 50/50 */
 
   /* ---------- Motion ---------- */
   --dur-fast: 160ms;

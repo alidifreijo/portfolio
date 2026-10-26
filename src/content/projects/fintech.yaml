@@ -28,24 +28,11 @@ blocks:
   value:
     src: /images/f/fintech/cafe.jpg
     alt: Paying with a card next to the South app
-- discriminant: image
+- discriminant: videoCard
   value:
-    src: /images/f/fintech/archetype.jpg
-    alt: 'User archetype: 83% of the customers are micro-enterprises, with a maximum of 10 employees and 2 million euro annual turnover.'
-- discriminant: phones
-  value:
-    tint: '#103429'
-    screens:
-    - src: /images/f/fintech/s-home.jpg
-      alt: South home with the balance and upcoming payments
-    - src: /images/f/fintech/s-transfer-2.jpg
-      alt: Transfer, choosing the amount
-    - src: /images/f/fintech/s-transfer-3.jpg
-      alt: Transfer sent
-- discriminant: image
-  value:
-    src: /images/f/fintech/roles.jpg
-    alt: 'Responsible role (company director and/or internal accountant) and employee role, with their pains and gains.'
+    src: /images/f/fintech/archetype.mp4
+    caption: '83% of customers are micro-enterprises: up to 10 employees and 2 million euros a year. Two roles meet in every payroll.'
+    pill: User archetype
 - discriminant: split
   value:
     src: ''
@@ -64,6 +51,16 @@ blocks:
       text: Many of the managers of these companies are the managers/self-employed themselves. That is why they need to be able to access and consult the company's invoicing easily and from anywhere.
 - discriminant: phones
   value:
+    tint: '#103429'
+    screens:
+    - src: /images/f/fintech/s-home.jpg
+      alt: South home with the balance and upcoming payments
+    - src: /images/f/fintech/s-transfer-2.jpg
+      alt: Transfer, choosing the amount
+    - src: /images/f/fintech/s-transfer-3.jpg
+      alt: Transfer sent
+- discriminant: phones
+  value:
     tint: '#A3FFA9'
     screens:
     - src: /images/f/fintech/s-payroll-1.jpg
@@ -75,9 +72,5 @@ blocks:
 - discriminant: videoCard
   value:
     src: /images/f/fintech/kit.mp4
-    caption: 'One kit, every flow: four colours, money-first type and nine components that build transfers, payroll and the calendar.'
+    caption: 'One kit, every flow: four colours, money-first type and nine components.'
     pill: Brand & components
-- discriminant: image
-  value:
-    src: /images/f/fintech/screens.png
-    alt: South app screens

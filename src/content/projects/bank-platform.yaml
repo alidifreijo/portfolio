@@ -9,8 +9,8 @@ intro: '**Monexa** is a banking platform used by both clients and bank employees
 teaser: Monexa is a banking platform for clients and employees
 cover: /images/f/work/cover-bank.jpg
 hero: /images/f/bank/hero.mp4
-heroStyle: contain
-heroBg: '#EBEBEB'
+heroStyle: cover
+heroBg: '#E7E7E7'
 heroLabel: bank platform
 nextLabel: bank platform
 nextImage: /images/f/work/cover-bank.jpg
@@ -28,18 +28,16 @@ blocks:
   value:
     src: /images/f/bank/phone-hand.jpg
     alt: Monexa on a phone
-- discriminant: image
+- discriminant: videoCard
   value:
-    src: /images/f/bank/palette.jpg
-    alt: 'Colour palette: dark and light neutrals and brand colours'
-- discriminant: image
+    src: /images/f/bank/brand.mp4
+    caption: 'MON for money, EXA for precision. Deep navy for trust, lime for action.'
+    pill: Brand
+- discriminant: videoCard
   value:
-    src: /images/f/bank/mx-brand.jpg
-    alt: 'Monexa brand board: logo, colours and type'
-- discriminant: video
-  value:
-    src: /images/f/bank/screens.mp4
-    alt: Monexa screens
+    src: /images/f/bank/daynight.mp4
+    caption: 'Day and night from one set of variables: the same screen switches theme without touching a component.'
+    pill: Day & night
 - discriminant: split
   value:
     src: /images/f/bank/desk.jpg
@@ -59,22 +57,10 @@ blocks:
 - discriminant: videoCard
   value:
     src: /images/f/bank/ia.mp4
-    caption: 'One home for two audiences. Built section by section from the wireframes: the client reads, and in manager view the blue actions unlock.'
+    caption: 'One home for two audiences, built section by section from the wireframes.'
     pill: Information architecture
 - discriminant: videoCard
   value:
     src: /images/f/bank/academia-flow.mp4
-    caption: 'Acadexa, the learning space for clients. Knowledge pills in stories format, and every lesson ends in a real action, like creating a budget.'
+    caption: 'Acadexa: short lessons in stories format, each one ending in a real action.'
     pill: Client flow
-- discriminant: video
-  value:
-    src: /images/f/bank/laptop.mp4
-    alt: Monexa banking on a laptop
-- discriminant: image
-  value:
-    src: /images/f/bank/tokens.png
-    alt: 'Token architecture: alias, mode, core and values'
-- discriminant: video
-  value:
-    src: /images/f/bank/variables.mp4
-    alt: Variables in Figma
