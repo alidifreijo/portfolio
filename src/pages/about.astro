@@ -68,10 +68,8 @@ const a = (await getEntry('pages', 'about'))!.data;
 
     <section class="ab-card ab-card--pink" data-card data-jobs>
       <h2 class="ab-h1 ab-h1--exp" data-r>work<br />experience</h2>
-      <div class="ab-rail" aria-hidden="true"><i></i></div>
       {a.experience.map((e: any) => (
         <article class="ab-job" data-r data-company={e.company}>
-          <span class="ab-job__dot" aria-hidden="true"></span>
           <p class="ab-years">{e.years}</p>
           <h3 class="ab-t ab-role">{e.role}</h3>
           <p class="ab-place">{e.company}</p>
@@ -86,17 +84,28 @@ const a = (await getEntry('pages', 'about'))!.data;
 
 <script>
   function initAbout() {
-  // The ice cream follows the cursor (mouse only).
+  // The ice cream trails the cursor (mouse only), as in the Framer original:
+  // the real pointer stays visible and the tub hangs from its tip, catching
+  // up with a short lag.
   const ic = document.querySelector<HTMLElement>('[data-icecream]');
-  if (ic && matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    document.documentElement.classList.add('has-icecream');
-    addEventListener('pointermove', (e) => {
-      ic.style.transform = `translate(${e.clientX - 44}px, ${e.clientY - 4}px)`;
-      ic.classList.add('is-on');
-    }, { passive: true });
-    document.addEventListener('pointerleave', () => ic.classList.remove('is-on'));
+  if (ic && !ic.dataset.ready && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    ic.dataset.ready = '1';
+    let tx = -200, ty = -200, x = -200, y = -200, raf = 0;
+    const step = () => {
+      x += (tx - x) * 0.16; y += (ty - y) * 0.16;
+      ic.style.transform = `translate(${x - 44.5}px, ${y}px)`;
+      raf = Math.abs(tx - x) + Math.abs(ty - y) > 0.3 ? requestAnimationFrame(step) : 0;
+    };
+    const move = (e: PointerEvent) => {
+      if (!ic.isConnected) { removeEventListener('pointermove', move); return; }
+      if (e.pointerType !== 'mouse') return;
+      tx = e.clientX; ty = e.clientY;
+      if (!ic.classList.contains('is-on')) { x = tx; y = ty; ic.classList.add('is-on'); }
+      if (!raf) raf = requestAnimationFrame(step);
+    };
+    addEventListener('pointermove', move, { passive: true });
+    document.documentElement.addEventListener('mouseleave', () => ic.classList.remove('is-on'));
   }
-
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   // Each card scrolls on its own: things appear as they come into the card.
   document.querySelectorAll<HTMLElement>('[data-card]').forEach((card) => {
@@ -157,17 +166,6 @@ const a = (await getEntry('pages', 'about'))!.data;
       it.addEventListener('pointerleave', (e) => { if ((e as PointerEvent).pointerType === 'mouse') light(list.querySelector<HTMLElement>('.ab-skill.is-open')?.dataset.seen || ''); });
     });
   });
-  // The rail on the experience column fills as it scrolls.
-  if (jobsCard) {
-    const rail = jobsCard.querySelector<HTMLElement>('.ab-rail');
-    const upd = () => {
-      const max = jobsCard.scrollHeight - jobsCard.clientHeight;
-      rail?.style.setProperty('--p', String(max > 0 ? jobsCard.scrollTop / max : 1));
-      const mid = jobsCard.getBoundingClientRect().top + jobsCard.clientHeight * 0.55;
-      jobs.forEach((j) => j.classList.toggle('is-past', j.getBoundingClientRect().top < mid));
-    };
-    jobsCard.addEventListener('scroll', upd, { passive: true }); upd();
-  }
   }
   initAbout();
   document.addEventListener('astro:page-load', initAbout);
@@ -237,33 +235,26 @@ const a = (await getEntry('pages', 'about'))!.data;
   .ab-langs div { display: flex; justify-content: space-between; align-items: center; }
   .ab-level { display: inline-flex; align-items: center; height: 31px; padding: 0 13px; border-radius: var(--r-pill); border: 1.5px solid currentColor; font-size: var(--fs-small); font-weight: 700; letter-spacing: 0.4px; }
 
-  /* experience: a rail that fills as the column scrolls; lit jobs when a skill is open */
+  /* experience: when a skill is open (or hovered), its jobs stay lit, the rest step back */
   .ab-card--pink { position: relative; }
-  .ab-rail { position: absolute; left: 22px; top: 150px; bottom: 48px; width: 2px; background: color-mix(in srgb, var(--brand) 25%, transparent); border-radius: 2px; }
-  .ab-rail i { position: absolute; inset: 0; background: var(--brand); transform-origin: top; scale: 1 var(--p, 0); border-radius: 2px; }
   .ab-job { position: relative; padding: 24px 0 30px; border-bottom: 1px solid currentColor; transition: opacity 350ms var(--ease-out), translate 700ms var(--ease-spring); }
   .ab-job:last-child { border-bottom: 0; }
-  .ab-job__dot { position: absolute; left: -34px; top: 30px; width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--brand); background: var(--brand-soft); transition: background 300ms, scale 400ms var(--ease-spring); }
-  .ab-job.is-past .ab-job__dot { background: var(--brand); }
   .ab-card--pink.has-match .ab-job:not(.is-match) { opacity: 0.32; }
-  .ab-card--pink.has-match .ab-job.is-match .ab-job__dot { scale: 1.5; background: var(--brand); }
+  .ab-card--pink.has-match .ab-job.is-match { translate: 6px 0; }
   .ab-role { margin-top: 10px; letter-spacing: 0.48px; }
   .ab-text--exp { letter-spacing: 0.7px; }
-  .ab-card--pink { padding-left: 52px; }
 
   @media (prefers-reduced-motion: reduce) {
     [data-r], .ab-lead :global(.w) { opacity: 1; translate: none; filter: none; transition: none; }
   }
 
-  .icecream { position: fixed; left: 0; top: 0; width: 89px; z-index: 100; pointer-events: none; opacity: 0; transition: opacity var(--dur-fast); }
+  .icecream { position: fixed; left: 0; top: 0; width: 89px; height: 105px; object-fit: contain; z-index: 100; pointer-events: none; opacity: 0; transition: opacity var(--dur-fast); will-change: transform; }
   .icecream.is-on { opacity: 1; }
-  :global(html.has-icecream), :global(html.has-icecream *) { cursor: none !important; }
 
   @media (max-width: 1199px) {
     .about { grid-template-columns: 1fr; height: auto; min-height: 0; }
     .ab-left { aspect-ratio: 574 / 876; max-height: 90vh; width: 100%; max-width: 640px; margin: 0 auto; }
     .ab-card { overflow: visible; padding: 48px 28px 40px; }
-    .ab-card--pink { padding-left: 52px; }
     .ab-hint { display: none; }
   }
   @media (max-width: 809px) {
@@ -271,8 +262,5 @@ const a = (await getEntry('pages', 'about'))!.data;
     .ab-left__h { padding-top: 4px; }
     .ab-left__hob { bottom: 0; }
     .ab-card { padding: 48px 20px 40px; }
-    .ab-card--pink { padding-left: 46px; }
-    .ab-rail { left: 18px; }
-    .ab-job__dot { left: -32px; }
   }
 </style>
