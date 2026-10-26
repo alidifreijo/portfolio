@@ -10,8 +10,8 @@
  */
 import { BUBBLES } from '../data/bubbles';
 
-// line drawings: '' = original black, 'taupe/' = lines in #A19887 (UI test)
-const LINE = '';
+// Each drawing is split in two: the face with empty glasses (open/) and the
+// lenses alone (eyes/), so the lenses can follow the cursor.
 
 const faces = [
   // x / y / w: centre and width in % of the faces box, measured on the Framer original · mx / my / mw: mobile box · ar: proportions
@@ -54,8 +54,10 @@ const items = faces.map((f, i) => {
       draggable="false"
     >
       <span class="face__img">
-        <img class="face__line" src={`/images/faces/${LINE}${f.id}.png`} alt="" draggable="false" />
-        <img class="face__color" src={`/images/faces/color/${f.id}.png`} alt="" draggable="false" loading="lazy" />
+        <img class="face__line" src={`/images/faces/open/${f.id}.png`} alt="" draggable="false" />
+        <img class="face__line face__eyes" src={`/images/faces/eyes/${f.id}.png`} alt="" draggable="false" />
+        <img class="face__color" src={`/images/faces/color/open/${f.id}.png`} alt="" draggable="false" loading="lazy" />
+        <img class="face__color face__eyes" src={`/images/faces/color/eyes/${f.id}.png`} alt="" draggable="false" loading="lazy" />
       <span class="bubble" aria-hidden="true">
         <svg class="bubble__under" style={f.pos.light} viewBox={`-2 -2 ${f.b.under.w} ${f.b.under.h}`}><path d={f.b.under.d} /></svg>
         <svg class="bubble__shape" style={f.pos.dark} viewBox={`-2 -2 ${f.b.shape.w} ${f.b.shape.h}`}><path d={f.b.shape.d} /></svg>
@@ -66,6 +68,7 @@ const items = faces.map((f, i) => {
     </a>
   ))}
   </div>
+  <button class="faces__tidy" type="button">tidy up ↺</button>
 </div>
 
 <script>
@@ -91,6 +94,38 @@ const items = faces.map((f, i) => {
     nod(); idle();
     root.addEventListener('pointerdown', () => { root.classList.remove('is-hint'); idle(); });
     root.addEventListener('pointermove', idle, { passive: true });
+    // Mess up the faces and a "tidy up" appears; it sends them home and the
+    // long-haired one has the last word.
+    const tidyBtn = root.querySelector<HTMLButtonElement>('.faces__tidy')!;
+    function mess() {
+      const offs = faces.map((f) => (f as any)._off?.() || 0);
+      const messy = offs.filter((o) => o > 60).length >= 2 || offs.some((o) => o > 180);
+      root.classList.toggle('is-messy', messy);
+    }
+    tidyBtn.addEventListener('click', () => {
+      root.classList.remove('is-messy'); root.classList.add('is-tidy');
+      faces.forEach((f) => { f.classList.remove('is-on'); (f as any)._home?.(); });
+      const chaos = faces.find((f) => f.getAttribute('href')?.includes('/hmi')) || faces[3];
+      setTimeout(() => { root.classList.remove('is-tidy'); on(chaos); setTimeout(() => { if (!chaos.matches(':hover')) chaos.classList.remove('is-on'); }, 2600); }, 1000);
+    });
+    // Eyes: the lenses look at the cursor.
+    let er = 0, px = -1, py = -1;
+    const look = () => {
+      er = 0;
+      faces.forEach((f) => {
+        const r = f.getBoundingClientRect();
+        if (px < 0) { f.style.setProperty('--ex', '0'); f.style.setProperty('--ey', '0'); return; }
+        const vx = px - (r.left + r.width * 0.5), vy = py - (r.top + r.height * 0.55);
+        const d = Math.hypot(vx, vy) || 1, m = Math.min(1, d / 260);
+        f.style.setProperty('--ex', ((vx / d) * m).toFixed(3)); f.style.setProperty('--ey', ((vy / d) * m).toFixed(3));
+      });
+    };
+    const onMove = (e: PointerEvent) => {
+      if (!root.isConnected) { removeEventListener('pointermove', onMove); return; }
+      px = e.clientX; py = e.clientY; if (!er) er = requestAnimationFrame(look);
+    };
+    addEventListener('pointermove', onMove, { passive: true });
+    document.documentElement.addEventListener('mouseleave', () => { px = py = -1; look(); });
     const logo = document.querySelector<HTMLAnchorElement>('.nav__logo');
     logo?.addEventListener('click', (e) => { if (root.isConnected) { e.preventDefault(); nod(); idle(); } });
     const faces = [...root.querySelectorAll<HTMLAnchorElement>('.face')];
@@ -115,6 +150,8 @@ const items = faces.map((f, i) => {
       let dx = 0, dy = 0, sx = 0, sy = 0, ox = 0, oy = 0, moved = false, held = false, raf = 0;
       let vx = 0, vy = 0, lt = 0, lx = 0, ly = 0, kind = 'mouse', wasOn = false;
       const set = () => { b.style.setProperty('--dx', dx + 'px'); b.style.setProperty('--dy', dy + 'px'); };
+      (b as any)._off = () => Math.hypot(dx, dy);
+      (b as any)._home = () => { cancelAnimationFrame(raf); dx = 0; dy = 0; set(); };
       // keep the face's centre inside the panel
       const clamp = () => {
         const r = root.getBoundingClientRect(), f = b.getBoundingClientRect();
@@ -151,6 +188,7 @@ const items = faces.map((f, i) => {
           if (Math.hypot(px, py) > 0.3) raf = requestAnimationFrame(step);
         };
         step();
+        setTimeout(mess, 500);
         const over = document.elementFromPoint(e.clientX, e.clientY)?.closest('.face') === b;
         if (e.pointerType === 'mouse' && !over) b.classList.remove('is-on');
       };
@@ -210,6 +248,19 @@ const items = faces.map((f, i) => {
   }
   .face__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
   .face__color { opacity: 0; }
+  /* the lenses look towards the cursor, a few px inside the frames */
+  .face__img .face__eyes { translate: calc(var(--ex, 0) * 1.7cqw) calc(var(--ey, 0) * 1.1cqw); transition: translate 160ms ease-out; }
+  .faces__tidy {
+    all: unset; position: absolute; right: 18px; bottom: 18px; z-index: 3; pointer-events: auto; cursor: pointer;
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.02em; color: var(--paper); background: var(--ink);
+    padding: 8px 14px; border-radius: 999px; opacity: 0; translate: 0 8px; visibility: hidden;
+    transition: opacity 240ms var(--ease-out), translate 240ms var(--ease-out), visibility 0s 240ms;
+  }
+  .faces.is-messy .faces__tidy { opacity: 1; translate: 0 0; visibility: visible; transition-delay: 0s; }
+  .faces__tidy:hover { background: #2a2a2a; }
+  .faces__tidy:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+  /* tidy up: everyone goes home on the same spring as the hover */
+  .faces.is-tidy .face { transition: transform 1100ms linear(0, 0.069, 0.243, 0.468, 0.702, 0.912, 1.076, 1.185, 1.24, 1.248, 1.221, 1.173, 1.115, 1.057, 1.008, 0.971, 0.948, 0.938, 0.939, 0.948, 0.961, 0.976, 0.99, 1.001, 1.009, 1.014, 1.016, 1.015, 1.012, 1.009, 1.005, 1.002, 0.999, 0.997, 0.996, 0.996, 0.997, 0.997, 0.998, 0.999, 1); }
 
   /* Bubble: appears instantly, at its own size, light shape under the dark one. */
   .bubble { position: absolute; inset: 0; pointer-events: none; visibility: hidden; }
