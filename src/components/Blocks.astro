@@ -211,6 +211,7 @@ const { blocks = [] } = Astro.props;
   :global(.b-items--spaced) .b-items__list { gap: 18px; margin-top: calc(var(--s-4) * -1); }
   :global(.b-items--spaced) .b-items__list p { margin-top: 18px; max-width: 188px; }
   .b-split--solo :global(.b-items--spaced) .b-items__list p { max-width: 46ch; }
+  .b-split:not(.b-split--solo) :global(.b-items--spaced) .b-items__list p { max-width: none; }
 
   /* Exploration blocks */
   .lead { font-family: var(--font-display); font-weight: 500; font-size: 22px; line-height: 1.3; letter-spacing: -0.01em; }

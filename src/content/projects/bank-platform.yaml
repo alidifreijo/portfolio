@@ -24,35 +24,28 @@ meta:
   value: UX/UI
 links: []
 blocks:
-- discriminant: split
+- discriminant: image
   value:
     src: /images/f/bank/phone-hand.jpg
     alt: Monexa on a phone
-    imageWidth: 44
-    height: 560
-    label: ''
-    tag: 01 · Two surfaces
-    style: spaced
-    items:
-    - title: Acadexa · mobile
-      text: Financial education for clients, in short lessons that end in a real action on their money.
-    - title: Exa · web
-      text: The pink assistant. When a client gets stuck, Exa explains what is missing and takes them to the step that fixes it.
-    - title: Manager view · web
-      text: One switch. In lime, everything the bank assistant sees and the client does not.
+    pill: 01 · The product
 - discriminant: videoCard
   value:
     src: /images/f/bank/academia-flow.mp4
     pill: 02 · Acadexa, learn then act
 - discriminant: videoCard
   value:
+    src: /images/f/bank/exa-bot.mp4
+    pill: 03 · Meet Exa
+- discriminant: videoCard
+  value:
     src: /images/f/bank/exa.mp4
-    pill: 03 · Exa guides the client
+    pill: 04 · Exa at work
 - discriminant: videoCard
   value:
     src: /images/f/bank/manager.mp4
-    pill: 04 · Manager view, in lime
+    pill: 05 · Manager view, in lime
 - discriminant: videoCard
   value:
     src: /images/f/bank/identity.mp4
-    pill: 05 · One system, day & night
+    pill: 06 · Identity, day & night

@@ -37,8 +37,8 @@ blocks:
   value:
     src: /images/f/fintech/needs.jpg
     alt: A young business owner on the phone, coffee in hand
-    imageWidth: 44
-    height: 560
+    imageWidth: 42
+    height: 0
     label: ''
     tag: 03 · User needs
     style: spaced
@@ -49,10 +49,18 @@ blocks:
       text: A small company does not have specific employees for each function, many employees often have different responsibilities. This is why these processes have to be facilitated in order not to waste time.
     - title: flexible
       text: Many of the managers of these companies are the managers/self-employed themselves. That is why they need to be able to access and consult the company's invoicing easily and from anywhere.
+- discriminant: videoCard
+  value:
+    src: /images/f/fintech/identity.mp4
+    pill: 04 · Visual identity
+- discriminant: kit
+  value:
+    kit: south
+    pill: 05 · Components, live
 - discriminant: phones
   value:
     tint: '#103429'
-    pill: 04 · Make a transfer
+    pill: 06 · Make a transfer
     screens:
     - src: /images/f/fintech/s-home.jpg
       alt: South home with the balance and upcoming payments
@@ -63,7 +71,7 @@ blocks:
 - discriminant: phones
   value:
     tint: '#A3FFA9'
-    pill: 05 · Schedule payroll
+    pill: 07 · Schedule payroll
     screens:
     - src: /images/f/fintech/s-payroll-1.jpg
       alt: Payroll, choosing the type
@@ -71,11 +79,3 @@ blocks:
       alt: Payroll, checking the employees
     - src: /images/f/fintech/s-calendar.jpg
       alt: Calendar with the scheduled payments
-- discriminant: videoCard
-  value:
-    src: /images/f/fintech/identity.mp4
-    pill: 06 · Visual identity
-- discriminant: kit
-  value:
-    kit: south
-    pill: 07 · Components, live

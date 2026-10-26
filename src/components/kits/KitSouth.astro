@@ -9,9 +9,10 @@
 import SouthMark from './SouthMark.astro';
 ---
 <div class="kit" data-kit="south">
+  <p class="kit__intro t-small">Six components from the South kit, built in code. They play once, then they are yours: click, type, switch.</p>
   <div class="kit__grid">
     <div class="kc" data-c="segmented">
-      <span class="kc__name">Segmented control</span>
+      <span class="kc__name">Segmented control</span><span class="kc__desc">Period picker on the balance chart</span>
       <div class="s-seg" data-seg>
         <i class="s-seg__thumb"></i>
         <button type="button" class="is-on">Monthly</button><button type="button">Trimester</button><button type="button">Semester</button><button type="button">Year</button>
@@ -20,7 +21,7 @@ import SouthMark from './SouthMark.astro';
     </div>
 
     <div class="kc" data-c="option">
-      <span class="kc__name">Option card</span>
+      <span class="kc__name">Option card</span><span class="kc__desc">Choose what to automate</span>
       <div class="s-opts" data-opts>
         <button type="button" class="s-opt is-on"><b>Payroll</b><span>Salary automation for your employees.</span></button>
         <button type="button" class="s-opt"><b>Taxes</b><span>Automates the payment of state taxes.</span></button>
@@ -29,7 +30,7 @@ import SouthMark from './SouthMark.astro';
     </div>
 
     <div class="kc" data-c="group">
-      <span class="kc__name">Group</span>
+      <span class="kc__name">Group</span><span class="kc__desc">Pay a team as one recipient</span>
       <div class="s-grp">
         <div><b>Employees</b><small>Atelier</small></div>
         <div class="s-grp__n"><button type="button" aria-label="Remove one" data-dec>−</button><b data-count>5</b><button type="button" aria-label="Add one" data-inc>+</button><small>Total people</small></div>
@@ -38,13 +39,13 @@ import SouthMark from './SouthMark.astro';
     </div>
 
     <div class="kc" data-c="input">
-      <span class="kc__name">Input</span>
-      <label class="s-inp"><span class="sr-only">Email</span><input type="email" placeholder="david@atelier.com" autocomplete="off" spellcheck="false" /><i class="s-inp__ok" aria-hidden="true"></i></label>
+      <span class="kc__name">Input</span><span class="kc__desc">Validates as you type</span>
+      <label class="s-inp"><span class="sr-only">Email</span><input type="email" placeholder="david@atelier.com" autocomplete="off" spellcheck="false" /><i class="s-inp__ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></i></label>
       <span class="kc__props"><b>focus</b> 1.5 mint · <b>valid</b> check</span>
     </div>
 
     <div class="kc" data-c="tabbar">
-      <span class="kc__name">Tab bar</span>
+      <span class="kc__name">Tab bar</span><span class="kc__desc">The same four tabs on every screen</span>
       <nav class="s-tabs" data-tabs aria-label="Demo tab bar">
         <button type="button" class="is-on"><svg viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v9H4z"/></svg>Home</button>
         <button type="button"><svg viewBox="0 0 24 24"><path d="M5 19h14M7 15l9-9 3 3-9 9H7z"/></svg>Account</button>
@@ -55,7 +56,7 @@ import SouthMark from './SouthMark.astro';
     </div>
 
     <div class="kc" data-c="confirm">
-      <span class="kc__name">Confirmation</span>
+      <span class="kc__name">Confirmation</span><span class="kc__desc">End of every transfer</span>
       <button type="button" class="s-ok" data-ok>
         <span class="s-ok__c"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>
         <span><b>Perfect!</b><small>The transfer has been sent.</small></span>
@@ -67,13 +68,15 @@ import SouthMark from './SouthMark.astro';
 
 <style>
   .kit { --forest: #10382D; --moss: #1E5A46; --moss-l: #3F7A62; --mint: #A3FFA9; --mist: #E6F5EA; --dim: #8FB8A3; --card: #123F32;
-    position: relative; color: var(--mist); font-family: var(--font-ui); }
+    position: relative; color: var(--mist); font-family: var(--font-body); }
   .kit__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2); }
   .kc:last-child:nth-child(odd) { grid-column: 1 / -1; }
   @media (min-width: 1800px) { .kit__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .kc:last-child:nth-child(odd) { grid-column: auto; } }
-  .kc { position: relative; background: #0F362B; border-radius: var(--r-sm); padding: 46px 16px 38px; box-sizing: border-box; min-width: 0; min-height: 170px; display: flex; align-items: center; justify-content: center; transition: background var(--dur-base); }
+  .kc { position: relative; background: #0F362B; border-radius: var(--r-sm); padding: 64px 16px 40px; box-sizing: border-box; min-width: 0; min-height: 170px; display: flex; align-items: center; justify-content: center; transition: background var(--dur-base); }
   .kc:hover { background: #134635; }
-  .kc__name { position: absolute; left: 16px; top: 12px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
+  .kit__intro { color: var(--dim); padding: 2px 4px 12px; max-width: 60ch; }
+  .kc__name { position: absolute; left: 16px; top: 14px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mint); }
+  .kc__desc { position: absolute; left: 16px; top: 32px; font-size: 12px; color: var(--dim); }
   .kc__props { position: absolute; left: 16px; right: 16px; bottom: 11px; font-family: var(--font-mono); font-size: 10px; color: var(--dim); opacity: 0; transform: translateY(4px); transition: opacity var(--dur-base), transform var(--dur-base) var(--ease-out); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .kc__props b { color: var(--mint); font-weight: 400; }
   .kc:hover .kc__props, .kc:focus-within .kc__props { opacity: 1; transform: none; }
@@ -123,19 +126,19 @@ import SouthMark from './SouthMark.astro';
   @keyframes flip { 0% { transform: translateY(-10px); opacity: 0; } 100% { transform: none; opacity: 1; } }
 
   .s-inp { position: relative; display: block; width: 100%; max-width: 300px; }
-  .s-inp input { width: 100%; box-sizing: border-box; height: 46px; background: #174836; border: 1.5px solid var(--moss-l); border-radius: 6px; padding: 0 40px 0 14px; color: var(--mist); font: inherit; font-size: 14px; outline: none; transition: border-color 160ms, box-shadow 160ms; }
+  .s-inp input { width: 100%; box-sizing: border-box; height: 46px; background: #174836; border: 1.5px solid var(--moss-l); border-radius: 6px; padding: 0 44px 0 14px; color: var(--mist); font-family: var(--font-body); font-size: 14px; outline: none; transition: border-color 160ms, box-shadow 160ms; }
   .s-inp input::placeholder { color: #6FA58C; }
   .s-inp input:focus { border-color: var(--mint); box-shadow: 0 0 0 3px rgba(163, 255, 169, 0.18); }
-  .s-inp__ok { position: absolute; right: 12px; top: 50%; width: 18px; height: 18px; translate: 0 -50%; border-radius: 50%; background: var(--mint); transform: scale(0); transition: transform 240ms var(--ease-spring); }
-  .s-inp__ok::after { content: ''; position: absolute; left: 6px; top: 3px; width: 4px; height: 8px; border: solid #0C2C23; border-width: 0 1.8px 1.8px 0; transform: rotate(45deg); }
+  .s-inp__ok { position: absolute; right: 12px; top: 50%; width: 20px; height: 20px; margin-top: -10px; border-radius: 50%; background: var(--mint); display: grid; place-items: center; transform: scale(0); transition: transform 240ms var(--ease-spring); }
+  .s-inp__ok svg { width: 12px; height: 12px; fill: none; stroke: #0C2C23; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
   .s-inp.is-valid .s-inp__ok { transform: scale(1); }
 
   .s-tabs { display: grid; grid-template-columns: repeat(4, 1fr); width: 100%; max-width: 300px; }
   .s-tabs button { display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 10.5px; color: #BFD9CA; transition: color 200ms; }
   .s-tabs svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: transform 300ms var(--ease-spring); }
-  .s-tabs button:hover svg { transform: translateY(-2px); }
+    .s-tabs button:hover { color: var(--mist); }
   .s-tabs button.is-on { color: var(--mint); }
-  .s-tabs button.is-on svg { transform: translateY(-2px); }
+  .s-tabs button.is-on svg { transform: none; }
 
   .s-ok { display: flex; align-items: center; gap: 14px; text-align: left; }
   .s-ok__c { width: 56px; height: 56px; border-radius: 50%; background: var(--mint); display: grid; place-items: center; flex: none; transition: transform 200ms var(--ease-spring); }
