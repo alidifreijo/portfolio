@@ -50,6 +50,12 @@ const fullTitle = title ? `${title} · álida díaz de freijo` : 'álida díaz d
           { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
         );
         els.forEach((el) => io.observe(el));
+        // Safety net: at the very bottom of the page, show anything still hidden.
+        addEventListener('scroll', () => {
+          if (innerHeight + scrollY >= document.documentElement.scrollHeight - 40) {
+            els.forEach((el) => el.classList.add('is-in'));
+          }
+        }, { passive: true });
       } else {
         els.forEach((el) => el.classList.add('is-in'));
       }

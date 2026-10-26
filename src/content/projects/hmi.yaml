@@ -10,37 +10,38 @@ cover: /images/projects/hmi/card.jpg
 hero: /images/projects/hmi/cluster.mp4
 heroLabel: hmi display
 meta:
-  - label: Year
-    value: '2023'
-  - label: Project
-    value: Digital cockpit
-  - label: Service
-    value: UX/UI
+- label: Year
+  value: '2023'
+- label: Project
+  value: Digital cockpit
+- label: Service
+  value: UX/UI
 links: []
 blocks:
-  - discriminant: media
-    value:
-      src: /images/projects/hmi/cockpit.jpg
-      alt: Digital cockpit in context
-      ratio: 16/10
-  - discriminant: list
-    value:
-      eyebrow: Who it’s for
-      pill: User archetype
-      columns: 1
-      items:
-        - title: Tech-smart
-          text: Confident with digital tools and expects a smooth, modern interface.
-        - title: Efficiency-focused
-          text: Wants quick, clear information with minimal distractions.
-        - title: Design-oriented
-          text: Appreciates sleek, stylish design that matches Cupra’s bold aesthetic.
-        - title: Trend-aware
-          text: Follows EV and connected-car trends; expects cutting-edge features.
-        - title: Customisation-driven
-          text: Enjoys personalising settings to match her preferences.
-  - discriminant: media
-    value:
-      src: /images/projects/hmi/display.mp4
-      alt: Display interaction
-      ratio: 16/10
+- discriminant: media
+  value:
+    src: /images/projects/hmi/cockpit.jpg
+    alt: Digital cockpit in context
+    ratio: 16/10
+- discriminant: list
+  value:
+    eyebrow: Who it’s for
+    pill: User archetype
+    columns: 1
+    items:
+    - title: Tech-smart
+      text: Confident with digital tools and expects a smooth, modern interface.
+    - title: Efficiency-focused
+      text: Wants quick, clear information with minimal distractions.
+    - title: Design-oriented
+      text: Appreciates sleek, stylish design that matches Cupra’s bold aesthetic.
+    - title: Trend-aware
+      text: Follows EV and connected-car trends; expects cutting-edge features.
+    - title: Customisation-driven
+      text: Enjoys personalising settings to match her preferences.
+- discriminant: media
+  value:
+    src: /images/projects/hmi/night-day.mp4
+    alt: Cluster in night and day modes
+    ratio: 16/10
+    caption: Night and day modes

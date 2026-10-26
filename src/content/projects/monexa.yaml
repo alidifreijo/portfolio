@@ -7,56 +7,59 @@ lead: A banking platform used by both clients and bank employees.
 intro: I designed the account platform and the **design system behind it**, from token architecture to light and dark modes, so one product could serve two very different audiences.
 teaser: A banking platform for clients and employees, and the design system behind it.
 cover: /images/projects/monexa/desk.jpg
-hero: /images/projects/monexa/laptop.mp4
+hero: /images/projects/monexa/hero.mp4
 heroLabel: monexa · bank platform
 meta:
-  - label: Year
-    value: '2024'
-  - label: Project
-    value: Banking platform
-  - label: Service
-    value: UX/UI, design system
+- label: Year
+  value: '2024'
+- label: Project
+  value: Banking platform
+- label: Service
+  value: UX/UI, design system
 links: []
 blocks:
-  - discriminant: media
-    value:
-      src: /images/projects/monexa/in-hand.jpg
-      alt: Monexa on a phone
-      ratio: 16/10
-  - discriminant: media
-    value:
-      src: /images/projects/monexa/palette.png
-      alt: Colour tokens for light and dark modes
-      ratio: 16/9
-  - discriminant: list
-    value:
-      eyebrow: What the platform needed
-      pill: Requirements
-      columns: 3
-      items:
-        - title: clear
-          text: Clients and employees see the same data with different needs, so **hierarchy does the heavy lifting**.
-        - title: consistent
-          text: '**One token system** across both experiences and both themes.'
-        - title: scalable
-          text: Components built to **grow with new products** without redesigning from scratch.
-  - discriminant: mediaPair
-    value:
-      ratio: 4/3
-      a:
-        src: /images/projects/monexa/desk.jpg
-        alt: Monexa on a laptop at home
-      b:
-        src: /images/projects/monexa/mobile.mp4
-        alt: Monexa mobile
-  - discriminant: media
-    value:
-      src: /images/projects/monexa/tokens.png
-      alt: Token architecture, from primitive to alias
-      ratio: 16/9
-      caption: Alias → mode → core → value
-  - discriminant: media
-    value:
-      src: /images/projects/monexa/table.mp4
-      alt: Employee view with data tables
-      ratio: 16/10
+- discriminant: media
+  value:
+    src: /images/projects/monexa/in-hand.jpg
+    alt: Monexa on a phone
+    ratio: 16/10
+- discriminant: media
+  value:
+    src: /images/projects/monexa/light-dark.mp4
+    alt: Monexa web platform in light and dark mode
+    ratio: 16/10
+    caption: Prototype · client area in light and dark mode
+- discriminant: media
+  value:
+    src: /images/projects/monexa/palette.png
+    alt: Colour tokens for light and dark modes
+    ratio: 16/9
+- discriminant: list
+  value:
+    eyebrow: What the platform needed
+    pill: Requirements
+    columns: 3
+    items:
+    - title: clear
+      text: Clients and employees see the same data with different needs, so **hierarchy does the heavy lifting**.
+    - title: consistent
+      text: '**One token system** across both experiences and both themes.'
+    - title: scalable
+      text: Components built to **grow with new products** without redesigning from scratch.
+- discriminant: media
+  value:
+    src: /images/projects/monexa/tokens.mp4
+    alt: Figma variables for both themes
+    ratio: 16/10
+    caption: Variables in Figma · one collection per mode
+- discriminant: media
+  value:
+    src: /images/projects/monexa/tokens.png
+    alt: Token architecture, from primitive to alias
+    ratio: 16/9
+    caption: Alias → mode → core → value
+- discriminant: media
+  value:
+    src: /images/projects/monexa/desk.jpg
+    alt: Monexa on a laptop at home
+    ratio: 16/10
