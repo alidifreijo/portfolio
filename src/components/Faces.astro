@@ -5,6 +5,8 @@
  * says something about how I work in a hand-drawn bubble, exactly as in the
  * Framer original. Positions and hover geometry measured on it. Bubble drawings live in
  * src/data/bubbles.ts; the quote is here, **bold** works.
+ * Each face is also a link: `to` is the case that proves what the bubble says,
+ * `proof` the label of the little tag under the bubble.
  */
 import { BUBBLES } from '../data/bubbles';
 
@@ -13,12 +15,12 @@ const LINE = '';
 
 const faces = [
   // x / y / w: centre and width in % of the faces box, measured on the Framer original · mx / my / mw: mobile box · ar: proportions
-  { id: 'bucket-hat', alt: 'Bucket hat', x: 31.25, y: 14.62, w: 13.0, mx: 22, my: 34, mw: 30.0, ar: '110/137', g: {S: 1.18, o: '136% 138%', under: [84.75, -6.5, 84.59, 9.3, 162.7, 70.3], shape: [84.75, -14.4, 84.59, 15.2, 173.7, 50.8], text: [84.75, -6.8, 84.59, 26.3, 167.0, 28.5]}, quote: '“**Creative mess,** but beautifully organized.”' },
-  { id: 'messy-hair', alt: 'Messy hair', x: 65.11, y: 3.5, w: 18.2, mx: 24, my: 72, mw: 28.7, ar: '155/157', g: {S: 1.175, o: '50% 44%', under: [92.02, -40.1, 90.79, -42.6, 149.0, 80.0], shape: [92.02, -52.8, 90.79, -41.7, 164.3, 65.6], text: [92.02, -29.8, 90.79, -23.0, 131.1, 28.6]}, quote: '“**Teamwork** is my coping mechanism.”' },
-  { id: 'cap', alt: 'Cap', x: 91.41, y: 48.02, w: 18.82, mx: 80, my: 35, mw: 28.6, ar: '161/164', g: {S: 1.178, o: '50% 46%', under: [86.84, -41.3, 85.51, -3.4, 129.9, 60.3], shape: [86.84, -45.3, 85.51, -8.0, 137.5, 57.7], text: [86.84, -35.1, 85.51, 11.5, 117.1, 28.5]}, quote: '“**Research** is my love language.”' },
-  { id: 'long-hair', alt: 'Long hair', x: 73.92, y: 93.66, w: 18.82, mx: 78, my: 84, mw: 28.6, ar: '161/164', g: {S: 1.178, o: '50% 46%', under: [13.15, -74.3, 85.52, 4.7, 124.8, 56.9], shape: [13.15, -77.7, 85.52, 0.5, 137.5, 57.7], text: [13.15, -64.35, 85.52, 19.0, 104.0, 28.5]}, quote: '“**Chaos?** not on my watch.”' },
-  { id: 'sprout', alt: 'Sprout', x: 35.01, y: 102.07, w: 19.85, mx: 68, my: 63, mw: 28.6, ar: '171/174', g: {S: 1.197, o: '50% 83%', under: [86.88, -42.6, 85.36, -6.6, 147.0, 83.5], shape: [86.88, -56.8, 85.36, -6.0, 166.2, 70.2], text: [86.88, -41.8, 85.36, 10.7, 144.5, 42.1]}, quote: '“**Empathetic**, caffeinated, slightly existential.”' },
-  { id: 'bob', alt: 'Bob', x: 7.56, y: 62.7, w: 14.8, mx: 50, my: 21, mw: 28.6, ar: '122/124', g: {S: 1.234, o: '52% 21%', under: [-6.38, -75.6, 106.67, -12.1, 128.0, 60.8], shape: [-6.38, -75.8, 106.67, -15.8, 138.6, 55.1], text: [-6.38, -75.0, 106.67, 2.8, 131.3, 27.2]}, quote: '“I find peace in **naming layers.**”' },
+  { id: 'bucket-hat', alt: 'Bucket hat', to: 'cut-scenes', proof: 'cut scenes', x: 31.25, y: 14.62, w: 13.0, mx: 22, my: 34, mw: 30.0, ar: '110/137', g: {S: 1.18, o: '136% 138%', under: [84.75, -6.5, 84.59, 9.3, 162.7, 70.3], shape: [84.75, -14.4, 84.59, 15.2, 173.7, 50.8], text: [84.75, -6.8, 84.59, 26.3, 167.0, 28.5]}, quote: '“**Creative mess,** but beautifully organized.”' },
+  { id: 'messy-hair', alt: 'Messy hair', to: 'cupra', proof: 'cupra', x: 65.11, y: 3.5, w: 18.2, mx: 24, my: 72, mw: 28.7, ar: '155/157', g: {S: 1.175, o: '50% 44%', under: [92.02, -40.1, 90.79, -42.6, 149.0, 80.0], shape: [92.02, -52.8, 90.79, -41.7, 164.3, 65.6], text: [92.02, -29.8, 90.79, -23.0, 131.1, 28.6]}, quote: '“**Teamwork** is my coping mechanism.”' },
+  { id: 'cap', alt: 'Cap', to: 'fintech', proof: 'fintech app', x: 91.41, y: 48.02, w: 18.82, mx: 80, my: 35, mw: 28.6, ar: '161/164', g: {S: 1.178, o: '50% 46%', under: [86.84, -41.3, 85.51, -3.4, 129.9, 60.3], shape: [86.84, -45.3, 85.51, -8.0, 137.5, 57.7], text: [86.84, -35.1, 85.51, 11.5, 117.1, 28.5]}, quote: '“**Research** is my love language.”' },
+  { id: 'long-hair', alt: 'Long hair', to: 'hmi', proof: 'hmi display', x: 73.92, y: 93.66, w: 18.82, mx: 78, my: 84, mw: 28.6, ar: '161/164', g: {S: 1.178, o: '50% 46%', under: [13.15, -74.3, 85.52, 4.7, 124.8, 56.9], shape: [13.15, -77.7, 85.52, 0.5, 137.5, 57.7], text: [13.15, -64.35, 85.52, 19.0, 104.0, 28.5]}, quote: '“**Chaos?** not on my watch.”' },
+  { id: 'sprout', alt: 'Sprout', to: 'bank-platform', proof: 'meet exa', x: 35.01, y: 102.07, w: 19.85, mx: 68, my: 63, mw: 28.6, ar: '171/174', g: {S: 1.197, o: '50% 83%', under: [86.88, -42.6, 85.36, -6.6, 147.0, 83.5], shape: [86.88, -56.8, 85.36, -6.0, 166.2, 70.2], text: [86.88, -41.8, 85.36, 10.7, 144.5, 42.1]}, quote: '“**Empathetic**, caffeinated, slightly existential.”' },
+  { id: 'bob', alt: 'Bob', to: 'bank-platform', proof: 'tokens & variables', x: 7.56, y: 62.7, w: 14.8, mx: 50, my: 21, mw: 28.6, ar: '122/124', g: {S: 1.234, o: '52% 21%', under: [-6.38, -75.6, 106.67, -12.1, 128.0, 60.8], shape: [-6.38, -75.8, 106.67, -15.8, 138.6, 55.1], text: [-6.38, -75.0, 106.67, 2.8, 131.3, 27.2]}, quote: '“I find peace in **naming layers.**”' },
 ];
 
 const bold = (s: string) => s.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
@@ -35,6 +37,7 @@ const items = faces.map((f, i) => {
   const pos = {
     light: `${at(g.under)};height:${g.under[5]}px`,
     dark: `${at(g.shape)};height:${g.shape[5]}px`,
+    go: `left:calc(${g.shape[0]}% + ${(g.shape[1] + 12).toFixed(1)}px);top:calc(${g.shape[2]}% + ${(g.shape[3] + g.shape[5] + 4).toFixed(1)}px);font-size:${(11 / g.S).toFixed(2)}px`,
     text: `${at([g.text[0], g.text[1] - 3, g.text[2], g.text[3], g.text[4] + 6])};font-size:${(14 / g.S).toFixed(2)}px;letter-spacing:${(0.7 / g.S).toFixed(3)}px`,
   };
   return { ...f, i, b, pos };
@@ -43,10 +46,12 @@ const items = faces.map((f, i) => {
 <div class="faces" data-faces>
   <div class="faces__box">
   {items.map((f) => (
-    <button
+    <a
+      href={`/work/${(f as any).to}`}
       class="face"
       style={`--x:${f.x}%;--y:${f.y}%;--w:${f.w}%;--mx:${f.mx}%;--my:${f.my}%;--mw:${f.mw}%;--ar:${f.ar};--o:${(f.g as any).o};--s:${(f.g as any).S};--ink:${f.b.ink};--light:${f.b.light}`}
-      aria-label={`${f.alt}: ${f.quote.replace(/\*\*/g, '')}`}
+      aria-label={`${f.quote.replace(/\*\*/g, '')} See ${(f as any).proof}.`}
+      draggable="false"
     >
       <span class="face__img">
         <img class="face__line" src={`/images/faces/${LINE}${f.id}.png`} alt="" draggable="false" />
@@ -55,9 +60,10 @@ const items = faces.map((f, i) => {
         <svg class="bubble__under" style={f.pos.light} viewBox={`-2 -2 ${f.b.under.w} ${f.b.under.h}`}><path d={f.b.under.d} /></svg>
         <svg class="bubble__shape" style={f.pos.dark} viewBox={`-2 -2 ${f.b.shape.w} ${f.b.shape.h}`}><path d={f.b.shape.d} /></svg>
         <span class="bubble__text" style={f.pos.text} set:html={bold(f.quote)} />
+        <span class="bubble__go" style={f.pos.go}>proof → {(f as any).proof}</span>
       </span>
       </span>
-    </button>
+    </a>
   ))}
   </div>
 </div>
@@ -71,12 +77,43 @@ const items = faces.map((f, i) => {
   document.querySelectorAll<HTMLElement>('[data-faces]').forEach((root) => {
     if (root.dataset.ready) return; root.dataset.ready = '1';
     let z = 10;
-    const faces = [...root.querySelectorAll<HTMLButtonElement>('.face')];
-    const on = (b: HTMLElement) => { faces.forEach((o) => o !== b && o.classList.remove('is-on')); b.classList.add('is-on'); b.style.zIndex = String(++z); };
+    // the nod plays once, a moment after the page appears
+    [...root.querySelectorAll<HTMLElement>('.face')].forEach((f, i) => f.style.setProperty('--d', `${700 + i * 110}ms`));
+    // The nod: on arrival, every time the á is pressed, and again after a
+    // while without anyone touching the page.
+    let hintT = 0, idleT = 0;
+    const nod = () => {
+      if (root.querySelector('.face.is-on, .face.is-drag')) return;
+      root.classList.remove('is-hint'); void root.offsetWidth; root.classList.add('is-hint');
+      clearTimeout(hintT); hintT = window.setTimeout(() => root.classList.remove('is-hint'), 2600);
+    };
+    const idle = () => { clearTimeout(idleT); idleT = window.setTimeout(() => { nod(); idle(); }, 12000); };
+    nod(); idle();
+    root.addEventListener('pointerdown', () => { root.classList.remove('is-hint'); idle(); });
+    root.addEventListener('pointermove', idle, { passive: true });
+    const logo = document.querySelector<HTMLAnchorElement>('.nav__logo');
+    logo?.addEventListener('click', (e) => { if (root.isConnected) { e.preventDefault(); nod(); idle(); } });
+    const faces = [...root.querySelectorAll<HTMLAnchorElement>('.face')];
+    // keep the bubble on screen: predict where it lands after the hover
+    // scale and nudge it back inside the panel if it would spill over
+    const fit = (b: HTMLElement) => {
+      const img = b.querySelector<HTMLElement>('.face__img')!, bub = b.querySelector<HTMLElement>('.bubble')!;
+      bub.style.translate = '';
+      const r = root.getBoundingClientRect(), ir = img.getBoundingClientRect();
+      const cs = getComputedStyle(b), S = parseFloat(cs.getPropertyValue('--s')) || 1.2;
+      const [oxs, oys] = cs.getPropertyValue('--o').trim().split(/\s+/);
+      const ox = ir.left + ir.width * parseFloat(oxs) / 100;
+      let L = Infinity, R = -Infinity;
+      bub.querySelectorAll('svg, .bubble__go').forEach((el) => { const e = el.getBoundingClientRect(); L = Math.min(L, ox + (e.left - ox) * S); R = Math.max(R, ox + (e.right - ox) * S); });
+      const pad = 10; let dx = 0;
+      if (R > r.right - pad) dx = r.right - pad - R; else if (L < r.left + pad) dx = r.left + pad - L;
+      if (dx) bub.style.translate = `${dx / S}px 0`;
+    };
+    const on = (b: HTMLElement) => { faces.forEach((o) => o !== b && o.classList.remove('is-on')); fit(b); b.classList.add('is-on'); b.style.zIndex = String(++z); };
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     faces.forEach((b) => {
       let dx = 0, dy = 0, sx = 0, sy = 0, ox = 0, oy = 0, moved = false, held = false, raf = 0;
-      let vx = 0, vy = 0, lt = 0, lx = 0, ly = 0;
+      let vx = 0, vy = 0, lt = 0, lx = 0, ly = 0, kind = 'mouse', wasOn = false;
       const set = () => { b.style.setProperty('--dx', dx + 'px'); b.style.setProperty('--dy', dy + 'px'); };
       // keep the face's centre inside the panel
       const clamp = () => {
@@ -87,6 +124,7 @@ const items = faces.map((f, i) => {
         if (cy < r.top + pad) dy += r.top + pad - cy; if (cy > r.bottom - pad) dy -= cy - (r.bottom - pad);
       };
       b.addEventListener('pointerdown', (e) => {
+        kind = e.pointerType; wasOn = b.classList.contains('is-on');
         if (e.button !== 0) return;
         cancelAnimationFrame(raf);
         held = true; moved = false; sx = e.clientX; sy = e.clientY; ox = dx; oy = dy;
@@ -120,10 +158,11 @@ const items = faces.map((f, i) => {
       b.addEventListener('pointercancel', release);
       b.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') on(b); });
       b.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && !held) b.classList.remove('is-on'); });
+      // mouse: a click opens the case. Touch: the first tap shows the bubble,
+      // the second one opens the case. A drag never navigates.
       b.addEventListener('click', (e) => {
         if (moved) { e.preventDefault(); moved = false; return; }
-        if ((e as PointerEvent).pointerType === 'mouse') return;
-        b.classList.contains('is-on') ? b.classList.remove('is-on') : on(b);
+        if (kind !== 'mouse' && !wasOn) { e.preventDefault(); on(b); }
       });
       b.addEventListener('focus', () => on(b));
       b.addEventListener('blur', () => b.classList.remove('is-on'));
@@ -138,7 +177,7 @@ const items = faces.map((f, i) => {
 </script>
 
 <style>
-  .faces { position: absolute; inset: 0; }
+  .faces { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
   /* Same box as in Framer: 60% of the panel (max 1200px), 1.866:1, centred. */
   .faces__box { position: absolute; width: 60%; max-width: 1200px; aspect-ratio: 1.866; top: 50%; left: 51%; translate: -50% -50%; }
   .face {
@@ -146,9 +185,21 @@ const items = faces.map((f, i) => {
     width: var(--w); aspect-ratio: var(--ar); translate: -50% -50%;
     container-type: inline-size;
     transform: translate(var(--dx, 0px), var(--dy, 0px));
-    touch-action: none; user-select: none; -webkit-user-select: none;
+    touch-action: none; user-select: none; -webkit-user-select: none; pointer-events: auto;
   }
   .face.is-drag { cursor: grabbing; }
+  /* First visit: the faces nod one after another, so people know they're alive. */
+  .faces.is-hint .face__img { animation: nod 900ms var(--d, 0ms) both; }
+  @keyframes nod {
+    0%, 100% { rotate: 0deg; translate: 0 0; }
+    20% { rotate: -7deg; translate: 0 -6%; }
+    45% { rotate: 5deg; translate: 0 0; }
+    70% { rotate: -2deg; }
+  }
+  .bubble__go {
+    position: absolute; white-space: nowrap; font-family: var(--font-mono); letter-spacing: 0.02em;
+    padding: 0.35em 0.8em; border-radius: 999px; background: var(--light); color: var(--ink);
+  }
   /* Hover, measured on the Framer original: the face swaps to colour at once
      and grows to 1.18× on a quick spring (about 25% overshoot of the move,
      peak at ~0.22s, settled by ~0.8s). Leaving uses the same spring back. */
@@ -182,9 +233,13 @@ const items = faces.map((f, i) => {
 
   @media (prefers-reduced-motion: reduce) {
     .face__img, .face.is-on .face__img { transition: none; }
+    .faces.is-hint .face__img { animation: none; }
   }
   @media (max-width: 1199.98px) {
     .faces__box { width: auto; max-width: none; left: 0; right: 0; aspect-ratio: 0.654; translate: 0 -50%; }
+  }
+  @media (max-width: 809px) {
+    .faces__box { top: 43%; }
     .face { width: var(--mw); left: var(--mx); top: var(--my); }
   }
 </style>
