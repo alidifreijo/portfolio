@@ -138,9 +138,10 @@ const items = faces.map((f, i) => {
     let hintT = 0, idleT = 0;
     const panel = root.closest<HTMLElement>('.home');
     const enter = () => {
-      if (!panel || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (!panel || matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.remove('pre-enter'); return; }
       root.querySelectorAll('.face').forEach((f) => f.classList.remove('is-on'));
       panel.classList.remove('is-entering'); void panel.offsetWidth; panel.classList.add('is-entering');
+      document.documentElement.classList.remove('pre-enter');
       setTimeout(() => panel.classList.remove('is-entering'), 1900);
     };
     const nod = () => {
@@ -335,6 +336,8 @@ const items = faces.map((f, i) => {
   .faces.is-going .faces__tidy { opacity: 0; }
   :global(.home:has(.faces.is-going) .home__intro) { opacity: 0; transition: opacity 240ms var(--ease-out); }
   /* entry (first visit and á): panel opens out of the dark, faces pop in */
+  :global(html.pre-enter .home) { transform: scale(0.5); filter: brightness(0.08); }
+  :global(html.pre-enter) .face__img { opacity: 0; }
   :global(.home.is-entering) { animation: panel-in 620ms cubic-bezier(0.3, 0, 0.2, 1) both; }
   @keyframes panel-in { from { transform: scale(0.5); filter: brightness(0.08); } }
   :global(.home.is-entering) .face__img { animation: face-pop 700ms var(--spring-face) var(--pop, 600ms) both; }

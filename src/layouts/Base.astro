@@ -37,7 +37,9 @@ const fullTitle = title ? `${title} · álida díaz de freijo` : 'álida díaz d
     <meta name="theme-color" content="#070707" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin />
-    <script is:inline>document.documentElement.classList.remove('no-js');</script>
+    <script is:inline>document.documentElement.classList.remove('no-js');
+      // first paint of the home page: hold the panel closed so the entry plays without a flash
+      if (/^\/(index\.html)?$/.test(location.pathname) || /\/index\.html$/.test(location.pathname)) if ( !matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.add('pre-enter'); setTimeout(() => document.documentElement.classList.remove('pre-enter'), 3000); }</script>
     {clientRouter && <ClientRouter />}
   </head>
   <body>
