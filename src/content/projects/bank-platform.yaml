@@ -33,19 +33,36 @@ blocks:
   value:
     src: /images/f/bank/academia-flow.mp4
     pill: 02 · Acadexa, learn then act
+- discriminant: split
+  value:
+    src: /images/f/bank/desk.jpg
+    alt: Monexa on a laptop at a desk
+    imageWidth: 42
+    height: 0
+    label: account platform
+    tag: 03 · Requirements
+    style: spaced
+    items:
+    - title: clear
+      text: Clients and employees see the same data with different needs, so hierarchy does the heavy lifting.
+    - title: consistent
+      text: One token system across both experiences and both themes.
+    - title: scalable
+      text: Components built to grow with new products without redesigning from scratch.
 - discriminant: videoCard
   value:
     src: /images/f/bank/exa-bot.mp4
-    pill: 03 · Meet Exa
+    pill: 04 · Meet Exa
+- discriminant: video
+  value:
+    src: /images/f/bank/laptop.mp4
+    alt: The web prototype on a laptop, with Exa and the manager view
+    pill: 05 · Web prototype
 - discriminant: videoCard
   value:
-    src: /images/f/bank/exa.mp4
-    pill: 04 · Exa at work
-- discriminant: videoCard
-  value:
-    src: /images/f/bank/manager.mp4
-    pill: 05 · Manager view, in lime
+    src: /images/f/bank/variables.mp4
+    pill: 06 · Tokens & variables
 - discriminant: videoCard
   value:
     src: /images/f/bank/identity.mp4
-    pill: 06 · Identity, day & night
+    pill: 07 · Identity, day & night
