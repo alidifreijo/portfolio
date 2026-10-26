@@ -48,7 +48,7 @@ const n = next.data;
   .project__blocks { display: flex; flex-direction: column; gap: var(--s-2); margin-top: 6px; }
   @media (max-width: 1199px) {
     .project { grid-template-columns: 1fr; }
-    .project__left { display: none; }
+    .project__left { position: relative; top: 0; height: min(72vh, 640px); }
     .project__title { position: relative; top: 0; margin-top: 0; padding: 0 0 var(--s-2); }
     .project__blocks { margin-top: 0; }
   }

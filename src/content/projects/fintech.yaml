@@ -51,6 +51,7 @@ blocks:
 - discriminant: phones
   value:
     tint: '#103429'
+    pill: Make a transfer
     screens:
     - src: /images/f/fintech/s-home.jpg
       alt: South home with the balance and upcoming payments
@@ -61,6 +62,7 @@ blocks:
 - discriminant: phones
   value:
     tint: '#A3FFA9'
+    pill: Schedule payroll
     screens:
     - src: /images/f/fintech/s-payroll-1.jpg
       alt: Payroll, choosing the type

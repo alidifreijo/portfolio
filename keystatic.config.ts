@@ -36,11 +36,11 @@ const blocks = fields.blocks(
     // ---- Media and cards (the core set, used by every project) ----
     image: {
       label: 'Image',
-      schema: fields.object({ src: media('Image'), alt: fields.text({ label: 'Description (alt text)' }) }),
+      schema: fields.object({ src: media('Image'), alt: fields.text({ label: 'Description (alt text)' }), pill: fields.text({ label: 'Pill (optional label, top right)' }) }),
     },
     video: {
       label: 'Video',
-      schema: fields.object({ src: media('Video (.mp4)'), alt: fields.text({ label: 'Description' }) }),
+      schema: fields.object({ src: media('Video (.mp4)'), alt: fields.text({ label: 'Description' }), pill: fields.text({ label: 'Pill (optional label, top right)' }) }),
     },
     split: {
       label: 'Image + text card',
@@ -103,6 +103,7 @@ const blocks = fields.blocks(
       label: 'Mockup · phones',
       schema: fields.object({
         tint: fields.text({ label: 'Background colour (optional)' }),
+        pill: fields.text({ label: 'Pill (optional label, top right)' }),
         screens: fields.array(fields.object({ src: media('Screenshot (390×844)'), alt: fields.text({ label: 'Description' }) }), { label: 'Screens (1 to 3)', itemLabel: (p) => p.fields.alt.value || 'Screen' }),
       }),
     },

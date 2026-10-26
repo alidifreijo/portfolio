@@ -12,6 +12,8 @@ import Tab from './Tab.astro';
 import Carousel from './Carousel.astro';
 import { rich } from '../lib/utils';
 const poster = (s: string) => s.replace(/\.mp4$/i, '.poster.jpg');
+// Light tint → the pill goes ink so it stays readable on the tile.
+const isLight = (hex?: string) => { if (!hex || hex.length < 7) return false; const n = parseInt(hex.slice(1, 7), 16); return (((n >> 16) & 255) * 0.299 + ((n >> 8) & 255) * 0.587 + (n & 255) * 0.114) > 150; };
 
 type Block = { discriminant: string; value: any };
 interface Props { blocks: Block[] }
@@ -20,10 +22,10 @@ const { blocks = [] } = Astro.props;
 {blocks.map(({ discriminant: type, value: v }) => {
   switch (type) {
     case 'image':
-      return <figure class="b-media" data-reveal><img src={v.src} alt={v.alt || ''} loading="lazy" decoding="async" /></figure>;
+      return <figure class="b-media" data-reveal><img src={v.src} alt={v.alt || ''} loading="lazy" decoding="async" />{v.pill && <span class="b-pill t-small">{v.pill}</span>}</figure>;
 
     case 'video':
-      return <figure class="b-media" data-reveal><video src={v.src} poster={poster(v.src)} muted loop playsinline preload="metadata" data-autoplay aria-label={v.alt || undefined}></video></figure>;
+      return <figure class="b-media" data-reveal><video src={v.src} poster={poster(v.src)} muted loop playsinline preload="metadata" data-autoplay aria-label={v.alt || undefined}></video>{v.pill && <span class="b-pill t-small">{v.pill}</span>}</figure>;
 
     case 'gallery':
       return <div class="b-gallery" data-reveal><Carousel slides={(v.slides || []).map((x: any) => ({ src: x.src, alt: x.alt }))} tab={v.tab || undefined} button={false} /></div>;
@@ -110,10 +112,11 @@ const { blocks = [] } = Astro.props;
 
     case 'phones':
       return (
-        <div class="tile" data-reveal style={v.tint ? `background:${v.tint}` : ''}>
+        <div class="tile tile--phones" data-reveal style={v.tint ? `background:${v.tint}` : ''}>
           {v.screens?.map((s: any, i: number) => (
-            <DeviceFrame kind="phone" src={s.src} alt={s.alt} style={v.screens.length === 3 && i === 1 ? 'transform:translateY(-14px)' : ''} />
+            <DeviceFrame kind="phone" src={s.src} alt={s.alt} class="tile__phone" style={`--i:${i};--lift:${v.screens.length === 3 && i === 1 ? '-14px' : '0px'}`} />
           ))}
+          {v.pill && <span class:list={['b-pill', 't-small', { 'b-pill--ink': isLight(v.tint) }]}>{v.pill}</span>}
         </div>
       );
 
@@ -138,8 +141,10 @@ const { blocks = [] } = Astro.props;
       // stops on its last frame; the pill sits on the video. Click to replay.
       if (!v.caption) return (
         <figure class="vstory" data-reveal>
-          <video src={v.src} poster={poster(v.src)} muted playsinline preload="auto" data-once title="Replay" aria-label={v.pill || undefined}></video>
-          {v.pill && <span class="vstory__pill t-small">{v.pill}</span>}
+          <video src={v.src} poster={poster(v.src)} muted playsinline preload="auto" data-once aria-label={v.pill || undefined}></video>
+          {v.pill && <span class="b-pill t-small">{v.pill}</span>}
+          <span class="vstory__bar" aria-hidden="true"><i></i></span>
+          <span class="vstory__replay t-small" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3.5 8a4.5 4.5 0 1 0 1.3-3.2M3.5 2v3h3"/></svg>Replay</span>
         </figure>
       );
       return (
@@ -188,7 +193,7 @@ const { blocks = [] } = Astro.props;
 
 <style>
   /* Case blocks */
-  .b-media { margin: 0; border-radius: var(--r-sm); overflow: hidden; background: var(--surface); }
+  .b-media { position: relative; margin: 0; border-radius: var(--r-sm); overflow: hidden; background: var(--surface); }
   .b-media img, .b-media video { width: 100%; height: auto; }
   .b-gallery { aspect-ratio: 554 / 618; }
   .b-split { display: grid; grid-template-columns: var(--iw) minmax(0, 1fr); gap: var(--s-2); min-height: var(--h); }
@@ -214,7 +219,15 @@ const { blocks = [] } = Astro.props;
   .stat__v { color: var(--acc); font-size: 36px; }
   .stat__l { opacity: 0.75; font-weight: 400; }
 
-  .tile { background: var(--paper-2); border-radius: var(--r-sm); padding: var(--s-6) var(--s-5); display: flex; justify-content: center; align-items: center; gap: var(--s-4); overflow: hidden; }
+  .tile { position: relative; background: var(--paper-2); border-radius: var(--r-sm); padding: var(--s-6) var(--s-5); display: flex; justify-content: center; align-items: center; gap: var(--s-4); overflow: hidden; }
+  /* Phones rise one after another when the tile comes into view, and lift a touch on hover. */
+  .tile :global(.tile__phone) { transform: translateY(calc(var(--lift) + 28px)); opacity: 0; transition: transform var(--dur-slow) var(--ease-out), opacity var(--dur-slow) var(--ease-out); transition-delay: calc(var(--i) * 90ms + 120ms); }
+  .tile.is-in :global(.tile__phone) { transform: translateY(var(--lift)); opacity: 1; }
+  .tile.is-in:hover :global(.tile__phone) { transform: translateY(calc(var(--lift) - 6px)); transition-delay: calc(var(--i) * 40ms); transition-duration: var(--dur-base); }
+  /* One pill for every media block: top right, in the project colour. */
+  .b-pill { position: absolute; top: var(--s-3); right: var(--s-3); z-index: 2; background: var(--acc); color: var(--on-acc); border-radius: var(--r-pill); padding: 4px 12px; font-weight: 700; white-space: nowrap; pointer-events: none; transform: translateY(-6px) scale(0.92); opacity: 0; transition: transform var(--dur-base) var(--ease-out), opacity var(--dur-base); transition-delay: 260ms; }
+  .is-in .b-pill { transform: none; opacity: 1; }
+  .b-pill--ink { background: var(--ink); color: var(--paper); }
   .tile--bottom { padding-bottom: 0; align-items: flex-end; }
   .tile--bottom :global(.browser) { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
 
@@ -229,7 +242,14 @@ const { blocks = [] } = Astro.props;
 
   .vstory { position: relative; margin: 0; aspect-ratio: 16 / 10; border-radius: var(--r-md); overflow: hidden; background: #0c0c0c; }
   .vstory video { width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer; }
-  .vstory__pill { position: absolute; top: var(--s-3); right: var(--s-3); background: var(--acc); color: var(--on-acc); border-radius: var(--r-pill); padding: 4px 12px; font-weight: 700; white-space: nowrap; pointer-events: none; }
+  /* Thin progress line while it plays; a Replay chip once it has ended. */
+  .vstory__bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(255, 255, 255, 0.12); opacity: 0; transition: opacity var(--dur-base); pointer-events: none; }
+  .vstory__bar i { display: block; height: 100%; width: 100%; background: var(--acc); transform-origin: 0 50%; transform: scaleX(var(--p, 0)); }
+  .vstory.is-playing .vstory__bar { opacity: 1; }
+  .vstory__replay { position: absolute; left: var(--s-3); bottom: var(--s-3); display: inline-flex; align-items: center; gap: 6px; background: rgba(7, 7, 7, 0.72); color: var(--paper); border-radius: var(--r-pill); padding: 5px 12px 5px 9px; backdrop-filter: blur(6px); opacity: 0; transform: translateY(6px); transition: opacity var(--dur-base), transform var(--dur-base) var(--ease-out); pointer-events: none; }
+  .vstory__replay svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .vstory.is-ended .vstory__replay { opacity: 1; transform: none; }
+  .vstory.is-ended:hover .vstory__replay svg { transform: rotate(-360deg); transition: transform 0.6s var(--ease-out); }
   .vcard { background: var(--surface); color: var(--paper); border-radius: var(--r-sm); padding: var(--s-2) var(--s-2) var(--s-4); display: flex; flex-direction: column; gap: var(--s-3); }
   .vcard :global(.media) { border-radius: var(--r-btn); }
   .vcard__cap { display: flex; justify-content: space-between; align-items: center; gap: var(--s-3); padding: 0 var(--s-2); }

@@ -76,7 +76,12 @@ const fullTitle = title ? `${title} · álida díaz de freijo` : 'álida díaz d
       }), { threshold: 0.5 });
       once.forEach((v) => {
         oo.observe(v);
-        v.addEventListener('click', () => { v.currentTime = 0; v.play().catch(() => {}); });
+        const box = v.parentElement as HTMLElement;
+        v.addEventListener('play', () => box.classList.add('is-playing'));
+        v.addEventListener('pause', () => box.classList.remove('is-playing'));
+        v.addEventListener('timeupdate', () => box.style.setProperty('--p', String(v.duration ? v.currentTime / v.duration : 0)));
+        v.addEventListener('ended', () => { box.classList.add('is-ended'); box.classList.remove('is-playing'); });
+        v.addEventListener('click', () => { box.classList.remove('is-ended'); v.currentTime = 0; v.play().catch(() => {}); });
       });
     </script>
   </body>
