@@ -72,6 +72,11 @@ blocks:
       alt: Payroll, checking the employees
     - src: /images/f/fintech/s-calendar.jpg
       alt: Calendar with the scheduled payments
+- discriminant: videoCard
+  value:
+    src: /images/f/fintech/kit.mp4
+    caption: 'One kit, every flow: four colours, money-first type and nine components that build transfers, payroll and the calendar.'
+    pill: Brand & components
 - discriminant: image
   value:
     src: /images/f/fintech/screens.png
