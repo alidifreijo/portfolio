@@ -57,14 +57,63 @@ const items = faces.map((f, i) => {
 <script>
   function initFaces() {
   // Mouse: hover shows the bubble. Touch: tap toggles it (tap outside closes).
+  // Every face can be dragged, as in the Framer original: it follows the
+  // pointer, keeps its colour while held, glides a little when released and
+  // stays where it lands, inside the panel.
   document.querySelectorAll<HTMLElement>('[data-faces]').forEach((root) => {
+    if (root.dataset.ready) return; root.dataset.ready = '1';
     let z = 10;
     const faces = [...root.querySelectorAll<HTMLButtonElement>('.face')];
     const on = (b: HTMLElement) => { faces.forEach((o) => o !== b && o.classList.remove('is-on')); b.classList.add('is-on'); b.style.zIndex = String(++z); };
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     faces.forEach((b) => {
+      let dx = 0, dy = 0, sx = 0, sy = 0, ox = 0, oy = 0, moved = false, held = false, raf = 0;
+      let vx = 0, vy = 0, lt = 0, lx = 0, ly = 0;
+      const set = () => { b.style.setProperty('--dx', dx + 'px'); b.style.setProperty('--dy', dy + 'px'); };
+      // keep the face's centre inside the panel
+      const clamp = () => {
+        const r = root.getBoundingClientRect(), f = b.getBoundingClientRect();
+        const cx = f.left + f.width / 2, cy = f.top + f.height / 2;
+        const pad = Math.max(f.width, f.height) * 0.5 + 8;
+        if (cx < r.left + pad) dx += r.left + pad - cx; if (cx > r.right - pad) dx -= cx - (r.right - pad);
+        if (cy < r.top + pad) dy += r.top + pad - cy; if (cy > r.bottom - pad) dy -= cy - (r.bottom - pad);
+      };
+      b.addEventListener('pointerdown', (e) => {
+        if (e.button !== 0) return;
+        cancelAnimationFrame(raf);
+        held = true; moved = false; sx = e.clientX; sy = e.clientY; ox = dx; oy = dy;
+        lx = e.clientX; ly = e.clientY; lt = e.timeStamp; vx = vy = 0;
+        b.setPointerCapture(e.pointerId);
+      });
+      b.addEventListener('pointermove', (e) => {
+        if (!held) return;
+        const mx = e.clientX - sx, my = e.clientY - sy;
+        if (!moved && Math.hypot(mx, my) < 4) return;
+        if (!moved) { moved = true; on(b); b.classList.add('is-drag'); }
+        dx = ox + mx; dy = oy + my; set();
+        const dt = Math.max(1, e.timeStamp - lt);
+        vx = (e.clientX - lx) / dt; vy = (e.clientY - ly) / dt; lx = e.clientX; ly = e.clientY; lt = e.timeStamp;
+      });
+      const release = (e: PointerEvent) => {
+        if (!held) return; held = false;
+        if (!moved) return;
+        b.classList.remove('is-drag');
+        // a short glide with friction, then settle inside the panel
+        let px = reduce ? 0 : vx * 16, py = reduce ? 0 : vy * 16;
+        const step = () => {
+          px *= 0.9; py *= 0.9; dx += px; dy += py; clamp(); set();
+          if (Math.hypot(px, py) > 0.3) raf = requestAnimationFrame(step);
+        };
+        step();
+        const over = document.elementFromPoint(e.clientX, e.clientY)?.closest('.face') === b;
+        if (e.pointerType === 'mouse' && !over) b.classList.remove('is-on');
+      };
+      b.addEventListener('pointerup', release);
+      b.addEventListener('pointercancel', release);
       b.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') on(b); });
-      b.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') b.classList.remove('is-on'); });
+      b.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && !held) b.classList.remove('is-on'); });
       b.addEventListener('click', (e) => {
+        if (moved) { e.preventDefault(); moved = false; return; }
         if ((e as PointerEvent).pointerType === 'mouse') return;
         b.classList.contains('is-on') ? b.classList.remove('is-on') : on(b);
       });
@@ -86,7 +135,10 @@ const items = faces.map((f, i) => {
     all: unset; cursor: pointer; position: absolute; left: var(--x); top: var(--y);
     width: var(--w); aspect-ratio: var(--ar); translate: -50% -50%;
     container-type: inline-size;
+    transform: translate(var(--dx, 0px), var(--dy, 0px));
+    touch-action: none; user-select: none; -webkit-user-select: none;
   }
+  .face.is-drag { cursor: grabbing; }
   /* Hover, as in the original: the face swaps to colour at once and grows
      to ~1.18× with a slow spring (overshoot, settles in ~2s). */
   .face__img {
