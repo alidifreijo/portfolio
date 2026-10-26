@@ -115,6 +115,10 @@ const blocks = fields.blocks(
         items: fields.array(fields.object({ src: media('Image'), title: fields.text({ label: 'Title' }), year: fields.text({ label: 'Year' }), tag: fields.text({ label: 'Tag' }), line: fields.text({ label: 'Hover line' }) }), { label: 'Items', itemLabel: (p) => p.fields.title.value }),
       }),
     },
+    kit: {
+      label: 'Live component kit',
+      schema: fields.object({ kit: fields.select({ label: 'Kit', options: [{ label: 'South', value: 'south' }], defaultValue: 'south' }) }),
+    },
     videoCard: {
       label: 'Video card · flow or architecture',
       schema: fields.object({ src: media('Video'), caption: fields.text({ label: 'Caption (leave empty for a story video that plays once, pill on the video)' }), pill: fields.text({ label: 'Pill' }) }),

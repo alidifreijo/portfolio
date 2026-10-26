@@ -10,6 +10,7 @@ import Media from './Media.astro';
 import DeviceFrame from './DeviceFrame.astro';
 import Tab from './Tab.astro';
 import Carousel from './Carousel.astro';
+import KitSouth from './kits/KitSouth.astro';
 import { rich } from '../lib/utils';
 const poster = (s: string) => s.replace(/\.mp4$/i, '.poster.jpg');
 // Light tint → the pill goes ink so it stays readable on the tile.
@@ -135,6 +136,10 @@ const { blocks = [] } = Astro.props;
           {v.note && <p class="t-small" style="opacity:.6">{v.note}</p>}
         </Card>
       );
+
+    case 'kit':
+      // A live component kit (built in code, interactive). One per brand.
+      return <div data-reveal>{v.kit === 'south' && <KitSouth />}</div>;
 
     case 'videoCard':
       // No caption: a story video. It plays once when it scrolls into view and

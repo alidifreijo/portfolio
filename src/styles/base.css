@@ -78,3 +78,10 @@ strong, b { font-weight: 700; }
 .row { display: flex; gap: var(--s-2); }
 .stack { display: flex; flex-direction: column; gap: var(--s-2); }
 @media (max-width: 809px) { .row { flex-direction: column; } }
+
+/* Page transitions (ClientRouter). The frame crossfades and rises a little; the nav stays. */
+::view-transition-old(root) { animation: 220ms var(--ease-out) both vt-out; }
+::view-transition-new(root) { animation: 360ms var(--ease-out) both vt-in; }
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(10px); } }
+@media (prefers-reduced-motion: reduce) { ::view-transition-old(root), ::view-transition-new(root) { animation: none; } }

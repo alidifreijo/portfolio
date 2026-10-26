@@ -55,6 +55,7 @@ const items = faces.map((f, i) => {
 </div>
 
 <script>
+  function initFaces() {
   // Mouse: hover shows the bubble. Touch: tap toggles it (tap outside closes).
   document.querySelectorAll<HTMLElement>('[data-faces]').forEach((root) => {
     let z = 10;
@@ -74,6 +75,9 @@ const items = faces.map((f, i) => {
       if (!(e.target as HTMLElement).closest('.face')) faces.forEach((o) => o.classList.remove('is-on'));
     });
   });
+  }
+  initFaces();
+  document.addEventListener('astro:page-load', initFaces);
 </script>
 
 <style>

@@ -1,0 +1,10 @@
+---
+/** SouthMark · the South logo mark (the horizon circle) as inline SVG. */
+interface Props { size?: number }
+const { size = 24 } = Astro.props;
+const id = `sm${Math.random().toString(36).slice(2, 7)}`;
+---
+<svg width={size} height={size} viewBox="0 0 73 73" fill="none" aria-hidden="true">
+  <path d="M1.59547e-06 36.5C7.14314e-07 56.6584 16.3416 73 36.5 73C56.6584 73 73 56.6584 73 36.5C73 16.3416 56.6584 2.47662e-06 36.5 1.59547e-06C16.3436 7.14401e-07 0.00322208 16.3384 1.59573e-06 36.494M1.59547e-06 36.5C1.59547e-06 36.4999 1.59547e-06 36.4998 1.59548e-06 36.4997ZM1.59548e-06 36.4997C1.25657e-06 44.2529 16.3416 50.5382 36.5 50.5382C56.6584 50.5382 73 44.2529 73 36.4997C73 28.7465 56.6584 22.4613 36.5 22.4613C16.3465 22.4613 0.00798228 28.7434 1.59573e-06 36.494" fill-rule="evenodd" clip-rule="evenodd" fill={`url(#${id})`}/>
+  <defs><linearGradient id={id} x1="36" y1="73" x2="36" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#9DFFA3"/><stop offset="0.471248" stop-color="#9DFFA3"/><stop offset="0.500667" stop-color="#9DFFA3" stop-opacity="0"/><stop offset="0.790661" stop-color="#9DFFA3" stop-opacity="0.37148"/><stop offset="1" stop-color="#9DFFA3" stop-opacity="0.61"/></linearGradient></defs>
+</svg>

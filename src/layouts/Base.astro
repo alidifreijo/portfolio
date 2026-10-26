@@ -4,6 +4,7 @@
  * and the scroll-reveal motion.
  */
 import '../styles/base.css';
+import { ClientRouter } from 'astro:transitions';
 import Nav from '../components/Nav.astro';
 
 interface Props {
@@ -18,6 +19,8 @@ const {
   image = '/images/brand/og.png',
   nav = true,
 } = Astro.props;
+// The static preview (relative URLs) can't use client-side routing; Vercel can.
+const clientRouter = !process.env.PREVIEW;
 const fullTitle = title ? `${title} · álida díaz de freijo` : 'álida díaz de freijo · product designer';
 ---
 <!doctype html>
@@ -35,6 +38,7 @@ const fullTitle = title ? `${title} · álida díaz de freijo` : 'álida díaz d
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin />
     <script is:inline>document.documentElement.classList.remove('no-js');</script>
+    {clientRouter && <ClientRouter />}
   </head>
   <body>
     {nav && <Nav />}
@@ -42,6 +46,7 @@ const fullTitle = title ? `${title} · álida díaz de freijo` : 'álida díaz d
       <slot />
     </main>
     <script>
+      function initPage() {
       // Reveal on scroll · one observer for the whole site.
       const els = document.querySelectorAll<HTMLElement>('[data-reveal]');
       if ('IntersectionObserver' in window) {
@@ -83,6 +88,9 @@ const fullTitle = title ? `${title} · álida díaz de freijo` : 'álida díaz d
         v.addEventListener('ended', () => { box.classList.add('is-ended'); box.classList.remove('is-playing'); });
         v.addEventListener('click', () => { box.classList.remove('is-ended'); v.currentTime = 0; v.play().catch(() => {}); });
       });
+      }
+      initPage();
+      document.addEventListener('astro:page-load', initPage);
     </script>
   </body>
 </html>

@@ -65,6 +65,7 @@ const a = (await getEntry('pages', 'about'))!.data;
 </Base>
 
 <script>
+  function initAbout() {
   // The ice cream follows the cursor (mouse only).
   const ic = document.querySelector<HTMLElement>('[data-icecream]');
   if (ic && matchMedia('(hover: hover) and (pointer: fine)').matches) {
@@ -75,6 +76,9 @@ const a = (await getEntry('pages', 'about'))!.data;
     }, { passive: true });
     document.addEventListener('pointerleave', () => ic.classList.remove('is-on'));
   }
+  }
+  initAbout();
+  document.addEventListener('astro:page-load', initAbout);
 </script>
 
 <style>

@@ -37,6 +37,7 @@ const { slides, tab, button = true, autoplay = 5000, class: cls = '' } = Astro.p
 </div>
 
 <script>
+  function initCarousel() {
   document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((root) => {
     const track = root.querySelector<HTMLElement>('.car__track')!;
     const slides = [...root.querySelectorAll<HTMLElement>('.car__slide')];
@@ -64,6 +65,9 @@ const { slides, tab, button = true, autoplay = 5000, class: cls = '' } = Astro.p
     });
     play();
   });
+  }
+  initCarousel();
+  document.addEventListener('astro:page-load', initCarousel);
 </script>
 
 <style>

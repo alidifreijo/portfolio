@@ -11,7 +11,7 @@ const links = [
 ];
 const isCurrent = (href: string) => path === href || path.startsWith(href + '/');
 ---
-<nav class="nav" aria-label="Main">
+<nav class="nav" aria-label="Main" transition:name="nav">
   <div class="nav__tab">
     <a href="/" class="nav__logo" aria-label="Home">á</a>
     <ul>

@@ -5,7 +5,7 @@ order: 3
 accent: lime
 display: '**bank** platform'
 lead: A banking platform used by both clients and bank employees.
-intro: '**Monexa** is a banking platform used by both clients and bank employees. I designed the account platform and the **design system behind it**, from token architecture to light and dark modes, so one product could serve two very different audiences.'
+intro: '**Monexa** is a banking platform used by both clients and bank employees. I designed the account platform and the **design system behind it**, from token architecture to light and dark modes, so one product could serve two very different audiences. The story below goes from the brief to the system: who it is for, how it is organised, how a client moves through it, and the identity that holds it together.'
 teaser: Monexa is a banking platform for clients and employees
 cover: /images/f/work/cover-bank.jpg
 hero: /images/f/bank/hero.mp4
@@ -28,22 +28,15 @@ blocks:
   value:
     src: /images/f/bank/phone-hand.jpg
     alt: Monexa on a phone
-- discriminant: videoCard
-  value:
-    src: /images/f/bank/brand.mp4
-    pill: Brand
-- discriminant: videoCard
-  value:
-    src: /images/f/bank/daynight.mp4
-    pill: Day & night
+    pill: 01 · The product
 - discriminant: split
   value:
     src: /images/f/bank/desk.jpg
     alt: Monexa on a laptop at a desk
-    imageWidth: 56
-    height: 591
-    label: account platform
-    tag: Requirements
+    imageWidth: 44
+    height: 560
+    label: ''
+    tag: 02 · Requirements
     style: spaced
     items:
     - title: clear
@@ -55,8 +48,12 @@ blocks:
 - discriminant: videoCard
   value:
     src: /images/f/bank/ia.mp4
-    pill: Information architecture
+    pill: 03 · Architecture
 - discriminant: videoCard
   value:
     src: /images/f/bank/academia-flow.mp4
-    pill: Client flow
+    pill: 04 · Client flow
+- discriminant: videoCard
+  value:
+    src: /images/f/bank/identity.mp4
+    pill: 05 · Identity, day & night

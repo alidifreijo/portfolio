@@ -45,6 +45,7 @@ const rows = Math.max(...cells.map((c) => c.y)) + 1;
 </div>
 
 <script>
+  function initCrossword() {
   document.querySelectorAll<HTMLElement>('[data-cw]').forEach((root) => {
     const words: { number: number; word: string; direction: string; x: number; y: number }[] = JSON.parse(root.dataset.words!);
     const cells = [...root.querySelectorAll<HTMLElement>('.cw__cell')];
@@ -117,6 +118,9 @@ const rows = Math.max(...cells.map((c) => c.y)) + 1;
       cells.forEach((c, i) => setTimeout(() => { c.querySelector('input')!.value = c.dataset.a!; check(); }, i * 18));
     });
   });
+  }
+  initCrossword();
+  document.addEventListener('astro:page-load', initCrossword);
 </script>
 
 <style>

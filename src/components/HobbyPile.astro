@@ -41,6 +41,7 @@ const items = [
 </div>
 
 <script>
+  function initPile() {
   document.querySelectorAll<HTMLElement>('[data-pile]').forEach((pile) => {
     let z = 100;
     pile.querySelectorAll<HTMLImageElement>('.sticker').forEach((el) => {
@@ -60,6 +61,9 @@ const items = [
       el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
     });
   });
+  }
+  initPile();
+  document.addEventListener('astro:page-load', initPile);
 </script>
 
 <style>
