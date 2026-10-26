@@ -5,3 +5,4 @@ dist-static
 .astro
 .env
 .DS_Store
+qa/
