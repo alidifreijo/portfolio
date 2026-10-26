@@ -18,40 +18,60 @@ const a = (await getEntry('pages', 'about'))!.data;
       <p class="ab-left__hob">{a.hobbiesLabel}</p>
     </aside>
 
-    <section class="ab-card ab-card--paper">
-      <h2 class="ab-h1">{a.title}</h2>
-      <div class="ab-text rich" set:html={rich(a.intro)} />
+    <section class="ab-card ab-card--paper" data-card>
+      <h2 class="ab-h1" data-r>{a.title}</h2>
+      <p class="ab-lead" data-lead set:html={rich(a.lead, false)} />
 
-      <h2 class="ab-h2">skills</h2>
-      <div class="ab-skills">
-        {a.skills.map((s: any) => (
-          <div class="ab-skill">
-            <h3 class="ab-t">{s.title}</h3>
-            <div class:list={['ab-tags', { 'ab-tags--filled': s.filled }]}>{s.tags.map((t: string) => <span>{t}</span>)}</div>
-            <div class="ab-text" set:html={rich(s.text, false)} />
+      <dl class="ab-facts">
+        {a.facts.map((f: any, i: number) => (
+          <div class="ab-fact" data-r style={`--i:${i}`}>
+            <dt class="ab-fact__v" data-count={/^\d+$/.test(f.value) ? f.value : undefined}>{f.value}</dt>
+            <dd class="ab-fact__l">{f.label}</dd>
           </div>
         ))}
-      </div>
+      </dl>
 
-      <h2 class="ab-h2">learn &amp; teach</h2>
-      <div class="ab-teach">
-        {a.teach.map((t: any) => (
-          <div><p class="ab-years">{t.years}</p><p class="ab-t">{t.title}</p><p class="ab-place">{t.place}</p></div>
+      <div class="ab-text rich" data-r set:html={rich(a.intro)} />
+
+      <h2 class="ab-h2" data-r>{a.skillsTitle}</h2>
+      <p class="ab-hint" data-r>Open one: the jobs where it happened light up on the right.</p>
+      <ol class="ab-skills" data-skills>
+        {a.skills.map((s: any, i: number) => (
+          <li class:list={['ab-skill', { 'is-open': i === 0 }]} data-r data-seen={(s.seenAt || []).join('|')}>
+            <button class="ab-skill__head" type="button" aria-expanded={i === 0 ? 'true' : 'false'}>
+              <span class="ab-skill__n">{String(i + 1).padStart(2, '0')}</span>
+              <span class="ab-t">{s.title}</span>
+              <span class="ab-skill__plus" aria-hidden="true"></span>
+            </button>
+            <div class="ab-skill__body"><div>
+              <div class="ab-text" set:html={rich(s.text, false)} />
+              <div class:list={['ab-tags', { 'ab-tags--filled': s.filled }]}>{s.tags.map((t: string) => <span>{t}</span>)}</div>
+            </div></div>
+          </li>
         ))}
-      </div>
+      </ol>
 
-      <h2 class="ab-h2">languages</h2>
-      <div class="ab-langs">
+      <h2 class="ab-h2" data-r>learn &amp; teach</h2>
+      <ul class="ab-teach">
+        {a.teach.map((t: any) => (
+          <li data-r><span class="ab-years">{t.years}</span><span><span class="ab-t">{t.title}</span><span class="ab-place">{t.place}</span></span></li>
+        ))}
+      </ul>
+
+      <h2 class="ab-h2" data-r>languages</h2>
+      <div class="ab-langs" data-r>
         {a.languages.map((l: any) => (
           <div><span class="ab-t">{l.name}</span><span class="ab-level">{l.level}</span></div>
         ))}
       </div>
     </section>
 
-    <section class="ab-card ab-card--pink">
-      <h2 class="ab-h1 ab-h1--exp">work<br />experience</h2>
+    <section class="ab-card ab-card--pink" data-card data-jobs>
+      <h2 class="ab-h1 ab-h1--exp" data-r>work<br />experience</h2>
+      <div class="ab-rail" aria-hidden="true"><i></i></div>
       {a.experience.map((e: any) => (
-        <article class="ab-job">
+        <article class="ab-job" data-r data-company={e.company}>
+          <span class="ab-job__dot" aria-hidden="true"></span>
           <p class="ab-years">{e.years}</p>
           <h3 class="ab-t ab-role">{e.role}</h3>
           <p class="ab-place">{e.company}</p>
@@ -76,6 +96,78 @@ const a = (await getEntry('pages', 'about'))!.data;
     }, { passive: true });
     document.addEventListener('pointerleave', () => ic.classList.remove('is-on'));
   }
+
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Each card scrolls on its own: things appear as they come into the card.
+  document.querySelectorAll<HTMLElement>('[data-card]').forEach((card) => {
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const el = e.target as HTMLElement; el.classList.add('is-in'); io.unobserve(el);
+      el.querySelectorAll<HTMLElement>('[data-count]').forEach((n) => countUp(n));
+    }), { root: innerWidth >= 1200 ? card : null, threshold: 0.15 });
+    card.querySelectorAll('[data-r]').forEach((el) => io.observe(el));
+  });
+  // The lead writes itself in, word by word.
+  document.querySelectorAll<HTMLElement>('[data-lead]').forEach((el) => {
+    if (el.dataset.split) return; el.dataset.split = '1';
+    let i = 0;
+    const walk = (n: Node) => {
+      [...n.childNodes].forEach((c) => {
+        if (c.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          (c.textContent || '').split(/(\s+)/).forEach((w) => {
+            if (!w.trim()) { frag.append(w); return; }
+            const s = document.createElement('span'); s.className = 'w'; s.style.setProperty('--i', String(i++)); s.textContent = w; frag.append(s);
+          });
+          c.replaceWith(frag);
+        } else walk(c);
+      });
+    };
+    walk(el);
+    requestAnimationFrame(() => el.classList.add('is-in'));
+  });
+  function countUp(n: HTMLElement) {
+    const end = parseInt(n.dataset.count || '0', 10); if (reduce || !end) return;
+    const t0 = performance.now(), D = 900;
+    const tick = (now: number) => { const k = Math.min(1, (now - t0) / D); n.textContent = String(Math.round(end * (1 - Math.pow(1 - k, 3)))); if (k < 1) requestAnimationFrame(tick); };
+    requestAnimationFrame(tick);
+  }
+  // Skills open one at a time; the open one lights up its jobs on the right.
+  const jobsCard = document.querySelector<HTMLElement>('[data-jobs]');
+  const jobs = [...document.querySelectorAll<HTMLElement>('.ab-job')];
+  const light = (seen: string) => {
+    const keys = seen.split('|').filter(Boolean);
+    jobs.forEach((j) => j.classList.toggle('is-match', keys.some((k) => (j.dataset.company || '').includes(k))));
+    jobsCard?.classList.toggle('has-match', keys.length > 0);
+  };
+  document.querySelectorAll<HTMLElement>('[data-skills]').forEach((list) => {
+    const items = [...list.querySelectorAll<HTMLElement>('.ab-skill')];
+    items.forEach((it) => {
+      const btn = it.querySelector('button')!;
+      btn.addEventListener('click', () => {
+        const open = !it.classList.contains('is-open');
+        items.forEach((o) => { o.classList.remove('is-open'); o.querySelector('button')!.setAttribute('aria-expanded', 'false'); });
+        if (open) { it.classList.add('is-open'); btn.setAttribute('aria-expanded', 'true'); }
+        light(open ? it.dataset.seen || '' : '');
+        // bring the first lit job into view in its own column
+        const first = jobs.find((j) => j.classList.contains('is-match'));
+        if (open && first && jobsCard && innerWidth >= 1200) jobsCard.scrollTo({ top: first.offsetTop - 40, behavior: reduce ? 'auto' : 'smooth' });
+      });
+      it.addEventListener('pointerenter', (e) => { if ((e as PointerEvent).pointerType === 'mouse') light(it.dataset.seen || ''); });
+      it.addEventListener('pointerleave', (e) => { if ((e as PointerEvent).pointerType === 'mouse') light(list.querySelector<HTMLElement>('.ab-skill.is-open')?.dataset.seen || ''); });
+    });
+  });
+  // The rail on the experience column fills as it scrolls.
+  if (jobsCard) {
+    const rail = jobsCard.querySelector<HTMLElement>('.ab-rail');
+    const upd = () => {
+      const max = jobsCard.scrollHeight - jobsCard.clientHeight;
+      rail?.style.setProperty('--p', String(max > 0 ? jobsCard.scrollTop / max : 1));
+      const mid = jobsCard.getBoundingClientRect().top + jobsCard.clientHeight * 0.55;
+      jobs.forEach((j) => j.classList.toggle('is-past', j.getBoundingClientRect().top < mid));
+    };
+    jobsCard.addEventListener('scroll', upd, { passive: true }); upd();
+  }
   }
   initAbout();
   document.addEventListener('astro:page-load', initAbout);
@@ -96,31 +188,72 @@ const a = (await getEntry('pages', 'about'))!.data;
   .ab-h1--exp { line-height: 38.25px; }
   .ab-h2 { margin-top: 48px; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-display); line-height: 47.25px; letter-spacing: -0.3px; }
   .ab-text { font-size: var(--fs-body); line-height: var(--lh-body); letter-spacing: var(--ls-body); }
-  .ab-card--paper > .ab-text { margin-top: 24px; }
-  .rich :global(p + p) { margin-top: 22.4px; }
-  .ab-card--paper > .rich :global(p:nth-last-child(-n + 2)) { margin-top: 34px; }
+  .rich :global(p + p) { margin-top: 16px; }
   .ab-t { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-label); line-height: var(--lh-small); letter-spacing: var(--ls-small); }
 
-  .ab-skills { display: flex; flex-direction: column; gap: 31px; margin-top: 24px; }
+  /* appear as they come into their card */
+  [data-r] { opacity: 0; translate: 0 14px; transition: opacity 600ms var(--ease-out), translate 700ms var(--ease-spring); transition-delay: calc(var(--i, 0) * 70ms); }
+  [data-r].is-in { opacity: 1; translate: 0 0; }
+
+  .ab-lead { margin-top: 18px; font-family: var(--font-display); font-weight: 400; font-size: clamp(22px, 1.9vw, 28px); line-height: 1.15; letter-spacing: -0.01em; }
+  .ab-lead :global(b) { font-weight: 700; }
+  .ab-lead :global(.w) { display: inline-block; opacity: 0; translate: 0 0.4em; filter: blur(4px); transition: opacity 500ms var(--ease-out), translate 600ms var(--ease-spring), filter 500ms var(--ease-out); transition-delay: calc(120ms + var(--i) * 45ms); }
+  .ab-lead:global(.is-in) :global(.w) { opacity: 1; translate: 0 0; filter: none; }
+
+  .ab-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 26px 0 26px; }
+  .ab-fact { background: var(--paper-2); border-radius: var(--r-sm); padding: 14px 14px 12px; display: flex; flex-direction: column; gap: 6px; }
+  .ab-fact__v { font-family: var(--font-display); font-weight: 700; font-size: 34px; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .ab-fact__l { margin: 0; font-size: var(--fs-small); line-height: 1.35; color: var(--muted); }
+
+  .ab-hint { margin-top: 6px; font-size: var(--fs-small); color: var(--muted); }
+  .ab-skills { list-style: none; padding: 0; margin: 18px 0 0; border-top: 1.5px solid currentColor; }
+  .ab-skill { border-bottom: 1.5px solid currentColor; }
+  .ab-skill__head { all: unset; box-sizing: border-box; width: 100%; display: grid; grid-template-columns: 34px 1fr 18px; align-items: center; padding: 15px 0; cursor: pointer; }
+  .ab-skill__head:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 4px; }
+  .ab-skill__n { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+  .ab-skill__plus { position: relative; width: 14px; height: 14px; }
+  .ab-skill__plus::before, .ab-skill__plus::after { content: ''; position: absolute; left: 0; top: 6px; width: 14px; height: 2px; background: currentColor; border-radius: 2px; transition: rotate 400ms var(--ease-spring); }
+  .ab-skill__plus::after { rotate: 90deg; }
+  .ab-skill.is-open .ab-skill__plus::after { rotate: 0deg; }
+  .ab-skill__body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 500ms var(--ease-spring); }
+  .ab-skill__body > div { overflow: hidden; padding-left: 34px; }
+  .ab-skill.is-open .ab-skill__body { grid-template-rows: 1fr; }
+  .ab-skill__body .ab-text { padding-bottom: 2px; }
+  .ab-skill__body .ab-tags { margin: 12px 0 18px; }
+  .ab-skill:hover .ab-t { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
+
   .ab-tags { display: flex; flex-wrap: wrap; gap: 8px 10px; margin: 14px 0 16px; }
   .ab-tags span { display: inline-flex; align-items: center; height: 31px; padding: 0 13px; border-radius: var(--r-pill); border: 1.5px solid currentColor; font-size: var(--fs-small); font-weight: 700; letter-spacing: 0.4px; }
   .ab-tags--filled span { background: var(--ink); color: var(--paper); border-color: var(--ink); }
   .ab-tags--brand span { background: var(--brand); color: var(--brand-soft); border-color: var(--brand); letter-spacing: var(--ls-small); }
 
-  .ab-teach { display: flex; flex-direction: column; gap: 16px; margin-top: 25px; }
+  .ab-teach { list-style: none; padding: 0; margin: 20px 0 0; display: flex; flex-direction: column; }
+  .ab-teach li { display: grid; grid-template-columns: 96px 1fr; gap: 12px; padding: 12px 0; border-top: 1px solid color-mix(in srgb, currentColor 25%, transparent); }
+  .ab-teach li > span:last-child { display: flex; flex-direction: column; gap: 2px; }
   .ab-years { font-family: var(--font-display); font-size: var(--fs-label); line-height: var(--lh-small); letter-spacing: var(--ls-small); }
-  .ab-teach .ab-years { margin-bottom: 12px; }
+  .ab-teach .ab-years { font-size: var(--fs-small); color: var(--muted); }
   .ab-place { font-size: var(--fs-small); line-height: var(--lh-small); letter-spacing: var(--ls-small); }
-  .ab-langs { display: flex; flex-direction: column; gap: var(--s-3); margin-top: 30px; }
-  .ab-langs div { display: flex; justify-content: space-between; align-items: baseline; }
+  .ab-langs { display: flex; flex-direction: column; gap: var(--s-3); margin-top: 20px; }
+  .ab-langs div { display: flex; justify-content: space-between; align-items: center; }
   .ab-level { display: inline-flex; align-items: center; height: 31px; padding: 0 13px; border-radius: var(--r-pill); border: 1.5px solid currentColor; font-size: var(--fs-small); font-weight: 700; letter-spacing: 0.4px; }
-  .ab-langs div { align-items: center; }
 
-  .ab-job { padding: 24px 0 32px; border-bottom: 1px solid currentColor; }
-  .ab-job:first-of-type { padding-top: 24px; }
+  /* experience: a rail that fills as the column scrolls; lit jobs when a skill is open */
+  .ab-card--pink { position: relative; }
+  .ab-rail { position: absolute; left: 22px; top: 150px; bottom: 48px; width: 2px; background: color-mix(in srgb, var(--brand) 25%, transparent); border-radius: 2px; }
+  .ab-rail i { position: absolute; inset: 0; background: var(--brand); transform-origin: top; scale: 1 var(--p, 0); border-radius: 2px; }
+  .ab-job { position: relative; padding: 24px 0 30px; border-bottom: 1px solid currentColor; transition: opacity 350ms var(--ease-out), translate 700ms var(--ease-spring); }
   .ab-job:last-child { border-bottom: 0; }
-  .ab-role { margin-top: 12px; letter-spacing: 0.48px; }
+  .ab-job__dot { position: absolute; left: -34px; top: 30px; width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--brand); background: var(--brand-soft); transition: background 300ms, scale 400ms var(--ease-spring); }
+  .ab-job.is-past .ab-job__dot { background: var(--brand); }
+  .ab-card--pink.has-match .ab-job:not(.is-match) { opacity: 0.32; }
+  .ab-card--pink.has-match .ab-job.is-match .ab-job__dot { scale: 1.5; background: var(--brand); }
+  .ab-role { margin-top: 10px; letter-spacing: 0.48px; }
   .ab-text--exp { letter-spacing: 0.7px; }
+  .ab-card--pink { padding-left: 52px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-r], .ab-lead :global(.w) { opacity: 1; translate: none; filter: none; transition: none; }
+  }
 
   .icecream { position: fixed; left: 0; top: 0; width: 89px; z-index: 100; pointer-events: none; opacity: 0; transition: opacity var(--dur-fast); }
   .icecream.is-on { opacity: 1; }
@@ -130,11 +263,16 @@ const a = (await getEntry('pages', 'about'))!.data;
     .about { grid-template-columns: 1fr; height: auto; min-height: 0; }
     .ab-left { aspect-ratio: 574 / 876; max-height: 90vh; width: 100%; max-width: 640px; margin: 0 auto; }
     .ab-card { overflow: visible; padding: 48px 28px 40px; }
+    .ab-card--pink { padding-left: 52px; }
+    .ab-hint { display: none; }
   }
   @media (max-width: 809px) {
     .ab-left { aspect-ratio: 366 / 564; max-height: none; margin-top: 44px; }
     .ab-left__h { padding-top: 4px; }
     .ab-left__hob { bottom: 0; }
     .ab-card { padding: 48px 20px 40px; }
+    .ab-card--pink { padding-left: 46px; }
+    .ab-rail { left: 18px; }
+    .ab-job__dot { left: -32px; }
   }
 </style>

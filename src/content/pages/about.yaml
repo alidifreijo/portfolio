@@ -1,23 +1,26 @@
 title: about
 grabTitle: grab to know me
 hobbiesLabel: interests & hobbies
-intro: 'Hey there!
+lead: I turn **messy ideas** into things people **actually enjoy using**.
+facts:
+- value: '8'
+  label: years designing products, physical first, digital since 2020
+- value: '12'
+  label: designers coordinated at once (summer cover included)
+- value: '3'
+  label: languages · Spanish, Galician, English
+- value: BCN
+  label: based in Barcelona, made in Galicia
+intro: 'Research, UX and UI, with an industrial designer’s habit of **thinking in systems, not just screens.** Curious by default, allergic to unnecessary complexity, and very into the small details that make people go “oh, nice.”
 
 
-  I’m a Product Designer who loves **turning messy ideas into things people actually enjoy using.**
-
-
-  I’ve spent the last few years moving between research, UX, and UI — basically trying to **make digital experiences feel a bit more human** (and a lot less frustrating). My background in Industrial Design taught me to **think in systems, not just screens**: caring about how things work, not just how they look. Whether it’s an app, a platform, or something still living in a Figma graveyard, **I like to bring clarity where there’s chaos** — with a decent sense of humour and strong coffee supply.
-
-
-  **I’m curious by default**, allergic to unnecessary complexity, and very into the small details that make users go “oh, nice.”
-
-  “Final versions” don’t exist, only better ones.
-
-
-  When I’m not designing, **I’m probably doing a crossword, talking to my plants like they’re in the meeting, or convincing myself that reorganizing my desktop counts as self-care.**'
+  When I’m not designing, **I’m probably doing a crossword, talking to my plants like they’re in the meeting,** or calling a desktop reorganisation self-care.'
+skillsTitle: how I work
 skills:
 - title: Discovery & Research
+  seenAt:
+  - Capgemini
+  - Garaje
   tags:
   - Product Discovery
   - Workshop Facilitation
@@ -25,12 +28,17 @@ skills:
   text: '**I research first, panic later.** Discovery, workshops and usability testing, so **decisions are grounded in evidence** and not in whoever talks loudest.'
   filled: false
 - title: Visual & UI Design
+  seenAt:
+  - North
   tags:
   - Visual & UI
   - WCAG 2.2
   text: Strong visual layer, **low tolerance for misaligned pixels.** Accessible by default (WCAG 2.2), because pretty that nobody can use is just decoration.
   filled: false
 - title: Team & Collaboration
+  seenAt:
+  - North
+  - Garaje
   tags:
   - Ways of Working
   - Requirements
@@ -38,12 +46,17 @@ skills:
   text: '**Coordinated UX teams.** **Rituals,** requirements and meetings that actually end in decisions, plus pitching to clients without (visibly) sweating.'
   filled: false
 - title: Design Systems
+  seenAt:
+  - Garaje
+  - North
   tags:
   - Tokens & Variables
   - Migration & Governance
   text: 'Tokens, variables, migrations and governance: the unglamorous plumbing that **keeps complex products consistent and**, dare I say, **sane.**'
   filled: false
 - title: AI & Tooling
+  seenAt:
+  - Garaje
   tags:
   - Claude & Figma MCP
   - AI-assisted Workflows
