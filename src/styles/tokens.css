@@ -47,6 +47,7 @@
   --font-display: 'Space Grotesk', system-ui, sans-serif;
   --font-body: 'Satoshi', system-ui, sans-serif;
   --font-mono: 'DM Mono', ui-monospace, monospace;
+  --font-ui: 'DM Sans', system-ui, sans-serif;   /* buttons, chips */
 
   --fs-display: 45px;   --lh-display: 1;    --ls-display: -0.02em;
   --fs-title: 32px;     --lh-title: 1.05;   --ls-title: -0.01em;
@@ -71,12 +72,15 @@
   --r-xs: 4px;     /* inputs, crossword cells */
   --r-sm: 8px;     /* chips, small tiles */
   --r-md: 12px;    /* cards, media */
-  --r-lg: 16px;    /* panels, frame */
+  --r-lg: 12px;    /* panels, frame */
   --r-pill: 999px; /* tags, buttons */
 
   /* ---------- Layout ---------- */
-  --frame: 8px;          /* black border around everything */
-  --tab-corner: 16px;    /* size of the inverted corners */
+  --frame: 12px;         /* black border around everything */
+  --tab-corner: 18px;    /* size of the inverted corners */
+  --r-tab: 18px;         /* rounded inner corner of a tab */
+  --r-card: 8px;         /* project cards */
+  --r-panel: 12px;       /* big panels */
 
   /* ---------- Motion ---------- */
   --dur-fast: 160ms;

@@ -29,8 +29,40 @@ const head = {
   pill: fields.text({ label: 'Pill', description: 'Coloured tag, top right of the card.' }),
 };
 
+const caseItems = fields.array(fields.object({ title: fields.text({ label: 'Title' }), text: rich('Text') }), { label: 'Items', itemLabel: (p) => p.fields.title.value });
+
 const blocks = fields.blocks(
   {
+    // ---- Client cases (Framer layout) ----
+    image: {
+      label: 'Case · Image',
+      schema: fields.object({ src: media('Image'), alt: fields.text({ label: 'Description (alt text)' }) }),
+    },
+    video: {
+      label: 'Case · Video',
+      schema: fields.object({ src: media('Video (.mp4)'), alt: fields.text({ label: 'Description' }) }),
+    },
+    split: {
+      label: 'Case · Image + text card',
+      schema: fields.object({
+        src: media('Image (leave empty for a full-width card)'),
+        alt: fields.text({ label: 'Description' }),
+        imageWidth: fields.integer({ label: 'Image width (%)', defaultValue: 45 }),
+        height: fields.integer({ label: 'Height on desktop (px)', defaultValue: 373 }),
+        label: fields.text({ label: 'Black tab on the image (optional)' }),
+        tag: fields.text({ label: 'Tag (top right of the card)' }),
+        style: fields.select({ label: 'Card style', options: [{ label: 'Compact (bold title + line)', value: 'compact' }, { label: 'Spaced (big titles)', value: 'spaced' }], defaultValue: 'compact' }),
+        items: caseItems,
+      }),
+    },
+    gallery: {
+      label: 'Case · Carousel',
+      schema: fields.object({
+        tab: fields.text({ label: 'Black tab (optional)' }),
+        slides: fields.array(fields.object({ src: media('Image'), alt: fields.text({ label: 'Description' }) }), { label: 'Slides', itemLabel: (p) => p.fields.alt.value || 'Slide' }),
+      }),
+    },
+    // ---- Explorations ----
     text: {
       label: 'Text',
       schema: fields.object({ ...head, body: rich('Text'), size: fields.select({ label: 'Size', options: [{ label: 'Body', value: 'body' }, { label: 'Lead (bigger)', value: 'lead' }], defaultValue: 'body' }) }),
@@ -133,6 +165,13 @@ export default config({
         cover: media('Cover (cards)', 'Vertical-friendly image, used on the work page and in Next.'),
         hero: media('Hero (left panel)', 'Image or video. Fills the sticky left panel.'),
         heroLabel: fields.text({ label: 'Hero label', description: 'Text in the black corner tab.' }),
+        heroStyle: fields.select({ label: 'Hero style (client cases)', options: [{ label: 'Fill the panel', value: 'cover' }, { label: 'Centred on a colour', value: 'contain' }, { label: 'Video inside a phone', value: 'phone' }], defaultValue: 'cover' }),
+        heroBg: fields.text({ label: 'Hero background colour', description: 'Hex, e.g. #103429' }),
+        heroFrame: media('Phone frame (phone style only)'),
+        display: fields.text({ label: 'Title as shown', description: 'Client cases. **bold** works, e.g. **fintech** app' }),
+        metaWidth: fields.integer({ label: 'Meta cards width (px)', defaultValue: 200 }),
+        nextLabel: fields.text({ label: 'Label when shown as Next' }),
+        nextImage: media('Image when shown as Next'),
         meta: fields.array(fields.object({ label: fields.text({ label: 'Label' }), value: fields.text({ label: 'Value' }) }), { label: 'Meta cards', itemLabel: (p) => `${p.fields.label.value}: ${p.fields.value.value}` }),
         links: fields.array(fields.object({ label: fields.text({ label: 'Label' }), url: fields.url({ label: 'URL' }) }), { label: 'Buttons', itemLabel: (p) => p.fields.label.value }),
         blocks,
@@ -161,7 +200,7 @@ export default config({
         grabTitle: fields.text({ label: 'Left title' }),
         hobbiesLabel: fields.text({ label: 'Hobbies label' }),
         intro: rich('About text'),
-        skills: fields.array(fields.object({ title: fields.text({ label: 'Title' }), tags: fields.array(fields.text({ label: 'Tag' }), { label: 'Tags', itemLabel: (p) => p.value }), text: rich('Text') }), { label: 'Skills', itemLabel: (p) => p.fields.title.value }),
+        skills: fields.array(fields.object({ title: fields.text({ label: 'Title' }), tags: fields.array(fields.text({ label: 'Tag' }), { label: 'Tags', itemLabel: (p) => p.value }), filled: fields.checkbox({ label: 'Filled tags (black)' }), text: rich('Text') }), { label: 'Skills', itemLabel: (p) => p.fields.title.value }),
         teach: fields.array(fields.object({ years: fields.text({ label: 'Years' }), title: fields.text({ label: 'Title' }), place: fields.text({ label: 'Place' }) }), { label: 'Learn & teach', itemLabel: (p) => p.fields.title.value }),
         languages: fields.array(fields.object({ name: fields.text({ label: 'Language' }), level: fields.text({ label: 'Level' }) }), { label: 'Languages', itemLabel: (p) => p.fields.name.value }),
         experience: fields.array(fields.object({ years: fields.text({ label: 'Years' }), role: fields.text({ label: 'Role' }), company: fields.text({ label: 'Company' }), tags: fields.array(fields.text({ label: 'Tag' }), { label: 'Tags', itemLabel: (p) => p.value }), text: rich('Text') }), { label: 'Work experience', itemLabel: (p) => `${p.fields.years.value} · ${p.fields.role.value}` }),

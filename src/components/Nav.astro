@@ -33,26 +33,19 @@ const isCurrent = (href: string) => path === href || path.startsWith(href + '/')
   .nav { position: fixed; top: var(--frame); left: var(--frame); z-index: 50; }
   .nav__tab {
     position: relative;
-    display: flex; align-items: center; gap: var(--s-6);
+    display: flex; align-items: center; gap: 36px; height: 42px;
     background: var(--ink); color: var(--paper);
-    padding: var(--s-3) var(--s-5) var(--s-3) var(--s-4);
-    border-bottom-right-radius: var(--r-lg);
+    padding: 0 12px 0 16px;
+    border-bottom-right-radius: 20px;
   }
   .nav__c { position: absolute; width: var(--tab-corner); height: var(--tab-corner); fill: var(--ink); }
   .nav__c--r { top: 0; right: calc(var(--tab-corner) * -1); }
   .nav__c--b { left: 0; bottom: calc(var(--tab-corner) * -1); }
-  .nav__logo { font-family: var(--font-display); font-weight: 500; font-size: 26px; line-height: 1; margin-top: -4px; }
-  ul { display: flex; gap: var(--s-5); list-style: none; margin: 0; padding: 0; }
-  .nav__link { font-family: var(--font-display); font-size: var(--fs-label); line-height: 1.2; display: block; position: relative; }
+  .nav__logo { font-family: var(--font-display); font-weight: 500; font-size: 32px; line-height: 0.8; margin-top: -2px; }
+  ul { display: flex; gap: 36px; list-style: none; margin: 0; padding: 0; }
+  .nav__link { font-family: var(--font-display); font-size: 16px; line-height: 1.2; letter-spacing: 0; display: block; position: relative; }
   .nav__roll { display: block; height: 1.2em; overflow: hidden; }
   .nav__roll span { display: block; transition: transform var(--dur-base) var(--ease-out); }
-  .nav__roll .i { font-style: italic; }
+  .nav__roll .i { font-family: var(--font-ui); font-size: 14px; }
   .nav__link:hover .nav__roll span { transform: translateY(-100%); }
-  .nav__link[aria-current='page']::after {
-    content: ''; position: absolute; left: 0; right: 0; bottom: -4px; height: 1.5px; background: currentColor; border-radius: 2px;
-  }
-  @media (max-width: 520px) {
-    .nav__tab { gap: var(--s-4); padding: var(--s-3) var(--s-4); }
-    ul { gap: var(--s-4); }
-  }
 </style>

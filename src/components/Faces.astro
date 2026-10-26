@@ -9,13 +9,13 @@
 import { BUBBLES } from '../data/bubbles';
 
 const faces = [
-  // x / y: desktop position · mx / my: mobile position
-  { id: 'bucket-hat', alt: 'Bucket hat', x: 40, y: 31, mx: 28, my: 20, quote: '“**Creative mess,** but beautifully organized.”' },
-  { id: 'messy-hair', alt: 'Messy hair', x: 60, y: 25, mx: 70, my: 16, quote: '“**Teamwork** is my coping mechanism.”' },
-  { id: 'cap', alt: 'Cap', x: 75, y: 49, mx: 76, my: 36, quote: '“**Research** is my love language.”' },
-  { id: 'long-hair', alt: 'Long hair', x: 65, y: 73, mx: 70, my: 80, quote: '“**Chaos?** not on my watch.”' },
-  { id: 'sprout', alt: 'Sprout', x: 42, y: 76, mx: 30, my: 84, quote: '“**Empathetic**, caffeinated, slightly existential.”' },
-  { id: 'bob', alt: 'Bob', x: 26, y: 57, mx: 24, my: 64, quote: '“I find peace in **naming layers.**”' },
+  // x / y / w: desktop centre and width (% of the panel) · mx / my / mw: mobile · ar: proportions
+  { id: 'bucket-hat', alt: 'Bucket hat', x: 39.8, y: 31.6, w: 7.77, mx: 22.1, my: 39.0, mw: 30.05, ar: '110/137', quote: '“**Creative mess,** but beautifully organized.”' },
+  { id: 'messy-hair', alt: 'Messy hair', x: 60.1, y: 25.7, w: 10.95, mx: 24.0, my: 64.8, mw: 30.6, ar: '155/157', quote: '“**Teamwork** is my coping mechanism.”' },
+  { id: 'cap', alt: 'Cap', x: 75.9, y: 48.9, w: 11.37, mx: 80.1, my: 39.6, mw: 32.24, ar: '161/164', quote: '“**Research** is my love language.”' },
+  { id: 'long-hair', alt: 'Long hair', x: 65.4, y: 72.6, w: 11.37, mx: 78.1, my: 73.0, mw: 32.24, ar: '161/164', quote: '“**Chaos?** not on my watch.”' },
+  { id: 'sprout', alt: 'Sprout', x: 42.0, y: 77.2, w: 12.08, mx: 68.0, my: 60.0, mw: 34.97, ar: '171/174', quote: '“**Empathetic**, caffeinated, slightly existential.”' },
+  { id: 'bob', alt: 'Bob', x: 25.5, y: 56.4, w: 8.62, mx: 50.1, my: 29.5, mw: 21.58, ar: '122/124', quote: '“I find peace in **naming layers.**”' },
 ];
 
 const bold = (s: string) => s.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
@@ -34,7 +34,7 @@ const items = faces.map((f, i) => {
   {items.map((f) => (
     <button
       class="face"
-      style={`--x:${f.x}%;--y:${f.y}%;--mx:${f.mx}%;--my:${f.my}%;--d:${f.i * 0.7}s;--ink:${f.b.ink};--light:${f.b.light};--bw:${f.b.shape.w};--bh:${f.b.shape.h};--flip-d:${f.flipD};--flip-m:${f.flipM}`}
+      style={`--x:${f.x}%;--y:${f.y}%;--w:${f.w}%;--mx:${f.mx}%;--my:${f.my}%;--mw:${f.mw}%;--ar:${f.ar};--d:${f.i * 0.7}s;--ink:${f.b.ink};--light:${f.b.light};--bw:${f.b.shape.w};--bh:${f.b.shape.h};--flip-d:${f.flipD};--flip-m:${f.flipM}`}
       data-open-d={f.openD}
       data-open-m={f.openM}
       aria-label={`${f.alt}: ${f.quote.replace(/\*\*/g, '')}`}
@@ -78,7 +78,7 @@ const items = faces.map((f, i) => {
   .faces { position: absolute; inset: 0; }
   .face {
     all: unset; cursor: pointer; position: absolute; left: var(--x); top: var(--y);
-    width: clamp(84px, 9vw, 128px); aspect-ratio: 1; translate: -50% -50%;
+    width: var(--w); aspect-ratio: var(--ar); translate: -50% -50%;
     animation: float 6s var(--ease-in-out) var(--d) infinite alternate;
     --open: var(--open-d); --flip: var(--flip-d);
   }
@@ -87,7 +87,7 @@ const items = faces.map((f, i) => {
     transition: scale var(--dur-base) var(--ease-in-out), rotate var(--dur-base) var(--ease-in-out);
   }
   .face__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
-  .face__line { mix-blend-mode: multiply; transition: opacity var(--dur-fast) var(--ease-out); }
+  .face__line { transition: opacity var(--dur-fast) var(--ease-out); }
   .face__color { opacity: 0; transition: opacity var(--dur-fast) var(--ease-out); }
 
   /* The bubble: dark drawn shape with its tail, light shape peeking under it. */
@@ -131,7 +131,7 @@ const items = faces.map((f, i) => {
     .bubble { transition: opacity var(--dur-fast) linear; scale: 1; rotate: 0deg; }
   }
   @media (max-width: 760px) {
-    .face { width: 84px; left: var(--mx); top: var(--my); --flip: var(--flip-m); }
+    .face { width: var(--mw); left: var(--mx); top: var(--my); --flip: var(--flip-m); }
     .bubble { width: calc(var(--bw) * 0.78px); top: 74%; }
     .bubble__text { font-size: 11.5px; }
     .face[data-open-m='right'] .bubble { left: 40%; right: auto; transform-origin: 0 0; }

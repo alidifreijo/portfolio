@@ -1,0 +1,77 @@
+---
+/**
+ * CaseBlocks · the right column of a client case.
+ * Block types (edited in Keystatic):
+ *  - image:    one image, full width, natural proportions
+ *  - video:    one looping video, full width, natural proportions
+ *  - split:    image (optional) + text card with a tag and items
+ *  - gallery:  carousel of images
+ */
+import Tab from '../Tab.astro';
+import Carousel from '../Carousel.astro';
+import { rich } from '../../lib/utils';
+interface Props { blocks: { discriminant: string; value: any }[] }
+const { blocks } = Astro.props;
+const poster = (s: string) => s.replace(/\.mp4$/i, '.poster.jpg');
+---
+{blocks.map(({ discriminant: t, value: v }) => (
+  t === 'image' ? (
+    <figure class="cb cb-media"><img src={v.src} alt={v.alt || ''} loading="lazy" decoding="async" /></figure>
+  ) : t === 'video' ? (
+    <figure class="cb cb-media"><video src={v.src} poster={poster(v.src)} muted loop playsinline preload="metadata" data-autoplay aria-label={v.alt || undefined}></video></figure>
+  ) : t === 'gallery' ? (
+    <div class="cb cb-gallery"><Carousel slides={(v.slides || []).map((s: any) => ({ src: s.src, alt: s.alt }))} tab={v.tab || undefined} button={false} /></div>
+  ) : t === 'split' ? (
+    <div class:list={['cb cb-split', { 'cb-split--solo': !v.src }]} style={`--iw:${v.imageWidth || 45}%;--h:${v.height || 373}px`}>
+      {v.src && (
+        <figure class="cb-split__img">
+          <img src={v.src} alt={v.alt || ''} loading="lazy" />
+          {v.label && <Tab corner="top-right"><span class="t-body">{v.label}</span></Tab>}
+        </figure>
+      )}
+      <div class:list={['cb-card', `cb-card--${v.style || 'compact'}`]}>
+        {v.tag && <span class="cb-card__tag">{v.tag}</span>}
+        <div class="cb-card__items">
+          {(v.items || []).map((it: any) => (
+            v.style === 'spaced' ? (
+              <div class="cb-card__it"><h3>{it.title}</h3><p set:html={rich(it.text, false)} /></div>
+            ) : (
+              <p class="cb-card__it"><strong>{it.title}</strong><br /><Fragment set:html={rich(it.text, false)} /></p>
+            )
+          ))}
+        </div>
+      </div>
+    </div>
+  ) : null
+))}
+
+<style>
+  .cb-media { margin: 0; border-radius: var(--r-card); overflow: hidden; background: #111212; }
+  .cb-media img, .cb-media video { width: 100%; height: auto; }
+  .cb-gallery { aspect-ratio: 554 / 618; }
+
+  .cb-split { display: grid; grid-template-columns: var(--iw) minmax(0, 1fr); gap: 8px; min-height: var(--h); }
+  .cb-split--solo { grid-template-columns: 1fr; }
+  .cb-split__img { position: relative; margin: 0; border-radius: var(--r-card); overflow: hidden; background: #111212; }
+  .cb-split__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .cb-split__img :global(.tab) { top: 0; right: 0; }
+
+  .cb-card { background: var(--paper); color: var(--ink); border-radius: var(--r-card); padding: 24px; display: flex; flex-direction: column; }
+  .cb-card__tag {
+    align-self: flex-end; height: 30px; display: inline-flex; align-items: center; padding: 0 16px;
+    border-radius: 200px; background: var(--acc); color: var(--on-acc);
+    font-size: 12px; font-weight: 700; line-height: 1;
+  }
+  .cb-card--compact .cb-card__items { display: flex; flex-direction: column; gap: 10px; margin-top: 25px; }
+  .cb-card--compact .cb-card__it { font-size: 12px; line-height: 19.2px; letter-spacing: 0.6px; }
+  .cb-card--spaced .cb-card__items { display: flex; flex-direction: column; gap: 18px; }
+  .cb-card--spaced h3 { font-family: var(--font-display); font-weight: 700; font-size: 16px; line-height: 19.2px; letter-spacing: 0.8px; }
+  .cb-card--spaced p { margin-top: 18px; font-size: 12px; line-height: 19.2px; letter-spacing: 0.6px; max-width: 188px; }
+  .cb-split--solo .cb-card--spaced p { max-width: 46ch; }
+
+  @media (max-width: 1199px) {
+    .cb-split { grid-template-columns: 1fr; min-height: 0; }
+    .cb-split__img { aspect-ratio: 366 / 483; }
+    .cb-card--spaced p { max-width: none; }
+  }
+</style>

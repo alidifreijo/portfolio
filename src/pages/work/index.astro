@@ -1,63 +1,52 @@
 ---
 /**
- * Work index · sticky preview on the left that follows the hovered
- * project, intro and project cards on the right.
+ * Work index · carousel of featured projects on the left, intro and the
+ * project cards on the right (2 × 2), explorations underneath.
  */
 import Base from '../../layouts/Base.astro';
 import Tab from '../../components/Tab.astro';
+import Carousel from '../../components/Carousel.astro';
 import { getEntry } from 'astro:content';
 import { getProjects, projectUrl } from '../../lib/projects';
-import { isVideo } from '../../lib/utils';
 const w = (await getEntry('pages', 'work'))!.data;
 const projects = await getProjects();
 const client = projects.filter((p) => p.data.kind === 'client');
 const explorations = projects.filter((p) => p.data.kind === 'exploration');
-const first = client[0];
+const label = (p: (typeof projects)[number]) => (p.id === 'cupra' ? 'seat | cupra' : p.data.title);
 ---
 <Base title="work">
-  <div class="split" style="--left: 58%">
-    <div class="split-left">
-      <div class="preview" data-preview>
-        {projects.map((p, i) => (
-          <div class:list={['preview__item', { 'is-on': i === 0 }]} data-id={p.id} style={`background: var(--acc-${p.data.accent})`}>
-            {isVideo(p.data.hero)
-              ? <video src={p.data.hero} poster={p.data.hero.replace(/\.mp4$/i, '.poster.jpg')} muted loop playsinline preload="none"></video>
-              : <img src={p.data.hero} alt="" loading={i === 0 ? 'eager' : 'lazy'} />}
-          </div>
-        ))}
-        <Tab corner="bottom-right"><span class="t-body" data-preview-label>{first?.data.heroLabel || first?.data.title}</span></Tab>
-      </div>
+  <div class="wk">
+    <div class="wk__left">
+      <Carousel slides={w.slides || []} tab="overview projects" />
     </div>
 
-    <div class="split-right">
-      <section class="intro" data-reveal>
-        <h1 class="t-display">{w.title}</h1>
-        <p class="t-label muted">{w.subtitle}</p>
-        <p class="t-body intro__p">{w.intro}</p>
-      </section>
+    <div class="wk__right">
+      <a class="intro" href="/about">
+        <h1 class="intro__h">{w.title}</h1>
+        <p class="intro__sub">{w.subtitle}</p>
+        <p class="intro__p">{w.intro}</p>
+      </a>
 
       <div class="grid">
-        {client.map((p, i) => (
-          <a href={projectUrl(p)} class="pcard" data-reveal style={`--i:${i}`} data-hover={p.id} data-label={p.data.heroLabel || p.data.title}>
+        {client.map((p) => (
+          <a href={projectUrl(p)} class="pcard">
             <img src={p.data.cover} alt="" loading="lazy" />
-            <Tab corner="top-left"><span class="t-body">{p.data.title}</span></Tab>
-            <span class="pcard__teaser t-small">{p.data.teaser}</span>
+            <Tab corner="top-left"><span class="t-body">{label(p)}</span></Tab>
           </a>
         ))}
       </div>
 
       {explorations.length > 0 && (
         <>
-          <section class="intro intro--ink" data-reveal>
-            <h2 class="t-title">{w.explorationsTitle}</h2>
-            <p class="t-body">{w.explorationsIntro}</p>
+          <section class="intro intro--ink">
+            <h2 class="intro__h intro__h--s">{w.explorationsTitle}</h2>
+            <p class="intro__p">{w.explorationsIntro}</p>
           </section>
           <div class="grid">
-            {explorations.map((p, i) => (
-              <a href={projectUrl(p)} class="pcard" data-reveal style={`--i:${i}`} data-hover={p.id} data-label={p.data.heroLabel || p.data.title}>
+            {explorations.map((p) => (
+              <a href={projectUrl(p)} class="pcard">
                 <img src={p.data.cover} alt="" loading="lazy" />
                 <Tab corner="top-left"><span class="t-body">{p.data.title}</span></Tab>
-                <span class="pcard__teaser t-small">{p.data.teaser}</span>
               </a>
             ))}
           </div>
@@ -67,43 +56,27 @@ const first = client[0];
   </div>
 </Base>
 
-<script>
-  const items = document.querySelectorAll<HTMLElement>('.preview__item');
-  const label = document.querySelector<HTMLElement>('[data-preview-label]');
-  const show = (id: string, text: string) => {
-    items.forEach((it) => {
-      const on = it.dataset.id === id;
-      it.classList.toggle('is-on', on);
-      const v = it.querySelector('video');
-      if (v) on ? v.play().catch(() => {}) : v.pause();
-    });
-    if (label) label.textContent = text;
-  };
-  document.querySelectorAll<HTMLElement>('[data-hover]').forEach((a) => {
-    a.addEventListener('mouseenter', () => show(a.dataset.hover!, a.dataset.label!));
-    a.addEventListener('focus', () => show(a.dataset.hover!, a.dataset.label!));
-  });
-  document.querySelector<HTMLVideoElement>('.preview__item.is-on video')?.play().catch(() => {});
-</script>
-
 <style>
-  .preview { position: relative; height: 100%; border-radius: var(--r-lg); overflow: hidden; background: #111212; }
-  .preview__item { position: absolute; inset: 0; opacity: 0; transition: opacity var(--dur-slow) var(--ease-out); }
-  .preview__item.is-on { opacity: 1; }
-  .preview__item img, .preview__item video { width: 100%; height: 100%; object-fit: cover; }
-  .intro { background: var(--paper); border-radius: var(--r-lg); padding: var(--s-6); display: flex; flex-direction: column; gap: var(--s-1); }
-  .intro__p { margin-top: var(--s-5); max-width: 52ch; }
-  .intro--ink { background: #111212; color: var(--paper); margin-top: var(--s-5); gap: var(--s-3); }
-  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2); }
-  .pcard { position: relative; display: block; aspect-ratio: 4 / 5; border-radius: var(--r-lg); overflow: hidden; background: #111212; }
+  .wk { display: grid; grid-template-columns: minmax(0, 850fr) minmax(0, 554fr); gap: 12px; align-items: start; }
+  .wk__left { position: sticky; top: var(--frame); height: calc(100vh - var(--frame) * 2); }
+  .wk__right { display: flex; flex-direction: column; gap: 12px; }
+  .intro { display: block; background: var(--paper); border-radius: var(--r-panel); padding: 40px 40px 40px; min-height: 245px; }
+  .intro__h { font-family: var(--font-display); font-weight: 700; font-size: 45px; line-height: 36px; letter-spacing: 2px; }
+  .intro__h--s { font-size: 32px; line-height: 1; letter-spacing: 1px; }
+  .intro__sub { margin-top: 2px; font-size: 18px; font-weight: 500; line-height: 18px; letter-spacing: 1px; color: rgba(14, 16, 17, 0.6); }
+  .intro__p { margin-top: 42px; font-size: 14px; line-height: 22.4px; letter-spacing: 1px; max-width: 474px; }
+  .intro--ink { background: #111212; color: var(--paper); min-height: 0; margin-top: 12px; }
+  .intro--ink .intro__p { margin-top: 16px; }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .pcard { position: relative; display: block; aspect-ratio: 271 / 362; border-radius: var(--r-panel); overflow: hidden; background: #111212; }
   .pcard img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease-out); }
   .pcard:hover img { transform: scale(1.04); }
-  .pcard__teaser { position: absolute; left: var(--s-3); right: var(--s-3); bottom: var(--s-3); background: rgba(7, 7, 7, 0.78); color: var(--paper); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); font-weight: 400; opacity: 0; transform: translateY(6px); transition: opacity var(--dur-base), transform var(--dur-base) var(--ease-out); backdrop-filter: blur(6px); }
-  .pcard:hover .pcard__teaser, .pcard:focus-visible .pcard__teaser { opacity: 1; transform: none; }
-  @media (max-width: 900px) {
-    .split-left { display: none; }
-    .intro { padding-top: 72px; }
-    .pcard__teaser { opacity: 1; transform: none; }
+  @media (max-width: 1199px) {
+    .wk { grid-template-columns: 1fr; }
+    .wk__left { position: relative; top: 0; height: 420px; }
+    .intro { padding: 32px; min-height: 280px; }
+    .intro__p { margin-top: 48px; }
+    .intro--ink { min-height: 0; }
+    .pcard { aspect-ratio: 177 / 236; }
   }
-  @media (max-width: 520px) { .grid { grid-template-columns: 1fr; } }
 </style>

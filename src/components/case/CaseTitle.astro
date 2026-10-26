@@ -1,0 +1,43 @@
+---
+/**
+ * CaseTitle · title card in the project colour plus the meta cards.
+ * Stays pinned to the top of the right column while it scrolls.
+ * `display` supports **bold** (e.g. "**fintech** app").
+ */
+import { rich } from '../../lib/utils';
+interface Props {
+  display: string;
+  intro: string;
+  meta: { label: string; value: string }[];
+  metaWidth?: number;
+}
+const { display, intro, meta, metaWidth = 200 } = Astro.props;
+---
+<header class="ct" style={`--mw:${metaWidth}px`}>
+  <div class="ct__card ct__main">
+    <h1 class="ct__h" set:html={rich(display, false)} />
+    <div class="ct__intro" set:html={rich(intro, false)} />
+  </div>
+  <dl class="ct__meta">
+    {meta.map((m) => (
+      <div class="ct__card ct__m"><dt>{m.label}</dt><dd>{m.value}</dd></div>
+    ))}
+  </dl>
+</header>
+
+<style>
+  .ct { display: grid; grid-template-columns: minmax(0, 1fr) var(--mw); gap: 8px; }
+  .ct__card { background: var(--acc); color: var(--on-acc); border-radius: var(--r-card); }
+  .ct__main { padding: 24px; }
+  .ct__h { font-family: var(--font-display); font-weight: 400; font-size: 45px; line-height: 0.78; letter-spacing: 0; }
+  .ct__h :global(strong) { font-weight: 700; }
+  .ct__intro { margin-top: 18px; font-size: 12px; line-height: 19.2px; letter-spacing: 0.6px; }
+  .ct__meta { display: flex; flex-direction: column; gap: 8px; margin: 0; }
+  .ct__m { flex: 1; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 0 16px; font-size: 12px; line-height: 1; }
+  .ct__m dd { margin: 0; font-weight: 700; text-align: right; white-space: nowrap; }
+  @media (max-width: 1199px) {
+    .ct { grid-template-columns: 1fr; }
+    .ct__m { min-height: 43px; }
+    .ct__main { padding-top: 69px; }
+  }
+</style>

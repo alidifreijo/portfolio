@@ -60,15 +60,16 @@ docs/GUIA.md            ← esta guía
 
 ## 3. Plantillas (qué bloques usar y en qué orden)
 
-### Caso de cliente (NDA)
-Corto y honesto. Visuales recreados o simplificados.
+### Caso de cliente (diseño original de Framer)
+Panel grande fijo a la izquierda, título fijo arriba a la derecha y tarjetas debajo. El bloque *Next* sale solo (siguiente proyecto de cliente por *Order*).
 
-1. *Image or video*: una imagen de contexto.
-2. *List* · **Role responsibilities**: qué hiciste tú, 3 puntos.
-3. *Stats* (si hay cifras).
-4. *Two images or videos* / *Image or video*: galería.
-5. *List* · **Key decisions**: 3 decisiones, con su porqué.
-6. *Text* · **Outcome**: resultado o aprendizaje.
+- **Cabecera**: *Title as shown* (admite `**negrita**`, p. ej. `**fintech** app`), intro, 3 meta cards y *Meta cards width* (200 por defecto).
+- **Panel izquierdo**: *Hero* + *Hero style* (*Fill the panel*, *Centred on a colour* o *Video inside a phone*) + *Hero background colour* + *Phone frame* si es un móvil.
+- **Bloques** (en este orden suelen funcionar bien):
+  1. *Case · Image* o *Case · Video* a todo el ancho. Mantienen su proporción.
+  2. *Case · Image + text card*: foto + tarjeta con tag y puntos. Sin foto, la tarjeta ocupa todo el ancho. Estilo *Compact* (título en negrita + línea) o *Spaced* (títulos grandes).
+  3. *Case · Carousel*: galería con flechas.
+- **Cómo aparece como Next**: *Label when shown as Next*, *Image when shown as Next* y el *Teaser*.
 
 ### Exploración (proyectos propios)
 El modelo es Cut Scenes.
@@ -93,6 +94,9 @@ El modelo es Cut Scenes.
 
 | Bloque | Para qué |
 |---|---|
+| **Case · Image / Video** | Clientes. Una pieza a todo el ancho de la columna. |
+| **Case · Image + text card** | Clientes. Foto + tarjeta con tag (roles, requisitos, arquetipo). |
+| **Case · Carousel** | Clientes. Galería con flechas y puntos. |
 | **Text** | Un párrafo con eyebrow y pill. Tamaño *Body* o *Lead*. |
 | **Quote** | La frase que resume la dirección, con chips. |
 | **List** | Títulos + texto, en 1 a 3 columnas (roles, decisiones, necesidades). |
@@ -146,5 +150,6 @@ En local, Keystatic guarda directamente en tus archivos. Después haz commit y p
 
 - **Vercel → Import project → `alidifreijo/portfolio`**. No hay que tocar nada más: detecta Astro solo.
 - Keystatic en la web publicada necesita una **GitHub App**. La primera vez que entres en `/keystatic` en producción, el asistente te guía. Al terminar, añade en Vercel (*Settings → Environment Variables*) las variables que te indique.
-- Las URLs antiguas de Framer (`/cupra`, `/fintech`, `/bank-platform`, `/projecthmi`) redirigen solas a las nuevas (`redirects` en `astro.config.mjs`).
+- Las URLs antiguas de Framer (`/cupra`, `/fintech`, `/bank-platform`, `/projecthmi`) redirigen solas a `/work/…` (`redirects` en `astro.config.mjs`).
+- Las imágenes y vídeos traídos de Framer están en `public/images/f/`.
 - Dominio propio: *Vercel → Settings → Domains*.

@@ -1,0 +1,102 @@
+---
+/**
+ * Carousel · full-bleed slideshow with arrows, dots and an optional
+ * "View Project" button per slide. Used on /work (left panel) and in the
+ * Cupra case. Swipe works on touch.
+ *
+ * <Carousel slides={[{ src, href }]} tab="overview projects" />
+ */
+import Tab from './Tab.astro';
+interface Slide { src: string; alt?: string; href?: string }
+interface Props {
+  slides: Slide[];
+  tab?: string;          // black tab, bottom right
+  button?: boolean;      // "View Project" on slides that have an href
+  autoplay?: number;     // ms, 0 = off
+  class?: string;
+}
+const { slides, tab, button = true, autoplay = 5000, class: cls = '' } = Astro.props;
+---
+<div class:list={['car', cls]} data-carousel data-autoplay={autoplay}>
+  <div class="car__track">
+    {slides.map((s, i) => (
+      <div class="car__slide" aria-hidden={i !== 0 ? 'true' : undefined}>
+        <img src={s.src} alt={s.alt || ''} loading={i === 0 ? 'eager' : 'lazy'} draggable="false" />
+        {button && s.href && <a class="car__btn" href={s.href} tabindex={i !== 0 ? -1 : undefined}>View Project <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9 9 3M4 3h5v5" /></svg></a>}
+      </div>
+    ))}
+  </div>
+  {slides.length > 1 && (
+    <>
+      <button class="car__arrow car__arrow--l" aria-label="Previous" data-prev><img src="/images/f/ui/arrow-left.svg" alt="" /></button>
+      <button class="car__arrow car__arrow--r" aria-label="Next" data-next><img src="/images/f/ui/arrow-right.svg" alt="" /></button>
+      <div class="car__dots">{slides.map((_, i) => <button class:list={['car__dot', { 'is-on': i === 0 }]} aria-label={`Slide ${i + 1}`} data-dot={i}></button>)}</div>
+    </>
+  )}
+  {tab && <Tab corner="bottom-right"><span class="t-body">{tab}</span></Tab>}
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((root) => {
+    const track = root.querySelector<HTMLElement>('.car__track')!;
+    const slides = [...root.querySelectorAll<HTMLElement>('.car__slide')];
+    const dots = [...root.querySelectorAll<HTMLElement>('[data-dot]')];
+    const n = slides.length;
+    let i = 0, timer = 0;
+    const go = (k: number) => {
+      i = (k + n) % n;
+      track.style.transform = `translateX(${-100 * i}%)`;
+      slides.forEach((s, j) => { s.toggleAttribute('aria-hidden', j !== i); s.querySelector('a')?.setAttribute('tabindex', j === i ? '0' : '-1'); });
+      dots.forEach((d, j) => d.classList.toggle('is-on', j === i));
+    };
+    const ms = Number(root.dataset.autoplay || 0);
+    const play = () => { if (ms && n > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches) { clearInterval(timer); timer = window.setInterval(() => go(i + 1), ms); } };
+    const stop = () => clearInterval(timer);
+    root.querySelector('[data-prev]')?.addEventListener('click', () => { go(i - 1); play(); });
+    root.querySelector('[data-next]')?.addEventListener('click', () => { go(i + 1); play(); });
+    dots.forEach((d) => d.addEventListener('click', () => { go(Number(d.dataset.dot)); play(); }));
+    root.addEventListener('mouseenter', stop); root.addEventListener('mouseleave', play);
+    let x0: number | null = null;
+    root.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; stop(); }, { passive: true });
+    root.addEventListener('touchend', (e) => {
+      if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null;
+      if (Math.abs(dx) > 40) go(i + (dx < 0 ? 1 : -1)); play();
+    });
+    play();
+  });
+</script>
+
+<style>
+  .car { position: relative; overflow: hidden; border-radius: var(--r-panel); background: #111212; height: 100%; }
+  .car__track { display: flex; height: 100%; transition: transform 700ms var(--ease-out); }
+  .car__slide { position: relative; flex: 0 0 100%; height: 100%; }
+  .car__slide img { width: 100%; height: 100%; object-fit: cover; user-select: none; }
+  .car__arrow {
+    all: unset; cursor: pointer; position: absolute; top: 50%; translate: 0 -50%; width: 40px; height: 40px; z-index: 2; background: var(--ink); border-radius: 8px;
+    transition: scale var(--dur-fast) var(--ease-out);
+  }
+  .car__arrow img { width: 100%; height: 100%; }
+  .car__arrow:hover { scale: 1.08; }
+  .car__arrow--l { left: 32px; }
+  .car__arrow--r { right: 32px; }
+  .car__dots {
+    position: absolute; left: 50%; bottom: 30px; translate: -50% 0; z-index: 2;
+    display: flex; gap: 10px; padding: 10px 14px; border-radius: 50px; background: rgba(0, 0, 0, 0.2);
+  }
+  .car__dot { all: unset; cursor: pointer; width: 8px; height: 8px; border-radius: 50%; background: #fff; opacity: 0.5; transition: opacity var(--dur-fast); }
+  .car__dot.is-on { opacity: 1; }
+  .car__btn {
+    position: absolute; left: 32px; bottom: 32px; z-index: 2;
+    display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px;
+    background: var(--paper); color: var(--ink); border-radius: 10px;
+    font-family: var(--font-ui); font-size: 14px; line-height: 1;
+    transition: background var(--dur-fast);
+  }
+  .car__btn svg { width: 11px; height: 11px; fill: none; stroke: currentColor; stroke-width: 1.2; }
+  .car__btn:hover { background: #fff; }
+  @media (max-width: 809px) {
+    .car__arrow { width: 30px; height: 30px; }
+    .car__arrow--l { left: 30px; }
+    .car__arrow--r { right: 30px; }
+  }
+</style>

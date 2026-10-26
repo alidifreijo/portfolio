@@ -3,45 +3,55 @@ kind: client
 status: published
 order: 4
 accent: sky
+display: '**hmi** display'
 lead: A fully digital cockpit for an electric Cupra.
-intro: User interface views for a **fully digital cockpit**. The design removes every analog element and is built to reflect the bold, dynamic identity of the brand.
-teaser: A fully digital cockpit concept for an electric vehicle.
-cover: /images/projects/hmi/card.jpg
-hero: /images/projects/hmi/cluster.mp4
+intro: This project focuses on creating one or more user interface views for a **fully digital cockpit of a Cupra electric vehicle**. The design eliminates all analog elements and is crafted to reflect the bold and dynamic identity of the Cupra brand.
+teaser: HMI automotive infotainment for driving experiences.
+cover: /images/f/work/cover-hmi.png
+hero: /images/f/hmi/hero.mp4
+heroStyle: contain
+heroBg: '#0A1D2A'
 heroLabel: hmi display
+nextLabel: hmi display
+nextImage: /images/f/work/cover-hmi.png
 meta:
 - label: Year
   value: '2023'
 - label: Project
-  value: Digital cockpit
+  value: Digital Cockpit
 - label: Service
   value: UX/UI
 links: []
 blocks:
-- discriminant: media
+- discriminant: image
   value:
-    src: /images/projects/hmi/cockpit.jpg
-    alt: Digital cockpit in context
-    ratio: 16/10
-- discriminant: list
+    src: /images/f/hmi/cockpit.jpg
+    alt: Cupra cockpit with the digital display
+- discriminant: video
   value:
-    eyebrow: Who it’s for
-    pill: User archetype
-    columns: 1
+    src: /images/f/hmi/poster.mp4
+    alt: ''
+- discriminant: video
+  value:
+    src: /images/f/hmi/shape.mp4
+    alt: ''
+- discriminant: split
+  value:
+    src: ''
+    alt: ''
+    imageWidth: 45
+    height: 0
+    label: ''
+    tag: User Archetype
+    style: compact
     items:
-    - title: Tech-smart
+    - title: Tech-Smart
       text: Confident with digital tools and expects a smooth, modern interface.
-    - title: Efficiency-focused
-      text: Wants quick, clear information with minimal distractions.
-    - title: Design-oriented
+    - title: Efficiency-Focused
+      text: Wants quick, clear info with minimal distractions.
+    - title: Design-Oriented
       text: Appreciates sleek, stylish design that matches Cupra’s bold aesthetic.
-    - title: Trend-aware
-      text: Follows EV and connected-car trends; expects cutting-edge features.
-    - title: Customisation-driven
-      text: Enjoys personalising settings to match her preferences.
-- discriminant: media
-  value:
-    src: /images/projects/hmi/night-day.mp4
-    alt: Cluster in night and day modes
-    ratio: 16/10
-    caption: Night and day modes
+    - title: Trend-Aware
+      text: Follows EV and connected car trends; expects cutting-edge features.
+    - title: Customization-Driven
+      text: Enjoys personalizing settings to match her preferences.

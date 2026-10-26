@@ -1,36 +1,74 @@
 ---
 /**
- * Project template · used by every client case and exploration.
- * Left: sticky hero media. Right: header + content blocks + next project.
+ * Project template.
+ * Client cases (kind: client) use the original Framer layout: hero panel
+ * pinned on the left, title pinned on top of the right column, cards below,
+ * then the next project. Explorations keep the long-form block layout.
  */
 import Base from '../../layouts/Base.astro';
 import Media from '../../components/Media.astro';
 import ProjectHeader from '../../components/ProjectHeader.astro';
 import Blocks from '../../components/Blocks.astro';
 import NextProject from '../../components/NextProject.astro';
+import CaseHero from '../../components/case/CaseHero.astro';
+import CaseTitle from '../../components/case/CaseTitle.astro';
+import CaseBlocks from '../../components/case/CaseBlocks.astro';
+import CaseNext from '../../components/case/CaseNext.astro';
 import { getProjects, projectUrl } from '../../lib/projects';
 import { accentVars } from '../../lib/utils';
 
 export async function getStaticPaths() {
   const projects = await getProjects();
-  return projects.map((p, i) => ({
-    params: { slug: p.id },
-    props: { project: p, next: projects[(i + 1) % projects.length] },
-  }));
+  const client = projects.filter((p) => p.data.kind === 'client');
+  return projects.map((p, i) => {
+    // Client cases loop among themselves; explorations follow the full order.
+    const pool = p.data.kind === 'client' ? client : projects;
+    const k = pool.indexOf(p);
+    return { params: { slug: p.id }, props: { project: p, next: pool[(k + 1) % pool.length] } };
+  });
 }
 
 const { project, next } = Astro.props;
 const d = project.data;
+const n = next.data;
 ---
-<Base title={d.title} description={`${d.lead} ${d.teaser}`} image={d.cover}>
-  <div class="split" style={accentVars(d.accent)}>
-    <div class="split-left">
-      <Media src={d.hero} alt={d.title} label={d.heroLabel || d.title} eager bg="#111212" />
+<Base title={d.title} description={d.teaser} image={d.cover}>
+  {d.kind === 'client' ? (
+    <div class="case" style={accentVars(d.accent)}>
+      <div class="case__left">
+        <CaseHero src={d.hero} style={d.heroStyle} bg={d.heroBg || undefined} frame={d.heroFrame || undefined} label={d.heroLabel || d.title} />
+      </div>
+      <div class="case__right">
+        <div class="case__title"><CaseTitle display={d.display || d.title} intro={d.intro} meta={d.meta} metaWidth={d.metaWidth || 200} /></div>
+        <div class="case__blocks">
+          <CaseBlocks blocks={d.blocks} />
+          <CaseNext href={projectUrl(next)} label={n.nextLabel || n.heroLabel || n.title} line={n.teaser} image={n.nextImage || n.cover} />
+        </div>
+      </div>
     </div>
-    <div class="split-right">
-      <ProjectHeader title={d.title} lead={d.lead} intro={d.intro} meta={d.meta} links={d.links} />
-      <Blocks blocks={d.blocks} />
-      <NextProject href={projectUrl(next)} title={next.data.title} line={next.data.teaser} image={next.data.cover} accent={next.data.accent} />
+  ) : (
+    <div class="split" style={accentVars(d.accent)}>
+      <div class="split-left">
+        <Media src={d.hero} alt={d.title} label={d.heroLabel || d.title} eager bg="#111212" />
+      </div>
+      <div class="split-right">
+        <ProjectHeader title={d.title} lead={d.lead} intro={d.intro} meta={d.meta} links={d.links} />
+        <Blocks blocks={d.blocks} />
+        <NextProject href={projectUrl(next)} title={n.title} line={n.teaser} image={n.cover} accent={n.accent} />
+      </div>
     </div>
-  </div>
+  )}
 </Base>
+
+<style>
+  .case { display: grid; grid-template-columns: minmax(0, 850fr) minmax(0, 554fr); gap: 12px; align-items: start; }
+  .case__left { position: sticky; top: var(--frame); height: calc(100vh - var(--frame) * 2); }
+  .case__title { position: sticky; top: 0; z-index: 5; background: var(--ink); margin-top: calc(var(--frame) * -1); padding: var(--frame) 0 12px; }
+  .case__blocks { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+  @media (max-width: 1199px) {
+    .case { grid-template-columns: 1fr; }
+    .case__left { display: none; }
+    .case__title { position: relative; top: 0; margin-top: 0; padding: 0 0 8px; }
+    .case__blocks { margin-top: 0; }
+  }
+</style>

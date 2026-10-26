@@ -16,8 +16,10 @@ export default defineConfig({
   // Old Framer URLs keep working.
   redirects: {
     '/cupra': '/work/cupra',
-    '/fintech': '/work/south',
-    '/bank-platform': '/work/monexa',
+    '/fintech': '/work/fintech',
+    '/bank-platform': '/work/bank-platform',
     '/projecthmi': '/work/hmi',
+    '/work/south': '/work/fintech',
+    '/work/monexa': '/work/bank-platform',
   },
 });

@@ -1,91 +1,136 @@
 ---
+/**
+ * About · three columns, each the height of the screen. The two cards
+ * scroll on their own. On the left, the hobby pile you can drag around
+ * (with an ice cream following the cursor).
+ */
 import Base from '../layouts/Base.astro';
 import HobbyPile from '../components/HobbyPile.astro';
-import Tag from '../components/Tag.astro';
 import { getEntry } from 'astro:content';
 import { rich } from '../lib/utils';
 const a = (await getEntry('pages', 'about'))!.data;
 ---
 <Base title="about">
   <div class="about">
-    <aside class="about__left">
-      <h1 class="t-display about__grab">{a.grabTitle}</h1>
+    <aside class="ab-left" data-cursor-zone>
       <HobbyPile />
-      <p class="t-title about__hob">{a.hobbiesLabel}</p>
+      <h1 class="ab-left__h">{a.grabTitle.replace(' know', '\nknow')}</h1>
+      <p class="ab-left__hob">{a.hobbiesLabel}</p>
     </aside>
 
-    <section class="about__col about__col--paper">
-      <h2 class="t-display">{a.title}</h2>
-      <div class="t-body rich" set:html={rich(a.intro)} />
+    <section class="ab-card ab-card--paper">
+      <h2 class="ab-h1">{a.title}</h2>
+      <div class="ab-text rich" set:html={rich(a.intro)} />
 
-      <h2 class="t-title sec">skills</h2>
-      <div class="skills">
-        {a.skills.map((s: any, i: number) => (
-          <div class="skill" data-reveal style={`--i:${i}`}>
-            <h3 class="t-label skill__t">{s.title}</h3>
-            <div class="tags">{s.tags.map((t: string) => <Tag variant="ink" size="sm">{t}</Tag>)}</div>
-            <div class="t-body rich" set:html={rich(s.text)} />
+      <h2 class="ab-h2">skills</h2>
+      <div class="ab-skills">
+        {a.skills.map((s: any) => (
+          <div class="ab-skill">
+            <h3 class="ab-t">{s.title}</h3>
+            <div class:list={['ab-tags', { 'ab-tags--filled': s.filled }]}>{s.tags.map((t: string) => <span>{t}</span>)}</div>
+            <div class="ab-text" set:html={rich(s.text, false)} />
           </div>
         ))}
       </div>
 
-      <h2 class="t-title sec">learn & teach</h2>
-      <div class="rows">
+      <h2 class="ab-h2">learn &amp; teach</h2>
+      <div class="ab-teach">
         {a.teach.map((t: any) => (
-          <div class="r"><span class="t-small muted">{t.years}</span><div><p class="t-label r__t">{t.title}</p><p class="t-small muted">{t.place}</p></div></div>
+          <div><p class="ab-years">{t.years}</p><p class="ab-t">{t.title}</p><p class="ab-place">{t.place}</p></div>
         ))}
       </div>
 
-      <h2 class="t-title sec">languages</h2>
-      <div class="langs">
+      <h2 class="ab-h2">languages</h2>
+      <div class="ab-langs">
         {a.languages.map((l: any) => (
-          <div class="lang"><span class="t-label r__t">{l.name}</span><Tag variant="outline" size="sm">{l.level}</Tag></div>
+          <div><span class="ab-t">{l.name}</span><span class="ab-level">{l.level}</span></div>
         ))}
       </div>
     </section>
 
-    <section class="about__col about__col--pink">
-      <h2 class="t-display">work<br />experience</h2>
-      {a.experience.map((e: any, i: number) => (
-        <article class="job" data-reveal style={`--i:${i}`}>
-          <p class="t-label">{e.years}</p>
-          <h3 class="t-heading">{e.role}</h3>
-          <p class="t-small">{e.company}</p>
-          <div class="tags">{e.tags.map((t: string) => <Tag variant="brand" size="sm">{t}</Tag>)}</div>
-          <div class="t-body rich" set:html={rich(e.text)} />
+    <section class="ab-card ab-card--pink">
+      <h2 class="ab-h1 ab-h1--exp">work<br />experience</h2>
+      {a.experience.map((e: any) => (
+        <article class="ab-job">
+          <p class="ab-years">{e.years}</p>
+          <h3 class="ab-t ab-role">{e.role}</h3>
+          <p class="ab-place">{e.company}</p>
+          <div class="ab-tags ab-tags--brand">{e.tags.map((t: string) => <span>{t}</span>)}</div>
+          <div class="ab-text ab-text--exp" set:html={rich(e.text, false)} />
         </article>
       ))}
     </section>
   </div>
+  <img class="icecream" src="/images/hobbies/ice-cream.png" alt="" aria-hidden="true" data-icecream />
 </Base>
 
-<style>
-  .about { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr) minmax(0, 0.95fr); gap: var(--s-2); align-items: start; }
-  .about__left { position: sticky; top: var(--frame); height: calc(100vh - var(--frame) * 2); display: flex; flex-direction: column; justify-content: space-between; padding: 64px var(--s-3) var(--s-4); color: var(--paper); }
-  .about__grab { max-width: 6ch; }
-  .about__hob { align-self: flex-end; font-weight: 300; font-size: 24px; }
-  .about__col { border-radius: var(--r-lg); padding: 56px var(--s-6) var(--s-6); display: flex; flex-direction: column; gap: var(--s-4); min-height: calc(100vh - var(--frame) * 2); }
-  .about__col--paper { background: var(--paper); }
-  .about__col--pink { background: var(--brand-soft); color: var(--brand); }
-  .sec { margin-top: var(--s-6); padding-bottom: var(--s-3); border-bottom: 1px solid currentColor; }
-  .skills { display: flex; flex-direction: column; gap: var(--s-5); }
-  .skill { display: flex; flex-direction: column; gap: var(--s-2); }
-  .skill__t, .r__t { font-weight: 700; }
-  .tags { display: flex; gap: var(--s-1); flex-wrap: wrap; }
-  .rows { display: flex; flex-direction: column; }
-  .r { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: var(--s-3); padding: var(--s-3) 0; border-bottom: 1px solid var(--line); }
-  .langs { display: flex; flex-direction: column; }
-  .lang { display: flex; justify-content: space-between; align-items: center; padding: var(--s-2) 0; border-bottom: 1px solid var(--line); }
-  .job { display: flex; flex-direction: column; gap: var(--s-2); padding: var(--s-5) 0; border-bottom: 1px solid rgba(158, 25, 76, 0.4); }
-  .job:last-child { border-bottom: 0; }
-  .job .t-body { margin-top: var(--s-1); }
-  @media (max-width: 1100px) {
-    .about { grid-template-columns: 1fr 1fr; }
-    .about__left { grid-column: 1 / -1; position: relative; height: auto; padding-top: 72px; }
-    .about__left :global(.pile) { max-width: 520px; }
+<script>
+  // The ice cream follows the cursor (mouse only).
+  const ic = document.querySelector<HTMLElement>('[data-icecream]');
+  if (ic && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    document.documentElement.classList.add('has-icecream');
+    addEventListener('pointermove', (e) => {
+      ic.style.transform = `translate(${e.clientX - 44}px, ${e.clientY - 4}px)`;
+      ic.classList.add('is-on');
+    }, { passive: true });
+    document.addEventListener('pointerleave', () => ic.classList.remove('is-on'));
   }
-  @media (max-width: 760px) {
-    .about { grid-template-columns: 1fr; }
-    .about__col { padding: var(--s-6) var(--s-5); min-height: 0; }
+</script>
+
+<style>
+  .about { display: grid; grid-template-columns: minmax(0, 574fr) minmax(0, 409fr) minmax(0, 409fr); gap: 12px; height: calc(100vh - var(--frame) * 2); min-height: 620px; }
+  .ab-left { position: relative; color: var(--paper); }
+  .ab-left__h { position: relative; z-index: 0; padding: 65px 12px 0; font-family: var(--font-display); font-weight: 700; font-size: 45px; line-height: 45px; white-space: pre-line; pointer-events: none; }
+  .ab-left__hob { position: absolute; right: 0; bottom: 25px; font-family: var(--font-display); font-weight: 300; font-size: 25px; line-height: 21.25px; pointer-events: none; }
+
+  .ab-card { border-radius: var(--r-panel); padding: 65px 40px 48px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+  .ab-card::-webkit-scrollbar { display: none; }
+  .ab-card--paper { background: var(--paper); color: var(--ink); }
+  .ab-card--pink { background: var(--brand-soft); color: var(--brand); }
+
+  .ab-h1 { font-family: var(--font-display); font-weight: 700; font-size: 45px; line-height: 35.1px; }
+  .ab-h1--exp { line-height: 38.25px; }
+  .ab-h2 { margin-top: 48px; font-family: var(--font-display); font-weight: 700; font-size: 45px; line-height: 47.25px; letter-spacing: -0.3px; }
+  .ab-text { font-size: 14px; line-height: 22.4px; letter-spacing: 0.5px; }
+  .ab-card--paper > .ab-text { margin-top: 24px; }
+  .rich :global(p + p) { margin-top: 22.4px; }
+  .ab-card--paper > .rich :global(p:nth-last-child(-n + 2)) { margin-top: 34px; }
+  .ab-t { font-family: var(--font-display); font-weight: 700; font-size: 16px; line-height: 19.2px; letter-spacing: 0.6px; }
+
+  .ab-skills { display: flex; flex-direction: column; gap: 31px; margin-top: 24px; }
+  .ab-tags { display: flex; flex-wrap: wrap; gap: 8px 10px; margin: 14px 0 16px; }
+  .ab-tags span { display: inline-flex; align-items: center; height: 31px; padding: 0 13px; border-radius: 30px; border: 1.5px solid currentColor; font-size: 12px; font-weight: 700; letter-spacing: 0.4px; }
+  .ab-tags--filled span { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .ab-tags--brand span { background: var(--brand); color: var(--brand-soft); border-color: var(--brand); letter-spacing: 0.6px; }
+
+  .ab-teach { display: flex; flex-direction: column; gap: 16px; margin-top: 25px; }
+  .ab-years { font-family: var(--font-display); font-size: 16px; line-height: 19.2px; letter-spacing: 0.6px; }
+  .ab-teach .ab-years { margin-bottom: 12px; }
+  .ab-place { font-size: 12px; line-height: 19.2px; letter-spacing: 0.6px; }
+  .ab-langs { display: flex; flex-direction: column; gap: 12px; margin-top: 30px; }
+  .ab-langs div { display: flex; justify-content: space-between; align-items: baseline; }
+  .ab-level { display: inline-flex; align-items: center; height: 31px; padding: 0 13px; border-radius: 30px; border: 1.5px solid currentColor; font-size: 12px; font-weight: 700; letter-spacing: 0.4px; }
+  .ab-langs div { align-items: center; }
+
+  .ab-job { padding: 24px 0 32px; border-bottom: 1px solid currentColor; }
+  .ab-job:first-of-type { padding-top: 24px; }
+  .ab-job:last-child { border-bottom: 0; }
+  .ab-role { margin-top: 12px; letter-spacing: 0.48px; }
+  .ab-text--exp { letter-spacing: 0.7px; }
+
+  .icecream { position: fixed; left: 0; top: 0; width: 89px; z-index: 100; pointer-events: none; opacity: 0; transition: opacity var(--dur-fast); }
+  .icecream.is-on { opacity: 1; }
+  :global(html.has-icecream), :global(html.has-icecream *) { cursor: none !important; }
+
+  @media (max-width: 1199px) {
+    .about { grid-template-columns: 1fr; height: auto; min-height: 0; }
+    .ab-left { aspect-ratio: 574 / 876; max-height: 90vh; width: 100%; max-width: 640px; margin: 0 auto; }
+    .ab-card { overflow: visible; padding: 48px 28px 40px; }
+  }
+  @media (max-width: 809px) {
+    .ab-left { aspect-ratio: 366 / 564; max-height: none; margin-top: 44px; }
+    .ab-left__h { padding-top: 4px; }
+    .ab-left__hob { bottom: 0; }
+    .ab-card { padding: 48px 20px 40px; }
   }
 </style>

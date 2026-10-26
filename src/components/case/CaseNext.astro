@@ -1,0 +1,36 @@
+---
+/** CaseNext · black card with the next project's line + its image. */
+import Tab from '../Tab.astro';
+interface Props { href: string; label: string; line: string; image: string }
+const { href, label, line, image } = Astro.props;
+---
+<div class="nx">
+  <div class="nx__card">
+    <span class="nx__chip">Next</span>
+    <div class="nx__body">
+      <p class="nx__line">{line}</p>
+      <a class="nx__link" href={href}>View Project</a>
+    </div>
+  </div>
+  <a class="nx__img" href={href} aria-label={`Next: ${label}`}>
+    <img src={image} alt="" loading="lazy" />
+    <Tab corner="top-left"><span class="t-body">{label}</span></Tab>
+  </a>
+</div>
+
+<style>
+  .nx { display: grid; grid-template-columns: 295fr 247fr; gap: 12px; height: 330px; color: var(--paper); }
+  .nx__card { background: var(--ink); border-radius: var(--r-card); padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
+  .nx__chip { align-self: flex-start; background: var(--paper); color: var(--ink); border-radius: 4px; height: 24px; padding: 0 8px; display: inline-flex; align-items: center; font-family: var(--font-ui); font-size: 12px; }
+  .nx__body { display: flex; flex-direction: column; gap: 32px; max-width: 247px; }
+  .nx__line { font-size: 14px; line-height: 22.4px; letter-spacing: 1px; }
+  .nx__link { font-family: var(--font-display); font-size: 14px; line-height: 1; text-decoration: underline; text-underline-offset: 3px; align-self: flex-start; }
+  .nx__link:hover { text-decoration-thickness: 2px; }
+  .nx__img { position: relative; display: block; border-radius: var(--r-card); overflow: hidden; background: #111212; }
+  .nx__img img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease-out); }
+  .nx__img:hover img { transform: scale(1.04); }
+  @media (max-width: 1199px) {
+    .nx { grid-template-columns: 1fr 1fr; height: 232px; }
+    .nx__body { gap: 24px; }
+  }
+</style>

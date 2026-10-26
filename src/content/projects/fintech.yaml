@@ -1,0 +1,58 @@
+title: fintech app
+kind: client
+status: published
+order: 2
+accent: mint
+display: '**fintech** app'
+lead: An online banking app for ambitious small-business owners.
+intro: South is an **online banking app** designed for **ambitious small-business owners with teams under 50 people.** The account can be managed by the CEO or an assigned manager, making it flexible for companies where responsibilities shift quickly.
+teaser: South is an online banking app designed for ambitious small-business owners
+cover: /images/f/work/cover-fintech.jpg
+hero: /images/f/fintech/phone-screen.mp4
+heroStyle: phone
+heroBg: '#103429'
+heroFrame: /images/f/fintech/phone-frame.png
+heroLabel: fintech app
+nextLabel: fintech
+nextImage: /images/f/fintech/screens.png
+meta:
+- label: Year
+  value: '2024'
+- label: Project
+  value: Fintech App
+- label: Service
+  value: UX/UI
+links: []
+blocks:
+- discriminant: image
+  value:
+    src: /images/f/fintech/cafe.jpg
+    alt: Paying with a card next to the South app
+- discriminant: image
+  value:
+    src: /images/f/fintech/archetype.jpg
+    alt: 'User archetype: 83% of the customers are micro-enterprises, with a maximum of 10 employees and 2 million euro annual turnover.'
+- discriminant: image
+  value:
+    src: /images/f/fintech/screens.png
+    alt: South app screens
+- discriminant: image
+  value:
+    src: /images/f/fintech/roles.jpg
+    alt: 'Responsible role (company director and/or internal accountant) and employee role, with their pains and gains.'
+- discriminant: split
+  value:
+    src: ''
+    alt: ''
+    imageWidth: 56
+    height: 0
+    label: ''
+    tag: User Needs
+    style: spaced
+    items:
+    - title: agile
+      text: Few employees, so you don't need complex functionalities. It needs versatility and flexibility when it comes to managing payments.
+    - title: fast
+      text: A small company does not have specific employees for each function, many employees often have different responsibilities. This is why these processes have to be facilitated in order not to waste time.
+    - title: flexible
+      text: Many of the managers of these companies are the managers/self-employed themselves. That is why they need to be able to access and consult the company's invoicing easily and from anywhere.

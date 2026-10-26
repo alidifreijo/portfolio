@@ -1,28 +1,30 @@
 ---
 /**
- * HobbyPile · "grab to know me". Stickers you can drag around.
- * x / y are the % position of the sticker centre, w its width in %.
+ * HobbyPile · "grab to know me". Stickers you can drag around, placed
+ * as in the original. x / y: centre, w: width, all in % of the panel.
+ * mx / my / mw: the same on phones.
+ * ar: proportions of the box (the original crops some); fit: cover or fill.
+ * Order = stacking order (last on top).
  */
 const items = [
-  { n: 'books', x: 14, y: 16, w: 22, r: -4 },
-  { n: 'utopia', x: 32, y: 18, w: 21, r: 3 },
-  { n: 'pedro-pascal', x: 46, y: 22, w: 13, r: -2 },
-  { n: 'harry-potter', x: 64, y: 22, w: 19, r: 4 },
-  { n: 'wall-e', x: 84, y: 26, w: 17, r: -6 },
-  { n: 't-shirt', x: 22, y: 45, w: 30, r: -3 },
-  { n: 'animal-crossing', x: 40, y: 48, w: 16, r: 6 },
-  { n: 'headphones', x: 12, y: 56, w: 17, r: -10 },
-  { n: 'gilmore-girls', x: 62, y: 47, w: 16, r: -2 },
-  { n: 'fleabag', x: 50, y: 64, w: 26, r: 2 },
-  { n: 'friends', x: 22, y: 70, w: 24, r: 3 },
-  { n: 'crossword', x: 42, y: 78, w: 28, r: -2 },
-  { n: 'cat', x: 22, y: 82, w: 17, r: -8 },
-  { n: 'parks-and-rec', x: 80, y: 72, w: 26, r: 3 },
-  { n: 'attack-on-titan', x: 80, y: 47, w: 22, r: 5 },
-  { n: 'zorro', x: 66, y: 86, w: 15, r: -5 },
-  { n: 'normal-people', x: 86, y: 92, w: 20, r: 4 },
-  { n: 'coffee', x: 10, y: 92, w: 15, r: 0 },
-  { n: 'ice-cream', x: 32, y: 95, w: 11, r: -6 },
+  { n: 'attack-on-titan', x: 50.0, y: 36.8, w: 30.3, ar: '174/98', fit: 'cover', mx: 47.1, my: 54.2, mw: 50.5 },
+  { n: 'gilmore-girls', x: 71.6, y: 60.7, w: 21.6, ar: '124/152', fit: 'cover', mx: 47.1, my: 55.6, mw: 37.4 },
+  { n: 'pedro-pascal', x: 45.1, y: 36.1, w: 19.5, ar: '112/140', fit: 'cover', mx: 47.0, my: 55.6, mw: 34.4 },
+  { n: 'friends', x: 23.6, y: 68.9, w: 27.4, ar: '157/113', fit: 'cover', mx: 47.0, my: 54.5, mw: 45.4 },
+  { n: 'harry-potter', x: 62.7, y: 38.2, w: 24.4, ar: '140/188', fit: 'cover', mx: 47.0, my: 55.9, mw: 42.1 },
+  { n: 'zorro', x: 33.4, y: 48.0, w: 17.6, ar: '101/145', fit: 'cover', mx: 47.1, my: 55.9, mw: 32.0 },
+  { n: 'crossword', x: 51.0, y: 73.4, w: 40.1, ar: '230/138', fit: 'cover', mx: 56.6, my: 46.2, mw: 64.5 },
+  { n: 'coffee', x: 56.8, y: 55.4, w: 14.6, ar: '84/75', fit: 'fill', mx: 52.7, my: 45.6, mw: 20.8 },
+  { n: 'normal-people', x: 52.9, y: 55.5, w: 27.4, ar: '157/108', fit: 'fill', mx: 42.6, my: 31.6, mw: 46.4 },
+  { n: 'wall-e', x: 77.4, y: 42.8, w: 25.4, ar: '146/144', fit: 'cover', mx: 33.7, my: 79.2, mw: 43.4 },
+  { n: 'utopia', x: 28.6, y: 33.8, w: 20.6, ar: '118/174', fit: 'cover', mx: 26.9, my: 75.4, mw: 36.3 },
+  { n: 't-shirt', x: 27.5, y: 53.2, w: 40.1, ar: '230/182', fit: 'fill', mx: 65.6, my: 63.7, mw: 63.9 },
+  { n: 'cat', x: 27.4, y: 75.7, w: 17.6, ar: '101/116', fit: 'fill', mx: 27.5, my: 80.0, mw: 30.9 },
+  { n: 'animal-crossing', x: 39.2, y: 54.7, w: 15.7, ar: '90/146', fit: 'cover', r: -21, mx: 73.5, my: 65.2, mw: 22.4 },
+  { n: 'fleabag', x: 58.8, y: 61.4, w: 37.1, ar: '213/200', fit: 'fill', mx: 72.1, my: 77.5, mw: 53.0 },
+  { n: 'books', x: 16.7, y: 33.1, w: 30.3, ar: '174/132', fit: 'fill', mx: 76.1, my: 33.4, mw: 32.0 },
+  { n: 'parks-and-rec', x: 83.3, y: 71.9, w: 24.4, ar: '140/212', fit: 'cover', mx: 19.9, my: 48.5, mw: 32.8 },
+  { n: 'headphones', x: 15.8, y: 57.0, w: 16.6, ar: '95/112', fit: 'fill', r: -5, mx: 31.1, my: 37.8, mw: 23.2 },
 ];
 ---
 <div class="pile" data-pile aria-label="Things I love: drag them around">
@@ -33,7 +35,7 @@ const items = [
       alt={it.n.replace(/-/g, ' ')}
       draggable="false"
       loading="lazy"
-      style={`--x:${it.x}%;--y:${it.y}%;--w:${it.w}%;--r:${it.r}deg;z-index:${i + 1}`}
+      style={`--x:${it.x}%;--y:${it.y}%;--w:${it.w}%;--ar:${it.ar};--mx:${it.mx}%;--my:${it.my}%;--mw:${it.mw}%;--r:${(it as any).r || 0}deg;object-fit:${it.fit};z-index:${i + 1}`}
     />
   ))}
 </div>
@@ -61,13 +63,12 @@ const items = [
 </script>
 
 <style>
-  .pile { position: relative; width: 100%; aspect-ratio: 1 / 1.02; touch-action: none; }
+  .pile { position: absolute; inset: 0; touch-action: none; }
   .sticker {
-    position: absolute; left: var(--x); top: var(--y); width: var(--w); height: auto;
+    position: absolute; left: var(--x); top: var(--y); width: var(--w); height: auto; aspect-ratio: var(--ar);
     transform: translate(-50%, -50%) rotate(var(--r)); cursor: grab; user-select: none;
-    transition: scale var(--dur-fast) var(--ease-out), filter var(--dur-fast);
-    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
+    transition: scale var(--dur-fast) var(--ease-out);
   }
-  .sticker:hover { scale: 1.04; }
-  .sticker.is-drag { cursor: grabbing; scale: 1.08; filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.5)); }
+  .sticker.is-drag { cursor: grabbing; scale: 1.04; }
+  @media (max-width: 809px) { .sticker { left: var(--mx); top: var(--my); width: var(--mw); } }
 </style>
