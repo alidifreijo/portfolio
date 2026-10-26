@@ -6,8 +6,7 @@
  * Framer original. Positions and hover geometry measured on it. Bubble drawings live in
  * src/data/bubbles.ts; the quote is here, **bold** works.
  * Each face is also a link: `to` is the case that proves what the bubble says
- * (matched by colour: the face's colour is the project's accent). `paint` is
- * how the panel fills with that colour on the way there (see paint() below).
+ * (matched by colour: the face's colour is the project's accent).
  *
  * `proof` names it for screen readers; on screen it's a small arrow on the bubble.
  */
@@ -18,12 +17,12 @@ import { BUBBLES } from '../data/bubbles';
 
 const faces = [
   // x / y / w: centre and width in % of the faces box, measured on the Framer original · mx / my / mw: mobile box · ar: proportions
-  { id: 'bucket-hat', alt: 'Bucket hat', to: 'contact', proof: 'contact', paint: 'brush', paintColor: '#98E7EB', x: 31.25, y: 14.62, w: 13.0, mx: 22, my: 34, mw: 30.0, ar: '110/137', g: {S: 1.18, o: '136% 138%', under: [84.75, -6.5, 84.59, 9.3, 162.7, 70.3], shape: [84.75, -14.4, 84.59, 15.2, 173.7, 50.8], text: [84.75, -6.8, 84.59, 26.3, 167.0, 28.5]}, quote: '“**Creative mess,** but beautifully organized.”' },
-  { id: 'messy-hair', alt: 'Messy hair', to: 'work/cut-scenes', proof: 'cut scenes', paint: 'puzzle', paintColor: '#E92C30', x: 65.11, y: 3.5, w: 18.2, mx: 24, my: 72, mw: 28.7, ar: '155/157', g: {S: 1.175, o: '50% 44%', under: [92.02, -40.1, 90.79, -42.6, 149.0, 80.0], shape: [92.02, -52.8, 90.79, -41.7, 164.3, 65.6], text: [92.02, -29.8, 90.79, -23.0, 131.1, 28.6]}, quote: '“**Teamwork** is my coping mechanism.”' },
-  { id: 'cap', alt: 'Cap', to: 'work/cupra', proof: 'cupra', paint: 'sides', paintColor: '#AB8E77', x: 91.41, y: 48.02, w: 18.82, mx: 80, my: 35, mw: 28.6, ar: '161/164', g: {S: 1.178, o: '50% 46%', under: [86.84, -41.3, 85.51, -3.4, 129.9, 60.3], shape: [86.84, -45.3, 85.51, -8.0, 137.5, 57.7], text: [86.84, -35.1, 85.51, 11.5, 117.1, 28.5]}, quote: '“**Research** is my love language.”' },
-  { id: 'long-hair', alt: 'Long hair', to: 'work/hmi', proof: 'hmi display', paint: 'chaos', paintColor: '#86CBF7', x: 73.92, y: 93.66, w: 18.82, mx: 78, my: 84, mw: 28.6, ar: '161/164', g: {S: 1.178, o: '50% 46%', under: [13.15, -74.3, 85.52, 4.7, 124.8, 56.9], shape: [13.15, -77.7, 85.52, 0.5, 137.5, 57.7], text: [13.15, -64.35, 85.52, 19.0, 104.0, 28.5]}, quote: '“**Chaos?** not on my watch.”' },
-  { id: 'sprout', alt: 'Sprout', to: 'work/bank-platform', proof: 'bank platform', paint: 'ripple', paintColor: '#F0FDAB', x: 35.01, y: 102.07, w: 19.85, mx: 68, my: 63, mw: 28.6, ar: '171/174', g: {S: 1.197, o: '50% 83%', under: [86.88, -42.6, 85.36, -6.6, 147.0, 83.5], shape: [86.88, -56.8, 85.36, -6.0, 166.2, 70.2], text: [86.88, -41.8, 85.36, 10.7, 144.5, 42.1]}, quote: '“**Empathetic**, caffeinated, slightly existential.”' },
-  { id: 'bob', alt: 'Bob', to: 'work/fintech', proof: 'fintech app', paint: 'layers', paintColor: '#A3FFA9', x: 7.56, y: 62.7, w: 14.8, mx: 50, my: 21, mw: 28.6, ar: '122/124', g: {S: 1.234, o: '52% 21%', under: [-6.38, -75.6, 106.67, -12.1, 128.0, 60.8], shape: [-6.38, -75.8, 106.67, -15.8, 138.6, 55.1], text: [-6.38, -75.0, 106.67, 2.8, 131.3, 27.2]}, quote: '“I find peace in **naming layers.**”' },
+  { id: 'bucket-hat', alt: 'Bucket hat', to: 'contact', proof: 'contact', x: 31.25, y: 14.62, w: 13.0, mx: 22, my: 34, mw: 30.0, ar: '110/137', g: {S: 1.18, o: '136% 138%', under: [84.75, -6.5, 84.59, 9.3, 162.7, 70.3], shape: [84.75, -14.4, 84.59, 15.2, 173.7, 50.8], text: [84.75, -6.8, 84.59, 26.3, 167.0, 28.5]}, quote: '“**Creative mess,** but beautifully organized.”' },
+  { id: 'messy-hair', alt: 'Messy hair', to: 'work/cut-scenes', proof: 'cut scenes', x: 65.11, y: 3.5, w: 18.2, mx: 24, my: 72, mw: 28.7, ar: '155/157', g: {S: 1.175, o: '50% 44%', under: [92.02, -40.1, 90.79, -42.6, 149.0, 80.0], shape: [92.02, -52.8, 90.79, -41.7, 164.3, 65.6], text: [92.02, -29.8, 90.79, -23.0, 131.1, 28.6]}, quote: '“**Teamwork** is my coping mechanism.”' },
+  { id: 'cap', alt: 'Cap', to: 'work/cupra', proof: 'cupra', x: 91.41, y: 48.02, w: 18.82, mx: 80, my: 35, mw: 28.6, ar: '161/164', g: {S: 1.178, o: '50% 46%', under: [86.84, -41.3, 85.51, -3.4, 129.9, 60.3], shape: [86.84, -45.3, 85.51, -8.0, 137.5, 57.7], text: [86.84, -35.1, 85.51, 11.5, 117.1, 28.5]}, quote: '“**Research** is my love language.”' },
+  { id: 'long-hair', alt: 'Long hair', to: 'work/hmi', proof: 'hmi display', x: 73.92, y: 93.66, w: 18.82, mx: 78, my: 84, mw: 28.6, ar: '161/164', g: {S: 1.178, o: '50% 46%', under: [13.15, -74.3, 85.52, 4.7, 124.8, 56.9], shape: [13.15, -77.7, 85.52, 0.5, 137.5, 57.7], text: [13.15, -64.35, 85.52, 19.0, 104.0, 28.5]}, quote: '“**Chaos?** not on my watch.”' },
+  { id: 'sprout', alt: 'Sprout', to: 'work/bank-platform', proof: 'bank platform', x: 35.01, y: 102.07, w: 19.85, mx: 68, my: 63, mw: 28.6, ar: '171/174', g: {S: 1.197, o: '50% 83%', under: [86.88, -42.6, 85.36, -6.6, 147.0, 83.5], shape: [86.88, -56.8, 85.36, -6.0, 166.2, 70.2], text: [86.88, -41.8, 85.36, 10.7, 144.5, 42.1]}, quote: '“**Empathetic**, caffeinated, slightly existential.”' },
+  { id: 'bob', alt: 'Bob', to: 'work/fintech', proof: 'fintech app', x: 7.56, y: 62.7, w: 14.8, mx: 50, my: 21, mw: 28.6, ar: '122/124', g: {S: 1.234, o: '52% 21%', under: [-6.38, -75.6, 106.67, -12.1, 128.0, 60.8], shape: [-6.38, -75.8, 106.67, -15.8, 138.6, 55.1], text: [-6.38, -75.0, 106.67, 2.8, 131.3, 27.2]}, quote: '“I find peace in **naming layers.**”' },
 ];
 
 const bold = (s: string) => s.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
@@ -52,8 +51,6 @@ const items = faces.map((f, i) => {
     <a
       href={`/${(f as any).to}`}
       data-id={f.id}
-      data-paint={(f as any).paint}
-      data-color={(f as any).paintColor}
       class="face"
       style={`--x:${f.x}%;--y:${f.y}%;--w:${f.w}%;--mx:${f.mx}%;--my:${f.my}%;--mw:${f.mw}%;--ar:${f.ar};--o:${(f.g as any).o};--s:${(f.g as any).S};--ink:${f.b.ink};--light:${f.b.light}`}
       aria-label={`${f.quote.replace(/\*\*/g, '')} See ${(f as any).proof}.`}
@@ -79,43 +76,13 @@ const items = faces.map((f, i) => {
 
 <script>
   import { navigate } from 'astro:transitions/client';
-  import { paint } from '../scripts/paint';
 
-  // ---- The way into a case: see src/scripts/paint.ts for the six mediums.
-  const go = (root: HTMLElement, face: HTMLAnchorElement) => {
+  // A face opens its case with the normal page transition (the painted
+  // transitions are parked for later; see git history, commit "three.js").
+  const go = (face: HTMLAnchorElement) => {
     const href = face.getAttribute('href')!;
-    const leave = () => (document.querySelector('[name="astro-view-transitions-enabled"]') ? navigate(href) : (location.href = face.href));
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches || root.classList.contains('is-going')) return leave();
-    const panel = root.parentElement as HTMLElement, pr = panel.getBoundingClientRect(), fr = face.getBoundingClientRect();
-    // the face travels to the middle of the panel
-    // aim so the drawing (scaled around its own origin) lands dead centre
-    const cs = getComputedStyle(face), S2 = (parseFloat(cs.getPropertyValue('--s')) || 1.2) * 1.45;
-    const [oxs, oys] = cs.getPropertyValue('--o').trim().split(/\s+/).map((v) => parseFloat(v) / 100);
-    const cx = pr.left + pr.width / 2 - (0.5 - oxs) * fr.width * (S2 - 1);
-    const cy = pr.top + pr.height / 2 - (0.5 - oys) * fr.height * (S2 - 1);
-    const cur = (v: string) => parseFloat(face.style.getPropertyValue(v)) || 0;
-    face.style.setProperty('--dx', `${cur('--dx') + cx - (fr.left + fr.width / 2)}px`);
-    face.style.setProperty('--dy', `${cur('--dy') + cy - (fr.top + fr.height / 2)}px`);
-    face.classList.add('is-picked', 'is-on'); face.style.zIndex = '99';
-    root.classList.add('is-going');
-    const cv = document.createElement('canvas');
-    cv.className = 'faces__paint'; root.prepend(cv);
-    const r2 = cv.getBoundingClientRect();
-    const args = [cv, face.dataset.paint || 'ripple', face.dataset.color || '#000', r2.width / 2, r2.height / 2, 1700, 240] as const;
-    // three.js shader first; the 2D canvas painter if WebGL isn't there
-    import('../scripts/paint-gl')
-      .then((m) => m.paintGL(...args))
-      .catch(() => { const c2 = document.createElement('canvas'); c2.className = 'faces__paint'; cv.replaceWith(c2); return paint(c2, ...args.slice(1) as [string, string, number, number, number, number]); })
-      .then(() => setTimeout(leave, 120));
+    document.querySelector('[name="astro-view-transitions-enabled"]') ? navigate(href) : (location.href = face.href);
   };
-
-  // coming back with the browser's back button: clear the paint
-  addEventListener('pageshow', (e) => {
-    if (!(e as PageTransitionEvent).persisted) return;
-    document.querySelectorAll('.faces__paint').forEach((c) => c.remove());
-    document.querySelectorAll('.faces.is-going').forEach((r) => r.classList.remove('is-going'));
-    document.querySelectorAll('.face.is-picked').forEach((f) => { f.classList.remove('is-picked', 'is-on'); (f as HTMLElement).style.zIndex = ''; });
-  });
 
   function initFaces() {
   // Mouse: hover shows the bubble. Touch: tap toggles it (tap outside closes).
@@ -125,7 +92,6 @@ const items = faces.map((f, i) => {
   document.querySelectorAll<HTMLElement>('[data-faces]').forEach((root) => {
     if (root.dataset.ready) return; root.dataset.ready = '1';
     let z = 10;
-    root.addEventListener('pointerover', () => { import('../scripts/paint-gl'); }, { once: true });
     // the nod plays once, a moment after the page appears
     [...root.querySelectorAll<HTMLElement>('.face')].forEach((f, i) => f.style.setProperty('--d', `${i * 90}ms`));
     // pop-in order and timing measured on Framer (ms after the panel starts opening)
@@ -257,16 +223,16 @@ const items = faces.map((f, i) => {
       b.addEventListener('pointerup', release);
       b.addEventListener('pointercancel', release);
       b.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') on(b); });
-      b.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && !held && !root.classList.contains('is-going')) b.classList.remove('is-on'); });
+      b.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && !held ) b.classList.remove('is-on'); });
       // mouse: a click opens the case. Touch: the first tap shows the bubble,
       // the second one opens the case. A drag never navigates.
       b.addEventListener('click', (e) => {
         if (moved) { e.preventDefault(); moved = false; return; }
         if (kind !== 'mouse' && !wasOn && e.detail !== 0) { e.preventDefault(); on(b); return; }
-        e.preventDefault(); go(root, b);
+        e.preventDefault(); go(b);
       });
       b.addEventListener('focus', () => on(b));
-      b.addEventListener('blur', () => { if (!root.classList.contains('is-going')) b.classList.remove('is-on'); });
+      b.addEventListener('blur', () => b.classList.remove('is-on'));
     });
     document.addEventListener('click', (e) => {
       if (!(e.target as HTMLElement).closest('.face')) faces.forEach((o) => o.classList.remove('is-on'));
@@ -325,16 +291,6 @@ const items = faces.map((f, i) => {
   .faces__tidy:hover { background: #2a2a2a; }
   .faces__tidy:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
   /* tidy up: everyone goes home on the same spring as the hover */
-  /* on the way into a case: the others step back, the picked face comes to
-     the middle and grows, the canvas paints the panel behind it */
-  :global(.faces__paint) { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
-  .faces.is-going .face { transition: transform 700ms var(--spring-face), opacity 260ms var(--ease-out); pointer-events: none; }
-  .faces.is-going .face:not(.is-picked) { opacity: 0; }
-  .faces.is-going .face:not(.is-picked) .face__img { scale: 0.85; transition: scale 260ms var(--ease-out); }
-  .faces.is-going .face.is-picked .face__img { scale: calc(var(--s) * 1.45); }
-  .faces.is-going .face.is-picked .bubble { visibility: hidden; }
-  .faces.is-going .faces__tidy { opacity: 0; }
-  :global(.home:has(.faces.is-going) .home__intro) { opacity: 0; transition: opacity 240ms var(--ease-out); }
   /* entry (first visit and á): panel opens out of the dark, faces pop in */
   :global(html.pre-enter .home) { transform: scale(0.5); filter: brightness(0.08); }
   :global(html.pre-enter) .face__img { opacity: 0; }

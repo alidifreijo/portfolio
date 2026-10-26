@@ -19,12 +19,8 @@
     "@keystatic/core": "^0.6.9",
     "astro": "^7.4.1",
     "react": "^19.3.1",
-    "react-dom": "^19.3.1",
-    "three": "^0.170.0"
+    "react-dom": "^19.3.1"
   },
   "type": "module",
-  "private": true,
-  "devDependencies": {
-    "@types/three": "^0.170.0"
-  }
+  "private": true
 }
