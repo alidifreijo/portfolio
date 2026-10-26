@@ -57,18 +57,18 @@ const label = (p: (typeof projects)[number]) => (p.id === 'cupra' ? 'seat | cupr
 </Base>
 
 <style>
-  .wk { display: grid; grid-template-columns: minmax(0, 850fr) minmax(0, 554fr); gap: 12px; align-items: start; }
+  .wk { display: grid; grid-template-columns: var(--split); gap: var(--s-3); align-items: start; }
   .wk__left { position: sticky; top: var(--frame); height: calc(100vh - var(--frame) * 2); }
-  .wk__right { display: flex; flex-direction: column; gap: 12px; }
-  .intro { display: block; background: var(--paper); border-radius: var(--r-panel); padding: 40px 40px 40px; min-height: 245px; }
-  .intro__h { font-family: var(--font-display); font-weight: 700; font-size: 45px; line-height: 36px; letter-spacing: 2px; }
-  .intro__h--s { font-size: 32px; line-height: 1; letter-spacing: 1px; }
-  .intro__sub { margin-top: 2px; font-size: 18px; font-weight: 500; line-height: 18px; letter-spacing: 1px; color: rgba(14, 16, 17, 0.6); }
-  .intro__p { margin-top: 42px; font-size: 14px; line-height: 22.4px; letter-spacing: 1px; max-width: 474px; }
-  .intro--ink { background: #111212; color: var(--paper); min-height: 0; margin-top: 12px; }
+  .wk__right { display: flex; flex-direction: column; gap: var(--s-3); }
+  .intro { display: block; background: var(--paper); border-radius: var(--r-md); padding: 40px 40px 40px; min-height: 245px; }
+  .intro__h { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-display); line-height: 36px; letter-spacing: 2px; }
+  .intro__h--s { font-size: var(--fs-title); line-height: 1; letter-spacing: var(--ls-tab); }
+  .intro__sub { margin-top: 2px; font-size: 18px; font-weight: 500; line-height: 18px; letter-spacing: var(--ls-tab); color: var(--muted-soft); }
+  .intro__p { margin-top: 42px; font-size: var(--fs-body); line-height: var(--lh-body); letter-spacing: var(--ls-tab); max-width: 474px; }
+  .intro--ink { background: var(--surface); color: var(--paper); min-height: 0; margin-top: 12px; }
   .intro--ink .intro__p { margin-top: 16px; }
-  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-  .pcard { position: relative; display: block; aspect-ratio: 271 / 362; border-radius: var(--r-panel); overflow: hidden; background: #111212; }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
+  .pcard { position: relative; display: block; aspect-ratio: 271 / 362; border-radius: var(--r-md); overflow: hidden; background: var(--surface); }
   .pcard img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease-out); }
   .pcard:hover img { transform: scale(1.04); }
   @media (max-width: 1199px) {

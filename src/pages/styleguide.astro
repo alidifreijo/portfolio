@@ -12,34 +12,41 @@ import Media from '../components/Media.astro';
 import DeviceFrame from '../components/DeviceFrame.astro';
 import Tab from '../components/Tab.astro';
 import Blocks from '../components/Blocks.astro';
+import Carousel from '../components/Carousel.astro';
+import ProjectTitle from '../components/project/ProjectTitle.astro';
+import ProjectNext from '../components/project/ProjectNext.astro';
 import { ACCENTS } from '../lib/utils';
 
 const core = [
   ['--ink', '#070707', 'Frame, main text'], ['--paper', '#D4D1CB', 'Cards, text on ink'], ['--paper-2', '#ECEAE5', 'Inner tiles'],
-  ['--muted', '#4A4744', 'Secondary text'], ['--brand', '#9E194C', 'Dates, links, focus'], ['--brand-soft', '#FFA4BF', 'Tags, about panel'],
+  ['--surface', '#111212', 'Dark cards, media'], ['--muted', '#4A4744', 'Secondary text'], ['--brand', '#9E194C', 'Dates, links, focus'], ['--brand-soft', '#FFA4BF', 'Tags, about panel'],
 ];
-const accentUse: Record<string, string> = { copper: 'cupra', mint: 'south', lime: 'monexa', sky: 'hmi', red: 'cut scenes', mat: 'cutouts', amber: 'silena', cyan: 'contact' };
+const accentUse: Record<string, string> = { copper: 'cupra', mint: 'fintech', lime: 'bank platform', sky: 'hmi', red: 'cut scenes', mat: 'cutouts', amber: 'silena', cyan: 'contact' };
 const type = [
-  ['t-display', 'Display · Space Grotesk 700 · 45/1', 'cut scenes'],
-  ['t-title', 'Title · Space Grotesk 700 · 32/1.05', 'work experience'],
-  ['t-heading', 'Heading · Space Grotesk 700 · 20/1.2', 'Senior Product Designer'],
-  ['t-label', 'Label · Space Grotesk 500 · 16/1.2', 'about   work   contact'],
-  ['t-body-l', 'Body L · Satoshi 400 · 16/1.6', 'I bring clarity, keep alignment and make sure it ships as intended.'],
-  ['t-body', 'Body · Satoshi 400/700 · 14/1.6', 'Turning **messy ideas** into things people actually use.'],
-  ['t-small', 'Small · Satoshi 500 · 12/1.5', 'Year 2023 · Company SEAT | CUPRA'],
+  ['t-display', 'Display · Space Grotesk 700 · 45/1 (titles: --tight 0.78)', 'cut scenes'],
+  ['t-title', 'Title · Space Grotesk 700 · 32/1.05', 'explorations'],
+  ['t-lead', 'Lead · Space Grotesk 300 · 25', 'interests & hobbies'],
+  ['t-heading', 'Heading · Space Grotesk 700 · 16 · +0.6', 'Senior Product Designer'],
+  ['t-label', 'Label · Space Grotesk 400 · 16 · +0.6', 'about   work   contact'],
+  ['t-body', 'Body · Satoshi 400/700 · 14/22.4 · +0.5', 'Turning **messy ideas** into things people actually use.'],
+  ['t-tab', 'Tab · Satoshi 400 · 14/22.4 · +1', 'seat | cupra'],
+  ['t-small', 'Small · Satoshi 400/700 · 12/19.2 · +0.6', 'Year 2023 · Company SEAT | CUPRA'],
+  ['t-micro', 'Micro · Satoshi 400 · 10/12', 'employees'],
+  ['t-ui', 'UI · DM Sans 400 · 14', 'View Project'],
   ['t-eyebrow', 'Eyebrow · Space Grotesk 700 · 12 · caps', 'Role responsibilities'],
 ];
-const space = [4, 8, 12, 16, 24, 32, 48, 64];
-const radii = [['--r-xs', 'Inputs, cells'], ['--r-sm', 'Chips, small tiles'], ['--r-md', 'Cards, media'], ['--r-lg', 'Panels, frame'], ['--r-pill', 'Tags, buttons']];
+const space = [4, 8, 12, 16, 24, 32, 40, 64];
+const radii = [['--r-xs', 'Chips'], ['--r-sm', 'Cards, media'], ['--r-btn', 'Buttons'], ['--r-md', 'Panels'], ['--r-tab', 'Tab corners'], ['--r-pill', 'Tags']];
 const motion = [
   ['reveal', 'Fade and rise 12px on scroll. --dur-slow, --ease-out, staggered.'],
   ['lift', 'Cards rise 3px on hover. --dur-base, --ease-out.'],
   ['press', 'Buttons scale to 0.97 while pressed. --dur-fast.'],
-  ['raise', 'Faces scale up and come to the front. --dur-base, --ease-in-out.'],
+  ['raise', 'Faces grow 1.18× with a spring (--ease-spring, 2s) and show a bubble.'],
 ];
 const sampleBlocks = [
+  { discriminant: 'split', value: { src: '/images/f/cupra/team.jpg', imageWidth: 45, height: 373, tag: 'Role Responsibilities', style: 'compact', items: [{ title: 'Image + text card', text: 'Photo on the left, card with a tag and items. Without a photo the card takes the full width.' }, { title: 'Compact style', text: 'Bold title and one line, for roles or archetypes.' }] } },
+  { discriminant: 'split', value: { src: '', tag: 'User Needs', style: 'spaced', items: [{ title: 'spaced', text: 'Big titles for needs or requirements.' }] } },
   { discriminant: 'quote', value: { eyebrow: 'Why I made it', pill: 'The idea', quote: 'It has to feel like cinema.', body: 'A **quote** block: the one rule that holds a project together.', chips: ['Simple, loud', 'Made to gift'] } },
-  { discriminant: 'list', value: { eyebrow: 'What I owned', pill: 'Role responsibilities', columns: 2, items: [{ title: 'Team coordination', text: 'A **list** block, 1 to 3 columns.' }, { title: 'Client alignment', text: 'Bold key phrases with **double asterisks**.' }] } },
   { discriminant: 'stats', value: { items: [{ value: '83%', label: 'A stats block' }, { value: '10', label: 'Big number + context' }, { value: '2M€', label: 'Uses the accent' }] } },
 ];
 ---
@@ -65,7 +72,7 @@ const sampleBlocks = [
       </div>
     </Card>
 
-    <Card eyebrow="Two families, eight styles" pill="Typography">
+    <Card eyebrow="Three families, one scale from the original site" pill="Typography">
       {type.map(([cls, spec, sample]) => (
         <div class="ty"><span class="t-mono muted">{spec}</span><span class={cls} set:html={sample.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')} /></div>
       ))}
@@ -77,7 +84,7 @@ const sampleBlocks = [
           <div class="sp"><span class="t-mono">--s-{i + 1}</span><span class="t-mono muted">{v}px</span><i style={`width:${v * 4}px`}></i></div>
         ))}
       </Card>
-      <Card eyebrow="Five radii, each with a job" pill="Radius">
+      <Card eyebrow="Six radii, each with a job" pill="Radius">
         <div class="rd">
           {radii.map(([t, use]) => (
             <div><div class="rd__b" style={`border-radius:var(${t})`}></div><span class="t-mono">{t}</span><span class="t-small muted">{use}</span></div>
@@ -100,21 +107,26 @@ const sampleBlocks = [
         <div class="cmp__i"><span class="t-mono muted">Button</span><div class="cmp__row"><Button href="#">Primary</Button><Button href="#" variant="secondary">Secondary</Button><Button href="#" variant="ghost">Ghost</Button></div></div>
         <div class="cmp__i" style="--acc: var(--acc-cyan); --on-acc: var(--on-cyan)"><span class="t-mono muted">Button · tile</span><Button href="#" variant="tile" icon="download">Download CV</Button></div>
         <div class="cmp__i"><span class="t-mono muted">Tag</span><div class="cmp__row"><Tag variant="brand">brand</Tag><Tag variant="accent">accent</Tag><Tag variant="ink" size="sm">ink</Tag><Tag variant="outline" size="sm">outline</Tag></div></div>
-        <div class="cmp__i"><span class="t-mono muted">Tab · corners</span><div class="tabdemo"><Tab corner="top-left"><span class="t-body">top-left</span></Tab><Tab corner="bottom-right"><span class="t-body">bottom-right</span></Tab></div></div>
+        <div class="cmp__i"><span class="t-mono muted">Tab · corners</span><div class="tabdemo"><Tab corner="top-left"><span class="t-tab">top-left</span></Tab><Tab corner="bottom-right"><span class="t-tab">bottom-right</span></Tab></div></div>
+        <div class="cmp__i"><span class="t-mono muted">Carousel · arrows, dots, View Project</span><div class="cardemo"><Carousel slides={[{ src: '/images/f/work/slide-fintech.jpg', href: '#' }, { src: '/images/f/work/slide-bank.jpg', href: '#' }]} tab="overview projects" autoplay={0} /></div></div>
         <div class="cmp__i"><span class="t-mono muted">Media · image with label</span><Media src="/images/f/cupra/building.jpg" alt="" ratio="16/10" label="cupra" /></div>
         <div class="cmp__i"><span class="t-mono muted">DeviceFrame · browser and phone</span><div class="cmp__dev"><DeviceFrame src="/images/projects/cut-scenes/desktop-puzzle.jpg" url="cut-scenes.vercel.app" /><DeviceFrame kind="phone" src="/images/projects/cut-scenes/mobile-home.jpg" /></div></div>
       </div>
     </Card>
 
-    <Card eyebrow="Project pages are made of blocks" pill="Blocks">
-      <p class="t-body">Each project is a list of blocks you pick in the editor: text, quote, list, stats, media, media pair, browser, phones, collection, video card, timeline and details. A few of them:</p>
+    <Card eyebrow="One template for every project" pill="Project">
+      <p class="t-body">Every project page uses the same template: hero panel on the left, title card pinned on top of the right column, blocks, then <strong>Next</strong>. Blocks: image, video, image + text card, carousel, and the story set (text, quote, list, stats, media, media pair, browser, phones, collection, video card, timeline, details).</p>
     </Card>
-    <Blocks blocks={sampleBlocks} />
+    <div class="pj" style="--acc: var(--acc-mint); --on-acc: var(--on-mint)">
+      <ProjectTitle display="**fintech** app" intro="The **title card** in the project colour, with the meta cards on the right." meta={[{ label: 'Year', value: '2024' }, { label: 'Project', value: 'Concept' }, { label: 'Service', value: 'UX/UI' }]} />
+      <Blocks blocks={sampleBlocks} />
+      <ProjectNext href="#" label="bank platform" line="The Next card closes every project." image="/images/f/work/cover-bank.jpg" />
+    </div>
   </div>
 </Base>
 
 <style>
-  .sg { display: flex; flex-direction: column; gap: var(--s-2); max-width: 1200px; margin: 0 auto; padding-top: 56px; }
+  .sg { display: flex; flex-direction: column; gap: var(--s-2); max-width: 1200px; margin: 0 auto; padding-top: var(--s-8); }
   .sg__hero { background: var(--brand); color: var(--paper); border-radius: var(--r-lg); padding: var(--s-7) var(--s-6) var(--s-6); display: flex; flex-direction: column; gap: var(--s-3); }
   .sg__hero .t-body-l { max-width: 60ch; }
   .sw { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--s-2); }
@@ -125,7 +137,7 @@ const sampleBlocks = [
   .ty { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: var(--s-4); align-items: baseline; padding: var(--s-3) 0; border-top: 1px solid var(--line); }
   .sp { display: grid; grid-template-columns: 56px 40px minmax(0, 1fr); gap: var(--s-3); align-items: center; }
   .sp i { height: 10px; background: var(--ink); border-radius: 2px; }
-  .rd { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--s-2); }
+  .rd { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--s-2); }
   .rd > div { display: flex; flex-direction: column; gap: var(--s-1); }
   .rd__b { aspect-ratio: 1; background: var(--ink); }
   .mo { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-2); }
@@ -144,6 +156,8 @@ const sampleBlocks = [
   .cmp__dev { display: flex; gap: var(--s-4); align-items: flex-end; background: var(--paper-2); border-radius: var(--r-lg); padding: var(--s-4); }
   .cmp__dev :global(.browser) { flex: 1; }
   .cmp__dev :global(.phone) { width: 22%; }
+  .cardemo { height: 300px; }
+  .pj { display: flex; flex-direction: column; gap: var(--s-2); max-width: 554px; background: var(--ink); padding: var(--s-3); border-radius: var(--r-md); }
   @media (max-width: 900px) {
     .sw, .acc, .mo, .rd { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .ty, .cmp { grid-template-columns: 1fr; }

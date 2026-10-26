@@ -13,10 +13,10 @@ const { variant = 'outline', size = 'md', class: cls = '' } = Astro.props;
 
 <style>
   .tag { display: inline-flex; align-items: center; border-radius: var(--r-pill); font-family: var(--font-body); font-weight: 700; white-space: nowrap; line-height: 1.2; }
-  .tag--md { font-size: var(--fs-small); padding: 6px var(--s-3); }
-  .tag--sm { font-size: 11px; padding: 3px 10px; font-weight: 500; }
+  .tag--md { font-size: var(--fs-small); height: 30px; padding: 0 var(--s-4); line-height: 1; }
+  .tag--sm { font-size: var(--fs-small); height: 31px; padding: 0 13px; letter-spacing: var(--ls-small); }
   .tag--brand { background: var(--brand); color: var(--brand-soft); }
   .tag--accent { background: var(--acc, var(--brand-soft)); color: var(--on-acc, var(--ink)); }
-  .tag--outline { border: 1px solid currentColor; opacity: 0.85; font-weight: 500; }
+  .tag--outline { border: 1.5px solid currentColor; }
   .tag--ink { background: var(--ink); color: var(--paper); }
 </style>

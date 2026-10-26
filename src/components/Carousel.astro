@@ -67,12 +67,12 @@ const { slides, tab, button = true, autoplay = 5000, class: cls = '' } = Astro.p
 </script>
 
 <style>
-  .car { position: relative; overflow: hidden; border-radius: var(--r-panel); background: #111212; height: 100%; }
+  .car { position: relative; overflow: hidden; border-radius: var(--r-md); background: var(--surface); height: 100%; }
   .car__track { display: flex; height: 100%; transition: transform 700ms var(--ease-out); }
   .car__slide { position: relative; flex: 0 0 100%; height: 100%; }
   .car__slide img { width: 100%; height: 100%; object-fit: cover; user-select: none; }
   .car__arrow {
-    all: unset; cursor: pointer; position: absolute; top: 50%; translate: 0 -50%; width: 40px; height: 40px; z-index: 2; background: var(--ink); border-radius: 8px;
+    all: unset; cursor: pointer; position: absolute; top: 50%; translate: 0 -50%; width: 40px; height: 40px; z-index: 2; background: var(--ink); border-radius: var(--r-sm);
     transition: scale var(--dur-fast) var(--ease-out);
   }
   .car__arrow img { width: 100%; height: 100%; }
@@ -81,19 +81,19 @@ const { slides, tab, button = true, autoplay = 5000, class: cls = '' } = Astro.p
   .car__arrow--r { right: 32px; }
   .car__dots {
     position: absolute; left: 50%; bottom: 30px; translate: -50% 0; z-index: 2;
-    display: flex; gap: 10px; padding: 10px 14px; border-radius: 50px; background: rgba(0, 0, 0, 0.2);
+    display: flex; gap: 10px; padding: 10px 14px; border-radius: var(--r-pill); background: var(--scrim);
   }
-  .car__dot { all: unset; cursor: pointer; width: 8px; height: 8px; border-radius: 50%; background: #fff; opacity: 0.5; transition: opacity var(--dur-fast); }
+  .car__dot { all: unset; cursor: pointer; width: 8px; height: 8px; border-radius: 50%; background: var(--white); opacity: 0.5; transition: opacity var(--dur-fast); }
   .car__dot.is-on { opacity: 1; }
   .car__btn {
     position: absolute; left: 32px; bottom: 32px; z-index: 2;
     display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px;
-    background: var(--paper); color: var(--ink); border-radius: 10px;
-    font-family: var(--font-ui); font-size: 14px; line-height: 1;
+    background: var(--paper); color: var(--ink); border-radius: var(--r-btn);
+    font-family: var(--font-ui); font-size: var(--fs-body); line-height: 1;
     transition: background var(--dur-fast);
   }
   .car__btn svg { width: 11px; height: 11px; fill: none; stroke: currentColor; stroke-width: 1.2; }
-  .car__btn:hover { background: #fff; }
+  .car__btn:hover { background: var(--white); }
   @media (max-width: 809px) {
     .car__arrow { width: 30px; height: 30px; }
     .car__arrow--l { left: 30px; }

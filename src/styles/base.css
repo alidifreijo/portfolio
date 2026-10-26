@@ -35,15 +35,21 @@ strong, b { font-weight: 700; }
 * { scrollbar-width: thin; scrollbar-color: rgba(212, 209, 203, 0.35) transparent; }
 
 /* ---------- Type styles (use these classes, never ad-hoc sizes) ---------- */
-.t-display { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-display); line-height: var(--lh-display); letter-spacing: var(--ls-display); }
-.t-title   { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-title); line-height: var(--lh-title); letter-spacing: var(--ls-title); }
-.t-heading { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-heading); line-height: var(--lh-heading); }
-.t-label   { font-family: var(--font-display); font-weight: 500; font-size: var(--fs-label); line-height: var(--lh-label); letter-spacing: var(--ls-label); }
-.t-body-l  { font-size: var(--fs-body-l); line-height: var(--lh-body); }
-.t-body    { font-size: var(--fs-body); line-height: var(--lh-body); letter-spacing: 0.01em; }
-.t-small   { font-size: var(--fs-small); line-height: var(--lh-small); letter-spacing: 0.02em; font-weight: 500; }
+.t-display { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-display); line-height: var(--lh-display); }
+.t-display--tight { line-height: var(--lh-display-tight); }
+.t-title   { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-title); line-height: var(--lh-title); }
+.t-lead    { font-family: var(--font-display); font-weight: 300; font-size: var(--fs-lead); line-height: var(--lh-lead); }
+.t-heading { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-heading); line-height: var(--lh-heading); letter-spacing: var(--ls-heading); }
+.t-label   { font-family: var(--font-display); font-weight: 400; font-size: var(--fs-label); line-height: var(--lh-label); letter-spacing: var(--ls-label); }
+.t-body    { font-size: var(--fs-body); line-height: var(--lh-body); letter-spacing: var(--ls-body); }
+.t-body-l  { font-size: var(--fs-label); line-height: var(--lh-body); letter-spacing: var(--ls-body); }
+.t-tab     { font-size: var(--fs-body); line-height: var(--lh-body); letter-spacing: var(--ls-tab); }
+.t-small   { font-size: var(--fs-small); line-height: var(--lh-small); letter-spacing: var(--ls-small); }
+.t-micro   { font-size: var(--fs-micro); line-height: var(--lh-micro); letter-spacing: var(--ls-micro); }
+.t-ui      { font-family: var(--font-ui); font-size: var(--fs-body); line-height: 1; }
 .t-eyebrow { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-eyebrow); line-height: 1.2; letter-spacing: var(--ls-eyebrow); text-transform: uppercase; }
 .t-mono    { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; }
+.t-hand    { font-family: var(--font-hand); font-size: 26px; line-height: 1.1; }
 .muted     { color: var(--muted); }
 
 .rich p + p { margin-top: var(--s-4); }
@@ -69,14 +75,6 @@ strong, b { font-weight: 700; }
 
 /* ---------- Page frame ---------- */
 .frame { min-height: 100vh; padding: var(--frame); background: var(--ink); }
-.split { display: flex; gap: var(--s-2); align-items: flex-start; }
-.split > .split-left { flex: 0 0 var(--left, 58%); position: sticky; top: var(--frame); height: calc(100vh - var(--frame) * 2); min-height: 480px; }
-.split > .split-right { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: var(--s-2); }
 .row { display: flex; gap: var(--s-2); }
 .stack { display: flex; flex-direction: column; gap: var(--s-2); }
-
-@media (max-width: 900px) {
-  .split { flex-direction: column; }
-  .split > .split-left { position: relative; top: 0; flex: none; width: 100%; height: 64vh; min-height: 380px; }
-  .row { flex-direction: column; }
-}
+@media (max-width: 809px) { .row { flex-direction: column; } }

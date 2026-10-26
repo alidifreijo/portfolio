@@ -4,7 +4,10 @@ status: published
 order: 10
 accent: red
 lead: Film stills cut into puzzles, made to gift.
-intro: Send a scene to a friend, or the film you’re watching together tonight. When the last piece lands, the credits roll.
+display: '**cut** scenes'
+intro: '**Film stills cut into puzzles, made to gift.** Send a scene to a friend, or the film you’re watching together tonight. When the last piece lands, the credits roll.'
+heroStyle: cover
+nextLabel: cut scenes
 teaser: Film stills cut into puzzles, made to gift.
 cover: /images/projects/cut-scenes/desktop-recipient.jpg
 hero: /images/projects/cut-scenes/hero.mp4

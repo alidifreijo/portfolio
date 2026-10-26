@@ -1,5 +1,5 @@
 ---
-/** CaseNext · black card with the next project's line + its image. */
+/** ProjectNext · black card with the next project's line + its image. */
 import Tab from '../Tab.astro';
 interface Props { href: string; label: string; line: string; image: string }
 const { href, label, line, image } = Astro.props;
@@ -19,14 +19,14 @@ const { href, label, line, image } = Astro.props;
 </div>
 
 <style>
-  .nx { display: grid; grid-template-columns: 295fr 247fr; gap: 12px; height: 330px; color: var(--paper); }
-  .nx__card { background: var(--ink); border-radius: var(--r-card); padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
-  .nx__chip { align-self: flex-start; background: var(--paper); color: var(--ink); border-radius: 4px; height: 24px; padding: 0 8px; display: inline-flex; align-items: center; font-family: var(--font-ui); font-size: 12px; }
+  .nx { display: grid; grid-template-columns: 295fr 247fr; gap: var(--s-3); height: 330px; color: var(--paper); }
+  .nx__card { background: var(--ink); border-radius: var(--r-sm); padding: var(--s-5); display: flex; flex-direction: column; justify-content: space-between; }
+  .nx__chip { align-self: flex-start; background: var(--paper); color: var(--ink); border-radius: var(--r-xs); height: 24px; padding: 0 8px; display: inline-flex; align-items: center; font-family: var(--font-ui); font-size: var(--fs-small); }
   .nx__body { display: flex; flex-direction: column; gap: 32px; max-width: 247px; }
-  .nx__line { font-size: 14px; line-height: 22.4px; letter-spacing: 1px; }
-  .nx__link { font-family: var(--font-display); font-size: 14px; line-height: 1; text-decoration: underline; text-underline-offset: 3px; align-self: flex-start; }
+  .nx__line { font-size: var(--fs-body); line-height: var(--lh-body); letter-spacing: var(--ls-tab); }
+  .nx__link { font-family: var(--font-display); font-size: var(--fs-body); line-height: 1; text-decoration: underline; text-underline-offset: 3px; align-self: flex-start; }
   .nx__link:hover { text-decoration-thickness: 2px; }
-  .nx__img { position: relative; display: block; border-radius: var(--r-card); overflow: hidden; background: #111212; }
+  .nx__img { position: relative; display: block; border-radius: var(--r-sm); overflow: hidden; background: var(--surface); }
   .nx__img img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease-out); }
   .nx__img:hover img { transform: scale(1.04); }
   @media (max-width: 1199px) {

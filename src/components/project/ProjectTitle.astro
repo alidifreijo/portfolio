@@ -1,0 +1,52 @@
+---
+/**
+ * ProjectTitle · title card in the project colour plus the meta cards.
+ * Stays pinned to the top of the right column while it scrolls.
+ * `display` supports **bold** (e.g. "**fintech** app").
+ */
+import { rich } from '../../lib/utils';
+import Button from '../Button.astro';
+interface Props {
+  display: string;
+  intro: string;
+  meta: { label: string; value: string }[];
+  metaWidth?: number;
+  links?: { label: string; url: string }[];
+}
+const { display, intro, meta, metaWidth = 200, links = [] } = Astro.props;
+---
+<header class="ct" style={`--mw:${metaWidth}px`}>
+  <div class="ct__card ct__main">
+    <h1 class="ct__h t-display t-display--tight" set:html={rich(display, false)} />
+    <div class="ct__intro t-small" set:html={rich(intro, false)} />
+    {links.length > 0 && (
+      <div class="ct__links">
+        {links.map((l, i) => <Button href={l.url} variant={i === 0 ? 'primary' : 'secondary'} icon="arrow">{l.label}</Button>)}
+      </div>
+    )}
+  </div>
+  <dl class="ct__meta">
+    {meta.map((m) => (
+      <div class="ct__card ct__m"><dt>{m.label}</dt><dd>{m.value}</dd></div>
+    ))}
+  </dl>
+</header>
+
+<style>
+  .ct { display: grid; grid-template-columns: minmax(0, 1fr) var(--mw); gap: var(--s-2); }
+  .ct__card { background: var(--acc); color: var(--on-acc); border-radius: var(--r-sm); }
+  .ct__main { padding: var(--s-5); }
+  .ct__h { font-weight: 400; }
+  .ct__h :global(strong) { font-weight: 700; }
+  .ct__intro { margin-top: 18px; }
+  .ct__links { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-4); }
+  .ct__meta { display: flex; flex-direction: column; gap: var(--s-2); margin: 0; }
+  .ct__m { flex: 1; display: flex; justify-content: space-between; align-items: center; gap: var(--s-3); padding: 0 16px; font-size: var(--fs-small); line-height: 1; }
+  .ct__m dt { white-space: nowrap; }
+  .ct__m dd { margin: 0; font-weight: 700; text-align: right; line-height: 1.3; }
+  @media (max-width: 1199px) {
+    .ct { grid-template-columns: 1fr; }
+    .ct__m { min-height: 43px; }
+    .ct__main { padding-top: 69px; }
+  }
+</style>

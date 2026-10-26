@@ -33,17 +33,17 @@ const caseItems = fields.array(fields.object({ title: fields.text({ label: 'Titl
 
 const blocks = fields.blocks(
   {
-    // ---- Client cases (Framer layout) ----
+    // ---- Media and cards (the core set, used by every project) ----
     image: {
-      label: 'Case · Image',
+      label: 'Image',
       schema: fields.object({ src: media('Image'), alt: fields.text({ label: 'Description (alt text)' }) }),
     },
     video: {
-      label: 'Case · Video',
+      label: 'Video',
       schema: fields.object({ src: media('Video (.mp4)'), alt: fields.text({ label: 'Description' }) }),
     },
     split: {
-      label: 'Case · Image + text card',
+      label: 'Image + text card',
       schema: fields.object({
         src: media('Image (leave empty for a full-width card)'),
         alt: fields.text({ label: 'Description' }),
@@ -56,13 +56,13 @@ const blocks = fields.blocks(
       }),
     },
     gallery: {
-      label: 'Case · Carousel',
+      label: 'Carousel',
       schema: fields.object({
         tab: fields.text({ label: 'Black tab (optional)' }),
         slides: fields.array(fields.object({ src: media('Image'), alt: fields.text({ label: 'Description' }) }), { label: 'Slides', itemLabel: (p) => p.fields.alt.value || 'Slide' }),
       }),
     },
-    // ---- Explorations ----
+    // ---- Story blocks (longer narrative: quotes, mockups, build log…) ----
     text: {
       label: 'Text',
       schema: fields.object({ ...head, body: rich('Text'), size: fields.select({ label: 'Size', options: [{ label: 'Body', value: 'body' }, { label: 'Lead (bigger)', value: 'lead' }], defaultValue: 'body' }) }),
@@ -159,16 +159,16 @@ export default config({
         status: fields.select({ label: 'Status', options: [{ label: 'Published', value: 'published' }, { label: 'Draft (hidden)', value: 'draft' }], defaultValue: 'draft' }),
         order: fields.integer({ label: 'Order', description: 'Lower numbers come first. Client work 1–9, explorations 10+.', defaultValue: 99 }),
         accent: fields.select({ label: 'Accent colour', options: ACCENT_OPTIONS, defaultValue: 'copper' }),
-        lead: fields.text({ label: 'Lead (bold first sentence)' }),
-        intro: rich('Intro', 'One or two sentences after the lead. **Bold** works.'),
+        lead: fields.text({ label: 'SEO description', description: 'One sentence for Google and link previews. Not shown on the page.' }),
+        intro: rich('Intro', 'The text in the title card. **Bold** works.'),
         teaser: fields.text({ label: 'Teaser', description: 'One line for cards and the Next block.' }),
         cover: media('Cover (cards)', 'Vertical-friendly image, used on the work page and in Next.'),
         hero: media('Hero (left panel)', 'Image or video. Fills the sticky left panel.'),
         heroLabel: fields.text({ label: 'Hero label', description: 'Text in the black corner tab.' }),
-        heroStyle: fields.select({ label: 'Hero style (client cases)', options: [{ label: 'Fill the panel', value: 'cover' }, { label: 'Centred on a colour', value: 'contain' }, { label: 'Video inside a phone', value: 'phone' }], defaultValue: 'cover' }),
+        heroStyle: fields.select({ label: 'Hero style', options: [{ label: 'Fill the panel', value: 'cover' }, { label: 'Centred on a colour', value: 'contain' }, { label: 'Video inside a phone', value: 'phone' }], defaultValue: 'cover' }),
         heroBg: fields.text({ label: 'Hero background colour', description: 'Hex, e.g. #103429' }),
         heroFrame: media('Phone frame (phone style only)'),
-        display: fields.text({ label: 'Title as shown', description: 'Client cases. **bold** works, e.g. **fintech** app' }),
+        display: fields.text({ label: 'Title as shown', description: '**bold** works, e.g. **fintech** app' }),
         metaWidth: fields.integer({ label: 'Meta cards width (px)', defaultValue: 200 }),
         nextLabel: fields.text({ label: 'Label when shown as Next' }),
         nextImage: media('Image when shown as Next'),

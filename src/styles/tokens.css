@@ -26,17 +26,21 @@
   --paper: #D4D1CB;        /* cards, text on ink */
   --paper-2: #ECEAE5;      /* inner tiles */
   --paper-3: #E2DFD9;      /* hover on tiles */
+  --surface: #111212;      /* dark cards, media placeholders */
   --muted: #4A4744;        /* secondary text on paper */
+  --muted-soft: rgba(14, 16, 17, 0.6); /* subtitles on paper */
   --muted-ink: #8E8A84;    /* secondary text on ink */
   --line: rgba(7, 7, 7, 0.14);
   --line-ink: rgba(212, 209, 203, 0.14);
+  --scrim: rgba(0, 0, 0, 0.2); /* dots pill over images */
+  --white: #FFFFFF;
   --brand: #9E194C;        /* dates, links, focus */
   --brand-soft: #FFA4BF;   /* tags, about panel */
 
   /* ---------- Colour · project accents (bg + text on it) ---------- */
-  --acc-copper: #AB8E77;  --on-copper: #070707;   /* cupra */
-  --acc-mint: #A3FFA9;    --on-mint: #113830;     /* south */
-  --acc-lime: #F0FDAB;    --on-lime: #301D15;     /* monexa */
+  --acc-copper: #AB8E77;  --on-copper: #301D15;   /* cupra */
+  --acc-mint: #A3FFA9;    --on-mint: #113830;     /* fintech · south */
+  --acc-lime: #F0FDAB;    --on-lime: #301D15;     /* bank platform · monexa */
   --acc-sky: #86CBF7;     --on-sky: #065486;      /* hmi */
   --acc-red: #E92C30;     --on-red: #070707;      /* cut scenes */
   --acc-mat: #2B6A4D;     --on-mat: #F3EFE6;      /* cutouts */
@@ -44,43 +48,47 @@
   --acc-cyan: #98E7EB;    --on-cyan: #146D72;     /* contact, crossword */
 
   /* ---------- Typography ---------- */
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
-  --font-body: 'Satoshi', system-ui, sans-serif;
+  --font-display: 'Space Grotesk', system-ui, sans-serif;  /* titles, labels */
+  --font-body: 'Satoshi', system-ui, sans-serif;           /* text */
+  --font-ui: 'DM Sans', system-ui, sans-serif;             /* buttons, chips */
   --font-mono: 'DM Mono', ui-monospace, monospace;
-  --font-ui: 'DM Sans', system-ui, sans-serif;   /* buttons, chips */
+  --font-hand: 'Caveat', 'Bradley Hand', cursive;          /* handwritten notes */
 
-  --fs-display: 45px;   --lh-display: 1;    --ls-display: -0.02em;
-  --fs-title: 32px;     --lh-title: 1.05;   --ls-title: -0.01em;
-  --fs-heading: 20px;   --lh-heading: 1.2;
-  --fs-label: 16px;     --lh-label: 1.2;    --ls-label: 0.02em;
-  --fs-body-l: 16px;    --lh-body: 1.6;
-  --fs-body: 14px;
-  --fs-small: 12px;     --lh-small: 1.5;
-  --fs-eyebrow: 12px;   --ls-eyebrow: 0.08em;
+  /* Scale taken from the original Framer site. Use the .t-* classes. */
+  --fs-display: 45px;  --lh-display: 1;      --lh-display-tight: 0.78;  /* titles */
+  --fs-title: 32px;    --lh-title: 1.05;     /* secondary titles */
+  --fs-lead: 25px;     --lh-lead: 0.85;      /* light big label (interests & hobbies) */
+  --fs-heading: 16px;  --lh-heading: 1.2;    --ls-heading: 0.6px;   /* bold display */
+  --fs-label: 16px;    --lh-label: 1.2;      --ls-label: 0.6px;     /* nav, years */
+  --fs-body: 14px;     --lh-body: 1.6;       --ls-body: 0.5px;      /* text */
+  --ls-tab: 1px;                                                    /* tabs, intro */
+  --fs-small: 12px;    --lh-small: 1.6;      --ls-small: 0.6px;     /* card text, meta */
+  --fs-micro: 10px;    --lh-micro: 1.2;      --ls-micro: 0.5px;
+  --fs-eyebrow: 12px;  --ls-eyebrow: 0.08em;
 
   /* ---------- Space (4px scale) ---------- */
   --s-1: 4px;
-  --s-2: 8px;
-  --s-3: 12px;
+  --s-2: 8px;    /* gap between cards */
+  --s-3: 12px;   /* gap between panels, frame */
   --s-4: 16px;
-  --s-5: 24px;
+  --s-5: 24px;   /* card padding */
   --s-6: 32px;
-  --s-7: 48px;
-  --s-8: 64px;
+  --s-7: 40px;   /* panel padding */
+  --s-8: 64px;   /* top of panels (clears the menu) */
 
   /* ---------- Radius ---------- */
-  --r-xs: 4px;     /* inputs, crossword cells */
-  --r-sm: 8px;     /* chips, small tiles */
-  --r-md: 12px;    /* cards, media */
-  --r-lg: 12px;    /* panels, frame */
+  --r-xs: 4px;     /* chips, crossword cells */
+  --r-sm: 8px;     /* cards, media */
+  --r-md: 12px;    /* panels */
+  --r-btn: 10px;   /* View Project buttons */
+  --r-tab: 18px;   /* inner corner of a tab */
   --r-pill: 999px; /* tags, buttons */
 
   /* ---------- Layout ---------- */
-  --frame: 12px;         /* black border around everything */
-  --tab-corner: 18px;    /* size of the inverted corners */
-  --r-tab: 18px;         /* rounded inner corner of a tab */
-  --r-card: 8px;         /* project cards */
-  --r-panel: 12px;       /* big panels */
+  --frame: 12px;          /* black border around everything */
+  --tab-corner: 18px;     /* size of the inverted corners */
+  --tab-h: 42px;          /* height of tabs and the menu */
+  --split: 850fr 554fr;   /* project + work: big panel / column */
 
   /* ---------- Motion ---------- */
   --dur-fast: 160ms;
@@ -88,14 +96,12 @@
   --dur-slow: 560ms;
   --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: linear(0, 0.23 12.5%, 0.66 25%, 1 37.5%, 1.17 50%, 1.18 62.5%, 1.12 75%, 1.05 87.5%, 1);
   --stagger: 60ms;
 }
 
-@media (max-width: 760px) {
-  :root {
-    --fs-display: 38px;
-    --fs-title: 28px;
-  }
+@media (max-width: 809px) {
+  :root { --fs-title: 28px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

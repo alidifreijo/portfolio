@@ -17,10 +17,11 @@ Todo lo que necesitas para mantener la web sin depender de nadie. Si algo de aqu
 src/
   styles/tokens.css     ← EL SISTEMA: colores, tipos, espacios, radios, motion
   styles/base.css       ← estilos de texto (.t-display, .t-body…) y animaciones
-  components/           ← piezas reutilizables (Card, Tag, Button, Media…)
+  components/           ← piezas reutilizables (Card, Tag, Button, Carousel, Blocks…)
+  components/project/   ← partes de la plantilla de proyecto (hero, título, next)
   layouts/Base.astro    ← lo común a todas las páginas (menú, head, animaciones)
   pages/                ← home, about, work, contact, styleguide, 404
-  pages/work/[slug]     ← la plantilla de TODOS los proyectos
+  pages/work/[slug]     ← LA plantilla de todos los proyectos
   content/projects/     ← un archivo por proyecto (lo editas en Keystatic)
   content/pages/        ← textos de home, about, work y contact
 public/images/          ← imágenes y vídeos
@@ -43,9 +44,9 @@ docs/GUIA.md            ← esta guía
 ### Añadir un proyecto nuevo
 
 1. **Projects → Add**.
-2. Rellena la cabecera: título (en minúsculas), tipo (*Client case* o *Exploration*), color de acento, lead, intro, teaser, cover, hero y meta cards.
+2. Rellena la cabecera: título (en minúsculas), *Title as shown*, tipo (*Client case* o *Exploration*), color de acento, intro, teaser, cover, hero (+ estilo) y meta cards.
 3. Deja **Status: Draft** mientras trabajas. No aparece en la web hasta que lo pases a **Published**.
-4. Añade **bloques** (ver sección 4) siguiendo una de las plantillas (sección 3).
+4. Añade **bloques** (sección 4) siguiendo el orden recomendado (sección 3).
 5. **Order** decide la posición: clientes del 1 al 9, exploraciones del 10 en adelante. El bloque *Next* sigue ese orden.
 
 ### Imágenes y vídeos
@@ -58,35 +59,26 @@ docs/GUIA.md            ← esta guía
 
 ---
 
-## 3. Plantillas (qué bloques usar y en qué orden)
+## 3. La plantilla de proyecto (una sola para todos)
 
-### Caso de cliente (diseño original de Framer)
-Panel grande fijo a la izquierda, título fijo arriba a la derecha y tarjetas debajo. El bloque *Next* sale solo (siguiente proyecto de cliente por *Order*).
+Todos los proyectos, de cliente o propios, usan **la misma plantilla** (`src/pages/work/[slug].astro`). Si cambias algo en ella o en un bloque, cambia en todos los proyectos a la vez.
 
-- **Cabecera**: *Title as shown* (admite `**negrita**`, p. ej. `**fintech** app`), intro, 3 meta cards y *Meta cards width* (200 por defecto).
-- **Panel izquierdo**: *Hero* + *Hero style* (*Fill the panel*, *Centred on a colour* o *Video inside a phone*) + *Hero background colour* + *Phone frame* si es un móvil.
-- **Bloques** (en este orden suelen funcionar bien):
-  1. *Case · Image* o *Case · Video* a todo el ancho. Mantienen su proporción.
-  2. *Case · Image + text card*: foto + tarjeta con tag y puntos. Sin foto, la tarjeta ocupa todo el ancho. Estilo *Compact* (título en negrita + línea) o *Spaced* (títulos grandes).
-  3. *Case · Carousel*: galería con flechas.
-- **Cómo aparece como Next**: *Label when shown as Next*, *Image when shown as Next* y el *Teaser*.
+**Estructura de la página**
+1. **Panel izquierdo fijo** (*Hero*): imagen o vídeo. *Hero style*: *Fill the panel*, *Centred on a colour* o *Video inside a phone* (con *Phone frame*).
+2. **Tarjeta de título fija** arriba a la derecha, en el color del proyecto: *Title as shown* (admite `**negrita**`), *Intro*, meta cards a la derecha (*Meta cards width*, 200 por defecto) y botones opcionales (*Buttons*).
+3. **Bloques** (ver sección 4).
+4. **Next**: sale solo. Es el siguiente proyecto por *Order*; usa su *Teaser*, *Label when shown as Next* e *Image when shown as Next*.
 
-### Exploración (proyectos propios)
-El modelo es Cut Scenes.
-
-1. *Quote* · **The idea**: el porqué y la regla que lo guía todo.
-2. *Mockup · browser* + *Mockup · phones*: la pantalla principal y el móvil.
-3. *Collection* (si hay una colección que enseñar).
-4. *Video card* · **Screen flow**.
-5. *Video card* · **Architecture**.
-6. *Timeline* · **Build**: cómo se construyó.
-7. *Details*: 2 a 4 clips cortos.
+**Orden recomendado de bloques**
+1. *Image* o *Video* de contexto.
+2. *Image + text card* (rol, arquetipo, necesidades…).
+3. Más *Image* / *Video* / *Carousel* con el trabajo.
+4. Bloques de historia si hacen falta (*Quote*, *Timeline*, *Details*…).
 
 **Reglas de contenido**
-- Menos de 400 palabras por proyecto. Si dudas, quita.
-- Una idea por bloque.
-- Negrita solo para lo que alguien leería en diagonal.
-- Nada que no sea verdad o que no puedas explicar en una entrevista.
+- Siempre visual: cada bloque de texto va junto a algo que se ve.
+- Una idea por bloque. Negrita solo para lo que se lee en diagonal.
+- Nada que no puedas explicar en una entrevista. Nada bajo NDA.
 
 ---
 
@@ -94,42 +86,42 @@ El modelo es Cut Scenes.
 
 | Bloque | Para qué |
 |---|---|
-| **Case · Image / Video** | Clientes. Una pieza a todo el ancho de la columna. |
-| **Case · Image + text card** | Clientes. Foto + tarjeta con tag (roles, requisitos, arquetipo). |
-| **Case · Carousel** | Clientes. Galería con flechas y puntos. |
-| **Text** | Un párrafo con eyebrow y pill. Tamaño *Body* o *Lead*. |
+| **Image** | Una imagen a todo el ancho, con su proporción. |
+| **Video** | Un vídeo en bucle a todo el ancho, con su proporción. Sube también `nombre.poster.jpg`. |
+| **Image + text card** | Foto + tarjeta con tag y puntos. Sin foto, la tarjeta ocupa todo el ancho. Estilo *Compact* o *Spaced*. |
+| **Carousel** | Galería con flechas y puntos. |
+| **Text** | Un párrafo con eyebrow y pill. |
 | **Quote** | La frase que resume la dirección, con chips. |
-| **List** | Títulos + texto, en 1 a 3 columnas (roles, decisiones, necesidades). |
+| **List** | Títulos + texto, en 1 a 3 columnas. |
 | **Stats** | Números grandes con una línea de contexto. |
-| **Image or video** | Una pieza a lo ancho. Ratio, pie y etiqueta opcionales. |
-| **Two images or videos** | Pareja lado a lado. |
-| **Mockup · browser** | Captura dentro de una ventana de navegador. |
-| **Mockup · phones** | 1 a 3 capturas de móvil en marcos. |
-| **Collection** | Rejilla de imágenes con etiquetas y frase al pasar el ratón. |
-| **Video card** | Vídeo en tarjeta oscura con pie (flujos, arquitectura). |
-| **Timeline** | Registro de construcción con hitos y nota manuscrita. |
+| **Image or video** · **Two images or videos** | Pieza con ratio fijo, sola o en pareja. |
+| **Mockup · browser** · **Mockup · phones** | Capturas dentro de marcos. |
+| **Collection** | Rejilla de imágenes con etiquetas. |
+| **Video card** | Vídeo en tarjeta oscura con pie. |
+| **Timeline** | Registro de construcción con nota manuscrita. |
 | **Details** | 2 a 4 clips pequeños con título y una línea. |
 
 ---
 
 ## 5. El sistema de diseño
 
-Todo vive en **`src/styles/tokens.css`**. Puedes verlo funcionando en **`/styleguide`**.
+Todo vive en **`src/styles/tokens.css`** y se ve funcionando en **`/styleguide`**. La escala sale del diseño original de Framer.
 
-- **Colores**: `--ink`, `--paper`, `--paper-2`, `--brand`, `--brand-soft` y un acento por proyecto (`--acc-copper`, `--acc-mint`…).
-- **Tipografía**: Space Grotesk para títulos y etiquetas, Satoshi para texto. Hay 8 estilos: `.t-display`, `.t-title`, `.t-heading`, `.t-label`, `.t-body-l`, `.t-body`, `.t-small` y `.t-eyebrow`.
-- **Espacios**: `--s-1` a `--s-8` (4, 8, 12, 16, 24, 32, 48 y 64 px).
-- **Radios**: `--r-xs`, `--r-sm`, `--r-md`, `--r-lg` y `--r-pill`.
-- **Motion**: duraciones `--dur-fast`, `--dur-base` y `--dur-slow`, y curvas `--ease-out` y `--ease-in-out`. Patrones: `data-reveal` (aparecer), `.lift` (elevar), `.press` (pulsar). Todo se apaga si el usuario pide reducir movimiento.
+- **Color**: `--ink`, `--paper`, `--paper-2`, `--surface` (tarjetas oscuras), `--brand`, `--brand-soft` y un acento por proyecto (`--acc-*` + `--on-*`).
+- **Tipografía**: Space Grotesk (títulos, etiquetas), Satoshi (texto), DM Sans (botones). Clases: `.t-display`, `.t-title`, `.t-lead`, `.t-heading`, `.t-label`, `.t-body`, `.t-tab`, `.t-small`, `.t-micro`, `.t-ui`, `.t-eyebrow`, `.t-hand`.
+- **Espacio**: `--s-1` a `--s-8` (4, 8, 12, 16, 24, 32, 40, 64). 8 entre tarjetas, 12 entre paneles, 24 dentro de una tarjeta, 40 dentro de un panel.
+- **Radios**: `--r-xs` 4 (chips), `--r-sm` 8 (tarjetas), `--r-btn` 10 (botones), `--r-md` 12 (paneles), `--r-tab` 18 (pestañas), `--r-pill`.
+- **Layout**: `--frame` 12, `--split` (proporción panel/columna), `--tab-h`.
+- **Motion**: `--dur-fast/base/slow`, `--ease-out`, `--ease-in-out`, `--ease-spring` (las caras de la home).
 
 **Reglas de oro**
-1. Nunca escribas un color, tamaño, radio o duración a mano. Usa el token.
+1. Color, tipo, espacio, radio y duración siempre con token. Lo único que se escribe a mano es la geometría propia de un componente (p. ej. dónde va la pantalla dentro del marco del móvil), con un comentario.
 2. Si necesitas algo nuevo, añádelo primero como token y después úsalo.
-3. Si un componente casi sirve, amplía el componente. No lo copies.
+3. Si un componente casi sirve, amplíalo. No lo copies.
 
 ### Cambiar algo global
-- **Un color**: cambia su valor en `tokens.css`. Cambia en toda la web.
-- **Añadir un color de acento**: añade `--acc-nombre` y `--on-nombre` en `tokens.css`, el nombre en `ACCENTS` (`src/lib/utils.ts`) y la opción en `ACCENT_OPTIONS` (`keystatic.config.ts`).
+- **Un color**: cambia su valor en `tokens.css`.
+- **Un color de acento nuevo**: `--acc-nombre` y `--on-nombre` en `tokens.css`, el nombre en `ACCENTS` (`src/lib/utils.ts`) y la opción en `ACCENT_OPTIONS` (`keystatic.config.ts`).
 - **Un tamaño de texto**: cambia la variable `--fs-…` en `tokens.css`.
 
 ---

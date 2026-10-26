@@ -1,6 +1,6 @@
 ---
 /**
- * CaseHero · the big panel on the left of a client case. It stays put
+ * ProjectHero · the big panel on the left of a project. It stays put
  * while the right column scrolls. Three styles:
  * - cover: image or video fills the panel
  * - contain: video/image centred on a flat colour
@@ -33,7 +33,7 @@ const poster = (s: string) => s.replace(/\.mp4$/i, '.poster.jpg');
 </div>
 
 <style>
-  .hero { position: relative; height: 100%; border-radius: var(--r-panel); overflow: hidden; }
+  .hero { position: relative; height: 100%; border-radius: var(--r-md); overflow: hidden; }
   .hero > img, .hero > video { width: 100%; height: 100%; object-fit: cover; }
   .hero--contain > img, .hero--contain > video { object-fit: contain; }
   /* Phone: frame 323×582 with the screen inset, as in the original (panel 850×876). */

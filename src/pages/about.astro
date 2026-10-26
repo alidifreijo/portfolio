@@ -78,38 +78,38 @@ const a = (await getEntry('pages', 'about'))!.data;
 </script>
 
 <style>
-  .about { display: grid; grid-template-columns: minmax(0, 574fr) minmax(0, 409fr) minmax(0, 409fr); gap: 12px; height: calc(100vh - var(--frame) * 2); min-height: 620px; }
+  .about { display: grid; grid-template-columns: minmax(0, 574fr) minmax(0, 409fr) minmax(0, 409fr); gap: var(--s-3); height: calc(100vh - var(--frame) * 2); min-height: 620px; }
   .ab-left { position: relative; color: var(--paper); }
-  .ab-left__h { position: relative; z-index: 0; padding: 65px 12px 0; font-family: var(--font-display); font-weight: 700; font-size: 45px; line-height: 45px; white-space: pre-line; pointer-events: none; }
-  .ab-left__hob { position: absolute; right: 0; bottom: 25px; font-family: var(--font-display); font-weight: 300; font-size: 25px; line-height: 21.25px; pointer-events: none; }
+  .ab-left__h { position: relative; z-index: 0; padding: var(--s-8) 12px 0; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-display); line-height: 45px; white-space: pre-line; pointer-events: none; }
+  .ab-left__hob { position: absolute; right: 0; bottom: 25px; font-family: var(--font-display); font-weight: 300; font-size: var(--fs-lead); line-height: 21.25px; pointer-events: none; }
 
-  .ab-card { border-radius: var(--r-panel); padding: 65px 40px 48px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+  .ab-card { border-radius: var(--r-md); padding: var(--s-8) 40px 48px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
   .ab-card::-webkit-scrollbar { display: none; }
   .ab-card--paper { background: var(--paper); color: var(--ink); }
   .ab-card--pink { background: var(--brand-soft); color: var(--brand); }
 
-  .ab-h1 { font-family: var(--font-display); font-weight: 700; font-size: 45px; line-height: 35.1px; }
+  .ab-h1 { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-display); line-height: 35.1px; }
   .ab-h1--exp { line-height: 38.25px; }
-  .ab-h2 { margin-top: 48px; font-family: var(--font-display); font-weight: 700; font-size: 45px; line-height: 47.25px; letter-spacing: -0.3px; }
-  .ab-text { font-size: 14px; line-height: 22.4px; letter-spacing: 0.5px; }
+  .ab-h2 { margin-top: 48px; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-display); line-height: 47.25px; letter-spacing: -0.3px; }
+  .ab-text { font-size: var(--fs-body); line-height: var(--lh-body); letter-spacing: var(--ls-body); }
   .ab-card--paper > .ab-text { margin-top: 24px; }
   .rich :global(p + p) { margin-top: 22.4px; }
   .ab-card--paper > .rich :global(p:nth-last-child(-n + 2)) { margin-top: 34px; }
-  .ab-t { font-family: var(--font-display); font-weight: 700; font-size: 16px; line-height: 19.2px; letter-spacing: 0.6px; }
+  .ab-t { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-label); line-height: var(--lh-small); letter-spacing: var(--ls-small); }
 
   .ab-skills { display: flex; flex-direction: column; gap: 31px; margin-top: 24px; }
   .ab-tags { display: flex; flex-wrap: wrap; gap: 8px 10px; margin: 14px 0 16px; }
-  .ab-tags span { display: inline-flex; align-items: center; height: 31px; padding: 0 13px; border-radius: 30px; border: 1.5px solid currentColor; font-size: 12px; font-weight: 700; letter-spacing: 0.4px; }
+  .ab-tags span { display: inline-flex; align-items: center; height: 31px; padding: 0 13px; border-radius: var(--r-pill); border: 1.5px solid currentColor; font-size: var(--fs-small); font-weight: 700; letter-spacing: 0.4px; }
   .ab-tags--filled span { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-  .ab-tags--brand span { background: var(--brand); color: var(--brand-soft); border-color: var(--brand); letter-spacing: 0.6px; }
+  .ab-tags--brand span { background: var(--brand); color: var(--brand-soft); border-color: var(--brand); letter-spacing: var(--ls-small); }
 
   .ab-teach { display: flex; flex-direction: column; gap: 16px; margin-top: 25px; }
-  .ab-years { font-family: var(--font-display); font-size: 16px; line-height: 19.2px; letter-spacing: 0.6px; }
+  .ab-years { font-family: var(--font-display); font-size: var(--fs-label); line-height: var(--lh-small); letter-spacing: var(--ls-small); }
   .ab-teach .ab-years { margin-bottom: 12px; }
-  .ab-place { font-size: 12px; line-height: 19.2px; letter-spacing: 0.6px; }
-  .ab-langs { display: flex; flex-direction: column; gap: 12px; margin-top: 30px; }
+  .ab-place { font-size: var(--fs-small); line-height: var(--lh-small); letter-spacing: var(--ls-small); }
+  .ab-langs { display: flex; flex-direction: column; gap: var(--s-3); margin-top: 30px; }
   .ab-langs div { display: flex; justify-content: space-between; align-items: baseline; }
-  .ab-level { display: inline-flex; align-items: center; height: 31px; padding: 0 13px; border-radius: 30px; border: 1.5px solid currentColor; font-size: 12px; font-weight: 700; letter-spacing: 0.4px; }
+  .ab-level { display: inline-flex; align-items: center; height: 31px; padding: 0 13px; border-radius: var(--r-pill); border: 1.5px solid currentColor; font-size: var(--fs-small); font-weight: 700; letter-spacing: 0.4px; }
   .ab-langs div { align-items: center; }
 
   .ab-job { padding: 24px 0 32px; border-bottom: 1px solid currentColor; }

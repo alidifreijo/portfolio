@@ -37,9 +37,9 @@ const d = paths[corner];
     display: flex;
     align-items: center;
     gap: var(--s-5);
-    font-size: 14px; line-height: 22.4px; letter-spacing: 1px;
+    font-size: var(--fs-body); line-height: var(--lh-body); letter-spacing: var(--ls-tab);
   }
-  .tab :global(.t-body) { font-size: 14px; line-height: 22.4px; letter-spacing: 1px; }
+  .tab :global(.t-body) { font-size: var(--fs-body); line-height: var(--lh-body); letter-spacing: var(--ls-tab); }
   .tab__c { position: absolute; width: var(--tab-corner); height: var(--tab-corner); fill: var(--ink); }
 
   .tab--top-left { top: 0; left: 0; border-bottom-right-radius: var(--r-tab); padding: 10px 16px; }

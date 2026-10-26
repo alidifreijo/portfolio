@@ -16,8 +16,8 @@ const home = (await getEntry('pages', 'home'))!.data;
 <style>
   .home {
     position: relative; height: calc(100vh - var(--frame) * 2); min-height: 560px;
-    background: var(--paper); border-radius: var(--r-panel); overflow: hidden;
+    background: var(--paper); border-radius: var(--r-md); overflow: hidden;
   }
-  .home__line { position: absolute; left: 50%; top: 50%; translate: -50% -50%; text-align: center; width: min(90%, 460px); pointer-events: none; font-family: var(--font-display); font-size: 16px; line-height: 19.2px; letter-spacing: 0.8px; }
-  @media (max-width: 809px) { .home__line { font-size: 12px; line-height: 14.4px; width: 280px; } }
+  .home__line { position: absolute; left: 50%; top: 50%; translate: -50% -50%; text-align: center; width: min(90%, 460px); pointer-events: none; font-family: var(--font-display); font-size: var(--fs-label); line-height: var(--lh-small); letter-spacing: 0.8px; }
+  @media (max-width: 809px) { .home__line { font-size: var(--fs-small); line-height: 14.4px; width: 280px; } }
 </style>
