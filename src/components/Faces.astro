@@ -79,79 +79,9 @@ const items = faces.map((f, i) => {
 
 <script>
   import { navigate } from 'astro:transitions/client';
+  import { paint } from '../scripts/paint';
 
-  // ---- The way into a case: the panel fills with the face's colour, each
-  // face in its own manner. Drawn on a canvas inside the panel (never on the
-  // frame). t goes 0 → 1.
-  type Painter = (c: CanvasRenderingContext2D, t: number, w: number, h: number, ox: number, oy: number) => void;
-  const ease = (t: number) => 1 - Math.pow(1 - Math.min(1, Math.max(0, t)), 3);
-  const rnd = (seed: number) => () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
-  const PAINT: Record<string, Painter> = {
-    // naming layers: bands stack up from the bottom, one after another
-    layers: (c, t, w, h) => {
-      const n = 7, bh = h / n;
-      for (let i = 0; i < n; i++) { const k = ease((t - i * 0.08) / 0.42); if (k <= 0) continue; const y = h - (i + 1) * bh; c.fillRect(i % 2 ? w - w * k : 0, y - 1, w * k, bh + 2); }
-    },
-    // chaos: blots burst everywhere, in no order, until nothing is left
-    chaos: (c, t, w, h) => {
-      const r = rnd(7), D = Math.hypot(w, h);
-      for (let i = 0; i < 120; i++) {
-        const x = r() * w, y = r() * h, st = r() * 0.7, R = (0.04 + r() * 0.13) * D;
-        const k = (t - st) / 0.35; if (k <= 0) continue;
-        const kk = k >= 1 ? 1 : 1 + 2.2 * Math.pow(k - 1, 3) + 1.2 * Math.pow(k - 1, 2);
-        c.beginPath(); c.arc(x, y, R * kk, 0, Math.PI * 2); c.fill();
-      }
-      if (t > 0.88) { c.globalAlpha = (t - 0.88) / 0.12; c.fillRect(0, 0, w, h); c.globalAlpha = 1; }
-    },
-    // empathy: soft waves from the face, the last one holds everything
-    ripple: (c, t, w, h, ox, oy) => {
-      const D = Math.hypot(Math.max(ox, w - ox), Math.max(oy, h - oy));
-      [0, 0.16, 0.32].forEach((st, i) => {
-        const k = ease((t - st) / 0.6); if (k <= 0) return;
-        c.globalAlpha = i < 2 ? 0.45 : 1; c.beginPath(); c.arc(ox, oy, D * k * (i < 2 ? 0.75 + i * 0.12 : 1.02), 0, Math.PI * 2); c.fill();
-      });
-      c.globalAlpha = 1;
-    },
-    // research: it comes in from every side, each at its own pace
-    sides: (c, t, w, h) => {
-      const k = [ease(t / 0.7), ease((t - 0.12) / 0.7), ease((t - 0.05) / 0.75), ease((t - 0.2) / 0.65)];
-      c.fillRect(0, 0, w, h * 0.55 * k[0]);
-      c.fillRect(w - w * 0.55 * k[1], 0, w * 0.55 * k[1], h);
-      c.fillRect(0, h - h * 0.55 * k[2], w, h * 0.55 * k[2]);
-      c.fillRect(0, 0, w * 0.55 * k[3], h);
-    },
-    // teamwork: puzzle pieces lock in from several places at once
-    puzzle: (c, t, w, h) => {
-      const cols = 9, rows = Math.max(4, Math.round((9 * h) / w)), cw = w / cols, rh = h / rows;
-      const seeds = [[0.1, 0.2], [0.85, 0.15], [0.2, 0.9], [0.9, 0.85]];
-      for (let y = 0; y < rows; y++) for (let x = 0; x < cols; x++) {
-        const u = (x + 0.5) / cols, v = (y + 0.5) / rows;
-        const d = Math.min(...seeds.map(([a, b]) => Math.hypot(u - a, v - b)));
-        const k = ease((t - d * 0.75) / 0.3); if (k <= 0) continue;
-        const px = x * cw, py = y * rh, s = k;
-        c.save(); c.translate(px + cw / 2, py + rh / 2); c.scale(s, s); c.translate(-cw / 2, -rh / 2);
-        const n = Math.min(cw, rh) * 0.16;
-        c.beginPath(); c.rect(-0.5, -0.5, cw + 1, rh + 1);
-        if (x < cols - 1) { c.moveTo(cw, rh / 2); c.arc(cw, rh / 2, n, 0, Math.PI * 2); }
-        if (y < rows - 1) { c.moveTo(cw / 2, rh); c.arc(cw / 2, rh, n, 0, Math.PI * 2); }
-        c.fill(); c.restore();
-      }
-      if (t > 0.9) { c.globalAlpha = (t - 0.9) / 0.1; c.fillRect(0, 0, w, h); c.globalAlpha = 1; }
-    },
-    // creative mess, beautifully organised: brush strokes, row by row
-    brush: (c, t, w, h) => {
-      const rows = 5, rh = h / rows, r = rnd(3);
-      for (let i = 0; i < rows; i++) {
-        const k = ease((t - i * 0.11) / 0.4); if (k <= 0) continue;
-        const ltr = i % 2 === 0, y = rh * (i + 0.5), steps = 60;
-        for (let j = 0; j <= steps * k; j++) {
-          const f = j / steps, x = ltr ? f * w : w - f * w;
-          const rad = rh * (0.62 + r() * 0.12);
-          c.beginPath(); c.ellipse(x, y + (r() - 0.5) * rh * 0.12, rad * 0.9, rad, 0, 0, Math.PI * 2); c.fill();
-        }
-      }
-    },
-  };
+  // ---- The way into a case: see src/scripts/paint.ts for the six mediums.
   const go = (root: HTMLElement, face: HTMLAnchorElement) => {
     const href = face.getAttribute('href')!;
     const leave = () => (document.querySelector('[name="astro-view-transitions-enabled"]') ? navigate(href) : (location.href = face.href));
@@ -168,17 +98,15 @@ const items = faces.map((f, i) => {
     face.style.setProperty('--dy', `${cur('--dy') + cy - (fr.top + fr.height / 2)}px`);
     face.classList.add('is-picked', 'is-on'); face.style.zIndex = '99';
     root.classList.add('is-going');
-    const cv = document.createElement('canvas'), dpr = Math.min(2, devicePixelRatio || 1);
-    cv.className = 'faces__paint'; cv.width = pr.width * dpr; cv.height = pr.height * dpr; root.prepend(cv);
-    const c = cv.getContext('2d')!; c.scale(dpr, dpr); c.fillStyle = face.dataset.color || '#000';
-    const paint = PAINT[face.dataset.paint || 'ripple'] || PAINT.ripple;
-    const D = 1350, t0 = performance.now() + 260;
-    const frame = (now: number) => {
-      const t = Math.min(1, (now - t0) / D);
-      if (t > 0) { c.clearRect(0, 0, pr.width, pr.height); paint(c, t, pr.width, pr.height, pr.width / 2, pr.height / 2); }
-      if (t < 1) requestAnimationFrame(frame); else setTimeout(leave, 160);
-    };
-    requestAnimationFrame(frame);
+    const cv = document.createElement('canvas');
+    cv.className = 'faces__paint'; root.prepend(cv);
+    const r2 = cv.getBoundingClientRect();
+    const args = [cv, face.dataset.paint || 'ripple', face.dataset.color || '#000', r2.width / 2, r2.height / 2, 1700, 240] as const;
+    // three.js shader first; the 2D canvas painter if WebGL isn't there
+    import('../scripts/paint-gl')
+      .then((m) => m.paintGL(...args))
+      .catch(() => { const c2 = document.createElement('canvas'); c2.className = 'faces__paint'; cv.replaceWith(c2); return paint(c2, ...args.slice(1) as [string, string, number, number, number, number]); })
+      .then(() => setTimeout(leave, 120));
   };
 
   // coming back with the browser's back button: clear the paint
@@ -197,6 +125,7 @@ const items = faces.map((f, i) => {
   document.querySelectorAll<HTMLElement>('[data-faces]').forEach((root) => {
     if (root.dataset.ready) return; root.dataset.ready = '1';
     let z = 10;
+    root.addEventListener('pointerover', () => { import('../scripts/paint-gl'); }, { once: true });
     // the nod plays once, a moment after the page appears
     [...root.querySelectorAll<HTMLElement>('.face')].forEach((f, i) => f.style.setProperty('--d', `${i * 90}ms`));
     // pop-in order and timing measured on Framer (ms after the panel starts opening)
@@ -397,7 +326,7 @@ const items = faces.map((f, i) => {
   /* tidy up: everyone goes home on the same spring as the hover */
   /* on the way into a case: the others step back, the picked face comes to
      the middle and grows, the canvas paints the panel behind it */
-  .faces__paint { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+  :global(.faces__paint) { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
   .faces.is-going .face { transition: transform 700ms var(--spring-face), opacity 260ms var(--ease-out); pointer-events: none; }
   .faces.is-going .face:not(.is-picked) { opacity: 0; }
   .faces.is-going .face:not(.is-picked) .face__img { scale: 0.85; transition: scale 260ms var(--ease-out); }
