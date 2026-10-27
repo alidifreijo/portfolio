@@ -360,7 +360,7 @@ window.seek=t=>{
     // 1) the wireframe is assembled piece by piece, in the order of the Figma steps
     // 2) product presentation: the branded display arrives from the other side, the palette is shown
     // 3) it takes the stage and comes alive
-    window.DUR=25;
+    window.DUR=28;
     const W=976.372,HH=415.395,NS='http://www.w3.org/2000/svg', LINE='#c9b8a3', FAINT='rgba(201,184,163,.75)';
     const AX=window.AXIS||488.2;
     // the Figma road replaces the live grid for the presentation
@@ -417,20 +417,53 @@ window.seek=t=>{
     pencil(A('road'),8.9,1.4,{w:.7}); pencil(A('vector33'),10.0,.5,{mode:'up',w:1}); pencil(A('vector34'),10.2,.6,{mode:'car',w:1}); pencil(A('me'),10.3,.4);
     // 7 · next direction
     pencil(A('union'),11.2,.4);
-    // ── presentation ──
+    // ── brand: typeface → colour → the display itself ──
     const spE=document.getElementById('sp'),pwE=document.getElementById('pw');
     const light2=[...document.querySelector('#hmi svg.inl[data-a="light2"]').children].filter(c=>c.tagName!=='defs');
     const sheen=document.createElement('div');sheen.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:30;mix-blend-mode:screen;-webkit-mask:url(data:image/svg+xml;base64,'+btoa(document.querySelector('#hmi svg.inl[data-a=cockpit]').outerHTML.replace(/class="inl"[^>]*?data-a="cockpit"/,'xmlns="http://www.w3.org/2000/svg" width="997.368" height="442.712"'))+') 50% 50%/100% 100%';H.append(sheen);
-    const SW=[['#0B1620','Night'],['#1B1E27','Cockpit'],['#7E4B35','Copper'],['#D9773F','Signal'],['#214B6A','Eco'],['#9E998E','Stone']];
-    document.body.insertAdjacentHTML('beforeend',`<div id="pal" style="position:absolute;left:50%;bottom:118px;transform:translateX(-50%);display:flex;gap:26px;align-items:flex-end;font-family:Clash,sans-serif">
-      ${SW.map(([c,n])=>`<div class="sw" style="width:104px"><div style="height:58px;border-radius:6px;background:${c};box-shadow:inset 0 0 0 1px rgba(201,184,163,.18)"></div><p style="margin:10px 0 0;font:500 13px Clash;letter-spacing:.06em;color:#c9c4b8">${n}</p><p style="margin:3px 0 0;font:400 12px Clash;letter-spacing:.06em;color:#6f7880">${c}</p></div>`).join('')}
-      <div class="sw" style="margin-left:22px;width:170px"><p style="margin:0;font:500 54px/0.9 Clash;white-space:nowrap;color:#7E4B35;filter:url(#ins)">Aa 65</p><p style="margin:10px 0 0;font:500 13px Clash;letter-spacing:.06em;color:#c9c4b8">Clash Display</p><p style="margin:3px 0 0;font:400 12px Clash;letter-spacing:.06em;color:#6f7880">Light · Regular · Medium</p></div></div>`);
-    const sws=[...document.querySelectorAll('#pal .sw')];
-    document.body.insertAdjacentHTML('beforeend','<div id="cap" style="position:fixed;left:70px;bottom:56px;font:500 20px Clash,sans-serif;letter-spacing:.06em;color:#8b867c"></div><div id="tag1" class="tag">WIREFRAME</div><div id="tag2" class="tag">VISUAL</div><style>.tag{position:absolute;top:150px;font:500 14px Clash,sans-serif;letter-spacing:.18em;color:#8b867c}</style>');
-    const cap=document.getElementById('cap'),tag1=document.getElementById('tag1'),tag2=document.getElementById('tag2');
-    const STEPS=[[0,'01 · the shell'],[2.1,'02 · menu & info bases'],[3.3,'03 · power & speed scales'],[5.6,'04 · sections & numbers'],[8.1,'05 · gears'],[8.9,'06 · road & route'],[10.7,'07 · next turn'],[12.2,'08 · wireframe → visual'],[14.6,'09 · colour & type'],[18.6,'10 · switched on']];
-    const pose=(el,x,s,ry,o=1)=>{el.style.transform=`perspective(2400px) translateX(${x}px) rotateY(${ry}deg) scale(${s})`;el.style.opacity=o;};
-    H.style.transformOrigin=C.style.transformOrigin='50% 50%';
+    const COL=[['#0B1620','Night','Background',3.0,'#c9c4b8'],['#1B1E27','Cockpit','Surfaces & glass',2.2,'#c9c4b8'],['#7E4B35','Copper','Data · Sport',1.5,'#f1e6dc'],['#D9773F','Signal','Indicators',.85,'#2a160c'],['#214B6A','Eco','Efficiency · Regen',1.3,'#dfe9f1'],['#9E998E','Stone','Interface text',1.05,'#1d1f22']];
+    const WG=[[300,'Light'],[400,'Regular'],[500,'Medium'],[600,'Semibold']];
+    document.body.insertAdjacentHTML('beforeend',`<style>
+      #brand{position:fixed;inset:0;font-family:Clash,sans-serif;pointer-events:none}
+      #brand .ln{overflow:hidden;line-height:1.08}#brand .ln>*{display:inline-block;will-change:transform}
+      #brand .eb{font:500 14px Clash;letter-spacing:.22em;color:#8b867c}
+      #brand .rule{height:1px;background:#2a3540;transform-origin:0 50%}
+    </style>
+    <div id="brand">
+      <section id="ty" style="position:absolute;left:140px;right:140px;top:100px;bottom:120px;display:flex;flex-direction:column;justify-content:center">
+        <div class="ln"><span class="eb">01 — TYPEFACE</span></div>
+        <div class="rule" style="margin:22px 0 34px"></div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end">
+          <div>
+            <div class="ln"><span style="font:500 150px/1 Clash;letter-spacing:-.01em;color:#e7e2d8">Clash Display</span></div>
+            <div class="ln" style="margin-top:18px"><span style="font:300 30px Clash;letter-spacing:.06em;color:#8b867c">Aa Bb Cc Dd Ee Ff Gg Hh · 0 1 2 3 4 5 6 7 8 9</span></div>
+          </div>
+          <div style="text-align:right">
+            <div class="ln"><span style="font:500 230px/0.9 Clash;letter-spacing:.06em;color:#7E4B35;filter:url(#ins)">65</span></div>
+            <div class="ln"><span style="font:400 22px Clash;letter-spacing:.06em;color:#485153">kW/h</span></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:28px;margin-top:64px">
+          ${WG.map(([w,n])=>`<div style="flex:1"><div class="rule" style="margin-bottom:18px"></div><div class="ln"><span style="font:${w} 80px/1 Clash;color:#c9c4b8">72</span></div><div class="ln" style="margin-top:10px"><span style="font:400 14px Clash;letter-spacing:.14em;color:#6f7880">${n.toUpperCase()} · ${w}</span></div></div>`).join('')}
+        </div>
+      </section>
+      <section id="co" style="position:absolute;left:140px;right:140px;top:120px;bottom:110px">
+        <div class="ln"><span class="eb">02 — COLOUR</span></div>
+        <div class="rule" style="margin:22px 0 0"></div>
+        <div id="bars" style="position:absolute;left:0;right:0;bottom:0;height:560px;display:flex;align-items:flex-end;gap:10px">
+          ${COL.map(([c,n,r,f,ink])=>`<div class="bar" style="flex:${f};height:100%;position:relative;border-radius:4px;overflow:hidden">
+            <div class="fill" style="position:absolute;left:0;right:0;bottom:0;height:0;background:${c};box-shadow:inset 0 0 0 1px rgba(201,184,163,.12)"></div>
+            <div class="lab" style="position:absolute;left:20px;right:12px;bottom:22px;color:${ink}"><div style="font:500 22px Clash">${n}</div><div style="font:400 13px Clash;letter-spacing:.1em;margin-top:6px;opacity:.75">${c}</div><div style="font:400 13px Clash;letter-spacing:.06em;margin-top:18px;opacity:.9">${r}</div></div></div>`).join('')}
+        </div>
+      </section>
+    </div>`);
+    const lines=s=>[...document.querySelectorAll(`#${s} .ln>*`)], rules=s=>[...document.querySelectorAll(`#${s} .rule`)];
+    const tyL=lines('ty'),coL=lines('co'),fills=[...document.querySelectorAll('#bars .fill')],labs=[...document.querySelectorAll('#bars .lab')];
+    document.body.insertAdjacentHTML('beforeend','<div id="cap" style="position:fixed;left:70px;bottom:56px;font:500 20px Clash,sans-serif;letter-spacing:.06em;color:#8b867c"></div>');
+    const cap=document.getElementById('cap');
+    const STEPS=[[0,'01 · the shell'],[2.1,'02 · menu & info bases'],[3.3,'03 · power & speed scales'],[5.6,'04 · sections & numbers'],[8.1,'05 · gears'],[8.9,'06 · road & route'],[10.7,'07 · next turn'],[11.9,''],[21.0,'08 · the display']];
+    const T1=12.6,T1o=16.6,T2=17.0,T2o=20.4,T3=21.0;               // typeface in/out, colour in/out, display
+    const inOut=(t,a,b,i,step=.09)=>{const k=io((t-a-i*step)/.75),o=io((t-b-i*.04)/.5);return [k,o]};
     window.seek=t=>{
       pencils.forEach(o=>{const k=io((t-o.at)/o.dur);o.c.style.opacity=t<o.at?0:1;
         if(o.sym!=null){const d=k*o.L/2;o.c.style.strokeDasharray=`${2*d} ${o.L-2*d+.01}`;o.c.style.strokeDashoffset=-(o.sym-d);}
@@ -438,21 +471,28 @@ window.seek=t=>{
         else{o.c.style.strokeDasharray=o.L;o.c.style.strokeDashoffset=o.L*(1-k);}});
       write.forEach(({t:e,at,dur})=>{const x=-14+114*io((t-at)/dur);e.style.webkitMaskImage=e.style.maskImage=`linear-gradient(90deg,#000 ${x}%,transparent ${x+14}%)`;});
       plains.forEach(({e,at})=>e.style.opacity=io((t-at)/.4));
-      // presentation: wire steps aside, the visual arrives from the right; then the visual takes the stage
-      const a=io((t-12.2)/1.6), b=io((t-12.8)/1.8), c=io((t-18.0)/1.6);
-      pose(C, -385*a-140*c, 1.45-.71*a, 14*a, 1-c);
-      pose(H, 920-535*b-385*c, .74+.71*c, -14*b*(1-c), t<12.8?0:1);
-      tag1.style.left='calc(50% - 430px)';tag2.style.left='calc(50% + 340px)';
-      tag1.style.opacity=io((t-13.6)/.6)*(1-c);tag2.style.opacity=io((t-14.4)/.6)*(1-c);
-      sws.forEach((s,i)=>{const k=io((t-14.6-i*.18)/.6)*(1-io((t-17.6)/.6));s.style.opacity=k;s.style.transform=`translateY(${(1-k)*18}px)`;});
-      // the visual: static Figma state while presented, alive once centred
-      const live=io((t-19.0)/1.0);
-      const pw=t<19?65:t<20?65+(PWMAX-65)*io((t-19)/1):t<20.9?PWMAX+(34-PWMAX)*io((t-20)/.9):34+5*Math.sin((t-20.9)*1.2);
-      const sp=t<19?72:t<20?72+(140-72)*io((t-19)/1):t<20.9?140+(46-140)*io((t-20)/.9):46+2*Math.sin((t-20.9)*.9);
+      // wireframe leaves: it sinks back and dissolves
+      const wo=io((t-11.9)/.9); C.style.opacity=1-wo; C.style.transform=`scale(${1.45*(1-.05*wo)})`; C.style.filter=`blur(${wo*3}px)`;
+      // typeface
+      tyL.forEach((e,i)=>{const [k,o]=inOut(t,T1,T1o,i);e.style.transform=`translateY(${(1-k)*110-o*110}%)`;});
+      rules('ty').forEach(r=>r.style.transform=`scaleX(${io((t-T1)/.9)*(1-io((t-T1o)/.5))})`);
+      // colour: bars rise in turn, then fall away
+      coL.forEach((e,i)=>{const [k,o]=inOut(t,T2,T2o,i);e.style.transform=`translateY(${(1-k)*110-o*110}%)`;});
+      rules('co').forEach(r=>r.style.transform=`scaleX(${io((t-T2)/.9)*(1-io((t-T2o)/.5))})`);
+      fills.forEach((f,i)=>{const k=io((t-T2-.3-i*.13)/.9),o=io((t-T2o-(fills.length-1-i)*.06)/.6);f.style.height=(k*(1-o)*100)+'%';});
+      labs.forEach((l,i)=>{const k=io((t-T2-.9-i*.13)/.5),o=io((t-T2o-.1)/.3);l.style.opacity=k*(1-o);l.style.transform=`translateY(${(1-k)*10}px)`;});
+      // the display: rises out of the dark, tilting up into place
+      const r=io((t-T3)/1.6);
+      H.style.webkitMaskImage=H.style.maskImage='none';
+      H.style.opacity=r; H.style.transform=`perspective(1800px) translateY(${(1-r)*70}px) rotateX(${(1-r)*22}deg) scale(${1.45*(.92+.08*r)})`;
+      // then it comes alive
+      const ch=t<T3+1.7?0:t<T3+2.7?io((t-T3-1.7)/1):1;
+      const pw=t<T3+2.7?PWMAX*ch:t<T3+3.6?PWMAX+(34-PWMAX)*io((t-T3-2.7)/.9):34+5*Math.sin((t-T3-3.6)*1.2);
+      const sp=t<T3+2.7?140*ch:t<T3+3.6?140+(46-140)*io((t-T3-2.7)/.9):46+2*Math.sin((t-T3-3.6)*.9);
       H.style.setProperty('--boot',1);H.style.setProperty('--pw',pw/PWMAX);H.style.setProperty('--sp',sp/140);applyStripes();
       spE.textContent=Math.round(sp);pwE.textContent=Math.round(pw);setNumColor(Math.max(0,Math.min(1,(pw-THR)/12+.5)));
-      const gk=io((t-20.4)/1.4); light2.forEach(e=>e.style.opacity=.35+.65*gk); H.style.filter=`brightness(${.9+.1*gk})`;
-      const sx=-60+((t-20.8)/1.6)*160; sheen.style.background=t>20.8&&t<22.5?`linear-gradient(115deg,transparent ${sx-12}%,rgba(255,255,255,.07) ${sx}%,transparent ${sx+12}%)`:'none';
+      const gk=io((t-T3-3.2)/1.4); light2.forEach(e=>e.style.opacity=.3+.7*gk); H.style.filter=`brightness(${(.55+.35*r)+.1*gk}) blur(${(1-r)*5}px)`;
+      const sx=-60+((t-T3-3.6)/1.6)*160; sheen.style.background=t>T3+3.6&&t<T3+5.3?`linear-gradient(115deg,transparent ${sx-12}%,rgba(255,255,255,.07) ${sx}%,transparent ${sx+12}%)`:'none';
       let s='';for(const [at,l] of STEPS) if(t>=at) s=l; cap.textContent=s;
     };
   }
