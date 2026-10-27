@@ -76,7 +76,7 @@ html,body{margin:0;background:#F4F3F1;height:100%;display:grid;place-items:cente
 <stop offset="1" stop-color="#7D4B35" stop-opacity="0"/>
 </linearGradient>
 </defs></svg></div>
-  <div class="L c" style="left:calc(50% + 186.3px);top:calc(50% + 51.75px);width:232.143px;height:303.598px;display:grid;place-items:center"><div style="position:relative;width:293.704px;height:98.485px;transform:rotate(-120deg) scaleY(-1);flex:none"><div class="in" style="inset:-7.44% -1.4% -1.75% -2.85%"><img src="a/rect12.svg" style="width:100%;height:100%"></div></div></div>
+  <div class="L c" style="left:calc(50% + 128.6px);top:calc(50% + 51.75px);width:232.143px;height:303.598px;display:grid;place-items:center"><div style="position:relative;width:293.704px;height:98.485px;transform:rotate(-120deg) scaleY(-1);flex:none"><div class="in" style="inset:-7.44% -1.4% -1.75% -2.85%"><img src="a/rect12.svg" style="width:100%;height:100%"></div></div></div>
   <div class="L" style="left:680.42px;top:341.5px;width:156.5px;height:27px"><div class="in" style="inset:-48.15% -5.75% -13.36% -5.75%;transform:scaleY(-1) rotate(180deg)"><img src="a/vector27.svg"></div></div>
   <div data-boot="dial">
     <p class="t tc" style="left:745.92px;top:212px;width:87px;text-align:center;color:#485153;font-size:12px;font-weight:400;letter-spacing:.84px">km/h</p>
@@ -276,9 +276,11 @@ setMap(0,0,0);routeFrom(0);
   const pts=lines.map(p=>{const L=p.getTotalLength(),M=p.getScreenCTM();return [...Array(81).keys()].map(k=>{const q=p.getPointAtLength(L*k/80),sp=new DOMPoint(q.x,q.y).matrixTransform(M);return toH(sp.x,sp.y)}).sort((a,b)=>a[1]-b[1])});
   const [lp,rp]=pts[0][0][0]<pts[1][0][0]?pts:[pts[1],pts[0]];
   const ax=(lp[0][0]+rp[0][0])/2; window.AXIS=ax;
-  const O=[280,146.5], poly=[[lp[0][0],O[1]-2],...lp,...rp.slice().reverse(),[rp[0][0],O[1]-2]].map(([x,y])=>`${(x-O[0]).toFixed(1)}px ${(y-O[1]).toFixed(1)}px`);
-  document.querySelector('.map').style.clipPath=`polygon(${poly.join(',')})`;
+  const O=[280,146.5], hp=[[lp[0][0],O[1]-2],...lp,...rp.slice().reverse(),[rp[0][0],O[1]-2]];
+  const clipAt=(x0,y0)=>`polygon(${hp.map(([x,y])=>`${(x-x0).toFixed(1)}px ${(y-y0).toFixed(1)}px`).join(',')})`;
+  document.querySelector('.map').style.clipPath=clipAt(O[0],O[1]);
   const dx=ax-485.2; ME[0]+=dx; document.getElementById('me').style.left=(475.96+dx)+'px';
+  document.querySelectorAll('.figroad').forEach(e=>{const l=parseFloat(e.style.left)+dx,tp=parseFloat(e.style.top);e.style.left=l+'px';e.style.clipPath=clipAt(l,tp);});
   document.getElementById('navi').style.left=ax+'px';
 })();
 function driveAt(t){
