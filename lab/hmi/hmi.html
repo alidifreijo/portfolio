@@ -20,6 +20,10 @@ html,body{margin:0;background:#F4F3F1;height:100%;display:grid;place-items:cente
 .lvl-l{clip-path:inset(calc(100% * (1 - var(--pw))) 0 0 0)}
 .lvl-r{clip-path:inset(calc(100% * (1 - var(--sp))) 0 0 0)}
 .mode{transition:opacity .35s}
+.blk{position:absolute;inset:0;background:#d9773f;opacity:0;filter:drop-shadow(0 0 4px rgba(217,119,63,.8))}
+.map{position:absolute;left:330.92px;top:144px;width:319px;height:171px;overflow:hidden}
+.world{position:absolute;left:0;top:0;width:0;height:0}
+.world img{position:absolute;width:269px;height:155px;max-width:none}
 </style></head><body>
 <div class="hmi" id="hmi">
   <div class="L c" style="left:50%;top:50%;width:976.372px;height:415.395px;mix-blend-mode:darken"><div class="in" style="inset:-29.61% -12.6%"><img src="a/shadow.svg"></div></div>
@@ -64,8 +68,8 @@ html,body{margin:0;background:#F4F3F1;height:100%;display:grid;place-items:cente
     <div class="t" style="left:701.42px;top:256px;display:flex;gap:17px;font-size:16px;font-weight:500"><span style="color:#754b39">D</span><span style="color:#485153;opacity:.8">R</span><span style="color:#485153;opacity:.8">N</span><span style="color:#485153;opacity:.8">P</span></div>
   </div>
   <!-- blinkers -->
-  <div class="L" data-boot="menu" style="left:355.42px;top:81.14px;width:26.75px;height:14.357px"><img src="a/blinkL.svg"></div>
-  <div class="L" data-boot="menu" style="left:592.42px;top:81.14px;width:26.75px;height:14.357px"><div class="in rot180" style="inset:0"><img src="a/blinkR.svg"></div></div>
+  <div class="L" data-boot="menu" style="left:355.42px;top:81.14px;width:26.75px;height:14.357px"><img src="a/blinkL.svg"><i class="blk" id="blkL" style="-webkit-mask:url(data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjI2Ljc1IiBoZWlnaHQ9IjE0LjM1NzIiIHZpZXdCb3g9IjAgMCAyNi43NSAxNC4zNTcyIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBpZD0iSW50ZXJtaXRlbnRlIEl6cSIgZD0iTTEyLjUgMC4yNTAzNzNDMTIuNSAwLjA1NzkyMzEgMTIuMjkxNyAtMC4wNjIzNTg1IDEyLjEyNSAwLjAzMzg2NjZMMC4xMjUgNi45NjIwN0MtMC4wNDE2NjY1IDcuMDU4MyAtMC4wNDE2NjY5IDcuMjk4ODYgMC4xMjUgNy4zOTUwOEwxMi4xMjUgMTQuMzIzM0MxMi4yOTE3IDE0LjQxOTUgMTIuNSAxNC4yOTkyIDEyLjUgMTQuMTA2OFYxMC45Mjg2QzEyLjUgMTAuNzkwNSAxMi42MTE5IDEwLjY3ODYgMTIuNzUgMTAuNjc4NkgyNi41QzI2LjYzODEgMTAuNjc4NiAyNi43NSAxMC41NjY2IDI2Ljc1IDEwLjQyODZWNC45Mjg1OEMyNi43NSA0Ljc5MDUxIDI2LjYzODEgNC42Nzg1OCAyNi41IDQuNjc4NThIMTIuNzVDMTIuNjExOSA0LjY3ODU4IDEyLjUgNC41NjY2NSAxMi41IDQuNDI4NThWMC4yNTAzNzNaIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZmlsbD0iIzI1MzAzNiIvPgo8L3N2Zz4K) center/100% 100%;mask:url(data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjI2Ljc1IiBoZWlnaHQ9IjE0LjM1NzIiIHZpZXdCb3g9IjAgMCAyNi43NSAxNC4zNTcyIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBpZD0iSW50ZXJtaXRlbnRlIEl6cSIgZD0iTTEyLjUgMC4yNTAzNzNDMTIuNSAwLjA1NzkyMzEgMTIuMjkxNyAtMC4wNjIzNTg1IDEyLjEyNSAwLjAzMzg2NjZMMC4xMjUgNi45NjIwN0MtMC4wNDE2NjY1IDcuMDU4MyAtMC4wNDE2NjY5IDcuMjk4ODYgMC4xMjUgNy4zOTUwOEwxMi4xMjUgMTQuMzIzM0MxMi4yOTE3IDE0LjQxOTUgMTIuNSAxNC4yOTkyIDEyLjUgMTQuMTA2OFYxMC45Mjg2QzEyLjUgMTAuNzkwNSAxMi42MTE5IDEwLjY3ODYgMTIuNzUgMTAuNjc4NkgyNi41QzI2LjYzODEgMTAuNjc4NiAyNi43NSAxMC41NjY2IDI2Ljc1IDEwLjQyODZWNC45Mjg1OEMyNi43NSA0Ljc5MDUxIDI2LjYzODEgNC42Nzg1OCAyNi41IDQuNjc4NThIMTIuNzVDMTIuNjExOSA0LjY3ODU4IDEyLjUgNC41NjY2NSAxMi41IDQuNDI4NThWMC4yNTAzNzNaIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZmlsbD0iIzI1MzAzNiIvPgo8L3N2Zz4K) center/100% 100%"></i></div>
+  <div class="L" data-boot="menu" style="left:592.42px;top:81.14px;width:26.75px;height:14.357px"><div class="in rot180" style="inset:0"><img src="a/blinkR.svg"><i class="blk" id="blkR" style="-webkit-mask:url(data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjI2Ljc1IiBoZWlnaHQ9IjE0LjM1NzIiIHZpZXdCb3g9IjAgMCAyNi43NSAxNC4zNTcyIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBpZD0iSW50ZXJtaXRlbnRlIERjaCIgZD0iTTEyLjUgMC4yNTAzNzNDMTIuNSAwLjA1NzkyMzEgMTIuMjkxNyAtMC4wNjIzNTg1IDEyLjEyNSAwLjAzMzg2NjZMMC4xMjUgNi45NjIwN0MtMC4wNDE2NjY1IDcuMDU4MyAtMC4wNDE2NjY5IDcuMjk4ODYgMC4xMjUgNy4zOTUwOEwxMi4xMjUgMTQuMzIzM0MxMi4yOTE3IDE0LjQxOTUgMTIuNSAxNC4yOTkyIDEyLjUgMTQuMTA2OFYxMC45Mjg2QzEyLjUgMTAuNzkwNSAxMi42MTE5IDEwLjY3ODYgMTIuNzUgMTAuNjc4NkgyNi41QzI2LjYzODEgMTAuNjc4NiAyNi43NSAxMC41NjY2IDI2Ljc1IDEwLjQyODZWNC45Mjg1OEMyNi43NSA0Ljc5MDUxIDI2LjYzODEgNC42Nzg1OCAyNi41IDQuNjc4NThIMTIuNzVDMTIuNjExOSA0LjY3ODU4IDEyLjUgNC41NjY2NSAxMi41IDQuNDI4NThWMC4yNTAzNzNaIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZmlsbD0iIzI1MzAzNiIvPgo8L3N2Zz4K) center/100% 100%;mask:url(data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjI2Ljc1IiBoZWlnaHQ9IjE0LjM1NzIiIHZpZXdCb3g9IjAgMCAyNi43NSAxNC4zNTcyIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBpZD0iSW50ZXJtaXRlbnRlIERjaCIgZD0iTTEyLjUgMC4yNTAzNzNDMTIuNSAwLjA1NzkyMzEgMTIuMjkxNyAtMC4wNjIzNTg1IDEyLjEyNSAwLjAzMzg2NjZMMC4xMjUgNi45NjIwN0MtMC4wNDE2NjY1IDcuMDU4MyAtMC4wNDE2NjY5IDcuMjk4ODYgMC4xMjUgNy4zOTUwOEwxMi4xMjUgMTQuMzIzM0MxMi4yOTE3IDE0LjQxOTUgMTIuNSAxNC4yOTkyIDEyLjUgMTQuMTA2OFYxMC45Mjg2QzEyLjUgMTAuNzkwNSAxMi42MTE5IDEwLjY3ODYgMTIuNzUgMTAuNjc4NkgyNi41QzI2LjYzODEgMTAuNjc4NiAyNi43NSAxMC41NjY2IDI2Ljc1IDEwLjQyODZWNC45Mjg1OEMyNi43NSA0Ljc5MDUxIDI2LjYzODEgNC42Nzg1OCAyNi41IDQuNjc4NThIMTIuNzVDMTIuNjExOSA0LjY3ODU4IDEyLjUgNC41NjY2NSAxMi41IDQuNDI4NThWMC4yNTAzNzNaIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZmlsbD0iIzI1MzAzNiIvPgo8L3N2Zz4K) center/100% 100%"></i></div></div>
   <!-- upper menu -->
   <div class="L c" style="left:calc(50% - 0.02px);top:calc(50% - 160.7px);width:774.5px;height:42px"><img src="a/base1.svg"></div>
   <div data-boot="menu">
@@ -77,9 +81,9 @@ html,body{margin:0;background:#F4F3F1;height:100%;display:grid;place-items:cente
   </div>
   <!-- NAV -->
   <div class="mode" data-mode="nav">
-    <div class="L" style="left:360.42px;top:160px;width:269px;height:155px"><div class="in" style="inset:0 -0.13% -0.19% -0.11%"><img src="a/road.svg"></div></div>
+    <div class="map"><div class="world" id="world"></div></div>
     <div class="L" style="left:456.03px;top:245.5px;width:58.137px;height:68px;display:grid;place-items:center"><div style="position:relative;width:33.358px;height:59.255px;transform:rotate(-29.38deg)"><div class="in" style="inset:-.83% -2.61%"><img src="a/vector33.svg" style="width:100%;height:100%"></div></div></div>
-    <div class="L" style="left:455.92px;top:151px;width:102.502px;height:93.5px;display:grid;place-items:center;mix-blend-mode:lighten"><div style="position:relative;width:83.774px;height:60.137px;transform:rotate(-29.38deg)"><div class="in" style="inset:-4.58% -1.41% -2.45% -3.12%"><img src="a/vector34.svg" style="width:100%;height:100%"></div></div></div>
+    <div class="L" id="bend" style="left:455.92px;top:151px;width:102.502px;height:93.5px;display:grid;place-items:center;mix-blend-mode:lighten"><div style="position:relative;width:83.774px;height:60.137px;transform:rotate(-29.38deg)"><div class="in" style="inset:-4.58% -1.41% -2.45% -3.12%"><img src="a/vector34.svg" style="width:100%;height:100%"></div></div></div>
     <div class="L" style="left:338.92px;top:144px;width:307.5px;height:155.5px"><img src="a/shadow3.svg"></div>
     <div class="L" style="left:330.92px;top:159.5px;width:319px;height:155.5px;transform:scaleY(-1)"><img src="a/shadow4.svg"></div>
     <div class="L" style="left:475.96px;top:236.35px;width:18.494px;height:16.845px;display:grid;place-items:center"><div style="position:relative;width:18.306px;height:16.638px"><div class="in" style="inset:-54.09% -49.16%"><img src="a/me.svg" style="width:100%;height:100%"></div></div></div>
@@ -184,6 +188,52 @@ function boot(t){ // 0 → ~2.8s
   navEl.style.opacity=ease((t-2.0)/.5);
 }
 window.boot=boot;
+
+// ── map: a mirrored road tile repeated, seen through the nav window ──────
+const world=document.getElementById('world'), TW=269, TH=155, ME=[154.3,100.8], ORG=[-124.8,-84.8];
+for(let j=-4;j<=4;j++)for(let i=-4;i<=4;i++){const im=document.createElement('img');im.src='a/road.svg';
+  im.style.left=(ORG[0]+i*TW)+'px';im.style.top=(ORG[1]+j*TH)+'px';
+  im.style.transform=`scale(${i%2?-1:1},${j%2?-1:1})`;world.append(im);}
+function setMap(x,y,heading){ // x,y in map px (y up is negative), heading in degrees (0 = up, 90 = right)
+  world.style.transform=`translate(${ME[0]}px,${ME[1]}px) rotate(${-heading}deg) translate(${-x}px,${-y}px)`;}
+setMap(0,0,0);
+window.setMap=setMap;
+
+// ── a real drive, simulated once: speed from a gentle controller, power from physics
+const DRIVE=(()=>{
+  const dt=1/60, T=44, m=1900, CdA=0.62, rho=1.2, Crr=0.011, g=9.81;
+  const target=t=> t<2?0 : t<12?50 : t<15.6?18 : t<28?78 : 0;
+  const turn={on:11.2,a:14.6,b:16.8}; // blinker, start/end of the right turn
+  let v=0,a=0,s=0,x=0,y=0,head=0,P=0; const out=[];
+  for(let i=0;i<=T/dt;i++){const t=i*dt;
+    const vt=target(t)/3.6, acmd=Math.max(-2.2,Math.min(1.9,(vt-v)*0.55));
+    a+= (acmd-a)*Math.min(1,dt/0.9);                     // no jumps: acceleration eases in and out
+    v=Math.max(0,v+a*dt); if(v===0&&a<0)a=0;
+    const pw=(m*a*v + 0.5*rho*CdA*v*v*v + Crr*m*g*v*(v>0?1:0))/1000/(a>=0?0.9:1.25);
+    P+=(pw-P)*Math.min(1,dt/0.5);                         // the gauge follows smoothly
+    head = t<turn.a?0 : t>turn.b?90 : 90*(1-Math.cos(Math.PI*(t-turn.a)/(turn.b-turn.a)))/2;
+    const d=v*dt*0.6; x+=Math.sin(head*Math.PI/180)*d; y-=Math.cos(head*Math.PI/180)*d; s+=v*dt;
+    out.push({t,v:v*3.6,P,s,x,y,head});}
+  const sTurn=out[Math.round(((turn.a+turn.b)/2)/dt)].s;
+  return {T,dt,out,turn,sTurn};
+})();
+function driveAt(t){
+  const f=DRIVE.out[Math.min(DRIVE.out.length-1,Math.round(t/DRIVE.dt))];
+  H.style.setProperty('--boot',1);
+  H.style.setProperty('--sp',Math.min(1,f.v/140));
+  H.style.setProperty('--pw',Math.max(.04,Math.min(1,.12+f.P/150)));
+  document.getElementById('sp').textContent=Math.round(f.v);
+  const pe=document.getElementById('pw'); pe.textContent=Math.abs(Math.round(f.P)); pe.style.color=f.P<-1?'#5f8fbf':'#7e4b35';
+  setMap(f.x,f.y,f.head);
+  const bend=document.getElementById('bend'); bend.style.opacity=t<DRIVE.turn.a?1:Math.max(0,1-(t-DRIVE.turn.a)/1.2);
+  const toTurn=DRIVE.sTurn-f.s, dist=toTurn>0?toTurn:1350+toTurn;     // after the turn: next instruction
+  document.getElementById('dist').textContent=dist>=1000?(dist/1000).toFixed(1):Math.max(0,Math.round(dist/10)*10);
+  document.querySelector('#dist+p').textContent=dist>=1000?'km':'meters';
+  const tu=DRIVE.turn, blinking=t>tu.on&&t<tu.b+.4, on=blinking&&((t-tu.on)%0.75)<0.4;   // ~80 flashes a minute
+  document.getElementById('blkR').style.opacity=on?1:0; document.getElementById('blkL').style.opacity=0;
+  document.getElementById('range').textContent=(127-Math.floor(f.s/1000))+'km';
+}
+window.driveAt=driveAt; window.DRIVE=DRIVE;
 // mode slide used by the wheel demo: k in 0..1 between two modes
 function slide(from,to,k,dir=1){
   document.querySelectorAll('[data-mode]').forEach(e=>{const m=e.dataset.mode;
@@ -199,17 +249,7 @@ window.slide=slide;
 if(location.hash){document.head.insertAdjacentHTML('beforeend','<style>.mode{transition:none!important}</style>');document.documentElement.style.background=document.body.style.background='#0B1620';H.style.transform='scale(1.45)';
   const T={'#boot':[boot,3.2]}[location.hash]; if(T){window.seek=T[0];window.DUR=T[1];T[0](0);}
   if(location.hash==='#drive'){
-    // a seamless 10 s loop: accelerate, cruise, lift off (regen), the next turn comes closer
-    window.DUR=10; const TAU=Math.PI*2, bl=[...document.querySelectorAll('[data-boot=menu] img, [data-boot=menu] .in img')].slice(0,2);
-    window.seek=t=>{ const ph=t/10*TAU;
-      const sp=78+34*Math.sin(ph)+5*Math.sin(3*ph), pw=60*Math.cos(ph)+8*Math.cos(3*ph)+10;
-      setState({sp,pw:Math.max(0,pw),boot:1});
-      const pwEl=document.getElementById('pw'); pwEl.textContent=Math.round(Math.abs(pw)); pwEl.style.color=pw<0?'#5f8fbf':'#7e4b35';
-      const d=Math.max(0,500-(t%10)/10*560); document.getElementById('dist').textContent=d>0?Math.round(d/10)*10:'0';
-      const blink=d<180&&d>0&&Math.floor(t*3)%2===0; document.querySelector('[data-boot=menu]').style.opacity=1;
-      document.querySelectorAll('[data-boot="menu"]')[1].style.opacity=blink?1:.25;
-      document.getElementById('clock').textContent='18:'+String(27+Math.floor(t/60)).padStart(2,'0');
-    };
+    window.DUR=DRIVE.T; window.seek=t=>driveAt(t);
   }
   if(location.hash==='#build'){
     document.documentElement.style.background=document.body.style.background='#F9F9F9';
@@ -250,6 +290,69 @@ window.seek=t=>{
   document.getElementById("whl").style.transform=`translateX(-50%) scale(.88) rotate(${Math.sin(t*.6)*2.2}deg)`;
 };
 
+  }
+  if(location.hash==='#draw'){
+    // built from nothing: guides → strokes → type → fills → charge → live
+    window.DUR=11;
+    const W=976.372,HH=415.395,CX=W/2;
+    const SKIP=/^(shadow|ellipse|rect1|img)/;           // soft shapes only fade in, they are never "drawn"
+    const ORDER={cockpit:0,base:.15,base1:.15,vector25:.5,vector27:.5,subtract:.9,subtract1:.9,intersect:1.5,intersect1:1.5,vector33:1.1,vector34:1.1,
+      vector36:1.7,vector37:1.7,blinkL:1.9,blinkR:1.9,union:2.0,me:2.1,light:2.2,light1:2.2,battery:2.3,group6:2.3,mode:2.0,vector:2.4,iconBattery1:2.4};
+    const strokes=[];
+    document.querySelectorAll('svg.inl').forEach(svg=>{
+      const a=svg.dataset.a; const g=document.createElementNS('http://www.w3.org/2000/svg','g'); g.setAttribute('class','ov');
+      const live=[...svg.children].filter(c=>c!==g&&c.tagName!=='defs');
+      svg.__fill=live; live.forEach(c=>c.style.opacity=0);
+      svg.appendChild(g);
+      if(SKIP.test(a)||!(a in ORDER))return;
+      const r=svg.closest('.L')?.getBoundingClientRect(), hr=H.getBoundingClientRect();
+      const cx=r?((r.left+r.width/2-hr.left)/hr.width*W):CX;
+      svg.querySelectorAll('path,rect,ellipse,circle,line,polyline').forEach(p=>{
+        if(p.closest('mask,clipPath,linearGradient,radialGradient,filter,pattern'))return;
+        const c=p.cloneNode(); c.removeAttribute('id'); c.removeAttribute('mask'); c.removeAttribute('filter');
+        c.setAttribute('fill','none'); c.setAttribute('stroke','#c9b8a3'); c.setAttribute('stroke-width','.8'); c.removeAttribute('opacity');
+        g.appendChild(c); const L=c.getTotalLength?c.getTotalLength():300;
+        c.style.strokeDasharray=L; c.style.strokeDashoffset=L;
+        const hatch=/subtract|intersect/.test(a);
+        strokes.push({c,L,at:.9+ORDER[a]+Math.abs(cx-CX)/CX*.5,dur:hatch?1.9:Math.min(1.5,.45+L/900)});
+      });
+    });
+    // construction guides (symmetry first)
+    const NS='http://www.w3.org/2000/svg', gd=document.createElementNS(NS,'svg');
+    gd.setAttribute('viewBox',`0 0 ${W} ${HH}`); gd.style.cssText=`position:absolute;left:0;top:0;width:${W}px;height:${HH}px;overflow:visible;z-index:20;pointer-events:none`;
+    const GL=[[CX,-40,CX,HH+40],[-60,47,W+60,47],[-60,368,W+60,368],[CX-182.7-150,207.7-260,CX-182.7+150,207.7+260],[CX+186.3+150,207.7-260,CX+186.3-150,207.7+260]];
+    const guides=GL.map(([x1,y1,x2,y2],i)=>{const l=document.createElementNS(NS,'line');Object.entries({x1,y1,x2,y2,stroke:'#5d7486','stroke-width':.6,'stroke-dasharray':'3 4'}).forEach(([k,v])=>l.setAttribute(k,v));gd.appendChild(l);return {l,at:.1+i*.16,L:Math.hypot(x2-x1,y2-y1)}});
+    const lbl=document.createElementNS(NS,'text');lbl.setAttribute('x',CX+8);lbl.setAttribute('y',-22);lbl.setAttribute('fill','#5d7486');lbl.setAttribute('font-size','9');lbl.setAttribute('letter-spacing','1.2');lbl.setAttribute('font-family','Clash');lbl.textContent='AXIS OF SYMMETRY';gd.appendChild(lbl);
+    H.appendChild(gd);
+    // type: split every label into letters
+    document.getElementById('sp').textContent='0';document.getElementById('pw').textContent='0';
+    const texts=[...H.querySelectorAll('.t')].filter(p=>!p.closest('[data-mode]:not([data-mode=nav])'));
+    const typeRuns=texts.map((p,i)=>{const ch=[];const walk=n=>{[...n.childNodes].forEach(k=>{if(k.nodeType===3){const f=document.createDocumentFragment();[...k.textContent].forEach(c=>{const s=document.createElement('span');s.textContent=c;s.style.opacity=0;f.appendChild(s);ch.push(s)});k.replaceWith(f)}else walk(k)})};walk(p);
+      const r=p.getBoundingClientRect(),hr=H.getBoundingClientRect(),cx=(r.left+r.width/2-hr.left)/hr.width*W;return {ch,at:3.4+Math.abs(cx-CX)/CX*.7+(i%3)*.05}});
+    // plain blocks and bitmaps fade in with the fills
+    const plain=[...H.querySelectorAll('.L')].filter(e=>!e.querySelector('svg.inl')&&!e.querySelector('.map'));
+    plain.forEach(e=>e.__o=parseFloat(getComputedStyle(e).opacity));
+    const world=document.getElementById('world'), mapEl=document.querySelector('.map');
+    document.body.insertAdjacentHTML('beforeend','<div id="cap" style="position:fixed;left:70px;bottom:56px;font:500 20px Clash,sans-serif;letter-spacing:.06em;color:#8b867c"></div>');
+    const cap=document.getElementById('cap');
+    const STEPS=[[0,'01 · symmetry first'],[.9,'02 · the shape follows the dashboard'],[2.2,'03 · scales on the sides, the road in the middle'],[3.4,'04 · only the numbers that matter'],[5.4,'05 · colour & depth'],[6.9,'06 · switched on']];
+    document.querySelectorAll('[data-boot]').forEach(e=>e.removeAttribute('data-boot'));
+    window.seek=t=>{
+      guides.forEach(({l,at,L})=>{const k=io((t-at)/.8);l.setAttribute('stroke-dasharray',`${L*k} ${L}`);l.style.opacity=1-io((t-5.6)/.9)});
+      lbl.style.opacity=io((t-.6)/.4)*(1-io((t-5.4)/.6));
+      strokes.forEach(({c,L,at,dur})=>{c.style.strokeDashoffset=L*(1-io((t-at)/dur));c.style.opacity=1-.85*io((t-5.4)/1.2)});
+      typeRuns.forEach(({ch,at})=>ch.forEach((s,j)=>s.style.opacity=t>at+j*.035?1:0));
+      const fill=io((t-5.4)/1.2);
+      document.querySelectorAll('svg.inl').forEach(s=>s.__fill.forEach(c=>c.style.opacity=fill));
+      plain.forEach(e=>e.style.opacity=fill*e.__o);
+      // charge: the stripes rise and load, then settle
+      const ch=t<6.9?0:t<7.6?io((t-6.9)/.7):1-.4*io((t-7.6)/.8);
+      const sp=t<6.9?0:72*ch/(t<7.6?1:.6)*(t<7.6?1:1), live=Math.min(1,ch);
+      const k2=t<7.6?ch:1; const S=t<7.6?{sp:140*k2,pw:130*k2}:{sp:140+(72-140)*io((t-7.6)/.8),pw:130+(65-130)*io((t-7.6)/.8)};
+      if(t<6.9){H.style.setProperty('--sp',0);H.style.setProperty('--pw',0);} else setState({sp:t>8.4?72+3*Math.sin((t-8.4)*1.3):S.sp,pw:t>8.4?65+8*Math.sin((t-8.4)*1.1):S.pw,boot:1});
+      mapEl.style.clipPath=`circle(${io((t-6.6)/1.4)*260}px at 160px 110px)`;
+      let c=STEPS[0][1];for(const [at,l] of STEPS) if(t>=at) c=l; cap.textContent=c;
+    };
   }
   window.READY=false;document.fonts.ready.then(()=>{window.READY=true});}
 
