@@ -376,12 +376,13 @@ window.seek=t=>{
     $$('[data-mode]').forEach(e=>{if(e.dataset.mode!=='nav')e.style.display='none'});
     $$('[data-boot]').forEach(e=>e.style.opacity=1);
     const pencils=[];
-    function pencil(svg,at,dur,{w=.8,mode='lin'}={}){
+    function pencil(svg,at,dur,{w=.8,mode='lin',fix=null}={}){
       if(!svg)return;const g=document.createElementNS(NS,'g');svg.append(g);
       svg.querySelectorAll('path,rect,ellipse,circle,line,polyline').forEach(p=>{
         if(p.closest('mask,clipPath,linearGradient,radialGradient,filter,pattern')||p.parentNode===g||p.closest('g.pc'))return;
         const c=p.cloneNode();['id','mask','filter','opacity','class','style'].forEach(k=>c.removeAttribute(k));
         c.setAttribute('fill','none');c.setAttribute('stroke',LINE);c.setAttribute('stroke-width',w);c.setAttribute('stroke-linecap','round');c.setAttribute('stroke-linejoin','round');g.append(c);
+        if(fix)fix(c);
         const L=c.getTotalLength(),M=c.getScreenCTM(),P=k=>{const q=c.getPointAtLength(L*k),s=new DOMPoint(q.x,q.y).matrixTransform(M);return toH(s.x,s.y)};
         let sym=null,rev=false;
         if(mode==='sym'){let best=1e9;for(let k=0;k<=300;k++){const [x,y]=P(k/300),sc=Math.abs(x-AX)*4+y;if(sc<best){best=sc;sym=L*k/300}}}
@@ -392,12 +393,15 @@ window.seek=t=>{
     const A=n=>$(`svg.inl[data-a="${n}"]`);
     // ── assembly (Figma steps) ──
     pencil(A('cockpit'),.4,1.6,{mode:'sym',w:.9});                                   // 1 · shell
-    pencil(A('base1'),2.1,.8,{mode:'sym'}); pencil(A('base'),2.3,.8,{mode:'sym'});     // 2 · menu & info bases
+    pencil(A('base1'),2.1,.8,{mode:'sym',fix:c=>c.setAttribute('d','M774.5 0L554.372 37.9451C538.718 40.6434 522.862 42 506.977 42H261.942C250.002 42 238.085 40.9818 226.318 38.9564L0 0')});
+    pencil(A('base'),2.3,.8,{mode:'sym',fix:c=>c.setAttribute('d','M642.5 0L488.141 28.7856C472.409 31.7194 456.455 33.2991 440.453 33.5073L251.04 35.9716C198.514 36.655 146.077 31.4236 94.7208 20.376L0 0.000168464')});     // 2 · menu & info bases
     ['scale-l','scale-r'].forEach(k=>{const ps=$$(`[data-st="${k}"] path.sp`),n=ps.length,g=document.createElementNS(NS,'g');ps[0].parentNode.append(g);
       ps.forEach((p,i)=>{p.style.opacity=0;const c=p.cloneNode();c.removeAttribute('class');c.style.opacity=0;c.setAttribute('fill','none');c.setAttribute('stroke',FAINT);c.setAttribute('stroke-width','.5');g.append(c);
         pencils.push({c,L:c.getTotalLength(),at:3.3+(n-1-i)/n*2.0,dur:.18,sym:null,rev:false});})});  // 3 · scales, top → bottom
-    pencil(A('rect11'),5.6,1.1,{mode:'up',w:.9}); pencil(A('rect12'),5.6,1.1,{mode:'up',w:.9});          // 4 · sections climb to the top centre
-    pencil(A('vector37'),6.6,.5,{mode:'sym'});
+    const toStripe=k=>c=>{const st=$$(`[data-st="${k}"] path.sp`)[1].getBoundingClientRect(),q=new DOMPoint(st.left+st.width/2,st.top+st.height/2).matrixTransform(c.getScreenCTM().inverse());
+      c.setAttribute('d',`M${q.x.toFixed(2)} ${q.y.toFixed(2)}L`+c.getAttribute('d').replace(/^M/,''));};
+    pencil(A('rect11'),5.6,1.1,{mode:'up',w:.9,fix:toStripe('scale-l')}); pencil(A('rect12'),5.6,1.1,{mode:'up',w:.9,fix:toStripe('scale-r')});          // 4 · sections climb to the top centre
+    pencil(A('vector37'),6.6,.5,{mode:'sym',fix:c=>c.setAttribute('d','M33.9 13.88L52.3677 20.1571C57.8592 22.0232 63.6198 22.9752 69.4198 22.9752H155.213C160.81 22.9752 166.371 22.0888 171.69 20.3488L192.42 13.57')});
     // text written left → right; only what each step shows
     const write=[], STEPT=t=>t.dataset.id==='sp'||t.dataset.id==='pw'?7.0:/^(kW\/h|km\/h)$/.test(t.textContent.trim())?7.5:
       t.querySelector('span')&&/DRNP/.test(t.textContent.replace(/\s/g,''))?8.1:t.closest('[data-id="navi"]')?10.9:null;
@@ -407,12 +411,12 @@ window.seek=t=>{
       [t,...t.querySelectorAll('*')].forEach(e=>{e.style.color='transparent';e.style.opacity=1});
       t.style.webkitTextStroke=(big?'.8px ':'.5px ')+LINE;t.style.filter='none';write.push({t,at,dur:big?.8:.4});});
     const plains=$$('.L').filter(e=>!e.querySelector('svg,.t,.map')&&getComputedStyle(e).backgroundColor!=='rgba(0, 0, 0, 0)').map(e=>{
-      const at=e.dataset.id==='sel'?null:e.closest('[data-id="navi"]')?11.1:8.1; if(at==null){e.style.visibility='hidden';return null}
+      const at=e.closest('[data-id="navi"]')?11.1:null; if(at==null){e.style.visibility='hidden';return null}
       e.style.background='transparent';e.style.opacity=1;e.style.boxShadow=`inset 0 0 0 .7px ${LINE}`;return {e,at}}).filter(Boolean);
     // 6 · road, my road, me
     pencil(A('road'),8.9,1.4,{w:.7}); pencil(A('vector33'),10.0,.5,{mode:'up',w:1}); pencil(A('vector34'),10.2,.6,{mode:'car',w:1}); pencil(A('me'),10.3,.4);
     // 7 · next direction
-    pencil(A('vector36'),10.7,.6,{mode:'sym'}); pencil(A('union'),11.2,.4);
+    pencil(A('union'),11.2,.4);
     // ── presentation ──
     const spE=document.getElementById('sp'),pwE=document.getElementById('pw');
     const light2=[...document.querySelector('#hmi svg.inl[data-a="light2"]').children].filter(c=>c.tagName!=='defs');
