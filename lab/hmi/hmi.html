@@ -17,6 +17,7 @@ html,body{margin:0;background:#F4F3F1;height:100%;display:grid;place-items:cente
 .rot180{transform:rotate(180deg)}
 /* stripes: the grey hatch is the scale, the coloured one is the level */
 .mode{transition:opacity .35s}
+.figroad:not(.on){visibility:hidden}
 .blk{position:absolute;inset:0;background:#d9773f;opacity:0;filter:drop-shadow(0 0 4px rgba(217,119,63,.8))}
 .map{position:absolute;left:280px;top:146.5px;width:420px;height:168px;overflow:hidden;-webkit-mask:linear-gradient(#000 82%,transparent)}
 .world{position:absolute;left:0;top:0;width:0;height:0}
@@ -98,6 +99,9 @@ html,body{margin:0;background:#F4F3F1;height:100%;display:grid;place-items:cente
   <!-- NAV -->
   <div class="mode" data-mode="nav">
     <div class="map"><div class="world" id="world"></div></div>
+    <div class="L figroad" style="left:360.42px;top:160px;width:269px;height:155px"><img src="a/road.svg"></div>
+    <div class="L figroad" style="left:456.03px;top:245.5px;width:58.137px;height:68px;display:grid;place-items:center"><div style="position:relative;width:33.358px;height:59.255px;transform:rotate(-29.38deg)"><div class="in" style="inset:-.83% -2.61%"><img src="a/vector33.svg" style="width:100%;height:100%"></div></div></div>
+    <div class="L figroad" style="left:455.92px;top:151px;width:102.502px;height:93.5px;display:grid;place-items:center;mix-blend-mode:lighten"><div style="position:relative;width:83.774px;height:60.137px;transform:rotate(-29.38deg)"><div class="in" style="inset:-4.58% -1.41% -2.45% -3.12%"><img src="a/vector34.svg" style="width:100%;height:100%"></div></div></div>
     <div class="L" style="left:338.92px;top:144px;width:307.5px;height:155.5px"><img src="a/shadow3.svg"></div>
     <div class="L" style="left:330.92px;top:159.5px;width:319px;height:155.5px;transform:scaleY(-1)"><img src="a/shadow4.svg"></div>
     <div class="L" id="me" style="left:475.96px;top:236.35px;width:18.494px;height:16.845px;display:grid;place-items:center"><div style="position:relative;width:18.306px;height:16.638px"><div class="in" style="inset:-54.09% -49.16%"><img src="a/me.svg" style="width:100%;height:100%"></div></div></div>
@@ -351,112 +355,99 @@ window.seek=t=>{
 
   }
   if(location.hash==='#draw'){
-    // clay model drawn in pencil (order from the Figma steps), then the brand pours in over it
-    window.DUR=20;
-    const W=976.372,HH=415.395,NS='http://www.w3.org/2000/svg';
-    const BG='#0B1620', LINE='#c9b8a3', FAINT='rgba(201,184,163,.75)';
-    document.documentElement.style.background=document.body.style.background=BG; document.body.style.position='relative';
+    // 1) the wireframe is assembled piece by piece, in the order of the Figma steps
+    // 2) product presentation: the branded display arrives from the other side, the palette is shown
+    // 3) it takes the stage and comes alive
+    window.DUR=25;
+    const W=976.372,HH=415.395,NS='http://www.w3.org/2000/svg', LINE='#c9b8a3', FAINT='rgba(201,184,163,.75)';
     const AX=window.AXIS||488.2;
-    // ── the clay twin, under the real HMI ──
+    // the Figma road replaces the live grid for the presentation
+    document.querySelectorAll('#hmi .figroad').forEach(e=>e.classList.add('on'));
+    document.querySelector('#hmi .map').style.display='none';
     H.querySelectorAll('[id]').forEach(e=>e.dataset.id=e.id);
     const C=H.cloneNode(true); C.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id')); C.removeAttribute('id');
-    C.style.position='absolute'; C.style.left=H.offsetLeft+'px'; C.style.top=H.offsetTop+'px'; H.before(C);
+    document.body.style.position='relative'; C.style.position='absolute'; C.style.left=H.offsetLeft+'px'; C.style.top=H.offsetTop+'px'; H.before(C);
     const $=(s,r=C)=>r.querySelector(s), $$=(s,r=C)=>[...r.querySelectorAll(s)];
-    const cr=()=>C.getBoundingClientRect(), toH=(x,y)=>{const r=cr();return [(x-r.left)/r.width*W,(y-r.top)/r.height*HH]};
-    // hide everything that is colour, light or bitmap in the clay
+    const toH=(x,y)=>{const r=C.getBoundingClientRect();return [(x-r.left)/r.width*W,(y-r.top)/r.height*HH]};
     $$('svg.inl').forEach(s=>[...s.children].forEach(c=>{if(c.tagName!=='defs')c.style.opacity=0}));
     $$('img,.blk').forEach(e=>e.style.opacity=0);
     $$('[data-mode]').forEach(e=>{if(e.dataset.mode!=='nav')e.style.display='none'});
     $$('[data-boot]').forEach(e=>e.style.opacity=1);
     const pencils=[];
-    function pencil(svg,at,dur,{col=LINE,w=.8,mode='lin',sel='path,rect,ellipse,circle,line,polyline'}={}){
-      const g=document.createElementNS(NS,'g');svg.append(g);const out=[];
-      svg.querySelectorAll(sel).forEach(p=>{
+    function pencil(svg,at,dur,{w=.8,mode='lin'}={}){
+      if(!svg)return;const g=document.createElementNS(NS,'g');svg.append(g);
+      svg.querySelectorAll('path,rect,ellipse,circle,line,polyline').forEach(p=>{
         if(p.closest('mask,clipPath,linearGradient,radialGradient,filter,pattern')||p.parentNode===g||p.closest('g.pc'))return;
         const c=p.cloneNode();['id','mask','filter','opacity','class','style'].forEach(k=>c.removeAttribute(k));
-        c.setAttribute('fill','none');c.setAttribute('stroke',col);c.setAttribute('stroke-width',w);c.setAttribute('stroke-linecap','round');c.setAttribute('stroke-linejoin','round');g.append(c);
+        c.setAttribute('fill','none');c.setAttribute('stroke',LINE);c.setAttribute('stroke-width',w);c.setAttribute('stroke-linecap','round');c.setAttribute('stroke-linejoin','round');g.append(c);
         const L=c.getTotalLength(),M=c.getScreenCTM(),P=k=>{const q=c.getPointAtLength(L*k),s=new DOMPoint(q.x,q.y).matrixTransform(M);return toH(s.x,s.y)};
         let sym=null,rev=false;
         if(mode==='sym'){let best=1e9;for(let k=0;k<=300;k++){const [x,y]=P(k/300),sc=Math.abs(x-AX)*4+y;if(sc<best){best=sc;sym=L*k/300}}}
-        if(mode==='up') rev=P(0)[1]<P(1)[1];                     // draw from the lower end upwards
-        const o={c,L,at,dur,sym,rev};pencils.push(o);out.push(o);c.style.opacity=0;});
-      g.classList.add('pc');return out;}
+        if(mode==='up') rev=P(0)[1]<P(1)[1];
+        if(mode==='car') rev=P(0)[1]<P(1)[1];                  // routes grow from the car forwards
+        c.style.opacity=0;pencils.push({c,L,at,dur,sym,rev});});
+      g.classList.add('pc');}
     const A=n=>$(`svg.inl[data-a="${n}"]`);
-    // shell: outline from the top centre, then the clay surface follows the pencil
-    const frameW=$('svg.inl[data-a="cockpit"]').closest('.L');
-    pencil(A('cockpit'),.6,2.4,{mode:'sym',w:.9});
-    // bands
-        pencil(A('base1'),3.0,.9,{mode:'sym'}); pencil(A('base'),3.2,.9,{mode:'sym'});
-    // stripes: from the top, following the shape, both sides together
-    const stripeFill=[];
-    ['scale-l','scale-r'].forEach(k=>{const ps=$$(`[data-st="${k}"] path.sp`),n=ps.length;
-      const g=document.createElementNS(NS,'g');ps[0].parentNode.append(g);
+    // ── assembly (Figma steps) ──
+    pencil(A('cockpit'),.4,1.6,{mode:'sym',w:.9});                                   // 1 · shell
+    pencil(A('base1'),2.1,.8,{mode:'sym'}); pencil(A('base'),2.3,.8,{mode:'sym'});     // 2 · menu & info bases
+    ['scale-l','scale-r'].forEach(k=>{const ps=$$(`[data-st="${k}"] path.sp`),n=ps.length,g=document.createElementNS(NS,'g');ps[0].parentNode.append(g);
       ps.forEach((p,i)=>{p.style.opacity=0;const c=p.cloneNode();c.removeAttribute('class');c.style.opacity=0;c.setAttribute('fill','none');c.setAttribute('stroke',FAINT);c.setAttribute('stroke-width','.5');g.append(c);
-        pencils.push({c,L:c.getTotalLength(),at:4.0+(n-1-i)/n*2.8,dur:.2,sym:null,rev:false});})});
-    // copper wedges at the foot of the stripes, then the section lines climb to the top centre
-        pencil(A('rect11'),6.8,1.4,{mode:'up',w:.9}); pencil(A('rect12'),6.8,1.4,{mode:'up',w:.9});
-    pencil(A('vector36'),8.0,.8,{mode:'sym'}); pencil(A('vector37'),8.1,.7,{mode:'sym'});
-    // side content
-        // centre: map blocks outward from the car, the route, the car
-    const blocks=$$('.map path').filter(p=>p.parentNode.tagName==='g'&&p.dataset.cx!==undefined);
-    const routes=$$('.map g:last-child path');
-    const car=A('me');
-    blocks.forEach(p=>{const L=p.getTotalLength();p.setAttribute('stroke',LINE);p.setAttribute('stroke-opacity',.7);p.style.strokeDasharray=L;p.style.strokeDashoffset=L;p.__L=L;
-      p.__at=10.7+Math.hypot(+p.dataset.cx,+p.dataset.cy)/420*1.6;});
-    routes.forEach((r,i)=>{r.setAttribute('stroke',LINE);r.setAttribute('stroke-width',i?1.6:.9);r.removeAttribute('stroke-dasharray');r.__L=r.getTotalLength();r.style.strokeDasharray=r.__L;r.style.strokeDashoffset=r.__L});
-    routes[0].style.display='none';                         // one pencil route is enough in clay
-    pencil(car,12.4,.4,{w:.9});
-    pencil(A('union'),13.0,.5);
-    // text: written left to right
-    const big=$$('.t').filter(t=>t.dataset.id==='sp'||t.dataset.id==='pw');
-    const write=[];
-    const tgrp=t=>t.dataset.id==='sp'||t.dataset.id==='pw'?8.8:/^(kW\/h|km\/h)$/.test(t.textContent.trim())?9.4:t.closest('[data-id="navi"]')?12.8:t.querySelector('span')&&/DRNP/.test(t.textContent.replace(/\s/g,''))?10.0:null;
+        pencils.push({c,L:c.getTotalLength(),at:3.3+(n-1-i)/n*2.0,dur:.18,sym:null,rev:false});})});  // 3 · scales, top → bottom
+    pencil(A('rect11'),5.6,1.1,{mode:'up',w:.9}); pencil(A('rect12'),5.6,1.1,{mode:'up',w:.9});          // 4 · sections climb to the top centre
+    pencil(A('vector37'),6.6,.5,{mode:'sym'});
+    // text written left → right; only what each step shows
+    const write=[], STEPT=t=>t.dataset.id==='sp'||t.dataset.id==='pw'?7.0:/^(kW\/h|km\/h)$/.test(t.textContent.trim())?7.5:
+      t.querySelector('span')&&/DRNP/.test(t.textContent.replace(/\s/g,''))?8.1:t.closest('[data-id="navi"]')?10.9:null;
     $$('.t').filter(t=>!t.parentElement.closest('.t')&&!t.closest('[data-mode]:not([data-mode=nav])')).forEach(t=>{
-      const isBig=big.includes(t), at=tgrp(t); if(at==null){t.style.visibility='hidden';return;}
+      const big=t.dataset.id==='sp'||t.dataset.id==='pw', at=STEPT(t); if(at==null){t.style.visibility='hidden';return;}
       if(t.dataset.id==='sp')t.textContent='72'; if(t.dataset.id==='pw')t.textContent='65';
       [t,...t.querySelectorAll('*')].forEach(e=>{e.style.color='transparent';e.style.opacity=1});
-      t.style.webkitTextStroke=(isBig?'.8px ':'.5px ')+LINE;t.style.filter='none';
-      write.push({t,at,dur:isBig?.9:.45});});
-    // plain bits: selector, gear box, separator
+      t.style.webkitTextStroke=(big?'.8px ':'.5px ')+LINE;t.style.filter='none';write.push({t,at,dur:big?.8:.4});});
     const plains=$$('.L').filter(e=>!e.querySelector('svg,.t,.map')&&getComputedStyle(e).backgroundColor!=='rgba(0, 0, 0, 0)').map(e=>{
-      const at=e.dataset.id==='sel'?null:e.closest('[data-id="navi"]')?13.0:10.0;if(at==null){e.style.visibility='hidden';return null;}
+      const at=e.dataset.id==='sel'?null:e.closest('[data-id="navi"]')?11.1:8.1; if(at==null){e.style.visibility='hidden';return null}
       e.style.background='transparent';e.style.opacity=1;e.style.boxShadow=`inset 0 0 0 .7px ${LINE}`;return {e,at}}).filter(Boolean);
-    // guide
-    const gd=document.createElementNS(NS,'svg');gd.setAttribute('viewBox',`0 0 ${W} ${HH}`);gd.style.cssText=`position:absolute;left:0;top:0;width:${W}px;height:${HH}px;overflow:visible;pointer-events:none`;
-    const ax=document.createElementNS(NS,'line');Object.entries({x1:AX,y1:-30,x2:AX,y2:HH+30,stroke:'#5d7486','stroke-width':.6,'stroke-dasharray':'3 4'}).forEach(([k,v])=>ax.setAttribute(k,v));gd.append(ax);C.append(gd);
-    // ── the real HMI waits under a mask; it pours in from the top centre like the pencil did ──
-    window.__noScale=0;
+    // 6 · road, my road, me
+    pencil(A('road'),8.9,1.4,{w:.7}); pencil(A('vector33'),10.0,.5,{mode:'up',w:1}); pencil(A('vector34'),10.2,.6,{mode:'car',w:1}); pencil(A('me'),10.3,.4);
+    // 7 · next direction
+    pencil(A('vector36'),10.7,.6,{mode:'sym'}); pencil(A('union'),11.2,.4);
+    // ── presentation ──
     const spE=document.getElementById('sp'),pwE=document.getElementById('pw');
     const light2=[...document.querySelector('#hmi svg.inl[data-a="light2"]').children].filter(c=>c.tagName!=='defs');
     const sheen=document.createElement('div');sheen.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:30;mix-blend-mode:screen;-webkit-mask:url(data:image/svg+xml;base64,'+btoa(document.querySelector('#hmi svg.inl[data-a=cockpit]').outerHTML.replace(/class="inl"[^>]*?data-a="cockpit"/,'xmlns="http://www.w3.org/2000/svg" width="997.368" height="442.712"'))+') 50% 50%/100% 100%';H.append(sheen);
-    document.body.insertAdjacentHTML('beforeend','<div id="cap" style="position:fixed;left:70px;bottom:56px;font:500 20px Clash,sans-serif;letter-spacing:.06em;color:#8b867c"></div>');
-    const cap=document.getElementById('cap');
-    const STEPS=[[0,'01 · the shell'],[3.0,'02 · top & bottom bands'],[4.0,'03 · power & speed scales'],[6.8,'04 · three sections'],[8.8,'05 · the numbers'],[10.7,'06 · map & route'],[12.8,'07 · next turn'],[13.8,'08 · brand'],[17.0,'09 · switched on']];
-    const NONE='linear-gradient(transparent,transparent)';
-    const conic=(a,soft=26)=>{if(a<=.5)return NONE;const c=Math.max(0,a-soft);if(c>=180)return 'linear-gradient(#000,#000)';const e=Math.min(a,180);return `conic-gradient(from 0deg at 50% 46%, #000 0deg, #000 ${c}deg, transparent ${e}deg, transparent ${360-e}deg, #000 ${360-c}deg)`};
+    const SW=[['#0B1620','Night'],['#1B1E27','Cockpit'],['#7E4B35','Copper'],['#D9773F','Signal'],['#214B6A','Eco'],['#9E998E','Stone']];
+    document.body.insertAdjacentHTML('beforeend',`<div id="pal" style="position:absolute;left:50%;bottom:118px;transform:translateX(-50%);display:flex;gap:26px;align-items:flex-end;font-family:Clash,sans-serif">
+      ${SW.map(([c,n])=>`<div class="sw" style="width:104px"><div style="height:58px;border-radius:6px;background:${c};box-shadow:inset 0 0 0 1px rgba(201,184,163,.18)"></div><p style="margin:10px 0 0;font:500 13px Clash;letter-spacing:.06em;color:#c9c4b8">${n}</p><p style="margin:3px 0 0;font:400 12px Clash;letter-spacing:.06em;color:#6f7880">${c}</p></div>`).join('')}
+      <div class="sw" style="margin-left:22px;width:170px"><p style="margin:0;font:500 54px/0.9 Clash;white-space:nowrap;color:#7E4B35;filter:url(#ins)">Aa 65</p><p style="margin:10px 0 0;font:500 13px Clash;letter-spacing:.06em;color:#c9c4b8">Clash Display</p><p style="margin:3px 0 0;font:400 12px Clash;letter-spacing:.06em;color:#6f7880">Light · Regular · Medium</p></div></div>`);
+    const sws=[...document.querySelectorAll('#pal .sw')];
+    document.body.insertAdjacentHTML('beforeend','<div id="cap" style="position:fixed;left:70px;bottom:56px;font:500 20px Clash,sans-serif;letter-spacing:.06em;color:#8b867c"></div><div id="tag1" class="tag">WIREFRAME</div><div id="tag2" class="tag">VISUAL</div><style>.tag{position:absolute;top:150px;font:500 14px Clash,sans-serif;letter-spacing:.18em;color:#8b867c}</style>');
+    const cap=document.getElementById('cap'),tag1=document.getElementById('tag1'),tag2=document.getElementById('tag2');
+    const STEPS=[[0,'01 · the shell'],[2.1,'02 · menu & info bases'],[3.3,'03 · power & speed scales'],[5.6,'04 · sections & numbers'],[8.1,'05 · gears'],[8.9,'06 · road & route'],[10.7,'07 · next turn'],[12.2,'08 · wireframe → visual'],[14.6,'09 · colour & type'],[18.6,'10 · switched on']];
+    const pose=(el,x,s,ry,o=1)=>{el.style.transform=`perspective(2400px) translateX(${x}px) rotateY(${ry}deg) scale(${s})`;el.style.opacity=o;};
+    H.style.transformOrigin=C.style.transformOrigin='50% 50%';
     window.seek=t=>{
-      ax.setAttribute('stroke-dasharray',t<.1?'0 999':'3 4');ax.style.opacity=io(t/.6)*(1-io((t-4)/1));
       pencils.forEach(o=>{const k=io((t-o.at)/o.dur);o.c.style.opacity=t<o.at?0:1;
         if(o.sym!=null){const d=k*o.L/2;o.c.style.strokeDasharray=`${2*d} ${o.L-2*d+.01}`;o.c.style.strokeDashoffset=-(o.sym-d);}
         else if(o.rev){o.c.style.strokeDasharray=`${k*o.L} ${o.L}`;o.c.style.strokeDashoffset=-(o.L-k*o.L);}
         else{o.c.style.strokeDasharray=o.L;o.c.style.strokeDashoffset=o.L*(1-k);}});
-      blocks.forEach(p=>p.style.strokeDashoffset=p.__L*(1-io((t-p.__at)/.5)));
-      routes[1].style.strokeDashoffset=routes[1].__L*(1-io((t-11.8)/.8));
       write.forEach(({t:e,at,dur})=>{const x=-14+114*io((t-at)/dur);e.style.webkitMaskImage=e.style.maskImage=`linear-gradient(90deg,#000 ${x}%,transparent ${x+14}%)`;});
       plains.forEach(({e,at})=>e.style.opacity=io((t-at)/.4));
-      // brand: pours from the top centre around both sides, with a soft front
-      const ba=io((t-13.8)/2.2)*218; H.style.webkitMaskImage=H.style.maskImage=ba>=217.5?'none':conic(ba,38);
-      C.style.opacity=1-io((t-16.2)/.5);
-      // then it comes alive: scales charge, numbers count, the route is laid, the glass lights
-      const ch=t<15.6?0:t<16.6?io((t-15.6)/1.0):1;
-      const pw=t<16.6?PWMAX*ch:t<17.5?PWMAX+(34-PWMAX)*io((t-16.6)/.9):34+5*Math.sin((t-17.5)*1.2);
-      const sp=t<16.6?140*ch:t<17.5?140+(46-140)*io((t-16.6)/.9):46+2*Math.sin((t-17.5)*.9);
+      // presentation: wire steps aside, the visual arrives from the right; then the visual takes the stage
+      const a=io((t-12.2)/1.6), b=io((t-12.8)/1.8), c=io((t-18.0)/1.6);
+      pose(C, -385*a-140*c, 1.45-.71*a, 14*a, 1-c);
+      pose(H, 920-535*b-385*c, .74+.71*c, -14*b*(1-c), t<12.8?0:1);
+      tag1.style.left='calc(50% - 430px)';tag2.style.left='calc(50% + 340px)';
+      tag1.style.opacity=io((t-13.6)/.6)*(1-c);tag2.style.opacity=io((t-14.4)/.6)*(1-c);
+      sws.forEach((s,i)=>{const k=io((t-14.6-i*.18)/.6)*(1-io((t-17.6)/.6));s.style.opacity=k;s.style.transform=`translateY(${(1-k)*18}px)`;});
+      // the visual: static Figma state while presented, alive once centred
+      const live=io((t-19.0)/1.0);
+      const pw=t<19?65:t<20?65+(PWMAX-65)*io((t-19)/1):t<20.9?PWMAX+(34-PWMAX)*io((t-20)/.9):34+5*Math.sin((t-20.9)*1.2);
+      const sp=t<19?72:t<20?72+(140-72)*io((t-19)/1):t<20.9?140+(46-140)*io((t-20)/.9):46+2*Math.sin((t-20.9)*.9);
       H.style.setProperty('--boot',1);H.style.setProperty('--pw',pw/PWMAX);H.style.setProperty('--sp',sp/140);applyStripes();
       spE.textContent=Math.round(sp);pwE.textContent=Math.round(pw);setNumColor(Math.max(0,Math.min(1,(pw-THR)/12+.5)));
-      {const L=RLEN,k=io((t-16.0)/1.2);route.setAttribute('stroke-dasharray',`0 40 ${k*L} ${L}`);routeB.setAttribute('stroke-dasharray',`40 ${L}`);}
-      const gk=io((t-17.0)/1.4); light2.forEach(c=>c.style.opacity=gk); H.style.filter=`brightness(${.88+.12*gk})`;
-      const sx=-60+((t-17.3)/1.6)*160; sheen.style.background=t>17.3&&t<19.0?`linear-gradient(115deg,transparent ${sx-12}%,rgba(255,255,255,.07) ${sx}%,transparent ${sx+12}%)`:'none';
-      let c=STEPS[0][1];for(const [a,l] of STEPS) if(t>=a) c=l; cap.textContent=c;
+      const gk=io((t-20.4)/1.4); light2.forEach(e=>e.style.opacity=.35+.65*gk); H.style.filter=`brightness(${.9+.1*gk})`;
+      const sx=-60+((t-20.8)/1.6)*160; sheen.style.background=t>20.8&&t<22.5?`linear-gradient(115deg,transparent ${sx-12}%,rgba(255,255,255,.07) ${sx}%,transparent ${sx+12}%)`:'none';
+      let s='';for(const [at,l] of STEPS) if(t>=at) s=l; cap.textContent=s;
     };
   }
   window.READY=false;document.fonts.ready.then(()=>{window.READY=true});}
