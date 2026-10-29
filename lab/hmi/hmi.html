@@ -394,12 +394,11 @@ window.seek=t=>{
     // ── assembly (Figma steps) ──
     pencil(A('cockpit'),.4,1.6,{mode:'sym',w:.9});                                   // 1 · shell
     pencil(A('base1'),2.1,.8,{mode:'sym',fix:c=>c.setAttribute('d','M774.5 0L554.372 37.9451C538.718 40.6434 522.862 42 506.977 42H261.942C250.002 42 238.085 40.9818 226.318 38.9564L0 0')});
-    pencil(A('base'),2.3,.8,{mode:'sym',fix:c=>c.setAttribute('d','M642.5 0L488.141 28.7856C472.409 31.7194 456.455 33.2991 440.453 33.5073L251.04 35.9716C198.514 36.655 146.077 31.4236 94.7208 20.376L0 0.000168464')});     // 2 · menu & info bases
     ['scale-l','scale-r'].forEach(k=>{const ps=$$(`[data-st="${k}"] path.sp`),n=ps.length,g=document.createElementNS(NS,'g');ps[0].parentNode.append(g);
       ps.forEach((p,i)=>{p.style.opacity=0;const c=p.cloneNode();c.removeAttribute('class');c.style.opacity=0;c.setAttribute('fill','none');c.setAttribute('stroke',FAINT);c.setAttribute('stroke-width','.5');g.append(c);
         pencils.push({c,L:c.getTotalLength(),at:3.3+(n-1-i)/n*2.0,dur:.18,sym:null,rev:false});})});  // 3 · scales, top → bottom
     const toStripe=k=>c=>{const st=$$(`[data-st="${k}"] path.sp`)[1].getBoundingClientRect(),q=new DOMPoint(st.left+st.width/2,st.top+st.height/2).matrixTransform(c.getScreenCTM().inverse());
-      c.setAttribute('d',`M${q.x.toFixed(2)} ${q.y.toFixed(2)}L`+c.getAttribute('d').replace(/^M/,''));};
+      c.setAttribute('d',c.getAttribute('d').replace(/^M[-\d.]+[ ,][-\d.]+/,`M${q.x.toFixed(2)} ${q.y.toFixed(2)}`));};
     pencil(A('rect11'),5.6,1.1,{mode:'up',w:.9,fix:toStripe('scale-l')}); pencil(A('rect12'),5.6,1.1,{mode:'up',w:.9,fix:toStripe('scale-r')});          // 4 · sections climb to the top centre
     pencil(A('vector37'),6.6,.5,{mode:'sym',fix:c=>c.setAttribute('d','M33.9 10.5L52.3677 20.1571C57.8592 22.0232 63.6198 22.9752 69.4198 22.9752H155.213C160.81 22.9752 166.371 22.0888 171.69 20.3488L192.42 10.5')});
     // text written left → right; only what each step shows
@@ -414,7 +413,7 @@ window.seek=t=>{
       const at=e.closest('[data-id="navi"]')?11.1:null; if(at==null){e.style.visibility='hidden';return null}
       e.style.background='transparent';e.style.opacity=1;e.style.boxShadow=`inset 0 0 0 .7px ${LINE}`;return {e,at}}).filter(Boolean);
     // 6 · road, my road, me
-    pencil(A('road'),8.9,1.4,{w:.7}); pencil(A('vector33'),10.0,.5,{mode:'up',w:1}); pencil(A('vector34'),10.2,.6,{mode:'car',w:1}); pencil(A('me'),10.3,.4);
+    pencil(A('road'),8.9,1.4,{w:.7}); pencil(A('vector33'),10.0,.5,{mode:'up',w:1}); pencil(A('vector34'),10.2,.6,{mode:'car',w:1}); pencil(A('me'),10.3,.4,{fix:c=>c.setAttribute('fill','#0B1620')});
     // 7 · next direction
     pencil(A('union'),11.2,.4);
     // ── brand: typeface → colour → the display itself ──
@@ -422,7 +421,7 @@ window.seek=t=>{
     const light2=[...document.querySelector('#hmi svg.inl[data-a="light2"]').children].filter(c=>c.tagName!=='defs');
     const sheen=document.createElement('div');sheen.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:30;mix-blend-mode:screen;-webkit-mask:url(data:image/svg+xml;base64,'+btoa(document.querySelector('#hmi svg.inl[data-a=cockpit]').outerHTML.replace(/class="inl"[^>]*?data-a="cockpit"/,'xmlns="http://www.w3.org/2000/svg" width="997.368" height="442.712"'))+') 50% 50%/100% 100%';H.append(sheen);
     const COL=[['#0B1620','Night','Background',3.0,'#c9c4b8'],['#1B1E27','Cockpit','Surfaces & glass',2.2,'#c9c4b8'],['#7E4B35','Copper','Data · Sport',1.5,'#f1e6dc'],['#D9773F','Signal','Indicators',.85,'#2a160c'],['#214B6A','Eco','Efficiency · Regen',1.3,'#dfe9f1'],['#9E998E','Stone','Interface text',1.05,'#1d1f22']];
-    const WG=[[300,'Light'],[400,'Regular'],[500,'Medium'],[600,'Semibold']];
+    const WG=[[300,'Light','6th June 2023','date & time'],[400,'Regular','km/h · kW/h','units'],[500,'Medium','500 meters','navigation'],[600,'Semibold','SPORT · ECO','modes']];
     document.body.insertAdjacentHTML('beforeend',`<style>
       #brand{position:fixed;inset:0;font-family:Clash,sans-serif;pointer-events:none}
       #brand .ln{overflow:hidden;line-height:1.08}#brand .ln>*{display:inline-block;will-change:transform}
@@ -439,12 +438,12 @@ window.seek=t=>{
             <div class="ln" style="margin-top:18px"><span style="font:300 30px Clash;letter-spacing:.06em;color:#8b867c">Aa Bb Cc Dd Ee Ff Gg Hh · 0 1 2 3 4 5 6 7 8 9</span></div>
           </div>
           <div style="text-align:right">
-            <div class="ln"><span style="font:500 230px/0.9 Clash;letter-spacing:.06em;color:#7E4B35;filter:url(#ins)">65</span></div>
-            <div class="ln"><span style="font:400 22px Clash;letter-spacing:.06em;color:#485153">kW/h</span></div>
+            <div class="ln"><span style="font:500 200px/1.25 Clash;letter-spacing:.02em;color:#7E4B35;filter:url(#ins)">Ag</span></div>
+            <div class="ln"><span style="font:400 16px Clash;letter-spacing:.14em;color:#6f7880">DATA · MEDIUM · +6% TRACKING</span></div>
           </div>
         </div>
         <div style="display:flex;gap:28px;margin-top:64px">
-          ${WG.map(([w,n])=>`<div style="flex:1"><div class="rule" style="margin-bottom:18px"></div><div class="ln"><span style="font:${w} 80px/1 Clash;color:#c9c4b8">72</span></div><div class="ln" style="margin-top:10px"><span style="font:400 14px Clash;letter-spacing:.14em;color:#6f7880">${n.toUpperCase()} · ${w}</span></div></div>`).join('')}
+          ${WG.map(([w,n,txt,use])=>`<div style="flex:1"><div class="rule" style="margin-bottom:18px"></div><div class="ln"><span style="font:${w} 40px/1.1 Clash;color:#c9c4b8;white-space:nowrap">${txt}</span></div><div class="ln" style="margin-top:12px"><span style="font:400 14px Clash;letter-spacing:.14em;color:#6f7880">${n.toUpperCase()} · ${w} — ${use.toUpperCase()}</span></div></div>`).join('')}
         </div>
       </section>
       <section id="co" style="position:absolute;left:140px;right:140px;top:120px;bottom:110px">
