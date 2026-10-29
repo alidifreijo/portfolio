@@ -490,8 +490,9 @@ window.seek=t=>{
       const sp=t<T3+2.7?140*ch:t<T3+3.6?140+(46-140)*io((t-T3-2.7)/.9):46+2*Math.sin((t-T3-3.6)*.9);
       H.style.setProperty('--boot',1);H.style.setProperty('--pw',pw/PWMAX);H.style.setProperty('--sp',sp/140);applyStripes();
       spE.textContent=Math.round(sp);pwE.textContent=Math.round(pw);setNumColor(Math.max(0,Math.min(1,(pw-THR)/12+.5)));
-      const gk=io((t-T3-3.2)/1.4); light2.forEach(e=>e.style.opacity=.3+.7*gk); H.style.filter=`brightness(${(.55+.35*r)+.1*gk}) blur(${(1-r)*5}px)`;
-      const sx=-60+((t-T3-3.6)/1.6)*160; sheen.style.background=t>T3+3.6&&t<T3+5.3?`linear-gradient(115deg,transparent ${sx-12}%,rgba(255,255,255,.07) ${sx}%,transparent ${sx+12}%)`:'none';
+      const gk=Math.max(0,Math.min(1,(t-T3)/(window.DUR-T3))); const gl=gk*gk*(3-2*gk)*.55+gk*.45;   // the glass light is there from the start and builds to the last frame
+      light2.forEach(e=>e.style.opacity=.25+.75*gl); H.style.filter=`brightness(${(.55+.33*r)+.14*gl}) blur(${(1-r)*5}px)`;
+      const sx=-60+((t-T3-3.6)/1.6)*160; sheen.style.background=false?`linear-gradient(115deg,transparent ${sx-12}%,rgba(255,255,255,.07) ${sx}%,transparent ${sx+12}%)`:'none';
       let s='';for(const [at,l] of STEPS) if(t>=at) s=l; cap.textContent=s;
     };
   }
