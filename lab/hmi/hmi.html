@@ -407,8 +407,8 @@ window.seek=t=>{
     $$('.t').filter(t=>!t.parentElement.closest('.t')&&!t.closest('[data-mode]:not([data-mode=nav])')).forEach(t=>{
       const big=t.dataset.id==='sp'||t.dataset.id==='pw', at=STEPT(t); if(at==null){t.style.visibility='hidden';return;}
       if(t.dataset.id==='sp')t.textContent='72'; if(t.dataset.id==='pw')t.textContent='65';
-      [t,...t.querySelectorAll('*')].forEach(e=>{e.style.color='transparent';e.style.opacity=1});
-      t.style.webkitTextStroke=(big?'.8px ':'.5px ')+LINE;t.style.filter='none';write.push({t,at,dur:big?.8:.4});});
+      [t,...t.querySelectorAll('*')].forEach(e=>{e.style.color=big?'transparent':LINE;e.style.opacity=1});
+      if(big)t.style.webkitTextStroke='.8px '+LINE;t.style.filter='none';write.push({t,at,dur:big?.8:.4});});
     const plains=$$('.L').filter(e=>!e.querySelector('svg,.t,.map')&&getComputedStyle(e).backgroundColor!=='rgba(0, 0, 0, 0)').map(e=>{
       const at=e.closest('[data-id="navi"]')?11.1:null; if(at==null){e.style.visibility='hidden';return null}
       e.style.background='transparent';e.style.opacity=1;e.style.boxShadow=`inset 0 0 0 .7px ${LINE}`;return {e,at}}).filter(Boolean);
