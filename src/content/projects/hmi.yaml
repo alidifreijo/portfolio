@@ -28,9 +28,6 @@ blocks:
     n: 1
     title: Who it's for
     line: '**Alexa Bela**, 38, tech entrepreneur in Barcelona. Competitive, resilient, a gamer, and she wants her car to keep up.'
-    hero: /images/f/hmi/ch-who.jpg
-    heroStyle: cover
-    heroBg: '#0B1620'
 - discriminant: film
   value:
     src: /images/f/hmi/mood.mp4
@@ -80,7 +77,7 @@ blocks:
     title: On the road
     line: A real drive, not a demo loop. Power in **blue** while you drive efficiently, **copper** when you push, and the map turning with the road.
     hero: /images/f/hmi/drive.mp4
-    heroStyle: cover
+    heroStyle: contain
     heroBg: '#0B1620'
 - discriminant: hmi
   value:
