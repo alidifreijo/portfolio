@@ -8,8 +8,8 @@ lead: A fully digital cockpit for an electric sports car.
 intro: A concept for the driver display of an electric sports car. **No analog parts**, everything readable at a glance, and a bold, sporty identity built from the shape of the dashboard itself.
 teaser: HMI automotive infotainment for driving experiences.
 cover: /images/f/work/cover-hmi.png
-hero: /images/f/hmi/boot.mp4
-heroStyle: contain
+hero: /images/f/hmi/amb-city.mp4
+heroStyle: cover
 heroBg: '#0B1620'
 heroLabel: hmi display
 nextLabel: hmi display
@@ -27,37 +27,19 @@ blocks:
   value:
     n: 1
     title: Who it's for
-    line: '**Alexa Bela**, 38, tech entrepreneur in Barcelona. Competitive, resilient, a gamer, and she wants her car to keep up.'
+    line: One driver first. Everything on screen has to earn its place for her.
 - discriminant: film
   value:
     src: /images/f/hmi/mood.mp4
     pill: Mood & direction
     loop: false
     bg: '#0B1620'
-- discriminant: split
-  value:
-    src: ''
-    alt: ''
-    imageWidth: 45
-    height: 0
-    label: ''
-    tag: What she expects
-    style: compact
-    items:
-    - title: At a glance
-      text: Speed, battery and range first, readable in a split second.
-    - title: Eyes on the road
-      text: Nothing on screen that competes for attention while driving.
-    - title: Always connected
-      text: Phone, music and maps in the same place as the car.
-    - title: Her own
-      text: Room to personalise what the cockpit shows and how.
 - discriminant: chapter
   value:
     n: 2
     title: How it's built
     line: Three sections that follow the dashboard, two scales on the sides and the road in the middle. Then type, colour and light.
-    hero: /images/f/hmi/ch-build.jpg
+    hero: /images/f/hmi/amb-geo.mp4
     heroStyle: cover
     heroBg: '#0B1620'
 - discriminant: film
@@ -76,8 +58,8 @@ blocks:
     n: 3
     title: On the road
     line: A real drive, not a demo loop. Power in **blue** while you drive efficiently, **copper** when you push, and the map turning with the road.
-    hero: /images/f/hmi/drive.mp4
-    heroStyle: contain
+    hero: /images/f/hmi/amb-road.mp4
+    heroStyle: cover
     heroBg: '#0B1620'
 - discriminant: hmi
   value:
