@@ -119,6 +119,25 @@ const blocks = fields.blocks(
       label: 'Live component kit',
       schema: fields.object({ kit: fields.select({ label: 'Kit', options: [{ label: 'South', value: 'south' }], defaultValue: 'south' }), pill: fields.text({ label: 'Pill (optional label, top right)' }) }),
     },
+    chapter: {
+      label: 'Chapter · the left panel follows it',
+      schema: fields.object({
+        n: fields.integer({ label: 'Number', defaultValue: 1 }),
+        title: fields.text({ label: 'Title' }),
+        line: rich('One line'),
+        hero: media('Left panel image or video for this chapter'),
+        heroStyle: fields.select({ label: 'Left panel style', options: [{ label: 'Cover', value: 'cover' }, { label: 'Contain', value: 'contain' }], defaultValue: 'contain' }),
+        heroBg: fields.text({ label: 'Left panel colour', defaultValue: '#0B1620' }),
+      }),
+    },
+    film: {
+      label: 'Film · full-width video',
+      schema: fields.object({ src: media('Video'), pill: fields.text({ label: 'Pill' }), loop: fields.checkbox({ label: 'Loop (otherwise plays once with Replay)' }), bg: fields.text({ label: 'Background', defaultValue: '#0B1620' }) }),
+    },
+    hmi: {
+      label: 'HMI · the display live in the page',
+      schema: fields.object({ view: fields.select({ label: 'View', options: [{ label: 'Anatomy (hotspots)', value: 'anatomy' }, { label: 'Live drive (menu works)', value: 'live' }], defaultValue: 'anatomy' }), pill: fields.text({ label: 'Pill' }), note: fields.text({ label: 'Small note, bottom left' }) }),
+    },
     videoCard: {
       label: 'Video card · flow or architecture',
       schema: fields.object({ src: media('Video'), caption: fields.text({ label: 'Caption (leave empty for a story video that plays once, pill on the video)' }), pill: fields.text({ label: 'Pill' }) }),

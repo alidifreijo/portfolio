@@ -191,6 +191,42 @@ const { blocks = [] } = Astro.props;
         </Card>
       );
 
+    case 'chapter':
+      // A chapter marker: the left panel follows it (see [slug].astro).
+      return (
+        <section class="chap" data-chapter={v.n} data-reveal>
+          <span class="t-small chap__n">{String(v.n || '').padStart(2, '0')}</span>
+          <h2 class="t-title chap__t">{v.title}</h2>
+          {v.line && <p class="t-body chap__l" set:html={rich(v.line, false)} />}
+        </section>
+      );
+
+    case 'film':
+      // Full-width film. Plays once when it scrolls in (Replay at the end), or loops.
+      return v.loop ? (
+        <figure class="film" data-reveal style={`--bg:${v.bg || '#0B1620'}`}>
+          <video src={v.src} poster={poster(v.src)} muted loop playsinline preload="metadata" data-autoplay aria-label={v.pill || undefined}></video>
+          {v.pill && <span class="b-pill t-small">{v.pill}</span>}
+        </figure>
+      ) : (
+        <figure class="vstory film" data-reveal style={`--bg:${v.bg || '#0B1620'}`}>
+          <video src={v.src} poster={poster(v.src)} muted playsinline preload="auto" data-once aria-label={v.pill || undefined}></video>
+          {v.pill && <span class="b-pill t-small">{v.pill}</span>}
+          <span class="vstory__bar" aria-hidden="true"><i></i></span>
+          <span class="vstory__replay t-small" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3.5 8a4.5 4.5 0 1 0 1.3-3.2M3.5 2v3h3"/></svg>Replay</span>
+        </figure>
+      );
+
+    case 'hmi':
+      // The display itself, live in the page (public/hmi-live).
+      return (
+        <div class="hmi-live" data-reveal>
+          <iframe src={`/hmi-live/index.html#embed-${v.view || 'anatomy'}`} title={v.view === 'live' ? 'Live display' : 'Display anatomy'} loading="lazy"></iframe>
+          {v.pill && <span class="b-pill t-small">{v.pill}</span>}
+          {v.note && <p class="hmi-live__note t-small">{v.note}</p>}
+        </div>
+      );
+
     default:
       return null;
   }
@@ -273,6 +309,19 @@ const { blocks = [] } = Astro.props;
 
   .det { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
   .det__item { display: flex; flex-direction: column; gap: var(--s-2); }
+
+
+  /* Chapters, films and the live display */
+  .chap { padding: var(--s-6) 0 var(--s-2); border-top: 1px solid rgba(212, 209, 203, 0.14); display: grid; grid-template-columns: 56px minmax(0, 1fr); column-gap: var(--s-3); row-gap: var(--s-1); }
+  .chap:first-child { border-top: 0; padding-top: var(--s-2); }
+  .chap__n { grid-row: span 2; color: var(--acc); font-weight: 700; padding-top: 6px; }
+  .chap__t { color: var(--on-chrome); margin: 0; }
+  .chap__l { color: var(--on-chrome); opacity: 0.7; max-width: 52ch; margin: 0; }
+  .film { position: relative; margin: 0; aspect-ratio: 16 / 9; border-radius: var(--r-md); overflow: hidden; background: var(--bg); }
+  .film video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hmi-live { position: relative; aspect-ratio: 16 / 8.2; border-radius: var(--r-md); overflow: hidden; background: #0B1620; }
+  .hmi-live iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .hmi-live__note { position: absolute; left: var(--s-3); bottom: var(--s-3); margin: 0; color: #8b867c; pointer-events: none; }
 
   @media (max-width: 1199px) {
     .b-split { grid-template-columns: 1fr; min-height: 0; }

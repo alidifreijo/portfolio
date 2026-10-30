@@ -22,11 +22,20 @@ export async function getStaticPaths() {
 const { project, next } = Astro.props;
 const d = project.data;
 const n = next.data;
+// Chapters with their own left-panel media: the panel follows the reader.
+const chapters = (d.blocks || []).filter((b: any) => b.discriminant === 'chapter' && b.value?.hero).map((b: any) => b.value);
 ---
 <Base title={d.title} description={d.lead || d.teaser} image={d.cover}>
   <div class="project" style={accentVars(d.accent)}>
-    <div class="project__left">
-      <ProjectHero src={d.hero} style={d.heroStyle} bg={d.heroBg || undefined} frame={d.heroFrame || undefined} label={d.heroLabel || d.title} />
+    <div class="project__left" data-chapters={chapters.length || undefined}>
+      <div class="chlayer is-on" data-for="0">
+        <ProjectHero src={d.hero} style={d.heroStyle} bg={d.heroBg || undefined} frame={d.heroFrame || undefined} label={d.heroLabel || d.title} />
+      </div>
+      {chapters.map((c: any) => (
+        <div class="chlayer" data-for={c.n}>
+          <ProjectHero src={c.hero} style={c.heroStyle || 'contain'} bg={c.heroBg || '#0B1620'} label={c.title} />
+        </div>
+      ))}
     </div>
     <div class="project__right">
       <div class="project__title">
@@ -40,10 +49,42 @@ const n = next.data;
   </div>
 </Base>
 
+<script>
+  // The left panel shows the chapter being read (only on cases that have chapters).
+  function initChapters() {
+    const left = document.querySelector<HTMLElement>('.project__left[data-chapters]');
+    if (!left || left.dataset.ready) return;
+    left.dataset.ready = '1';
+    const layers = [...left.querySelectorAll<HTMLElement>('.chlayer')];
+    const marks = [...document.querySelectorAll<HTMLElement>('.chap[data-chapter]')].filter((m) => layers.some((l) => l.dataset.for === m.dataset.chapter));
+    let cur = '0';
+    const pick = () => {
+      let id = '0';
+      for (const m of marks) if (m.getBoundingClientRect().top < innerHeight * 0.55) id = m.dataset.chapter!;
+      if (id === cur) return;
+      cur = id;
+      layers.forEach((l) => {
+        const on = l.dataset.for === id;
+        l.classList.toggle('is-on', on);
+        const v = l.querySelector('video');
+        if (v) on ? v.play().catch(() => {}) : v.pause();
+      });
+    };
+    addEventListener('scroll', pick, { passive: true });
+    document.addEventListener('astro:before-swap', () => removeEventListener('scroll', pick), { once: true });
+    pick();
+  }
+  initChapters();
+  document.addEventListener('astro:page-load', initChapters);
+</script>
+
 <style>
   .project { display: grid; grid-template-columns: var(--split-case); gap: var(--s-3); align-items: start; }
   .project__left { position: sticky; top: var(--frame); height: calc(100vh - var(--frame) * 2); }
   .project__right { min-width: 0; }
+  .chlayer { position: absolute; inset: 0; opacity: 0; transition: opacity 0.7s var(--ease-out); pointer-events: none; }
+  .chlayer.is-on { opacity: 1; pointer-events: auto; }
+  .project__left:not([data-chapters]) .chlayer { position: relative; height: 100%; opacity: 1; }
   .project__title { position: sticky; top: 0; z-index: 5; background: var(--chrome); margin-top: calc(var(--frame) * -1); padding: var(--frame) 0 var(--s-3); }
   .project__blocks { display: flex; flex-direction: column; gap: var(--s-2); margin-top: 6px; }
   @media (max-width: 1199px) {

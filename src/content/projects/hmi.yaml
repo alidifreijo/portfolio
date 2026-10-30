@@ -4,13 +4,13 @@ status: published
 order: 4
 accent: sky
 display: '**hmi** display'
-lead: A fully digital cockpit for an electric Cupra.
-intro: This project focuses on creating one or more user interface views for a **fully digital cockpit of a Cupra electric vehicle**. The design eliminates all analog elements and is crafted to reflect the bold and dynamic identity of the Cupra brand.
+lead: A fully digital cockpit for an electric sports car.
+intro: A concept for the driver display of an electric sports car. **No analog parts**, everything readable at a glance, and a bold, sporty identity built from the shape of the dashboard itself.
 teaser: HMI automotive infotainment for driving experiences.
 cover: /images/f/work/cover-hmi.png
-hero: /images/f/hmi/hero.mp4
+hero: /images/f/hmi/boot.mp4
 heroStyle: contain
-heroBg: '#0A1D2A'
+heroBg: '#0B1620'
 heroLabel: hmi display
 nextLabel: hmi display
 nextImage: /images/f/work/cover-hmi.png
@@ -18,23 +18,25 @@ meta:
 - label: Year
   value: '2023'
 - label: Project
-  value: Digital Cockpit
+  value: Digital cockpit concept
 - label: Service
   value: UX/UI
 links: []
 blocks:
-- discriminant: image
+- discriminant: chapter
   value:
-    src: /images/f/hmi/cockpit.jpg
-    alt: Cupra cockpit with the digital display
-- discriminant: video
+    n: 1
+    title: Who it's for
+    line: '**Alexa Bela**, 38, tech entrepreneur in Barcelona. Competitive, resilient, a gamer, and she wants her car to keep up.'
+    hero: /images/f/hmi/ch-who.jpg
+    heroStyle: cover
+    heroBg: '#0B1620'
+- discriminant: film
   value:
-    src: /images/f/hmi/poster.mp4
-    alt: ''
-- discriminant: video
-  value:
-    src: /images/f/hmi/shape.mp4
-    alt: ''
+    src: /images/f/hmi/mood.mp4
+    pill: Mood & direction
+    loop: false
+    bg: '#0B1620'
 - discriminant: split
   value:
     src: ''
@@ -42,16 +44,46 @@ blocks:
     imageWidth: 45
     height: 0
     label: ''
-    tag: User Archetype
+    tag: What she expects
     style: compact
     items:
-    - title: Tech-Smart
-      text: Confident with digital tools and expects a smooth, modern interface.
-    - title: Efficiency-Focused
-      text: Wants quick, clear info with minimal distractions.
-    - title: Design-Oriented
-      text: Appreciates sleek, stylish design that matches Cupra’s bold aesthetic.
-    - title: Trend-Aware
-      text: Follows EV and connected car trends; expects cutting-edge features.
-    - title: Customization-Driven
-      text: Enjoys personalizing settings to match her preferences.
+    - title: At a glance
+      text: Speed, battery and range first, readable in a split second.
+    - title: Eyes on the road
+      text: Nothing on screen that competes for attention while driving.
+    - title: Always connected
+      text: Phone, music and maps in the same place as the car.
+    - title: Her own
+      text: Room to personalise what the cockpit shows and how.
+- discriminant: chapter
+  value:
+    n: 2
+    title: How it's built
+    line: Three sections that follow the dashboard, two scales on the sides and the road in the middle. Then type, colour and light.
+    hero: /images/f/hmi/ch-build.jpg
+    heroStyle: cover
+    heroBg: '#0B1620'
+- discriminant: film
+  value:
+    src: /images/f/hmi/build.mp4
+    pill: Wireframe → brand
+    loop: false
+    bg: '#0B1620'
+- discriminant: hmi
+  value:
+    view: anatomy
+    pill: Anatomy
+    note: Hover or tap the dots
+- discriminant: chapter
+  value:
+    n: 3
+    title: On the road
+    line: A real drive, not a demo loop. Power in **blue** while you drive efficiently, **copper** when you push, and the map turning with the road.
+    hero: /images/f/hmi/drive.mp4
+    heroStyle: cover
+    heroBg: '#0B1620'
+- discriminant: hmi
+  value:
+    view: live
+    pill: Live
+    note: Tap the menu to switch views
