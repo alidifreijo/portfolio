@@ -36,7 +36,7 @@ const caps: string[] = home.capabilities || [];
         <div class="home__stage" data-stage>
           <Faces />
           <div class="home__intro">
-            <h1 class="home__title">{home.lead} {home.title}</h1>
+            <h1 class="home__title"><span class="w1">{home.lead}</span> <span class="w2">{home.title}</span></h1>
             <p class="home__role">{home.role}</p>
             <p class="home__line">{home.sub}</p>
           </div>
@@ -79,6 +79,11 @@ const caps: string[] = home.capabilities || [];
     </div>
   </div>
 </Base>
+
+<script is:inline>
+  // headline take for comparing: ?t=b / ?t=c
+  (function () { var t = new URLSearchParams(location.search).get('t'); if (t === 'b' || t === 'c') document.documentElement.dataset.t = t; else delete document.documentElement.dataset.t; })();
+</script>
 
 <script>
   // Scroll shrink (desktop and tablet): the screen stays put while you scroll
@@ -146,10 +151,17 @@ const caps: string[] = home.capabilities || [];
     width: min(74%, 1100px); text-align: center; pointer-events: none;
     display: flex; flex-direction: column; align-items: center;
   }
+  /* Headline in Instrument Serif. Three takes to compare, picked with
+     ?t=b or ?t=c in the address (default a):
+     a · serif, "Yep," in italic · b · serif italic "Yep," + grotesk capitals · c · serif capitals */
   .home__title {
-    margin: 0; font-family: var(--font-display); font-weight: 500; text-transform: uppercase; text-wrap: balance;
-    font-size: clamp(56px, 8.6vw, 168px); line-height: 0.88; letter-spacing: -0.02em;
+    margin: 0; font-family: var(--font-serif); font-weight: 400; text-wrap: balance;
+    font-size: clamp(84px, 12.4vw, 250px); line-height: 0.8; letter-spacing: -0.035em;
   }
+  .home__title .w1 { font-style: italic; letter-spacing: -0.02em; }
+  :global([data-t='b']) .home__title { font-size: clamp(84px, 12vw, 240px); }
+  :global([data-t='b']) .home__title .w2 { font-family: var(--font-display); font-weight: 500; text-transform: uppercase; font-size: 0.6em; letter-spacing: -0.035em; vertical-align: 0.06em; }
+  :global([data-t='c']) .home__title { text-transform: uppercase; font-size: clamp(72px, 10.4vw, 210px); line-height: 0.84; letter-spacing: -0.02em; }
   .home__role, .home__line {
     margin: 0; font-family: var(--font-display); font-weight: 500; text-transform: uppercase;
     font-size: clamp(16px, 1.45vw, 26px); line-height: 1.15; color: var(--home-red);
@@ -202,7 +214,7 @@ const caps: string[] = home.capabilities || [];
   }
   @media (max-width: 809px) {
     .home__intro { top: auto; bottom: 36px; translate: -50% 0; width: min(88%, 340px); }
-    .home__title { font-size: 38px; }
+    .home__title, :global([data-t]) .home__title { font-size: 58px; }
     .home__role { font-size: 14px; }
     .home__line { font-size: 13px; }
     .home__hint { display: none; }

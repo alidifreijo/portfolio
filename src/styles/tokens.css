@@ -54,6 +54,7 @@
   --font-body: 'Satoshi', system-ui, sans-serif;           /* text */
   --font-ui: 'DM Sans', system-ui, sans-serif;             /* buttons, chips */
   --font-mono: 'DM Mono', ui-monospace, monospace;
+  --font-serif: 'Instrument Serif', Georgia, serif;          /* big home headline */
   --font-hand: 'Caveat', 'Bradley Hand', cursive;          /* handwritten notes */
 
   /* Scale taken from the original Framer site. Use the .t-* classes. */
