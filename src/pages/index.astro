@@ -1,44 +1,142 @@
 ---
+/**
+ * Home · v2. The new header on the frame, the faces panel as before (they
+ * light up, talk and open a case), a bigger headline, and an index of small
+ * print underneath: the work, where I am now, what I do.
+ */
 import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
 import Faces from '../components/Faces.astro';
-import Tab from '../components/Tab.astro';
-import { getEntry } from 'astro:content';
-const home = (await getEntry('pages', 'home'))!.data;
+import { getEntry, getCollection } from 'astro:content';
+const home = (await getEntry('pages', 'home'))!.data as any;
+const projects = (await getCollection('projects'))
+  .filter((p) => p.data.status === 'published')
+  .sort((a, b) => a.data.order - b.data.order);
+const work = projects.map((p, i) => ({
+  n: String(i + 1).padStart(2, '0'),
+  href: `/work/${p.id}`,
+  title: p.data.title,
+  type: p.data.meta.find((m) => m.label === 'Project')?.value || '',
+  year: p.data.meta.find((m) => m.label === 'Year')?.value || '',
+  exploration: p.data.kind === 'exploration',
+}));
+const now: string[] = home.now || [];
+const before: string = home.before || '';
+const caps: string[] = home.capabilities || [];
 ---
-<Base>
-  <section class="home">
-    <Faces />
-    <div class="home__intro">
-      <h1 class="home__title"><strong>{home.lead}</strong> {home.title}</h1>
-      <p class="home__role">{home.role}</p>
-      <p class="home__line">{home.sub}</p>
+<Base nav={false}>
+  <div class="hp">
+    <SiteHeader />
+    <section class="home">
+      <Faces />
+      <div class="home__intro">
+        <h1 class="home__title">{home.lead}<br />{home.title}</h1>
+        <p class="home__role">{home.role}</p>
+        <p class="home__line">{home.sub}</p>
+      </div>
+    </section>
+  </div>
+
+  <section class="hx" aria-label="Index">
+    <div class="hx__col hx__work">
+      <p class="hx__lab">Selected work</p>
+      <ul>
+        {work.map((w) => (
+          <li><a href={w.href} class:list={['hx__row', { 'is-soft': w.exploration }]}>
+            <span class="hx__n">{w.n}</span>
+            <span class="hx__t">{w.title}{w.type && <span class="hx__type"> · {w.type}</span>}</span>
+            <span class="hx__y">{w.year}</span>
+          </a></li>
+        ))}
+      </ul>
     </div>
-    <Tab corner="bottom-left"><span class="t-body">{home.name}</span></Tab>
+    {now.length > 0 && (
+      <div class="hx__col">
+        <p class="hx__lab">Now</p>
+        {now.map((l) => <p class="hx__val">{l}</p>)}
+        {before && <><p class="hx__lab hx__gap">Before</p><p class="hx__val">{before}</p></>}
+      </div>
+    )}
+    {caps.length > 0 && (
+      <div class="hx__col">
+        <p class="hx__lab">Capabilities</p>
+        {caps.map((l) => <p class="hx__val">{l}</p>)}
+      </div>
+    )}
+    <div class="hx__col hx__count">
+      <p class="hx__lab">Cases</p>
+      <p class="hx__big">{String(work.length).padStart(2, '0')}</p>
+    </div>
   </section>
 </Base>
 
 <style>
+  /* header + panel fill the first screen; the index waits below */
+  .hp { min-height: calc(100svh - var(--frame) * 2); display: flex; flex-direction: column; }
   .home {
-    position: relative; height: calc(100vh - var(--frame) * 2); min-height: 560px;
+    position: relative; flex: 1; min-height: 560px;
     background: var(--paper); border-radius: var(--r-md); overflow: hidden;
   }
-  /* Who I am first, then the playful line that doubles as the hint. The faces
-     sit above this block, so they can be dragged over it. */
+  /* The faces sit above this block, so they can be dragged over it. */
   .home__intro {
     position: absolute; left: 50%; top: 50%; translate: -50% -50%; z-index: 1;
-    width: min(88%, 520px); text-align: center; pointer-events: none;
-    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    width: min(90%, 640px); text-align: center; pointer-events: none;
+    display: flex; flex-direction: column; align-items: center;
   }
-  .home__title { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(22px, 1.9vw, 30px); line-height: 1.1; letter-spacing: -0.01em; }
-  .home__title strong { font-weight: 700; }
-  .home__role { margin: 0; font-family: var(--font-display); font-size: clamp(15px, 1.15vw, 18px); line-height: 1.3; }
-  .home__line { margin: 6px 0 0; font-family: var(--font-display); font-size: var(--fs-small); line-height: 1.4; letter-spacing: 0.4px; color: var(--muted); max-width: 340px; }
-  /* Phone: the faces take the middle, the intro sits underneath them. */
+  .home__title {
+    margin: 0; font-family: var(--font-display); font-weight: 500; text-transform: uppercase;
+    font-size: clamp(44px, 5.6vw, 92px); line-height: 0.9; letter-spacing: -0.02em;
+  }
+  .home__role, .home__line {
+    margin: 0; font-family: var(--font-display); font-weight: 500; text-transform: uppercase;
+    font-size: clamp(14px, 1.25vw, 19px); line-height: 1.2; color: var(--home-red);
+  }
+  .home__role { margin-top: 18px; }
+  .home__line { max-width: 40ch; text-wrap: balance; }
+  .home { --home-red: #A8141A; } /* the accent red, darkened to read on paper */
+
+  /* entry: on top of the panel opening and the faces popping, the words blur in */
+  :global(html.pre-enter) .home__title, :global(html.pre-enter) .home__role, :global(html.pre-enter) .home__line { opacity: 0; }
+  :global(.home.is-entering) .home__title { animation: blur-in 900ms cubic-bezier(.22,.75,.25,1) 250ms both; }
+  :global(.home.is-entering) .home__role { animation: blur-in 800ms cubic-bezier(.22,.75,.25,1) 1050ms both; }
+  :global(.home.is-entering) .home__line { animation: blur-in 800ms cubic-bezier(.22,.75,.25,1) 1150ms both; }
+  @keyframes blur-in { from { opacity: 0; filter: blur(12px); translate: 0 8px; } to { opacity: 1; filter: blur(0); translate: 0 0; } }
+  @media (prefers-reduced-motion: reduce) { :global(.home.is-entering) :is(.home__title, .home__role, .home__line) { animation: none; } }
+
+  /* index: small print on the frame */
+  .hx {
+    display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 16px; row-gap: 28px;
+    padding: 22px 12px 18px; color: var(--on-chrome);
+  }
+  .hx p { margin: 0; }
+  .hx ul { list-style: none; margin: 0; padding: 0; }
+  .hx__lab, .hx__val, .hx__row { font-family: var(--font-body); font-size: 11px; line-height: 16px; letter-spacing: 0.02em; }
+  .hx__lab { color: var(--muted-ink); margin-bottom: 2px !important; }
+  .hx__gap { margin-top: 12px !important; }
+  .hx__col { grid-column: span 3; }
+  .hx__work { grid-column: span 4; }
+  .hx__count { grid-column: span 2; text-align: right; }
+  .hx__row { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 8px; padding: 1px 0; transition: opacity 240ms var(--ease-out); }
+  .hx__row.is-soft { opacity: 0.6; }
+  .hx__type { color: var(--muted-ink); }
+  .hx ul:hover .hx__row { opacity: 0.4; }
+  .hx ul:hover .hx__row:hover { opacity: 1; }
+  .hx__row:hover .hx__t { text-decoration: underline; text-underline-offset: 2px; }
+  .hx__big { font-family: var(--font-display); font-weight: 300; font-size: 64px; line-height: 1; letter-spacing: -0.04em; }
+
+  @media (max-width: 1099px) {
+    .hx__work { grid-column: span 12; }
+    .hx__col { grid-column: span 5; }
+    .hx__count { grid-column: span 2; }
+  }
   @media (max-width: 809px) {
-    .home__intro { top: auto; bottom: 64px; translate: -50% 0; width: min(86%, 320px); gap: 6px; }
-    .home__title { font-size: 20px; }
-    .home__title strong { font-weight: 700; }
-  .home__role { font-size: 14px; }
-    .home__line { font-size: 11px; }
+    .home__intro { top: auto; bottom: 56px; translate: -50% 0; width: min(88%, 340px); }
+    .home__title { font-size: 40px; }
+    .home__role { margin-top: 12px; font-size: 13px; }
+    .home__line { font-size: 12px; }
+    .hx { grid-template-columns: 1fr 1fr; }
+    .hx__work { grid-column: 1 / -1; }
+    .hx__col, .hx__count { grid-column: span 1; }
+    .hx__count { display: none; }
   }
 </style>

@@ -207,7 +207,7 @@ export default config({
       label: 'Home',
       path: 'src/content/pages/home',
       format: { data: 'yaml' },
-      schema: { name: fields.text({ label: 'Name tab' }), lead: fields.text({ label: 'Bold word' }), title: fields.text({ label: 'Title' }), role: fields.text({ label: 'Role line' }), sub: fields.text({ label: 'Small line' }) },
+      schema: { name: fields.text({ label: 'Name tab' }), lead: fields.text({ label: 'Bold word' }), title: fields.text({ label: 'Title' }), role: fields.text({ label: 'Role line' }), sub: fields.text({ label: 'Small line' }), status: fields.text({ label: 'Status (header)' }), now: fields.array(fields.text({ label: 'Line' }), { label: 'Now', itemLabel: (p) => p.value }), before: fields.text({ label: 'Before' }), capabilities: fields.array(fields.text({ label: 'Line' }), { label: 'Capabilities', itemLabel: (p) => p.value }) },
     }),
     work: singleton({
       label: 'Work',

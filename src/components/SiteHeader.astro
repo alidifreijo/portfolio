@@ -1,0 +1,101 @@
+---
+/**
+ * SiteHeader · the new top bar, sitting on the black frame (home first;
+ * the other pages move to it later). Label + value pairs on a 12-column
+ * grid: the á, the menu stacked in capitals, a live Barcelona clock, a status
+ * line and the email. The á keeps the class nav__logo, so on the home page it
+ * still replays the entry of the faces.
+ */
+import { getEntry } from 'astro:content';
+const contact = (await getEntry('pages', 'contact'))!.data as any;
+const home = (await getEntry('pages', 'home'))!.data as any;
+const mail = (contact.links || []).find((l: any) => String(l.url).startsWith('mailto:'));
+const email = mail ? String(mail.url).replace('mailto:', '') : '';
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+const links = [
+  { href: '/work', label: 'Work' },
+  { href: '/about', label: 'About' },
+  { href: '/contact', label: 'Contact' },
+];
+const isCurrent = (href: string) => path === href || path.startsWith(href + '/');
+---
+<header class="sh" transition:name="nav">
+  <a href="/" class="sh__logo nav__logo" aria-label="Home">á</a>
+  <nav class="sh__menu" aria-label="Main">
+    <p class="sh__lab">Menu</p>
+    <ul>
+      {links.map((l) => (
+        <li><a href={l.href} class="sh__link" aria-current={isCurrent(l.href) ? 'page' : undefined}><span class="sh__arrow" aria-hidden="true">→</span>{l.label}</a></li>
+      ))}
+    </ul>
+  </nav>
+  <div class="sh__cell sh__where">
+    <p class="sh__lab">Based in</p>
+    <p class="sh__val">Barcelona · <time data-clock>--:--</time></p>
+  </div>
+  <div class="sh__cell sh__status">
+    <p class="sh__lab">Status</p>
+    <p class="sh__val">{home.status || 'Open to senior and lead product roles'}</p>
+  </div>
+  {email && (
+    <div class="sh__cell sh__mail">
+      <p class="sh__lab">For enquiries</p>
+      <a class="sh__val sh__u" href={`mailto:${email}`}>{email}</a>
+    </div>
+  )}
+</header>
+
+<script>
+  // Live time in Barcelona, refreshed every 15 s.
+  const fmt = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Madrid' });
+  let t = 0;
+  function tick() {
+    const els = document.querySelectorAll<HTMLTimeElement>('[data-clock]');
+    if (!els.length) { clearInterval(t); t = 0; return; }
+    els.forEach((el) => (el.textContent = fmt.format(new Date())));
+  }
+  function initClock() { tick(); if (!t) t = window.setInterval(tick, 15000); }
+  initClock();
+  document.addEventListener('astro:page-load', initClock);
+</script>
+
+<style>
+  .sh {
+    display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 16px; align-items: start;
+    padding: 6px 12px 14px; color: var(--on-chrome);
+  }
+  .sh p { margin: 0; }
+  .sh__lab, .sh__val { font-family: var(--font-body); font-size: 11px; line-height: 16px; letter-spacing: 0.02em; }
+  .sh__lab { color: var(--muted-ink); }
+  .sh__val { color: var(--on-chrome); }
+  .sh__u { text-decoration: underline; text-underline-offset: 2px; }
+  .sh__u:hover { color: var(--white); }
+  .sh__logo { grid-column: span 1; font-family: var(--font-display); font-weight: 500; font-size: 34px; line-height: 0.8; width: max-content; }
+  .sh__menu { grid-column: span 3; }
+  .sh__menu ul { list-style: none; margin: 2px 0 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+  .sh__link {
+    display: inline-flex; align-items: baseline; min-height: 22px;
+    font-family: var(--font-display); font-weight: 500; font-size: 18px; line-height: 1; text-transform: uppercase; letter-spacing: -0.01em;
+  }
+  /* the arrow marks the page you're on, and slides in on hover */
+  .sh__arrow { display: inline-block; width: 0; overflow: hidden; opacity: 0; transition: width 280ms var(--ease-out), opacity 280ms var(--ease-out); }
+  .sh__link[aria-current='page'] .sh__arrow, .sh__link:hover .sh__arrow, .sh__link:focus-visible .sh__arrow { width: 1.35em; opacity: 1; }
+  .sh__where, .sh__status { grid-column: span 3; }
+  .sh__mail { grid-column: span 2; text-align: right; }
+  @media (prefers-reduced-motion: reduce) { .sh__arrow { transition: none; } }
+  @media (max-width: 1099px) {
+    .sh__status { display: none; }
+    .sh__menu { grid-column: span 4; }
+    .sh__where { grid-column: span 3; }
+    .sh__mail { grid-column: span 4; }
+  }
+  /* phone: the á and the menu in one row, the rest hides (it's on the contact page) */
+  @media (max-width: 809px) {
+    .sh { display: flex; justify-content: space-between; align-items: center; padding: 4px 6px 12px; }
+    .sh__menu .sh__lab, .sh__where, .sh__mail { display: none; }
+    .sh__menu ul { flex-direction: row; gap: 18px; margin: 0; }
+    .sh__link { font-size: 15px; }
+    .sh__arrow { display: none; }
+    .sh__link[aria-current='page'] { text-decoration: underline; text-underline-offset: 4px; }
+  }
+</style>
