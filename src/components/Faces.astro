@@ -135,6 +135,15 @@ const items = faces.map((f, i) => {
       const chaos = faces.find((f) => f.getAttribute('href')?.includes('/hmi')) || faces[3];
       setTimeout(() => { root.classList.remove('is-tidy'); on(chaos); setTimeout(() => { if (!chaos.matches(':hover')) chaos.classList.remove('is-on'); }, 2600); }, 1000);
     });
+    // Scrolling the home page tidies up on its own (quietly, no last word):
+    // the page sends 'faces:tidy' when the panel starts to shrink.
+    const quietTidy = () => {
+      if (!root.isConnected || !faces.some((f) => ((f as any)._off?.() || 0) > 1)) return;
+      root.classList.remove('is-messy'); root.classList.add('is-tidy');
+      faces.forEach((f) => { f.classList.remove('is-on'); (f as any)._home?.(); });
+      setTimeout(() => root.classList.remove('is-tidy'), 1100);
+    };
+    addEventListener('faces:tidy', quietTidy);
     // Eyes: the lenses look at the cursor.
     let er = 0, px = -1, py = -1;
     const look = () => {

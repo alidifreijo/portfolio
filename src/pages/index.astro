@@ -83,14 +83,14 @@ const caps: string[] = home.capabilities || [];
 <script>
   // Scroll shrink (desktop and tablet): the screen stays put while you scroll
   // a short runway; the panel loses height, its contents scale down with it
-  // the words shrink, the faces draw in, and the index rises from below.
+  // the words shrink, the faces tidy up, and the index rises from below.
   function initShrink() {
     const wrap = document.querySelector<HTMLElement>('[data-hw]');
     if (!wrap || wrap.dataset.ready) return; wrap.dataset.ready = '1';
     const panel = wrap.querySelector<HTMLElement>('[data-panel]')!;
     const index = wrap.querySelector<HTMLElement>('[data-index]')!;
     const mq = matchMedia('(min-width: 810px) and (prefers-reduced-motion: no-preference)');
-    let full = 0, small = 0, run = 0, raf = 0;
+    let full = 0, small = 0, run = 0, raf = 0, tidied = false;
     const measure = () => {
       wrap.style.removeProperty('--ph');
       if (!mq.matches) { wrap.classList.remove('is-shrink'); return; }
@@ -110,8 +110,9 @@ const caps: string[] = home.capabilities || [];
       const p = Math.min(1, Math.max(0, (scrollY - wrap.offsetTop + 12) / run));
       const h = full - (full - small) * p;
       wrap.style.setProperty('--ph', h + 'px');
-      wrap.style.setProperty('--k', (1 - 0.12 * p).toFixed(4));
-      wrap.style.setProperty('--fk', (1 - 0.3 * p).toFixed(4));
+      // the faces go home as soon as the panel starts to shrink; they keep their size
+      if (p > 0.01 && !tidied) { tidied = true; dispatchEvent(new Event('faces:tidy')); }
+      if (p <= 0.01) tidied = false;
       wrap.style.setProperty('--p', p.toFixed(3));
     };
     const onScroll = () => { if (!wrap.isConnected) { removeEventListener('scroll', onScroll); return; } if (!raf) raf = requestAnimationFrame(update); };
@@ -138,7 +139,7 @@ const caps: string[] = home.capabilities || [];
   .hw.is-shrink { height: calc(100svh - var(--frame) * 2 + var(--run, 0px)); }
   .hw.is-shrink .hp { position: sticky; top: var(--frame); height: calc(100svh - var(--frame) * 2); min-height: 0; overflow: hidden; }
   .hw.is-shrink .home { flex: none; height: var(--ph, auto); min-height: 0; }
-  /* as it shrinks, the words get smaller and the faces draw in (Faces reads --k and --fk) */
+  /* as it shrinks, only the words get smaller */
   .hw.is-shrink .home__intro { scale: calc(1 - var(--p, 0) * 0.4); }
   .hw.is-shrink .home__hint { opacity: calc(0.6 - var(--p, 0) * 0.6); }
 
