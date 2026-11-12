@@ -17,12 +17,12 @@ import { BUBBLES } from '../data/bubbles';
 
 const faces = [
   // x / y / w: centre and width in % of the panel (v2 layout) · mx / my / mw: mobile box · ar: proportions
-  { id: 'bucket-hat', alt: 'Bucket hat', to: 'contact', proof: 'contact', x: 76, y: 62, w: 12, mx: 22, my: 34, mw: 30.0, ar: '110/137', g: {S: 1.18, o: '136% 138%', under: [84.75, -6.5, 84.59, 9.3, 162.7, 70.3], shape: [84.75, -14.4, 84.59, 15.2, 173.7, 50.8], text: [84.75, -6.8, 84.59, 26.3, 167.0, 28.5]}, quote: '“**Creative mess,** but beautifully organized.”' },
-  { id: 'messy-hair', alt: 'Messy hair', to: 'work/cut-scenes', proof: 'cut scenes', x: 14.8, y: 21, w: 14.5, mx: 24, my: 72, mw: 28.7, ar: '155/157', g: {S: 1.175, o: '50% 44%', under: [92.02, -40.1, 90.79, -42.6, 149.0, 80.0], shape: [92.02, -52.8, 90.79, -41.7, 164.3, 65.6], text: [92.02, -29.8, 90.79, -23.0, 131.1, 28.6]}, quote: '“**Teamwork** is my coping mechanism.”' },
-  { id: 'cap', alt: 'Cap', to: 'work/cupra', proof: 'cupra', x: 26, y: 68, w: 12.8, mx: 80, my: 35, mw: 28.6, ar: '161/164', g: {S: 1.178, o: '50% 46%', under: [86.84, -41.3, 85.51, -3.4, 129.9, 60.3], shape: [86.84, -45.3, 85.51, -8.0, 137.5, 57.7], text: [86.84, -35.1, 85.51, 11.5, 117.1, 28.5]}, quote: '“**Research** is my love language.”' },
-  { id: 'long-hair', alt: 'Long hair', to: 'work/hmi', proof: 'hmi display', x: 52.5, y: 17, w: 13.8, mx: 82, my: 71, mw: 28.6, ar: '161/164', g: {S: 1.178, o: '50% 46%', under: [13.15, -74.3, 85.52, 4.7, 124.8, 56.9], shape: [13.15, -77.7, 85.52, 0.5, 137.5, 57.7], text: [13.15, -64.35, 85.52, 19.0, 104.0, 28.5]}, quote: '“**Chaos?** not on my watch.”' },
-  { id: 'sprout', alt: 'Sprout', to: 'work/bank-platform', proof: 'bank platform', x: 86, y: 21, w: 10.5, mx: 68, my: 53, mw: 28.6, ar: '171/174', g: {S: 1.197, o: '50% 83%', under: [86.88, -42.6, 85.36, -6.6, 147.0, 83.5], shape: [86.88, -56.8, 85.36, -6.0, 166.2, 70.2], text: [86.88, -41.8, 85.36, 10.7, 144.5, 42.1]}, quote: '“**Empathetic**, caffeinated, slightly existential.”' },
-  { id: 'bob', alt: 'Bob', to: 'work/fintech', proof: 'fintech app', x: 9.9, y: 70, w: 12, mx: 50, my: 21, mw: 28.6, ar: '122/124', g: {S: 1.234, o: '52% 21%', under: [-6.38, -75.6, 106.67, -12.1, 128.0, 60.8], shape: [-6.38, -75.8, 106.67, -15.8, 138.6, 55.1], text: [-6.38, -75.0, 106.67, 2.8, 131.3, 27.2]}, quote: '“I find peace in **naming layers.**”' },
+  { id: 'bucket-hat', alt: 'Bucket hat', to: 'contact', proof: 'contact', x: 77, y: 74, w: 9.6, mx: 22, my: 34, mw: 30.0, ar: '110/137', g: {S: 1.18, o: '136% 138%', under: [84.75, -6.5, 84.59, 9.3, 162.7, 70.3], shape: [84.75, -14.4, 84.59, 15.2, 173.7, 50.8], text: [84.75, -6.8, 84.59, 26.3, 167.0, 28.5]}, quote: '“**Creative mess,** but beautifully organized.”' },
+  { id: 'messy-hair', alt: 'Messy hair', to: 'work/cut-scenes', proof: 'cut scenes', x: 16, y: 27, w: 11.8, mx: 24, my: 72, mw: 28.7, ar: '155/157', g: {S: 1.175, o: '50% 44%', under: [92.02, -40.1, 90.79, -42.6, 149.0, 80.0], shape: [92.02, -52.8, 90.79, -41.7, 164.3, 65.6], text: [92.02, -29.8, 90.79, -23.0, 131.1, 28.6]}, quote: '“**Teamwork** is my coping mechanism.”' },
+  { id: 'cap', alt: 'Cap', to: 'work/cupra', proof: 'cupra', x: 35, y: 80, w: 10.4, mx: 80, my: 35, mw: 28.6, ar: '161/164', g: {S: 1.178, o: '50% 46%', under: [86.84, -41.3, 85.51, -3.4, 129.9, 60.3], shape: [86.84, -45.3, 85.51, -8.0, 137.5, 57.7], text: [86.84, -35.1, 85.51, 11.5, 117.1, 28.5]}, quote: '“**Research** is my love language.”' },
+  { id: 'long-hair', alt: 'Long hair', to: 'work/hmi', proof: 'hmi display', x: 55, y: 18, w: 11.1, mx: 82, my: 71, mw: 28.6, ar: '161/164', g: {S: 1.178, o: '50% 46%', under: [13.15, -74.3, 85.52, 4.7, 124.8, 56.9], shape: [13.15, -77.7, 85.52, 0.5, 137.5, 57.7], text: [13.15, -64.35, 85.52, 19.0, 104.0, 28.5]}, quote: '“**Chaos?** not on my watch.”' },
+  { id: 'sprout', alt: 'Sprout', to: 'work/bank-platform', proof: 'bank platform', x: 87, y: 25, w: 8.4, mx: 68, my: 53, mw: 28.6, ar: '171/174', g: {S: 1.197, o: '50% 83%', under: [86.88, -42.6, 85.36, -6.6, 147.0, 83.5], shape: [86.88, -56.8, 85.36, -6.0, 166.2, 70.2], text: [86.88, -41.8, 85.36, 10.7, 144.5, 42.1]}, quote: '“**Empathetic**, caffeinated, slightly existential.”' },
+  { id: 'bob', alt: 'Bob', to: 'work/fintech', proof: 'fintech app', x: 9, y: 69, w: 9.7, mx: 50, my: 21, mw: 28.6, ar: '122/124', g: {S: 1.234, o: '52% 21%', under: [-6.38, -75.6, 106.67, -12.1, 128.0, 60.8], shape: [-6.38, -75.8, 106.67, -15.8, 138.6, 55.1], text: [-6.38, -75.0, 106.67, 2.8, 131.3, 27.2]}, quote: '“I find peace in **naming layers.**”' },
 ];
 
 const bold = (s: string) => s.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
@@ -197,14 +197,14 @@ const items = faces.map((f, i) => {
       for (const o of bodies) o.awake = o.awake || moving(o);
       for (let sub = 0; sub < 3; sub++) {
       for (const o of bodies) {
-        if (!o.held) { const f = Math.pow(0.965, 1 / 3); o.vx *= f; o.vy *= f; o.dx += o.vx / 3; o.dy += o.vy / 3; }
+        if (!o.held) { const f = Math.pow(0.979, 1 / 3); o.vx *= f; o.vy *= f; o.dx += o.vx / 3; o.dy += o.vy / 3; }
         if (!o.awake) continue;
         // panel edges
         const cx = o.hx + o.dx, cy = o.hy + o.dy, m = o.rad;
-        if (cx < m) { o.dx += m - cx; if (o.vx < 0) { o.vx = -o.vx * 0.6; o.vr += o.vy * 0.4; } }
-        if (cx > W - m) { o.dx -= cx - (W - m); if (o.vx > 0) { o.vx = -o.vx * 0.6; o.vr -= o.vy * 0.4; } }
-        if (cy < m) { o.dy += m - cy; if (o.vy < 0) { o.vy = -o.vy * 0.6; o.vr -= o.vx * 0.4; } }
-        if (cy > H - m) { o.dy -= cy - (H - m); if (o.vy > 0) { o.vy = -o.vy * 0.6; o.vr += o.vx * 0.4; } }
+        if (cx < m) { o.dx += m - cx; if (o.vx < 0) { o.vx = -o.vx * 0.45; o.vr += o.vy * 0.4; } }
+        if (cx > W - m) { o.dx -= cx - (W - m); if (o.vx > 0) { o.vx = -o.vx * 0.45; o.vr -= o.vy * 0.4; } }
+        if (cy < m) { o.dy += m - cy; if (o.vy < 0) { o.vy = -o.vy * 0.45; o.vr -= o.vx * 0.4; } }
+        if (cy > H - m) { o.dy -= cy - (H - m); if (o.vy > 0) { o.vy = -o.vy * 0.45; o.vr += o.vx * 0.4; } }
       }
       // face against face
       for (let i = 0; i < bodies.length; i++) for (let j = i + 1; j < bodies.length; j++) {
@@ -218,7 +218,7 @@ const items = faces.map((f, i) => {
         a.dx -= nx * over * wa; a.dy -= ny * over * wa; b.dx += nx * over * wb; b.dy += ny * over * wb;
         const rvx = b.vx - a.vx, rvy = b.vy - a.vy, vn = rvx * nx + rvy * ny;
         if (vn < 0) {
-          const k = -(1 + 0.85) * vn * (a.held || b.held ? 1 : 0.5);
+          const k = -(1 + 0.6) * vn * (a.held || b.held ? 1 : 0.5);
           if (!a.held) { a.vx -= k * nx; a.vy -= k * ny; }
           if (!b.held) { b.vx += k * nx; b.vy += k * ny; }
           const vt = rvx * -ny + rvy * nx; // tangential slip makes them spin
@@ -229,7 +229,7 @@ const items = faces.map((f, i) => {
       }
       for (const o of bodies) {
         // rotation: a damped spring back to upright
-        o.vr += -o.r * 0.03; o.vr *= 0.9; o.r += o.vr;
+        o.vr += -o.r * 0.012; o.vr *= 0.93; o.r += o.vr * 0.6;
         paint(o);
         if (o.held || Math.hypot(o.vx, o.vy) > 0.08 || Math.abs(o.r) > 0.05 || Math.abs(o.vr) > 0.05) busy = true;
       }
@@ -277,7 +277,9 @@ const items = faces.map((f, i) => {
         if (!moved) return;
         b.classList.remove('is-drag');
         if (e.timeStamp - o.trail[o.trail.length - 1][0] > 100 || o.trail.length < 2) { o.vx = 0; o.vy = 0; }
-        const sp = Math.hypot(o.vx, o.vy), cap = reduce ? 0 : 70;
+        // heads are heavy: a throw leaves at about half the speed of the hand and glides
+        o.vx *= 0.5; o.vy *= 0.5;
+        const sp = Math.hypot(o.vx, o.vy), cap = reduce ? 0 : 30;
         if (sp > cap) { o.vx *= cap / sp; o.vy *= cap / sp; }
         wake();
         const over = document.elementFromPoint(e.clientX, e.clientY)?.closest('.face') === b;
