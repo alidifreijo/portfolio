@@ -17,14 +17,16 @@ import { accentVars } from '../../lib/utils';
 export async function getStaticPaths() {
   const projects = await getProjects();
   // Next = the following project by `order`, looping back to the first.
-  return projects.map((p, i) => ({ params: { slug: p.id }, props: { project: p, next: projects[(i + 1) % projects.length] } }));
+  return projects.map((p, i) => ({ params: { slug: p.id }, props: { project: p, next: projects[(i + 1) % projects.length], prev: projects[(i - 1 + projects.length) % projects.length], index: i + 1, total: projects.length } }));
 }
 
-const { project, next } = Astro.props;
+const { project, next, prev, index, total } = Astro.props;
 const d = project.data;
 const n = next.data;
 // Chapters with their own left-panel media: the panel follows the reader.
 const chapters = (d.blocks || []).filter((b: any) => b.discriminant === 'chapter' && b.value?.hero).map((b: any) => b.value);
+const allChapters = (d.blocks || []).filter((b: any) => b.discriminant === 'chapter').map((b: any) => ({ n: b.value.n, title: b.value.title, line: b.value.line }));
+const name = (p: any) => p.data.heroLabel || p.data.title;
 ---
 <Base title={d.title} description={d.lead || d.teaser} image={d.cover} nav={false}>
   <SiteHeader />
@@ -41,7 +43,7 @@ const chapters = (d.blocks || []).filter((b: any) => b.discriminant === 'chapter
     </div>
     <div class="project__right">
       <div class="project__title">
-        <ProjectTitle display={d.display || d.title} intro={d.intro} meta={d.meta} metaWidth={d.metaWidth || 200} links={d.links} />
+        <ProjectTitle display={d.display || d.title} intro={d.intro} meta={d.meta} links={d.links} chapters={allChapters} index={index} total={total} prev={{ href: projectUrl(prev), label: name(prev) }} next={{ href: projectUrl(next), label: name(next) }} />
       </div>
       <div class="project__blocks">
         <Blocks blocks={d.blocks} />
@@ -65,6 +67,7 @@ const chapters = (d.blocks || []).filter((b: any) => b.discriminant === 'chapter
       for (const m of marks) if (m.getBoundingClientRect().top < innerHeight * 0.55) id = m.dataset.chapter!;
       if (id === cur) return;
       cur = id;
+      document.dispatchEvent(new CustomEvent('chapter:change', { detail: id === '0' ? '1' : id }));
       layers.forEach((l) => {
         const on = l.dataset.for === id;
         l.classList.toggle('is-on', on);

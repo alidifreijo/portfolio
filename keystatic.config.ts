@@ -243,6 +243,7 @@ export default config({
         playTitle: fields.text({ label: 'Crossword title' }),
         talkTitle: fields.text({ label: 'Contact title' }),
         body: rich('Contact text'),
+        chat: fields.array(fields.text({ label: 'Line', multiline: true }), { label: 'Chat: first lines the head says', description: 'Then it offers the links below as quick replies. **bold** works', itemLabel: (p) => p.value }),
         cv: fields.file({ label: 'CV (PDF)', directory: 'public/cv', publicPath: '/cv/' }),
         links: fields.array(fields.object({ label: fields.text({ label: 'Label' }), url: fields.text({ label: 'URL or mailto:' }), icon: fields.select({ label: 'Icon', options: [{ label: 'Arrow', value: 'arrow' }, { label: 'LinkedIn', value: 'linkedin' }, { label: 'Email', value: 'mail' }, { label: 'Film', value: 'film' }], defaultValue: 'arrow' }) }), { label: 'Links', itemLabel: (p) => p.fields.label.value }),
         clues: fields.array(fields.text({ label: 'Clue' }), { label: 'Crossword clues (in order, 1 to 8)', itemLabel: (p) => p.value }),

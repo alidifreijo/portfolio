@@ -194,7 +194,7 @@ const { blocks = [] } = Astro.props;
     case 'chapter':
       // A chapter marker: the left panel follows it (see [slug].astro).
       return (
-        <section class="chap" data-chapter={v.n} data-reveal>
+        <section class="chap" id={`chapter-${v.n}`} data-chapter={v.n} data-reveal>
           <span class="t-small chap__n">{String(v.n || '').padStart(2, '0')}</span>
           <h2 class="t-title chap__t">{v.title}</h2>
           {v.line && <p class="t-body chap__l" set:html={rich(v.line, false)} />}

@@ -1,7 +1,11 @@
 ---
 /**
- * ProjectTitle · v2: paper card with the facts, the name in serif and the intro.
- * `display` supports **bold** (e.g. "**fintech** app").
+ * ProjectTitle · v2, after the case proposal on the design canvas: a paper
+ * card with the facts (label + value), the name, the intro, a big number
+ * with the chapters (the one being read is sharp, the others blurred; each
+ * jumps to its chapter), and the previous / next case.
+ * Cases without chapters show their number among all cases instead.
+ * `display` supports **bold** (e.g. "**hmi** display").
  */
 import { rich } from '../../lib/utils';
 import Button from '../Button.astro';
@@ -9,40 +13,110 @@ interface Props {
   display: string;
   intro: string;
   meta: { label: string; value: string }[];
-  metaWidth?: number;
   links?: { label: string; url: string }[];
+  chapters?: { n: number; title: string; line?: string }[];
+  index?: number;
+  total?: number;
+  prev?: { href: string; label: string };
+  next?: { href: string; label: string };
 }
-const { display, intro, meta, links = [] } = Astro.props;
+const { display, intro, meta, links = [], chapters = [], index = 1, total = 1, prev, next } = Astro.props;
+const pad = (n: number) => String(n).padStart(2, '0');
+const nums = chapters.length ? chapters.map((c) => pad(c.n)) : [pad(index)];
 ---
-<header class="ct">
+<header class="ct" data-ct>
   <dl class="ct__meta">
     {meta.map((m) => (
       <div class="ct__m"><dt>{m.label}</dt><dd>{m.value}</dd></div>
     ))}
   </dl>
-  <h1 class="ct__h" set:html={rich(display, false)} />
-  <div class="ct__intro" set:html={rich(intro, false)} />
-  {links.length > 0 && (
-    <div class="ct__links">
-      {links.map((l, i) => <Button href={l.url} variant={i === 0 ? 'primary' : 'secondary'} icon="arrow">{l.label}</Button>)}
+
+  <div>
+    <h1 class="ct__h" set:html={rich(display, false)} />
+    <div class="ct__intro" set:html={rich(intro, false)} />
+    {links.length > 0 && (
+      <div class="ct__links">
+        {links.map((l, i) => <Button href={l.url} variant={i === 0 ? 'primary' : 'secondary'} icon="arrow">{l.label}</Button>)}
+      </div>
+    )}
+  </div>
+
+  <div class="ct__count">
+    <div class="ct__slot" aria-hidden="true"><div class="ct__col" data-ct-col>{nums.map((n) => <span>{n}</span>)}</div></div>
+    {chapters.length > 0 ? (
+      <ol class="ct__chaps">
+        {chapters.map((c, i) => (
+          <li><a href={`#chapter-${c.n}`} class:list={['ct__chap', { 'is-on': i === 0 }]} data-ct-chap={c.n}>{pad(c.n)} {c.title}</a></li>
+        ))}
+      </ol>
+    ) : (
+      <p class="ct__of">of {pad(total)} cases</p>
+    )}
+  </div>
+  {chapters.length > 0 && (
+    <div class="ct__lines">
+      {chapters.map((c, i) => c.line && <p class:list={['ct__line', { 'is-on': i === 0 }]} data-ct-line={c.n} set:html={rich(c.line, false)} />)}
     </div>
   )}
+
+  <nav class="ct__nav" aria-label="Other cases">
+    {prev ? <a href={prev.href}>← {prev.label}</a> : <span></span>}
+    {next && <a href={next.href}>{next.label} →</a>}
+  </nav>
   <span class="ct__acc" aria-hidden="true"></span>
 </header>
 
+<script>
+  // follow the chapter being read (the page sends 'chapter:change')
+  function initCt() {
+    const ct = document.querySelector<HTMLElement>('[data-ct]');
+    if (!ct || ct.dataset.ready) return; ct.dataset.ready = '1';
+    const col = ct.querySelector<HTMLElement>('[data-ct-col]')!;
+    const chaps = [...ct.querySelectorAll<HTMLElement>('[data-ct-chap]')];
+    if (!chaps.length) return;
+    const set = (id: string) => {
+      const i = Math.max(0, chaps.findIndex((c) => c.dataset.ctChap === id));
+      col.style.transform = `translateY(${-i * 100}%)`;
+      chaps.forEach((c, j) => c.classList.toggle('is-on', j === i));
+      ct.querySelectorAll<HTMLElement>('[data-ct-line]').forEach((l) => l.classList.toggle('is-on', l.dataset.ctLine === chaps[i].dataset.ctChap));
+    };
+    document.addEventListener('chapter:change', (e) => set(String((e as CustomEvent).detail || '1')));
+  }
+  initCt();
+  document.addEventListener('astro:page-load', initCt);
+</script>
+
 <style>
-  /* v2: a paper card. The facts as label + value on top, the name in serif
-     (the **bold** part in italics), the intro in plain reading size. */
-  .ct { position: relative; background: var(--paper); color: #070707; border-radius: var(--r-md); padding: 24px 28px 28px; display: flex; flex-direction: column; gap: 22px; }
-  .ct__meta { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px 16px; padding-right: 30px; }
+  .ct { position: relative; background: var(--paper); color: #070707; border-radius: var(--r-md); padding: 24px 28px 20px; display: flex; flex-direction: column; gap: 24px; }
+  .ct__meta { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px 16px; padding-right: 30px; }
   .ct__m dt { font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.45; color: #57534d; }
   .ct__m dd { margin: 0; font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.45; }
-  .ct__h { margin: 8px 0 0; font-family: var(--font-serif); font-weight: 400; font-size: clamp(56px, 6vw, 112px); line-height: 0.85; letter-spacing: -0.035em; }
-  .ct__h :global(strong) { font-weight: 400; font-style: italic; }
-  .ct__intro { font-family: var(--font-body); font-size: clamp(15px, 1.1vw, 18px); line-height: 1.55; max-width: 52ch; color: #2b2925; }
+  .ct__h { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(52px, 5.4vw, 96px); line-height: 0.95; letter-spacing: -0.03em; }
+  .ct__h :global(strong) { font-weight: 700; }
+  .ct__intro { margin-top: 14px; font-family: var(--font-body); font-size: clamp(15px, 1.1vw, 18px); line-height: 1.55; max-width: 50ch; color: #2b2925; }
   .ct__intro :global(strong) { font-weight: 500; color: #070707; }
-  .ct__links { display: flex; flex-wrap: wrap; gap: var(--s-2); }
-  /* the project colour, as a small square in the corner */
+  .ct__links { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: 16px; }
+
+  /* the big number and the chapters */
+  .ct__count { display: flex; align-items: flex-end; gap: 18px; }
+  .ct__slot { height: clamp(88px, 8.4vw, 130px); overflow: hidden; flex: none; }
+  .ct__col { display: flex; flex-direction: column; transition: transform 800ms cubic-bezier(.22,.75,.25,1); }
+  .ct__col span { display: block; height: clamp(88px, 8.4vw, 130px); font-family: var(--font-display); font-weight: 300; font-size: clamp(88px, 8.4vw, 130px); line-height: 1; letter-spacing: -0.05em; color: #ECEAE5; }
+  .ct__chaps { list-style: none; margin: 0 0 8px; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  .ct__chap {
+    display: inline-block; font-family: var(--font-display); font-weight: 500; text-transform: uppercase; font-size: clamp(17px, 1.5vw, 24px); line-height: 1.1; color: #070707; text-decoration: none;
+    opacity: 0.35; filter: blur(1.6px); transition: opacity 500ms var(--ease-out), filter 500ms var(--ease-out), translate 500ms cubic-bezier(.22,.75,.25,1);
+  }
+  .ct__chap.is-on { opacity: 1; filter: none; translate: 8px 0; }
+  .ct__chap:hover, .ct__chap:focus-visible { opacity: 1; filter: none; }
+  .ct__of { margin: 0 0 12px; font-family: var(--font-body); font-size: var(--fs-print); color: #57534d; }
+  .ct__lines { display: grid; }
+  .ct__line { grid-area: 1 / 1; margin: 0; font-family: var(--font-body); font-size: clamp(15px, 1.05vw, 17px); line-height: 1.55; max-width: 50ch; opacity: 0; filter: blur(8px); translate: 0 8px; transition: opacity 500ms var(--ease-out), filter 500ms var(--ease-out), translate 600ms cubic-bezier(.22,.75,.25,1); }
+  .ct__line.is-on { opacity: 1; filter: none; translate: 0 0; transition-delay: 150ms; }
+
+  .ct__nav { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid #b9b5ae; padding-top: 12px; }
+  .ct__nav a { font-family: var(--font-body); font-size: var(--fs-print); color: #070707; text-decoration: underline; text-underline-offset: 2px; }
   .ct__acc { position: absolute; top: 26px; right: 28px; width: 14px; height: 14px; border-radius: 3px; background: var(--acc); }
-  @media (max-width: 809px) { .ct { padding: 20px 16px 24px; } .ct__acc { right: 16px; } }
+  @media (prefers-reduced-motion: reduce) { .ct__col, .ct__chap, .ct__line { transition: none; } }
+  @media (max-width: 809px) { .ct { padding: 20px 16px; } .ct__acc { right: 16px; } }
 </style>
