@@ -207,7 +207,7 @@ const { title = 'grab to know me', label = 'interests & hobbies' } = Astro.props
   .egg.is-open .egg__title { opacity: 1; }
   .egg__lab, .egg__hint {
     position: absolute; left: 24px; margin: 0; z-index: 1; pointer-events: none;
-    font-family: var(--font-body); font-size: clamp(12px, 0.84vw, 14px); line-height: 1.45; color: var(--muted-ink);
+    font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.45; color: var(--muted-ink);
     opacity: 0; transition: opacity 400ms var(--ease-out) 300ms;
   }
   .egg__lab { top: 22px; color: var(--on-chrome); }

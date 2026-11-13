@@ -127,7 +127,7 @@ const caps: string[] = home.capabilities || [];
 </script>
 
 <style>
-  .hw { --print: clamp(12px, 0.84vw, 14px); --home-red: #B0161B; /* the accent red, darkened to read on paper */ }
+  .hw { --home-red: #B0161B; /* the accent red, darkened to read on paper */ }
   .hp { min-height: calc(100svh - var(--frame) * 2); display: flex; flex-direction: column; }
   .home {
     position: relative; flex: 1; min-height: 560px;
@@ -163,7 +163,7 @@ const caps: string[] = home.capabilities || [];
   .home__line { text-wrap: balance; }
   .home__hint {
     position: absolute; bottom: 14px; margin: 0; z-index: 3; pointer-events: none;
-    font-family: var(--font-body); font-size: var(--print); line-height: 1.45; color: var(--muted); opacity: 0.6;
+    font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.45; color: var(--muted); opacity: 0.6;
   }
   .home__hint--l { left: 18px; }
   .home__hint--c { left: 50%; translate: -50% 0; }
@@ -184,7 +184,7 @@ const caps: string[] = home.capabilities || [];
   }
   .hx p { margin: 0; }
   .hx ul { list-style: none; margin: 0; padding: 0; }
-  .hx__lab, .hx__val, .hx__row { font-family: var(--font-body); font-size: var(--print); line-height: 1.5; letter-spacing: 0.02em; }
+  .hx__lab, .hx__val, .hx__row { font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.5; letter-spacing: 0.02em; }
   .hx__lab { color: var(--muted-ink); margin-bottom: 4px !important; }
   .hx__gap { margin-top: 14px !important; }
   .hx__col { grid-column: span 3; }

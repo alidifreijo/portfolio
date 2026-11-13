@@ -62,48 +62,96 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
   </section>
 
   <section class="abx" id="more" aria-label="The long version">
-    <div class="abx__row abx__row--intro">
-      <p class="ab__lab">In short</p>
-      <div class="abx__text" set:html={rich(a.intro)} />
-      <dl class="abx__facts">
-        {a.facts.map((f: any) => <div><dt>{f.value}</dt><dd>{f.label}</dd></div>)}
-      </dl>
+    <div class="abx__block">
+      <h2 class="abx__h">In short</h2>
+      <div class="abx__body">
+        <div class="abx__intro" set:html={rich(a.intro)} />
+        <dl class="abx__facts">
+          {a.facts.map((f: any) => <div><dt>{f.value}</dt><dd>{f.label}</dd></div>)}
+        </dl>
+      </div>
     </div>
 
-    <h2 class="abx__h">Experience</h2>
-    {a.experience.map((e: any) => (
-      <article class="abx__row">
-        <p class="ab__val ab__dim">{e.years}</p>
-        <div><h3 class="abx__t">{e.role}</h3><p class="ab__val">{e.company}</p></div>
-        <div class="abx__text" set:html={rich(e.text, false)} />
-        <p class="abx__tags">{e.tags.join(' · ')}</p>
-      </article>
-    ))}
+    <div class="abx__block">
+      <h2 class="abx__h">Experience</h2>
+      <div class="abx__body">
+        {a.experience.map((e: any, i: number) => (
+          <details class="abx__job" open={i === 0}>
+            <summary>
+              <span class="abx__yr">{e.years}</span>
+              <span class="abx__role">{e.role}</span>
+              <span class="abx__co">{e.company}</span>
+              <span class="abx__plus" aria-hidden="true"></span>
+            </summary>
+            <div class="abx__more">
+              <div class="abx__text" set:html={rich(e.text, false)} />
+              <p class="abx__tags">{e.tags.join(' · ')}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
 
-    <h2 class="abx__h">{a.skillsTitle}</h2>
-    {a.skills.map((s: any, i: number) => (
-      <article class="abx__row">
-        <p class="ab__val ab__dim">{String(i + 1).padStart(2, '0')}</p>
-        <div><h3 class="abx__t">{s.title}</h3>{s.seenAt?.length > 0 && <p class="ab__val ab__dim">Seen at {s.seenAt.join(', ')}</p>}</div>
-        <div class="abx__text" set:html={rich(s.text, false)} />
-        <p class="abx__tags">{s.tags.join(' · ')}</p>
-      </article>
-    ))}
+    <div class="abx__block">
+      <h2 class="abx__h">{a.skillsTitle}</h2>
+      <div class="abx__body" data-tabs>
+        <div class="abx__tabs" role="tablist" aria-label={a.skillsTitle}>
+          {a.skills.map((s: any, i: number) => (
+            <button class="abx__tab" type="button" role="tab" id={`sk-t${i}`} aria-controls={`sk-p${i}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>
+              <span class="abx__n">{String(i + 1).padStart(2, '0')}</span>{s.title}
+            </button>
+          ))}
+        </div>
+        {a.skills.map((s: any, i: number) => (
+          <div class="abx__panel" role="tabpanel" id={`sk-p${i}`} aria-labelledby={`sk-t${i}`} hidden={i !== 0}>
+            <div class="abx__say" set:html={rich(s.text, false)} />
+            <div class="abx__meta">
+              {s.seenAt?.length > 0 && <p><span class="abx__k">Seen at</span>{s.seenAt.join(', ')}</p>}
+              <p><span class="abx__k">Tools &amp; methods</span>{s.tags.join(' · ')}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   </section>
+
+  <script>
+    // How I work: tabs, with arrow keys between them
+    function initTabs() {
+      document.querySelectorAll<HTMLElement>('[data-tabs]').forEach((box) => {
+        if (box.dataset.ready) return; box.dataset.ready = '1';
+        const tabs = [...box.querySelectorAll<HTMLButtonElement>('[role=tab]')];
+        const pick = (i: number, focus = false) => tabs.forEach((t, j) => {
+          const on = i === j; t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1;
+          (document.getElementById(t.getAttribute('aria-controls')!) as HTMLElement).hidden = !on;
+          if (on && focus) t.focus();
+        });
+        tabs.forEach((t, i) => {
+          t.addEventListener('click', () => pick(i));
+          t.addEventListener('keydown', (e) => {
+            const k = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
+            if (k) { e.preventDefault(); pick((i + k + tabs.length) % tabs.length, true); }
+          });
+        });
+      });
+    }
+    initTabs();
+    document.addEventListener('astro:page-load', initTabs);
+  </script>
 
   <HobbyEgg title={a.grabTitle} label={a.hobbiesLabel} />
 </Base>
 
 <style>
   .ab {
-    --print: clamp(12px, 0.84vw, 14px); --red: #B0161B; /* accent red, darkened to read on paper */
+    --red: #B0161B; /* accent red, darkened to read on paper */
     position: relative; min-height: calc(100svh - 150px);
     background: var(--paper); border-radius: var(--r-md); color: #070707;
     box-sizing: border-box; padding: 28px 28px 24px;
     display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto 1fr auto; column-gap: 16px; row-gap: 16px;
   }
   .ab p { margin: 0; }
-  .ab__lab, .ab__val { font-family: var(--font-body); font-size: var(--print); line-height: 1.5; letter-spacing: 0.02em; }
+  .ab__lab, .ab__val { font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.5; letter-spacing: 0.02em; }
   .ab__lab { color: #57534d; margin-bottom: 4px !important; }
   .ab__dim { color: #57534d; }
   .ab__u { display: inline-block; margin-top: 10px; text-decoration: underline; text-underline-offset: 2px; }
@@ -151,40 +199,82 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
   @keyframes ab-pop { 0% { opacity: 0; scale: .2; rotate: -25deg; } 60% { opacity: 1; scale: 1.1; rotate: 6deg; } 100% { opacity: 1; scale: 1; rotate: 0deg; } }
   @media (prefers-reduced-motion: reduce) { .ab-rise, .ab-in, .ab__face, .ab__face img { animation: none; } }
 
-  /* the long version, small print on the frame */
-  .abx { --print: clamp(12px, 0.84vw, 14px); padding: 40px 12px 30px; color: var(--on-chrome); }
+  /* the long version, on the frame: a sticky serif heading on the left,
+     the content on the right; the detail opens on demand */
+  .abx { padding: 56px 12px 40px; color: var(--on-chrome); display: flex; flex-direction: column; gap: 72px; }
   .abx p { margin: 0; }
-  .abx .ab__lab, .abx .ab__dim { color: var(--muted-ink); }
-  .abx__h { margin: 48px 0 6px; font-family: var(--font-serif); font-weight: 400; font-size: clamp(34px, 3.2vw, 56px); line-height: 1; letter-spacing: -0.02em; }
-  .abx__row { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 16px; padding: 16px 0; border-top: 1px solid #2a2926; }
-  .abx__row > :nth-child(1) { grid-column: span 2; }
-  .abx__row > :nth-child(2) { grid-column: span 3; }
-  .abx__row > :nth-child(3) { grid-column: span 5; }
-  .abx__row > :nth-child(4) { grid-column: span 2; }
-  .abx__row--intro { border-top: 0; padding-top: 0; }
-  .abx__row--intro > :nth-child(2) { grid-column: span 5; }
-  .abx__row--intro > :nth-child(3) { grid-column: 8 / span 5; }
-  .abx__t { margin: 0; font-family: var(--font-display); font-weight: 500; text-transform: uppercase; font-size: clamp(14px, 1.1vw, 18px); line-height: 1.2; }
-  .abx__text { font-family: var(--font-body); font-size: clamp(14px, 1vw, 16px); line-height: 1.55; max-width: 62ch; }
-  .abx__text :global(p + p) { margin-top: 0.8em; }
-  .abx__text :global(strong) { font-weight: 500; color: var(--white); }
-  .abx__tags { font-family: var(--font-body); font-size: var(--print); line-height: 1.5; color: var(--muted-ink); }
-  .abx__facts { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 16px; }
-  .abx__facts dt { font-family: var(--font-serif); font-size: clamp(40px, 3.6vw, 64px); line-height: 0.9; letter-spacing: -0.03em; }
-  .abx__facts dd { margin: 4px 0 0; font-family: var(--font-body); font-size: var(--print); line-height: 1.45; color: var(--muted-ink); max-width: 30ch; }
+  .abx__block { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 16px; }
+  .abx__h { grid-column: span 4; align-self: start; position: sticky; top: 24px; margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: clamp(40px, 4vw, 72px); line-height: 0.9; letter-spacing: -0.025em; }
+  .abx__body { grid-column: 5 / span 8; min-width: 0; }
+
+  .abx__intro { font-family: var(--font-serif); font-size: clamp(22px, 1.9vw, 32px); line-height: 1.2; letter-spacing: -0.01em; max-width: 34ch; }
+  .abx__intro :global(p + p) { margin-top: 0.7em; color: var(--muted-ink); }
+  .abx__intro :global(strong) { font-weight: 400; font-style: italic; }
+  .abx__facts { margin: 40px 0 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; border-top: 1px solid #2a2926; padding-top: 18px; }
+  .abx__facts dt { font-family: var(--font-serif); font-size: clamp(44px, 4vw, 72px); line-height: 0.9; letter-spacing: -0.03em; }
+  .abx__facts dd { margin: 8px 0 0; font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.45; color: var(--muted-ink); max-width: 24ch; }
+
+  /* experience: one line per job; open one for the story */
+  .abx__job { border-top: 1px solid #2a2926; }
+  .abx__job:last-child { border-bottom: 1px solid #2a2926; }
+  .abx__job summary {
+    list-style: none; cursor: pointer; display: grid; grid-template-columns: 9em minmax(0, 1.3fr) minmax(0, 1fr) 24px; gap: 16px; align-items: baseline;
+    padding: 18px 0; font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.4; transition: opacity 200ms var(--ease-out);
+  }
+  .abx__job summary::-webkit-details-marker { display: none; }
+  .abx__job summary:focus-visible { outline: 2px solid var(--on-chrome); outline-offset: 4px; }
+  .abx__body:has(.abx__job summary:hover) .abx__job:not(:hover) summary { opacity: 0.45; }
+  .abx__yr, .abx__co { color: var(--muted-ink); }
+  .abx__role { font-family: var(--font-display); font-weight: 500; text-transform: uppercase; font-size: clamp(16px, 1.3vw, 22px); line-height: 1.15; color: var(--white); }
+  .abx__plus { position: relative; width: 14px; height: 14px; justify-self: end; align-self: center; }
+  .abx__plus::before, .abx__plus::after { content: ''; position: absolute; left: 0; top: 6px; width: 14px; height: 1.5px; background: currentColor; transition: rotate 300ms var(--ease-out); }
+  .abx__plus::after { rotate: 90deg; }
+  .abx__job[open] .abx__plus::after { rotate: 0deg; }
+  .abx__more { display: grid; grid-template-columns: 9em minmax(0, 1fr); gap: 16px; padding: 0 0 26px; }
+  .abx__more > * { grid-column: 2; }
+  .abx__job[open] .abx__more { animation: abx-open 450ms var(--ease-out) both; }
+  @keyframes abx-open { from { opacity: 0; translate: 0 -6px; filter: blur(6px); } to { opacity: 1; translate: 0 0; filter: blur(0); } }
+  .abx__text { font-family: var(--font-body); font-size: clamp(16px, 1.15vw, 19px); line-height: 1.55; max-width: 60ch; color: var(--muted-ink); }
+  .abx__text :global(strong) { font-weight: 400; color: var(--white); }
+  .abx__tags { margin-top: 12px !important; font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.5; color: var(--muted-ink); }
+
+  /* how I work: tabs; the chosen one says it in serif */
+  .abx__tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+  .abx__tab {
+    all: unset; cursor: pointer; display: inline-flex; align-items: baseline; gap: 8px; min-height: 44px; box-sizing: border-box; padding: 10px 16px; border-radius: 22px;
+    border: 1px solid #3a3835; color: var(--muted-ink); font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.4;
+    transition: background 200ms var(--ease-out), color 200ms var(--ease-out), border-color 200ms var(--ease-out);
+  }
+  .abx__tab:hover { color: var(--white); border-color: var(--muted-ink); }
+  .abx__tab[aria-selected='true'] { background: var(--on-chrome); border-color: var(--on-chrome); color: #070707; }
+  .abx__tab:focus-visible { outline: 2px solid var(--on-chrome); outline-offset: 3px; }
+  .abx__n { font-size: 0.85em; opacity: 0.6; }
+  .abx__panel { padding-top: 32px; display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 32px; }
+  .abx__panel[hidden] { display: none; }
+  .abx__panel:not([hidden]) { animation: abx-open 450ms var(--ease-out) both; }
+  .abx__say { font-family: var(--font-serif); font-size: clamp(26px, 2.4vw, 42px); line-height: 1.1; letter-spacing: -0.015em; max-width: 26ch; color: var(--muted-ink); }
+  .abx__say :global(strong) { font-weight: 400; color: var(--white); }
+  .abx__meta { display: flex; flex-direction: column; gap: 14px; font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.5; }
+  .abx__k { display: block; color: var(--muted-ink); }
+  @media (prefers-reduced-motion: reduce) { .abx__job[open] .abx__more, .abx__panel:not([hidden]) { animation: none; } }
 
   @media (max-width: 1099px) {
+    .abx__h { grid-column: 1 / -1; position: static; margin-bottom: 24px; }
+    .abx__body { grid-column: 1 / -1; }
     .ab__intro { grid-column: 1 / span 7; }
     .ab__quirks { grid-column: 8 / span 5; }
     .ab__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .abx__row > :nth-child(1) { grid-column: span 12; }
-    .abx__row > :nth-child(2) { grid-column: span 4; }
-    .abx__row > :nth-child(3) { grid-column: span 8; }
-    .abx__row > :nth-child(4) { grid-column: 5 / span 8; margin-top: 8px; }
-    .abx__row--intro > :nth-child(2) { grid-column: span 12; }
-    .abx__row--intro > :nth-child(3) { grid-column: span 12; margin-top: 24px; }
   }
   @media (max-width: 809px) {
+    .abx { gap: 56px; }
+    .abx__facts { grid-template-columns: 1fr 1fr; row-gap: 24px; }
+    .abx__job summary { grid-template-columns: minmax(0, 1fr) 24px; row-gap: 4px; }
+    .abx__yr, .abx__co { grid-column: 1; }
+    .abx__role { grid-column: 1; grid-row: 2; }
+    .abx__plus { grid-column: 2; grid-row: 1 / span 3; }
+    .abx__more { grid-template-columns: 1fr; }
+    .abx__more > * { grid-column: 1; }
+    .abx__panel { grid-template-columns: 1fr; }
     .ab { padding: 20px 16px; min-height: 0; row-gap: 22px; }
     .ab__intro, .ab__quirks { grid-column: 1 / -1; }
     .ab__quirks { font-size: 15px; }
@@ -193,7 +283,5 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
     .ab__face { width: 30vw; }
     .ab__and { font-size: 20px; }
     .ab__psst { left: 40%; top: -16%; font-size: 18px; opacity: 1; translate: 0 0; }
-    .abx__row > * { grid-column: 1 / -1 !important; margin-top: 4px; }
-    .abx__facts { grid-template-columns: 1fr 1fr; }
   }
 </style>

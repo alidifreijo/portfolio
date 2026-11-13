@@ -54,6 +54,7 @@
   --font-body: 'Satoshi', system-ui, sans-serif;           /* text */
   --font-ui: 'DM Sans', system-ui, sans-serif;             /* buttons, chips */
   --font-mono: 'DM Mono', ui-monospace, monospace;
+  --fs-print: clamp(13px, 0.98vw, 16px);                    /* the small print: labels and values on the new pages */
   --font-serif: 'Instrument Serif', Georgia, serif;          /* big home headline */
   --font-hand: 'Caveat', 'Bradley Hand', cursive;          /* handwritten notes */
 
