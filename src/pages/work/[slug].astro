@@ -25,8 +25,7 @@ const d = project.data;
 const n = next.data;
 // Chapters with their own left-panel media: the panel follows the reader.
 const chapters = (d.blocks || []).filter((b: any) => b.discriminant === 'chapter' && b.value?.hero).map((b: any) => b.value);
-const allChapters = (d.blocks || []).filter((b: any) => b.discriminant === 'chapter').map((b: any) => ({ n: b.value.n, title: b.value.title, line: b.value.line }));
-const name = (p: any) => p.data.heroLabel || p.data.title;
+const allChapters = (d.blocks || []).filter((b: any) => b.discriminant === 'chapter').map((b: any) => ({ n: b.value.n, title: b.value.title }));
 ---
 <Base title={d.title} description={d.lead || d.teaser} image={d.cover} nav={false}>
   <SiteHeader />
@@ -35,6 +34,11 @@ const name = (p: any) => p.data.heroLabel || p.data.title;
       <div class="chlayer is-on" data-for="0">
         <ProjectHero src={d.hero} style={d.heroStyle} bg={d.heroBg || undefined} frame={d.heroFrame || undefined} label={d.heroLabel || d.title} />
       </div>
+      {chapters.length > 0 && (
+        <nav class="dots" aria-label="Jump to a chapter">
+          {chapters.map((c: any) => <a href={`#chapter-${c.n}`} class="dots__d" data-dot={c.n} aria-label={`${String(c.n).padStart(2, '0')} ${c.title}`}></a>)}
+        </nav>
+      )}
       {chapters.map((c: any) => (
         <div class="chlayer" data-for={c.n}>
           <ProjectHero src={c.hero} style={c.heroStyle || 'contain'} bg={c.heroBg || '#0B1620'} label={c.title} />
@@ -43,9 +47,10 @@ const name = (p: any) => p.data.heroLabel || p.data.title;
     </div>
     <div class="project__right">
       <div class="project__title">
-        <ProjectTitle display={d.display || d.title} intro={d.intro} meta={d.meta} links={d.links} chapters={allChapters} index={index} total={total} prev={{ href: projectUrl(prev), label: name(prev) }} next={{ href: projectUrl(next), label: name(next) }} />
+        <ProjectTitle part="bar" display={d.display || d.title} intro={d.intro} meta={d.meta} chapters={allChapters} />
       </div>
       <div class="project__blocks">
+        <ProjectTitle part="intro" display={d.display || d.title} intro={d.intro} meta={d.meta} links={d.links} />
         <Blocks blocks={d.blocks} />
         <ProjectNext href={projectUrl(next)} label={n.nextLabel || n.heroLabel || n.title} line={n.teaser} image={n.nextImage || n.cover} />
       </div>
@@ -68,6 +73,7 @@ const name = (p: any) => p.data.heroLabel || p.data.title;
       if (id === cur) return;
       cur = id;
       document.dispatchEvent(new CustomEvent('chapter:change', { detail: id === '0' ? '1' : id }));
+      left.querySelectorAll<HTMLElement>('[data-dot]').forEach((d) => d.classList.toggle('is-on', d.dataset.dot === id));
       layers.forEach((l) => {
         const on = l.dataset.for === id;
         l.classList.toggle('is-on', on);
@@ -90,11 +96,21 @@ const name = (p: any) => p.data.heroLabel || p.data.title;
   .chlayer { position: absolute; inset: 0; opacity: 0; transition: opacity 0.7s var(--ease-out); pointer-events: none; }
   .chlayer.is-on { opacity: 1; pointer-events: auto; }
   .project__left:not([data-chapters]) .chlayer { position: relative; height: 100%; opacity: 1; }
-  .project__title { padding: 0 0 var(--s-2); }
-  .project__blocks { display: flex; flex-direction: column; gap: var(--s-2); margin-top: 6px; }
+  /* the bar stays put while the content scrolls under it */
+  .project__title { position: sticky; top: var(--frame); z-index: 6; padding: 0 0 8px; background: var(--chrome); box-shadow: 0 calc(var(--frame) * -1) 0 var(--chrome); }
+  .project__blocks :global(.chap) { scroll-margin-top: 190px; }
+  /* chapter dots on the left panel: where you are, and a way to jump */
+  .dots { position: absolute; right: 18px; top: 18px; z-index: 4; display: flex; gap: 6px; }
+  .dots__d { display: block; width: 12px; height: 4px; border-radius: 2px; background: rgba(212, 209, 203, 0.35); transition: width 500ms cubic-bezier(.22,.75,.25,1), background 400ms; position: relative; }
+  .dots__d::before { content: ''; position: absolute; inset: -20px -4px; }
+  .dots__d:hover { background: rgba(212, 209, 203, 0.7); }
+  .dots__d.is-on { width: 32px; background: var(--acc); }
+  .dots__d:focus-visible { outline: 2px solid var(--on-chrome); outline-offset: 3px; }
+  .project__blocks { display: flex; flex-direction: column; gap: var(--s-2); }
   @media (max-width: 1199px) {
     .project { grid-template-columns: 1fr; }
     .project__left { position: relative; top: 0; height: min(72vh, 640px); }
-    .project__blocks { margin-top: 0; }
+    .project__title { top: 0; }
+    .project__blocks :global(.chap) { scroll-margin-top: 150px; }
   }
 </style>

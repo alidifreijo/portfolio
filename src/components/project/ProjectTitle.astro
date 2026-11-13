@@ -1,10 +1,11 @@
 ---
 /**
- * ProjectTitle · v2, after the case proposal on the design canvas: a paper
- * card with the facts (label + value), the name, the intro, a big number
- * with the chapters (the one being read is sharp, the others blurred; each
- * jumps to its chapter), and the previous / next case.
- * Cases without chapters show their number among all cases instead.
+ * ProjectTitle · v2, two parts:
+ * - the bar, pinned on top of the right column while you read: the name,
+ *   the facts in one line and, on cases with chapters, the chapters (the one
+ *   being read is sharp, the rest blurred; click one to jump there) with a
+ *   reading-progress line;
+ * - the intro, which scrolls away with the content.
  * `display` supports **bold** (e.g. "**hmi** display").
  */
 import { rich } from '../../lib/utils';
@@ -14,109 +15,98 @@ interface Props {
   intro: string;
   meta: { label: string; value: string }[];
   links?: { label: string; url: string }[];
-  chapters?: { n: number; title: string; line?: string }[];
-  index?: number;
-  total?: number;
-  prev?: { href: string; label: string };
-  next?: { href: string; label: string };
+  chapters?: { n: number; title: string }[];
+  part: 'bar' | 'intro';
 }
-const { display, intro, meta, links = [], chapters = [], index = 1, total = 1, prev, next } = Astro.props;
+const { display, intro, meta, links = [], chapters = [], part } = Astro.props;
 const pad = (n: number) => String(n).padStart(2, '0');
-const nums = chapters.length ? chapters.map((c) => pad(c.n)) : [pad(index)];
 ---
-<header class="ct" data-ct>
-  <dl class="ct__meta">
-    {meta.map((m) => (
-      <div class="ct__m"><dt>{m.label}</dt><dd>{m.value}</dd></div>
-    ))}
-  </dl>
-
-  <div>
-    <h1 class="ct__h" set:html={rich(display, false)} />
-    <div class="ct__intro" set:html={rich(intro, false)} />
+{part === 'bar' ? (
+  <header class="pb" data-pb>
+    <div class="pb__top">
+      <h1 class="pb__h" set:html={rich(display, false)} />
+      <dl class="pb__meta">
+        {meta.map((m) => <div><dt>{m.label}</dt><dd>{m.value}</dd></div>)}
+      </dl>
+      <span class="pb__acc" aria-hidden="true"></span>
+    </div>
+    {chapters.length > 0 && (
+      <nav class="pb__nav" aria-label="Chapters">
+        {chapters.map((c, i) => (
+          <a href={`#chapter-${c.n}`} class:list={['pb__chap', { 'is-on': i === 0 }]} data-pb-chap={c.n} aria-current={i === 0 ? 'step' : undefined}>
+            <span class="pb__n">{pad(c.n)}</span> {c.title}
+          </a>
+        ))}
+      </nav>
+    )}
+    <span class="pb__prog" aria-hidden="true"><span data-pb-prog></span></span>
+  </header>
+) : (
+  <div class="pi">
+    <div class="pi__text" set:html={rich(intro, false)} />
     {links.length > 0 && (
-      <div class="ct__links">
+      <div class="pi__links">
         {links.map((l, i) => <Button href={l.url} variant={i === 0 ? 'primary' : 'secondary'} icon="arrow">{l.label}</Button>)}
       </div>
     )}
   </div>
-
-  <div class="ct__count">
-    <div class="ct__slot" aria-hidden="true"><div class="ct__col" data-ct-col>{nums.map((n) => <span>{n}</span>)}</div></div>
-    {chapters.length > 0 ? (
-      <ol class="ct__chaps">
-        {chapters.map((c, i) => (
-          <li><a href={`#chapter-${c.n}`} class:list={['ct__chap', { 'is-on': i === 0 }]} data-ct-chap={c.n}>{pad(c.n)} {c.title}</a></li>
-        ))}
-      </ol>
-    ) : (
-      <p class="ct__of">of {pad(total)} cases</p>
-    )}
-  </div>
-  {chapters.length > 0 && (
-    <div class="ct__lines">
-      {chapters.map((c, i) => c.line && <p class:list={['ct__line', { 'is-on': i === 0 }]} data-ct-line={c.n} set:html={rich(c.line, false)} />)}
-    </div>
-  )}
-
-  <nav class="ct__nav" aria-label="Other cases">
-    {prev ? <a href={prev.href}>← {prev.label}</a> : <span></span>}
-    {next && <a href={next.href}>{next.label} →</a>}
-  </nav>
-  <span class="ct__acc" aria-hidden="true"></span>
-</header>
+)}
 
 <script>
-  // follow the chapter being read (the page sends 'chapter:change')
-  function initCt() {
-    const ct = document.querySelector<HTMLElement>('[data-ct]');
-    if (!ct || ct.dataset.ready) return; ct.dataset.ready = '1';
-    const col = ct.querySelector<HTMLElement>('[data-ct-col]')!;
-    const chaps = [...ct.querySelectorAll<HTMLElement>('[data-ct-chap]')];
-    if (!chaps.length) return;
-    const set = (id: string) => {
-      const i = Math.max(0, chaps.findIndex((c) => c.dataset.ctChap === id));
-      col.style.transform = `translateY(${-i * 100}%)`;
-      chaps.forEach((c, j) => c.classList.toggle('is-on', j === i));
-      ct.querySelectorAll<HTMLElement>('[data-ct-line]').forEach((l) => l.classList.toggle('is-on', l.dataset.ctLine === chaps[i].dataset.ctChap));
+  function initBar() {
+    const bar = document.querySelector<HTMLElement>('[data-pb]');
+    if (!bar || bar.dataset.ready) return; bar.dataset.ready = '1';
+    const chaps = [...bar.querySelectorAll<HTMLElement>('[data-pb-chap]')];
+    const prog = bar.querySelector<HTMLElement>('[data-pb-prog]')!;
+    // the chapter being read (sent by the page)
+    document.addEventListener('chapter:change', (e) => {
+      const id = String((e as CustomEvent).detail || '1');
+      chaps.forEach((c) => { const on = c.dataset.pbChap === id; c.classList.toggle('is-on', on); on ? c.setAttribute('aria-current', 'step') : c.removeAttribute('aria-current'); });
+    });
+    // how far through the case you are
+    let raf = 0;
+    const tick = () => {
+      raf = 0; if (!bar.isConnected) { removeEventListener('scroll', onScroll); return; }
+      const max = document.documentElement.scrollHeight - innerHeight;
+      prog.style.transform = `scaleX(${max > 0 ? Math.min(1, scrollY / max) : 0})`;
     };
-    document.addEventListener('chapter:change', (e) => set(String((e as CustomEvent).detail || '1')));
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(tick); };
+    addEventListener('scroll', onScroll, { passive: true }); tick();
   }
-  initCt();
-  document.addEventListener('astro:page-load', initCt);
+  initBar();
+  document.addEventListener('astro:page-load', initBar);
 </script>
 
 <style>
-  .ct { position: relative; background: var(--paper); color: #070707; border-radius: var(--r-md); padding: 24px 28px 20px; display: flex; flex-direction: column; gap: 24px; }
-  .ct__meta { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px 16px; padding-right: 30px; }
-  .ct__m dt { font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.45; color: #57534d; }
-  .ct__m dd { margin: 0; font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.45; }
-  .ct__h { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(52px, 5.4vw, 96px); line-height: 0.95; letter-spacing: -0.03em; }
-  .ct__h :global(strong) { font-weight: 700; }
-  .ct__intro { margin-top: 14px; font-family: var(--font-body); font-size: clamp(15px, 1.1vw, 18px); line-height: 1.55; max-width: 50ch; color: #2b2925; }
-  .ct__intro :global(strong) { font-weight: 500; color: #070707; }
-  .ct__links { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: 16px; }
-
-  /* the big number and the chapters */
-  .ct__count { display: flex; align-items: flex-end; gap: 18px; }
-  .ct__slot { height: clamp(88px, 8.4vw, 130px); overflow: hidden; flex: none; }
-  .ct__col { display: flex; flex-direction: column; transition: transform 800ms cubic-bezier(.22,.75,.25,1); }
-  .ct__col span { display: block; height: clamp(88px, 8.4vw, 130px); font-family: var(--font-display); font-weight: 300; font-size: clamp(88px, 8.4vw, 130px); line-height: 1; letter-spacing: -0.05em; color: #ECEAE5; }
-  .ct__chaps { list-style: none; margin: 0 0 8px; padding: 0; display: flex; flex-direction: column; gap: 6px; }
-  .ct__chap {
-    display: inline-block; font-family: var(--font-display); font-weight: 500; text-transform: uppercase; font-size: clamp(17px, 1.5vw, 24px); line-height: 1.1; color: #070707; text-decoration: none;
-    opacity: 0.35; filter: blur(1.6px); transition: opacity 500ms var(--ease-out), filter 500ms var(--ease-out), translate 500ms cubic-bezier(.22,.75,.25,1);
+  /* the bar */
+  .pb {
+    position: relative; background: var(--paper); color: #070707; border-radius: var(--r-md); padding: 18px 24px 16px;
+    display: flex; flex-direction: column; gap: 14px; overflow: hidden;
   }
-  .ct__chap.is-on { opacity: 1; filter: none; translate: 8px 0; }
-  .ct__chap:hover, .ct__chap:focus-visible { opacity: 1; filter: none; }
-  .ct__of { margin: 0 0 12px; font-family: var(--font-body); font-size: var(--fs-print); color: #57534d; }
-  .ct__lines { display: grid; }
-  .ct__line { grid-area: 1 / 1; margin: 0; font-family: var(--font-body); font-size: clamp(15px, 1.05vw, 17px); line-height: 1.55; max-width: 50ch; opacity: 0; filter: blur(8px); translate: 0 8px; transition: opacity 500ms var(--ease-out), filter 500ms var(--ease-out), translate 600ms cubic-bezier(.22,.75,.25,1); }
-  .ct__line.is-on { opacity: 1; filter: none; translate: 0 0; transition-delay: 150ms; }
+  .pb__top { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px 28px; flex-wrap: wrap; padding-right: 26px; }
+  .pb__h { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(32px, 3vw, 52px); line-height: 0.95; letter-spacing: -0.03em; }
+  .pb__h :global(strong) { font-weight: 700; }
+  .pb__meta { margin: 0; display: flex; flex-wrap: wrap; gap: 4px 22px; }
+  .pb__meta dt { font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.4; color: #57534d; }
+  .pb__meta dd { margin: 0; font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.4; }
+  .pb__acc { position: absolute; top: 20px; right: 24px; width: 12px; height: 12px; border-radius: 3px; background: var(--acc); }
+  .pb__nav { display: flex; flex-wrap: wrap; gap: 6px 22px; border-top: 1px solid #b9b5ae; padding-top: 12px; }
+  .pb__chap {
+    display: inline-flex; align-items: baseline; gap: 6px; min-height: 28px; text-decoration: none; color: #070707;
+    font-family: var(--font-display); font-weight: 500; text-transform: uppercase; font-size: clamp(14px, 1.15vw, 18px); line-height: 1.1;
+    opacity: 0.35; filter: blur(1.2px); transition: opacity 400ms var(--ease-out), filter 400ms var(--ease-out);
+  }
+  .pb__chap:hover, .pb__chap:focus-visible, .pb__chap.is-on { opacity: 1; filter: none; }
+  .pb__chap:focus-visible { outline: 2px solid #070707; outline-offset: 3px; }
+  .pb__n { font-family: var(--font-body); font-weight: 400; font-size: var(--fs-print); }
+  .pb__prog { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(7, 7, 7, 0.08); }
+  .pb__prog span { display: block; height: 100%; background: var(--acc); transform-origin: 0 50%; transform: scaleX(0); }
+  @media (prefers-reduced-motion: reduce) { .pb__chap { transition: none; } }
 
-  .ct__nav { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid #b9b5ae; padding-top: 12px; }
-  .ct__nav a { font-family: var(--font-body); font-size: var(--fs-print); color: #070707; text-decoration: underline; text-underline-offset: 2px; }
-  .ct__acc { position: absolute; top: 26px; right: 28px; width: 14px; height: 14px; border-radius: 3px; background: var(--acc); }
-  @media (prefers-reduced-motion: reduce) { .ct__col, .ct__chap, .ct__line { transition: none; } }
-  @media (max-width: 809px) { .ct { padding: 20px 16px; } .ct__acc { right: 16px; } }
+  /* the intro, first thing in the content */
+  .pi { background: var(--paper); color: #070707; border-radius: var(--r-md); padding: 22px 24px 24px; }
+  .pi__text { font-family: var(--font-body); font-size: clamp(16px, 1.2vw, 20px); line-height: 1.5; max-width: 52ch; color: #2b2925; }
+  .pi__text :global(strong) { font-weight: 500; color: #070707; }
+  .pi__links { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: 16px; }
+  @media (max-width: 809px) { .pb { padding: 14px 16px 14px; } .pb__acc { right: 16px; } .pi { padding: 18px 16px 20px; } }
 </style>

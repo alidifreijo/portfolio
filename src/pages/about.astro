@@ -10,6 +10,8 @@ import SiteHeader from '../components/SiteHeader.astro';
 import HobbyEgg from '../components/HobbyEgg.astro';
 import { getEntry } from 'astro:content';
 import { rich } from '../lib/utils';
+import { BUBBLES } from '../data/bubbles';
+const BB = BUBBLES.bob;
 const a = (await getEntry('pages', 'about'))!.data as any;
 const quirks: string[] = a.quirks || [];
 const born = String(a.born || '');
@@ -31,9 +33,16 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
 
     <div class="ab__big">
       {b1 && <span class="ab__mask" aria-hidden="true"><span class="ab__n ab-rise" style="--d: 80ms">{b1}</span></span>}
-      <button class="ab__face" type="button" data-egg-open aria-label={`Psst: ${a.grabTitle}. Opens a collage of things I love`}>
-        <img src="/images/faces/bob.png" alt="" width="230" height="241" />
-        <span class="ab__psst" aria-hidden="true">psst… {a.grabTitle}</span>
+      <button class="ab__face" type="button" data-egg-open data-near aria-label={`${a.peek || 'Peek inside my head'}: opens a collage of things I love`} style={`--ink:${BB.ink};--light:${BB.light}`}>
+        <span class="ab__img">
+          <img class="ab__line" src="/images/faces/bob.png" alt="" width="230" height="241" />
+          <img class="ab__color" src="/images/faces/color/open/bob.png" alt="" width="230" height="241" loading="lazy" />
+        </span>
+        <span class="ab__bub" aria-hidden="true">
+          <svg class="ab__bub-u" viewBox={`-2 -2 ${BB.under.w} ${BB.under.h}`} preserveAspectRatio="none"><path d={BB.under.d} /></svg>
+          <svg class="ab__bub-s" viewBox={`-2 -2 ${BB.shape.w} ${BB.shape.h}`} preserveAspectRatio="none"><path d={BB.shape.d} /></svg>
+          <span class="ab__bub-t">{a.peek || 'Peek inside my head'}</span>
+        </span>
       </button>
       {b2 && <span class="ab__mask" aria-hidden="true"><span class="ab__and ab-rise" style="--d: 420ms">and</span></span>}
       {b2 && <span class="ab__mask" aria-hidden="true"><span class="ab__n ab-rise" style="--d: 220ms">{b2}</span></span>}
@@ -140,6 +149,22 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
   </script>
 
   <HobbyEgg title={a.grabTitle} label={a.hobbiesLabel} />
+
+  <script>
+    // the face lights up when the cursor comes near (not only on top of it)
+    function initNear() {
+      const f = document.querySelector<HTMLElement>('[data-near]');
+      if (!f || f.dataset.ready || !matchMedia('(hover: hover)').matches) return; f.dataset.ready = '1';
+      const move = (e: PointerEvent) => {
+        if (!f.isConnected) { removeEventListener('pointermove', move); return; }
+        const r = f.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+        f.classList.toggle('is-near', Math.hypot(e.clientX - cx, e.clientY - cy) < r.width * 1.25);
+      };
+      addEventListener('pointermove', move, { passive: true });
+    }
+    initNear();
+    document.addEventListener('astro:page-load', initNear);
+  </script>
 </Base>
 
 <style>
@@ -174,18 +199,25 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
     all: unset; cursor: pointer; position: relative; display: block; width: clamp(150px, 15vw, 260px);
     transition: rotate 500ms cubic-bezier(.3,1.6,.5,1), scale 500ms cubic-bezier(.3,1.6,.5,1);
   }
-  .ab__face img { display: block; width: 100%; height: auto; }
-  .ab__face:hover, .ab__face:focus-visible { rotate: -6deg; scale: 1.06; }
+  .ab__img { position: relative; display: block; transform-origin: 50% 90%; animation: nudge 7s ease-in-out 3.5s infinite; }
+  .ab__img img { display: block; width: 100%; height: auto; transition: opacity 250ms var(--ease-out); }
+  .ab__color { position: absolute; inset: 0; opacity: 0; }
+  .ab__face:is(:hover, :focus-visible, .is-near) { rotate: -6deg; scale: 1.06; }
+  .ab__face:is(:hover, :focus-visible, .is-near) .ab__color { opacity: 1; }
+  .ab__face:is(:hover, :focus-visible, .is-near) .ab__line { opacity: 0; }
+  .ab__face:is(:hover, :focus-visible, .is-near) .ab__img { animation-play-state: paused; }
   .ab__face:focus-visible { outline: 2px solid #070707; outline-offset: 6px; border-radius: 50%; }
-  /* the hint, handwritten, peeking out */
-  .ab__psst {
-    position: absolute; left: 72%; top: -6%; white-space: nowrap; rotate: 8deg;
-    font-family: var(--font-hand); font-size: clamp(20px, 1.5vw, 26px); color: #070707;
-    opacity: 0; translate: -6px 6px; transition: opacity 300ms var(--ease-out), translate 300ms var(--ease-out);
+  /* when you come close, the face lights up and says it, in its own bubble */
+  .ab__bub {
+    position: absolute; right: 78%; top: -14%; width: clamp(190px, 14vw, 240px); aspect-ratio: 171 / 68; pointer-events: none;
+    opacity: 0; scale: 0.6; rotate: 6deg; transform-origin: 100% 100%;
+    transition: opacity 250ms var(--ease-out), scale 450ms cubic-bezier(.3,1.5,.5,1);
   }
-  .ab__face:hover .ab__psst, .ab__face:focus-visible .ab__psst { opacity: 1; translate: 0 0; }
-  /* every few seconds the face gives a little nudge, so it gets found */
-  .ab__face img { animation: nudge 7s ease-in-out 3.5s infinite; transform-origin: 50% 90%; }
+  .ab__face:is(:hover, :focus-visible, .is-near) .ab__bub { opacity: 1; scale: 1; }
+  .ab__bub svg { position: absolute; overflow: visible; }
+  .ab__bub-u { inset: 7% -3% -8% 2%; width: 101%; height: 101%; fill: var(--light); }
+  .ab__bub-s { inset: 0; width: 100%; height: 100%; fill: var(--ink); }
+  .ab__bub-t { position: absolute; inset: 0 12% 6% 6%; display: grid; place-items: center; text-align: center; font-family: var(--font-body); font-weight: 600; font-size: clamp(14px, 1vw, 16px); line-height: 1.2; color: var(--light); }
   @keyframes nudge { 0%, 88%, 100% { rotate: 0deg; } 91% { rotate: -7deg; } 94% { rotate: 5deg; } 97% { rotate: -2deg; } }
 
   .ab__cols { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 16px; row-gap: 20px; }
@@ -197,7 +229,7 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
   @keyframes ab-rise { from { translate: 0 105%; } to { translate: 0 0; } }
   @keyframes ab-in { from { opacity: 0; filter: blur(12px); translate: 0 8px; } to { opacity: 1; filter: blur(0); translate: 0 0; } }
   @keyframes ab-pop { 0% { opacity: 0; scale: .2; rotate: -25deg; } 60% { opacity: 1; scale: 1.1; rotate: 6deg; } 100% { opacity: 1; scale: 1; rotate: 0deg; } }
-  @media (prefers-reduced-motion: reduce) { .ab-rise, .ab-in, .ab__face, .ab__face img { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .ab-rise, .ab-in, .ab__face, .ab__img { animation: none; } }
 
   /* the long version, on the frame: a sticky serif heading on the left,
      the content on the right; the detail opens on demand */
@@ -282,6 +314,6 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
     .ab__n { font-size: 31vw; }
     .ab__face { width: 30vw; }
     .ab__and { font-size: 20px; }
-    .ab__psst { left: 40%; top: -16%; font-size: 18px; opacity: 1; translate: 0 0; }
+    .ab__bub { right: 55%; top: -38%; width: 150px; opacity: 1; scale: 1; }
   }
 </style>
