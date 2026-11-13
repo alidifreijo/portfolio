@@ -1,82 +1,197 @@
 ---
 /**
- * Work index · carousel of featured projects on the left, intro and the
- * project cards on the right (2 × 2), explorations underneath.
+ * Work · v2, after Cartier's "Le Chœur des Pierres": the cases lie on a
+ * diagonal and scrolling slides them along it, one at a time in front.
+ * Hovering the one in front lets its colour bloom behind it; clicking it
+ * floods the screen with that colour, like ink, and the case opens out of it.
+ * The case name sits big at the bottom left, as the title of the scene.
  */
 import Base from '../../layouts/Base.astro';
-import Tab from '../../components/Tab.astro';
-import Carousel from '../../components/Carousel.astro';
-import { getEntry } from 'astro:content';
+import SiteHeader from '../../components/SiteHeader.astro';
 import { getProjects, projectUrl } from '../../lib/projects';
-const w = (await getEntry('pages', 'work'))!.data;
+import { accentVars, rich } from '../../lib/utils';
 const projects = await getProjects();
-const client = projects.filter((p) => p.data.kind === 'client');
-const explorations = projects.filter((p) => p.data.kind === 'exploration');
-const label = (p: (typeof projects)[number]) => (p.id === 'cupra' ? 'seat | cupra' : p.data.title);
+const total = projects.length;
+const items = projects.map((p, i) => ({
+  n: String(i + 1).padStart(2, '0'),
+  href: projectUrl(p),
+  name: p.data.title,
+  display: rich(p.data.display || p.data.title, false),
+  type: p.data.meta.find((m: any) => m.label === 'Project')?.value || '',
+  year: p.data.meta.find((m: any) => m.label === 'Year')?.value || '',
+  cover: p.data.cover,
+  acc: accentVars(p.data.accent),
+}));
 ---
-<Base title="work">
-  <div class="wk">
-    <div class="wk__left">
-      <Carousel slides={w.slides || []} tab="overview projects" />
-    </div>
+<Base title="work" nav={false}>
+  <div class="wr" data-wr style={`--n:${total}`}>
+    <div class="ws">
+      <SiteHeader />
+      <section class="wp" aria-label="Selected work">
+        <div class="wp__stage" data-stage>
+          {items.map((it, i) => (
+            <a href={it.href} class="wc" data-wc={i} style={it.acc} aria-label={`${it.n} ${it.name}, ${it.type} ${it.year}`}>
+              <span class="wc__bloom" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="wc__card"><img src={it.cover} alt="" loading={i < 2 ? 'eager' : 'lazy'} /></span>
+            </a>
+          ))}
+        </div>
 
-    <div class="wk__right">
-      <a class="intro" href="/about">
-        <h1 class="intro__h">{w.title}</h1>
-        <p class="intro__sub">{w.subtitle}</p>
-        <p class="intro__p">{w.intro}</p>
-      </a>
+        <div class="wp__title" aria-live="polite">
+          {items.map((it, i) => (
+            <div class:list={['wt', { 'is-on': i === 0 }]} data-wt={i}>
+              <p class="wt__n">Case {it.n} <span>/ {String(total).padStart(2, '0')}</span></p>
+              <h2 class="wt__h" set:html={it.display} />
+              <p class="wt__m">{it.type}{it.type && it.year && ' · '}{it.year}</p>
+            </div>
+          ))}
+        </div>
 
-      <div class="grid">
-        {client.map((p) => (
-          <a href={projectUrl(p)} class="pcard">
-            <img src={p.data.cover} alt="" loading="lazy" />
-            <Tab corner="top-left"><span class="t-body">{label(p)}</span></Tab>
-          </a>
-        ))}
-      </div>
-
-      {explorations.length > 0 && (
-        <>
-          <section class="intro intro--ink">
-            <h2 class="intro__h intro__h--s">{w.explorationsTitle}</h2>
-            <p class="intro__p">{w.explorationsIntro}</p>
-          </section>
-          <div class="grid">
-            {explorations.map((p) => (
-              <a href={projectUrl(p)} class="pcard">
-                <img src={p.data.cover} alt="" loading="lazy" />
-                <Tab corner="top-left"><span class="t-body">{p.data.title}</span></Tab>
-              </a>
-            ))}
-          </div>
-        </>
-      )}
+        <nav class="wp__idx" aria-label="Jump to a case">
+          {items.map((it, i) => (
+            <button type="button" class:list={['wi', { 'is-on': i === 0 }]} data-wi={i}><span>{it.n}</span> {it.name}</button>
+          ))}
+        </nav>
+        <p class="wp__hint" aria-hidden="true">Scroll to move along · click the one in front to step in</p>
+      </section>
     </div>
   </div>
 </Base>
 
-<style>
-  .wk { display: grid; grid-template-columns: var(--split); gap: var(--s-3); align-items: start; }
-  .wk__left { position: sticky; top: var(--frame); height: calc(100vh - var(--frame) * 2); }
-  .wk__right { display: flex; flex-direction: column; gap: var(--s-3); }
-  .intro { display: block; background: var(--paper); border-radius: var(--r-md); padding: 40px 40px 40px; min-height: 245px; }
-  .intro__h { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-display); line-height: 36px; letter-spacing: 2px; }
-  .intro__h--s { font-size: var(--fs-title); line-height: 1; letter-spacing: var(--ls-tab); }
-  .intro__sub { margin-top: 2px; font-size: 18px; font-weight: 500; line-height: 18px; letter-spacing: var(--ls-tab); color: var(--muted-soft); }
-  .intro__p { margin-top: 42px; font-size: var(--fs-body); line-height: var(--lh-body); letter-spacing: var(--ls-tab); max-width: 474px; }
-  .intro--ink { background: var(--surface); color: var(--paper); min-height: 0; margin-top: 12px; }
-  .intro--ink .intro__p { margin-top: 16px; }
-  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
-  .pcard { position: relative; display: block; aspect-ratio: 271 / 362; border-radius: var(--r-md); overflow: hidden; background: var(--surface); }
-  .pcard img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease-out); }
-  .pcard:hover img { transform: scale(1.04); }
-  @media (max-width: 1199px) {
-    .wk { grid-template-columns: 1fr; }
-    .wk__left { position: relative; top: 0; height: 420px; }
-    .intro { padding: 32px; min-height: 280px; }
-    .intro__p { margin-top: 48px; }
-    .intro--ink { min-height: 0; }
-    .pcard { aspect-ratio: 177 / 236; }
+<script>
+  import { navigate } from 'astro:transitions/client';
+
+  // Scroll drives a position along the diagonal; each card is placed from
+  // its distance to that position (in front, bigger and sharp; behind,
+  // smaller, blurred and higher up to the right).
+  function initWork() {
+    const wr = document.querySelector<HTMLElement>('[data-wr]');
+    if (!wr || wr.dataset.ready) return; wr.dataset.ready = '1';
+    const cards = [...wr.querySelectorAll<HTMLAnchorElement>('[data-wc]')];
+    const titles = [...wr.querySelectorAll<HTMLElement>('[data-wt]')];
+    const idx = [...wr.querySelectorAll<HTMLButtonElement>('[data-wi]')];
+    const n = cards.length;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let pos = 0, target = 0, raf = 0, active = 0;
+    const runway = () => wr.offsetHeight - innerHeight;
+    const fromScroll = () => { const r = runway(); return r > 0 ? Math.min(1, Math.max(0, (scrollY - wr.offsetTop) / r)) * (n - 1) : 0; };
+    const place = () => {
+      const narrow = innerWidth < 810;
+      const dx = narrow ? 34 : 27, dy = narrow ? 17 : 15; // vw / vh per step along the diagonal
+      cards.forEach((c, i) => {
+        const t = i - pos, a = Math.abs(t);
+        const s = Math.max(0.3, 1 - a * 0.36);
+        c.style.transform = `translate(calc(-50% + ${t * dx}vw), calc(-50% - ${t * dy}vh)) scale(${s}) rotate(${-3 + t * 3}deg)`;
+        // ahead: they wait up to the right; behind: they slip away down-left and fade fast
+        c.style.opacity = String(t < 0 ? Math.max(0, 1 - a * 1.1) : Math.max(0, 1 - Math.max(0, a - 1.2) * 0.9));
+        c.style.filter = a < 0.15 ? 'none' : `blur(${Math.min(6, a * 2.2).toFixed(2)}px)`;
+        c.style.zIndex = String(100 - Math.round(a * 10));
+        c.tabIndex = Math.round(pos) === i ? 0 : -1;
+      });
+      const now = Math.round(pos);
+      if (now !== active) {
+        active = now;
+        titles.forEach((t, i) => t.classList.toggle('is-on', i === active));
+        idx.forEach((b, i) => { b.classList.toggle('is-on', i === active); b.toggleAttribute('aria-current', i === active); });
+      }
+      cards.forEach((c, i) => c.classList.toggle('is-front', i === active));
+    };
+    const loop = () => {
+      raf = 0; if (!wr.isConnected) return;
+      pos += (target - pos) * (reduce ? 1 : 0.14);
+      if (Math.abs(target - pos) < 0.001) pos = target;
+      place();
+      if (pos !== target) raf = requestAnimationFrame(loop);
+    };
+    const onScroll = () => { if (!wr.isConnected) { removeEventListener('scroll', onScroll); return; } target = fromScroll(); if (!raf) raf = requestAnimationFrame(loop); };
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', onScroll);
+    // jump: scroll the page to where that case is in front
+    const go = (i: number) => scrollTo({ top: wr.offsetTop + (runway() * i) / (n - 1), behavior: reduce ? 'auto' : 'smooth' });
+    idx.forEach((b, i) => b.addEventListener('click', () => go(i)));
+    cards.forEach((c, i) => {
+      c.addEventListener('focus', () => { if (i !== active) go(i); });
+      c.addEventListener('click', (e) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+        e.preventDefault();
+        if (i !== active) { go(i); return; } // a card behind: bring it to the front first
+        inkTo(c);
+      });
+    });
+    target = pos = fromScroll(); place();
   }
+
+  // The ink: the case colour blooms out of the card and floods the screen,
+  // the case loads underneath, then the ink clears from the middle out.
+  function inkTo(card: HTMLAnchorElement) {
+    const href = card.href;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { navigate(href); return; }
+    const color = getComputedStyle(card).getPropertyValue('--acc').trim() || '#D4D1CB';
+    const r = card.querySelector('.wc__card')!.getBoundingClientRect();
+    const ink = document.createElement('div');
+    ink.className = 'ink'; ink.setAttribute('aria-hidden', 'true');
+    ink.style.setProperty('--c', color);
+    ink.style.setProperty('--x', `${r.left + r.width / 2}px`);
+    ink.style.setProperty('--y', `${r.top + r.height / 2}px`);
+    ink.innerHTML = '<i></i><i></i><i></i><i></i><b></b>';
+    document.documentElement.append(ink); // outside <body>: it stays while the page swaps
+    requestAnimationFrame(() => ink.classList.add('is-in'));
+    setTimeout(() => navigate(href), 820);
+  }
+  function inkOut() {
+    const ink = document.querySelector<HTMLElement>('html > .ink');
+    if (!ink) return;
+    setTimeout(() => { ink.classList.add('is-out'); setTimeout(() => ink.remove(), 1100); }, 120);
+  }
+
+  initWork();
+  document.addEventListener('astro:page-load', () => { initWork(); inkOut(); });
+</script>
+
+<style>
+  /* a scroll runway: the screen stays while you scroll through the cases */
+  .wr { height: calc(100svh - var(--frame) * 2 + (var(--n) - 1) * 55svh); }
+  .ws { position: sticky; top: var(--frame); height: calc(100svh - var(--frame) * 2); display: flex; flex-direction: column; }
+  .wp { position: relative; flex: 1; min-height: 0; background: var(--paper); border-radius: var(--r-md); overflow: hidden; color: #070707; }
+  .wp__stage { position: absolute; inset: 0; }
+
+  .wc { position: absolute; left: 48%; top: 46%; width: clamp(240px, 27vw, 480px); aspect-ratio: 4 / 3; transform-origin: 50% 50%; will-change: transform, filter; outline: none; }
+  .wc__card { position: absolute; inset: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 30px 60px rgba(7, 7, 7, 0.18); transition: scale 500ms cubic-bezier(.3,1.4,.5,1); }
+  .wc__card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .wc.is-front { cursor: pointer; }
+  .wc.is-front:hover .wc__card, .wc.is-front:focus-visible .wc__card { scale: 1.04; }
+  .wc:focus-visible .wc__card { outline: 2px solid #070707; outline-offset: 6px; }
+  /* the colour bloom behind the card in front, on hover */
+  .wc__bloom { position: absolute; inset: -30%; pointer-events: none; }
+  .wc__bloom i { position: absolute; border-radius: 50%; background: var(--acc); filter: blur(40px); opacity: 0; scale: 0.4; transition: opacity 600ms var(--ease-out), scale 900ms cubic-bezier(.22,.75,.25,1); }
+  .wc__bloom i:nth-child(1) { inset: 18% 22% 22% 18%; }
+  .wc__bloom i:nth-child(2) { inset: 8% 40% 46% 12%; transition-delay: 60ms; }
+  .wc__bloom i:nth-child(3) { inset: 44% 10% 8% 46%; transition-delay: 120ms; }
+  .wc.is-front:hover .wc__bloom i, .wc.is-front:focus-visible .wc__bloom i { opacity: 0.85; scale: 1; }
+
+  /* the title of the scene, bottom left */
+  .wp__title { position: absolute; left: 28px; bottom: 26px; z-index: 200; pointer-events: none; display: grid; }
+  .wt { grid-area: 1 / 1; opacity: 0; filter: blur(10px); translate: 0 10px; transition: opacity 450ms var(--ease-out), filter 450ms var(--ease-out), translate 600ms cubic-bezier(.22,.75,.25,1); }
+  .wt.is-on { opacity: 1; filter: none; translate: 0 0; transition-delay: 120ms; }
+  .wt__n, .wt__m { margin: 0; font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.45; }
+  .wt__n span, .wt__m { color: #57534d; }
+  .wt__h { margin: 4px 0 6px; font-family: var(--font-serif); font-weight: 400; font-size: clamp(60px, 7.4vw, 150px); line-height: 0.85; letter-spacing: -0.035em; }
+  .wt__h :global(strong) { font-weight: 400; font-style: italic; }
+
+  /* the index, bottom right */
+  .wp__idx { position: absolute; right: 24px; bottom: 24px; z-index: 200; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+  .wi { all: unset; cursor: pointer; min-height: 28px; display: inline-flex; align-items: baseline; gap: 8px; font-family: var(--font-body); font-size: var(--fs-print); color: #070707; opacity: 0.4; transition: opacity 300ms; }
+  .wi span { font-size: 0.85em; }
+  .wi:hover, .wi:focus-visible, .wi.is-on { opacity: 1; }
+  .wi.is-on::before { content: '→'; }
+  .wi:focus-visible { outline: 2px solid #070707; outline-offset: 3px; }
+  .wp__hint { position: absolute; left: 28px; top: 22px; margin: 0; z-index: 200; font-family: var(--font-body); font-size: var(--fs-print); color: #57534d; }
+
+  @media (max-width: 809px) {
+    .wc { left: 46%; top: 42%; width: 62vw; }
+    .wt__h { font-size: 52px; }
+    .wp__idx, .wp__hint { display: none; }
+    .wp__title { left: 16px; bottom: 18px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .wt, .wc__bloom i, .wc__card { transition: none; } }
 </style>
