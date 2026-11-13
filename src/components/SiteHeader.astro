@@ -9,6 +9,8 @@
 import { getEntry } from 'astro:content';
 const contact = (await getEntry('pages', 'contact'))!.data as any;
 const home = (await getEntry('pages', 'home'))!.data as any;
+// on a case page, the status cell says which case you're in
+const { current } = Astro.props as { current?: { label: string; value: string } };
 const mail = (contact.links || []).find((l: any) => String(l.url).startsWith('mailto:'));
 const email = mail ? String(mail.url).replace('mailto:', '') : '';
 const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
@@ -33,8 +35,11 @@ const isCurrent = (href: string) => path === href || path.startsWith(href + '/')
     <p class="sh__val">Barcelona · <time data-clock>--:--</time></p>
   </div>
   <div class="sh__cell sh__status">
-    <p class="sh__lab">Status</p>
-    <p class="sh__val">{home.status || 'Open to senior and lead product roles'}</p>
+    {current ? (
+      <><p class="sh__lab">{current.label}</p><p class="sh__val sh__case">{current.value}</p></>
+    ) : (
+      <><p class="sh__lab">Status</p><p class="sh__val">{home.status || 'Open to senior and lead product roles'}</p></>
+    )}
   </div>
   {email && (
     <div class="sh__cell sh__mail">
@@ -67,6 +72,7 @@ const isCurrent = (href: string) => path === href || path.startsWith(href + '/')
   .sh__lab, .sh__val { font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.45; letter-spacing: 0.02em; }
   .sh__lab { color: var(--muted-ink); }
   .sh__val { color: var(--on-chrome); }
+  .sh__case { font-family: var(--font-display); font-weight: 500; text-transform: uppercase; font-size: 18px; line-height: 1.1; }
   .sh__u { text-decoration: underline; text-underline-offset: 2px; }
   .sh__u:hover { color: var(--white); }
   .sh__logo { grid-column: span 1; font-family: var(--font-display); font-weight: 500; font-size: 34px; line-height: 0.8; width: max-content; }
