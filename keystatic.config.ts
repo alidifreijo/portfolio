@@ -223,6 +223,8 @@ export default config({
         title: fields.text({ label: 'Title' }),
         grabTitle: fields.text({ label: 'Left title' }),
         hobbiesLabel: fields.text({ label: 'Hobbies label' }),
+        quirks: fields.array(fields.text({ label: 'Line' }), { label: 'Red lines (top right)', itemLabel: (p) => p.value }),
+        born: fields.text({ label: 'Big number (e.g. 1994)', description: 'Split in two around your face; leave empty to hide' }),
         intro: rich('About text'),
         lead: fields.text({ label: 'Lead (big line)', description: '**bold** works' }),
         facts: fields.array(fields.object({ value: fields.text({ label: 'Number / short value' }), label: fields.text({ label: 'What it means' }) }), { label: 'Quick facts', itemLabel: (p) => `${p.fields.value.value} · ${p.fields.label.value}` }),

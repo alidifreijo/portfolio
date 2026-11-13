@@ -1,6 +1,13 @@
 title: about
 grabTitle: grab to know me
 hobbiesLabel: interests & hobbies
+quirks:
+- From A Coruña, in Barcelona since 2017
+- Engineer first, designer since
+- Teaches UI on the side
+- Galileo's human (he's a cat)
+- Sarcastic, curious, never quite still
+born: '1994'
 lead: I turn **messy ideas** into things people **actually enjoy using**.
 facts:
 - value: '8'

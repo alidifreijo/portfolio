@@ -1,266 +1,199 @@
 ---
 /**
- * About · three columns, each the height of the screen. The two cards
- * scroll on their own. On the left, the hobby pile you can drag around
- * (with an ice cream following the cursor).
+ * About · v2. One paper card with the lead, a few red lines about me, the
+ * year split around my face, and the small print (experience, how I work,
+ * learn & teach, languages). Below, the long version on the frame.
+ * The face is the way into the easter egg: the "grab to know me" collage.
  */
 import Base from '../layouts/Base.astro';
-import HobbyPile from '../components/HobbyPile.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import HobbyEgg from '../components/HobbyEgg.astro';
 import { getEntry } from 'astro:content';
 import { rich } from '../lib/utils';
-const a = (await getEntry('pages', 'about'))!.data;
+const a = (await getEntry('pages', 'about'))!.data as any;
+const quirks: string[] = a.quirks || [];
+const born = String(a.born || '');
+const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''];
 ---
-<Base title="about">
-  <div class="about">
-    <aside class="ab-left" data-cursor-zone>
-      <HobbyPile />
-      <h1 class="ab-left__h">{a.grabTitle.replace(' know', '\nknow')}</h1>
-      <p class="ab-left__hob">{a.hobbiesLabel}</p>
-    </aside>
+<Base title="about" nav={false}>
+  <SiteHeader />
 
-    <section class="ab-card ab-card--paper" data-card>
-      <h2 class="ab-h1" data-r>{a.title}</h2>
-      <p class="ab-lead" data-lead set:html={rich(a.lead, false)} />
-
-      <dl class="ab-facts">
-        {a.facts.map((f: any, i: number) => (
-          <div class="ab-fact" data-r style={`--i:${i}`}>
-            <dt class="ab-fact__v" data-count={/^\d+$/.test(f.value) ? f.value : undefined}>{f.value}</dt>
-            <dd class="ab-fact__l">{f.label}</dd>
-          </div>
-        ))}
-      </dl>
-
-      <div class="ab-text rich" data-r set:html={rich(a.intro)} />
-
-      <h2 class="ab-h2" data-r>{a.skillsTitle}</h2>
-      <p class="ab-hint" data-r>Open one: the jobs where it happened light up on the right.</p>
-      <ol class="ab-skills" data-skills>
-        {a.skills.map((s: any, i: number) => (
-          <li class:list={['ab-skill', { 'is-open': i === 0 }]} data-r data-seen={(s.seenAt || []).join('|')}>
-            <button class="ab-skill__head" type="button" aria-expanded={i === 0 ? 'true' : 'false'}>
-              <span class="ab-skill__n">{String(i + 1).padStart(2, '0')}</span>
-              <span class="ab-t">{s.title}</span>
-              <span class="ab-skill__plus" aria-hidden="true"></span>
-            </button>
-            <div class="ab-skill__body"><div>
-              <div class="ab-text" set:html={rich(s.text, false)} />
-              <div class:list={['ab-tags', { 'ab-tags--filled': s.filled }]}>{s.tags.map((t: string) => <span>{t}</span>)}</div>
-            </div></div>
-          </li>
-        ))}
-      </ol>
-
-      <h2 class="ab-h2" data-r>learn &amp; teach</h2>
-      <ul class="ab-teach">
-        {a.teach.map((t: any) => (
-          <li data-r><span class="ab-years">{t.years}</span><span><span class="ab-t">{t.title}</span><span class="ab-place">{t.place}</span></span></li>
-        ))}
+  <section class="ab" aria-label="About">
+    <div class="ab__intro ab-in" style="--d: 900ms">
+      <p class="ab__lab">About</p>
+      <p class="ab__lead" set:html={rich(a.lead, false)} />
+    </div>
+    {quirks.length > 0 && (
+      <ul class="ab__quirks">
+        {quirks.map((q, i) => <li class="ab-in" style={`--d:${1050 + i * 110}ms`}>{q}</li>)}
       </ul>
+    )}
 
-      <h2 class="ab-h2" data-r>languages</h2>
-      <div class="ab-langs" data-r>
-        {a.languages.map((l: any) => (
-          <div><span class="ab-t">{l.name}</span><span class="ab-level">{l.level}</span></div>
-        ))}
+    <div class="ab__big">
+      {b1 && <span class="ab__mask" aria-hidden="true"><span class="ab__n ab-rise" style="--d: 80ms">{b1}</span></span>}
+      <button class="ab__face" type="button" data-egg-open aria-label={`Psst: ${a.grabTitle}. Opens a collage of things I love`}>
+        <img src="/images/faces/bob.png" alt="" width="230" height="241" />
+        <span class="ab__psst" aria-hidden="true">psst… {a.grabTitle}</span>
+      </button>
+      {b2 && <span class="ab__mask" aria-hidden="true"><span class="ab__and ab-rise" style="--d: 420ms">and</span></span>}
+      {b2 && <span class="ab__mask" aria-hidden="true"><span class="ab__n ab-rise" style="--d: 220ms">{b2}</span></span>}
+      {born && <span class="sr-only">Born in {born}</span>}
+    </div>
+
+    <div class="ab__cols">
+      <div class="ab-in" style="--d: 1700ms">
+        <p class="ab__lab">Experience</p>
+        {a.experience.map((e: any) => <p class="ab__val">{e.company.replace(', for Roche', '')} <span class="ab__dim">— {e.years.replace(/\s/g, '').replace('—', '–')}</span></p>)}
       </div>
-    </section>
+      <div class="ab-in" style="--d: 1780ms">
+        <p class="ab__lab">{a.skillsTitle}</p>
+        {a.skills.map((s: any) => <p class="ab__val">{s.title}</p>)}
+      </div>
+      <div class="ab-in" style="--d: 1860ms">
+        <p class="ab__lab">Learn &amp; teach</p>
+        {a.teach.map((t: any) => <p class="ab__val">{t.title} <span class="ab__dim">· {t.place.split(' · ')[0]}</span></p>)}
+      </div>
+      <div class="ab-in" style="--d: 1940ms">
+        <p class="ab__lab">Languages</p>
+        {a.languages.map((l: any) => <p class="ab__val">{l.name} <span class="ab__dim">· {l.level}</span></p>)}
+        <a class="ab__val ab__u" href="#more">The long version ↓</a>
+      </div>
+    </div>
+  </section>
 
-    <section class="ab-card ab-card--pink" data-card data-jobs>
-      <h2 class="ab-h1 ab-h1--exp" data-r>work<br />experience</h2>
-      {a.experience.map((e: any) => (
-        <article class="ab-job" data-r data-company={e.company}>
-          <p class="ab-years">{e.years}</p>
-          <h3 class="ab-t ab-role">{e.role}</h3>
-          <p class="ab-place">{e.company}</p>
-          <div class="ab-tags ab-tags--brand">{e.tags.map((t: string) => <span>{t}</span>)}</div>
-          <div class="ab-text ab-text--exp" set:html={rich(e.text, false)} />
-        </article>
-      ))}
-    </section>
-  </div>
-  <img class="icecream" src="/images/hobbies/ice-cream.png" alt="" aria-hidden="true" data-icecream />
+  <section class="abx" id="more" aria-label="The long version">
+    <div class="abx__row abx__row--intro">
+      <p class="ab__lab">In short</p>
+      <div class="abx__text" set:html={rich(a.intro)} />
+      <dl class="abx__facts">
+        {a.facts.map((f: any) => <div><dt>{f.value}</dt><dd>{f.label}</dd></div>)}
+      </dl>
+    </div>
+
+    <h2 class="abx__h">Experience</h2>
+    {a.experience.map((e: any) => (
+      <article class="abx__row">
+        <p class="ab__val ab__dim">{e.years}</p>
+        <div><h3 class="abx__t">{e.role}</h3><p class="ab__val">{e.company}</p></div>
+        <div class="abx__text" set:html={rich(e.text, false)} />
+        <p class="abx__tags">{e.tags.join(' · ')}</p>
+      </article>
+    ))}
+
+    <h2 class="abx__h">{a.skillsTitle}</h2>
+    {a.skills.map((s: any, i: number) => (
+      <article class="abx__row">
+        <p class="ab__val ab__dim">{String(i + 1).padStart(2, '0')}</p>
+        <div><h3 class="abx__t">{s.title}</h3>{s.seenAt?.length > 0 && <p class="ab__val ab__dim">Seen at {s.seenAt.join(', ')}</p>}</div>
+        <div class="abx__text" set:html={rich(s.text, false)} />
+        <p class="abx__tags">{s.tags.join(' · ')}</p>
+      </article>
+    ))}
+  </section>
+
+  <HobbyEgg title={a.grabTitle} label={a.hobbiesLabel} />
 </Base>
 
-<script>
-  function initAbout() {
-  // The ice cream trails the cursor (mouse only), as in the Framer original:
-  // the real pointer stays visible and the tub hangs from its tip, catching
-  // up with a short lag.
-  const ic = document.querySelector<HTMLElement>('[data-icecream]');
-  if (ic && !ic.dataset.ready && matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    ic.dataset.ready = '1';
-    let tx = -200, ty = -200, x = -200, y = -200, raf = 0;
-    const step = () => {
-      x += (tx - x) * 0.16; y += (ty - y) * 0.16;
-      ic.style.transform = `translate(${x - 44.5}px, ${y}px)`;
-      raf = Math.abs(tx - x) + Math.abs(ty - y) > 0.3 ? requestAnimationFrame(step) : 0;
-    };
-    const move = (e: PointerEvent) => {
-      if (!ic.isConnected) { removeEventListener('pointermove', move); return; }
-      if (e.pointerType !== 'mouse') return;
-      tx = e.clientX; ty = e.clientY;
-      if (!ic.classList.contains('is-on')) { x = tx; y = ty; ic.classList.add('is-on'); }
-      if (!raf) raf = requestAnimationFrame(step);
-    };
-    addEventListener('pointermove', move, { passive: true });
-    document.documentElement.addEventListener('mouseleave', () => ic.classList.remove('is-on'));
-  }
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // Each card scrolls on its own: things appear as they come into the card.
-  document.querySelectorAll<HTMLElement>('[data-card]').forEach((card) => {
-    const io = new IntersectionObserver((es) => es.forEach((e) => {
-      if (!e.isIntersecting) return;
-      const el = e.target as HTMLElement; el.classList.add('is-in'); io.unobserve(el);
-      el.querySelectorAll<HTMLElement>('[data-count]').forEach((n) => countUp(n));
-    }), { root: innerWidth >= 1200 ? card : null, threshold: 0.15 });
-    card.querySelectorAll('[data-r]').forEach((el) => io.observe(el));
-  });
-  // The lead writes itself in, word by word.
-  document.querySelectorAll<HTMLElement>('[data-lead]').forEach((el) => {
-    if (el.dataset.split) return; el.dataset.split = '1';
-    let i = 0;
-    const walk = (n: Node) => {
-      [...n.childNodes].forEach((c) => {
-        if (c.nodeType === 3) {
-          const frag = document.createDocumentFragment();
-          (c.textContent || '').split(/(\s+)/).forEach((w) => {
-            if (!w.trim()) { frag.append(w); return; }
-            const s = document.createElement('span'); s.className = 'w'; s.style.setProperty('--i', String(i++)); s.textContent = w; frag.append(s);
-          });
-          c.replaceWith(frag);
-        } else walk(c);
-      });
-    };
-    walk(el);
-    requestAnimationFrame(() => el.classList.add('is-in'));
-  });
-  function countUp(n: HTMLElement) {
-    const end = parseInt(n.dataset.count || '0', 10); if (reduce || !end) return;
-    const t0 = performance.now(), D = 900;
-    const tick = (now: number) => { const k = Math.min(1, (now - t0) / D); n.textContent = String(Math.round(end * (1 - Math.pow(1 - k, 3)))); if (k < 1) requestAnimationFrame(tick); };
-    requestAnimationFrame(tick);
-  }
-  // Skills open one at a time; the open one lights up its jobs on the right.
-  const jobsCard = document.querySelector<HTMLElement>('[data-jobs]');
-  const jobs = [...document.querySelectorAll<HTMLElement>('.ab-job')];
-  const light = (seen: string) => {
-    const keys = seen.split('|').filter(Boolean);
-    jobs.forEach((j) => j.classList.toggle('is-match', keys.some((k) => (j.dataset.company || '').includes(k))));
-    jobsCard?.classList.toggle('has-match', keys.length > 0);
-  };
-  document.querySelectorAll<HTMLElement>('[data-skills]').forEach((list) => {
-    const items = [...list.querySelectorAll<HTMLElement>('.ab-skill')];
-    items.forEach((it) => {
-      const btn = it.querySelector('button')!;
-      btn.addEventListener('click', () => {
-        const open = !it.classList.contains('is-open');
-        items.forEach((o) => { o.classList.remove('is-open'); o.querySelector('button')!.setAttribute('aria-expanded', 'false'); });
-        if (open) { it.classList.add('is-open'); btn.setAttribute('aria-expanded', 'true'); }
-        light(open ? it.dataset.seen || '' : '');
-        // bring the first lit job into view in its own column
-        const first = jobs.find((j) => j.classList.contains('is-match'));
-        if (open && first && jobsCard && innerWidth >= 1200) jobsCard.scrollTo({ top: first.offsetTop - 40, behavior: reduce ? 'auto' : 'smooth' });
-      });
-      it.addEventListener('pointerenter', (e) => { if ((e as PointerEvent).pointerType === 'mouse') light(it.dataset.seen || ''); });
-      it.addEventListener('pointerleave', (e) => { if ((e as PointerEvent).pointerType === 'mouse') light(list.querySelector<HTMLElement>('.ab-skill.is-open')?.dataset.seen || ''); });
-    });
-  });
-  }
-  initAbout();
-  document.addEventListener('astro:page-load', initAbout);
-</script>
-
 <style>
-  .about { display: grid; grid-template-columns: minmax(0, 574fr) minmax(0, 409fr) minmax(0, 409fr); gap: var(--s-3); height: calc(100vh - var(--frame) * 2); min-height: 620px; }
-  .ab-left { position: relative; color: var(--paper); }
-  .ab-left__h { position: relative; z-index: 0; padding: var(--s-8) 12px 0; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-display); line-height: 45px; white-space: pre-line; pointer-events: none; }
-  .ab-left__hob { position: absolute; right: 0; bottom: 25px; font-family: var(--font-display); font-weight: 300; font-size: var(--fs-lead); line-height: 21.25px; pointer-events: none; }
+  .ab {
+    --print: clamp(12px, 0.84vw, 14px); --red: #B0161B; /* accent red, darkened to read on paper */
+    position: relative; min-height: calc(100svh - 150px);
+    background: var(--paper); border-radius: var(--r-md); color: #070707;
+    box-sizing: border-box; padding: 28px 28px 24px;
+    display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto 1fr auto; column-gap: 16px; row-gap: 16px;
+  }
+  .ab p { margin: 0; }
+  .ab__lab, .ab__val { font-family: var(--font-body); font-size: var(--print); line-height: 1.5; letter-spacing: 0.02em; }
+  .ab__lab { color: #57534d; margin-bottom: 4px !important; }
+  .ab__dim { color: #57534d; }
+  .ab__u { display: inline-block; margin-top: 10px; text-decoration: underline; text-underline-offset: 2px; }
 
-  .ab-card { border-radius: var(--r-md); padding: var(--s-8) 40px 48px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
-  .ab-card::-webkit-scrollbar { display: none; }
-  .ab-card--paper { background: var(--paper); color: var(--ink); }
-  .ab-card--pink { background: var(--brand-soft); color: var(--brand); }
-
-  .ab-h1 { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-display); line-height: 35.1px; }
-  .ab-h1--exp { line-height: 38.25px; }
-  .ab-h2 { margin-top: 48px; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-display); line-height: 47.25px; letter-spacing: -0.3px; }
-  .ab-text { font-size: var(--fs-body); line-height: var(--lh-body); letter-spacing: var(--ls-body); }
-  .rich :global(p + p) { margin-top: 16px; }
-  .ab-t { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-label); line-height: var(--lh-small); letter-spacing: var(--ls-small); }
-
-  /* appear as they come into their card */
-  [data-r] { opacity: 0; translate: 0 14px; transition: opacity 600ms var(--ease-out), translate 700ms var(--ease-spring); transition-delay: calc(var(--i, 0) * 70ms); }
-  [data-r].is-in { opacity: 1; translate: 0 0; }
-
-  .ab-lead { margin-top: 18px; font-family: var(--font-display); font-weight: 400; font-size: clamp(22px, 1.9vw, 28px); line-height: 1.15; letter-spacing: -0.01em; }
-  .ab-lead :global(b) { font-weight: 700; }
-  .ab-lead :global(.w) { display: inline-block; opacity: 0; translate: 0 0.4em; filter: blur(4px); transition: opacity 500ms var(--ease-out), translate 600ms var(--ease-spring), filter 500ms var(--ease-out); transition-delay: calc(120ms + var(--i) * 45ms); }
-  .ab-lead:global(.is-in) :global(.w) { opacity: 1; translate: 0 0; filter: none; }
-
-  .ab-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 26px 0 26px; }
-  .ab-fact { background: var(--paper-2); border-radius: var(--r-sm); padding: 14px 14px 12px; display: flex; flex-direction: column; gap: 6px; }
-  .ab-fact__v { font-family: var(--font-display); font-weight: 700; font-size: 34px; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
-  .ab-fact__l { margin: 0; font-size: var(--fs-small); line-height: 1.35; color: var(--muted); }
-
-  .ab-hint { margin-top: 6px; font-size: var(--fs-small); color: var(--muted); }
-  .ab-skills { list-style: none; padding: 0; margin: 18px 0 0; border-top: 1.5px solid currentColor; }
-  .ab-skill { border-bottom: 1.5px solid currentColor; }
-  .ab-skill__head { all: unset; box-sizing: border-box; width: 100%; display: grid; grid-template-columns: 34px 1fr 18px; align-items: center; padding: 15px 0; cursor: pointer; }
-  .ab-skill__head:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 4px; }
-  .ab-skill__n { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
-  .ab-skill__plus { position: relative; width: 14px; height: 14px; }
-  .ab-skill__plus::before, .ab-skill__plus::after { content: ''; position: absolute; left: 0; top: 6px; width: 14px; height: 2px; background: currentColor; border-radius: 2px; transition: rotate 400ms var(--ease-spring); }
-  .ab-skill__plus::after { rotate: 90deg; }
-  .ab-skill.is-open .ab-skill__plus::after { rotate: 0deg; }
-  .ab-skill__body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 500ms var(--ease-spring); }
-  .ab-skill__body > div { overflow: hidden; padding-left: 34px; }
-  .ab-skill.is-open .ab-skill__body { grid-template-rows: 1fr; }
-  .ab-skill__body .ab-text { padding-bottom: 2px; }
-  .ab-skill__body .ab-tags { margin: 12px 0 18px; }
-  .ab-skill:hover .ab-t { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
-
-  .ab-tags { display: flex; flex-wrap: wrap; gap: 8px 10px; margin: 14px 0 16px; }
-  .ab-tags span { display: inline-flex; align-items: center; height: 31px; padding: 0 13px; border-radius: var(--r-pill); border: 1.5px solid currentColor; font-size: var(--fs-small); font-weight: 700; letter-spacing: 0.4px; }
-  .ab-tags--filled span { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-  .ab-tags--brand span { background: var(--brand); color: var(--brand-soft); border-color: var(--brand); letter-spacing: var(--ls-small); }
-
-  .ab-teach { list-style: none; padding: 0; margin: 20px 0 0; display: flex; flex-direction: column; }
-  .ab-teach li { display: grid; grid-template-columns: 96px 1fr; gap: 12px; padding: 12px 0; border-top: 1px solid color-mix(in srgb, currentColor 25%, transparent); }
-  .ab-teach li > span:last-child { display: flex; flex-direction: column; gap: 2px; }
-  .ab-years { font-family: var(--font-display); font-size: var(--fs-label); line-height: var(--lh-small); letter-spacing: var(--ls-small); }
-  .ab-teach .ab-years { font-size: var(--fs-small); color: var(--muted); }
-  .ab-place { font-size: var(--fs-small); line-height: var(--lh-small); letter-spacing: var(--ls-small); }
-  .ab-langs { display: flex; flex-direction: column; gap: var(--s-3); margin-top: 20px; }
-  .ab-langs div { display: flex; justify-content: space-between; align-items: center; }
-  .ab-level { display: inline-flex; align-items: center; height: 31px; padding: 0 13px; border-radius: var(--r-pill); border: 1.5px solid currentColor; font-size: var(--fs-small); font-weight: 700; letter-spacing: 0.4px; }
-
-  /* experience: when a skill is open (or hovered), its jobs stay lit, the rest step back */
-  .ab-card--pink { position: relative; }
-  .ab-job { position: relative; padding: 24px 0 30px; border-bottom: 1px solid currentColor; transition: opacity 350ms var(--ease-out), translate 700ms var(--ease-spring); }
-  .ab-job:last-child { border-bottom: 0; }
-  .ab-card--pink.has-match .ab-job:not(.is-match) { opacity: 0.32; }
-  .ab-card--pink.has-match .ab-job.is-match { translate: 6px 0; }
-  .ab-role { margin-top: 10px; letter-spacing: 0.48px; }
-  .ab-text--exp { letter-spacing: 0.7px; }
-
-  @media (prefers-reduced-motion: reduce) {
-    [data-r], .ab-lead :global(.w) { opacity: 1; translate: none; filter: none; transition: none; }
+  .ab__intro { grid-column: 1 / span 6; }
+  .ab__lead { font-family: var(--font-serif); font-size: clamp(30px, 2.9vw, 52px); line-height: 1; letter-spacing: -0.02em; max-width: 18ch; text-wrap: balance; }
+  .ab__lead :global(strong) { font-weight: 400; font-style: italic; }
+  .ab__quirks {
+    grid-column: 8 / span 5; list-style: none; margin: 0; padding: 0;
+    font-family: var(--font-display); font-weight: 500; text-transform: uppercase; color: var(--red);
+    font-size: clamp(16px, 1.55vw, 26px); line-height: 1.14;
   }
 
-  .icecream { position: fixed; left: 0; top: 0; width: 89px; height: 105px; object-fit: contain; z-index: 100; pointer-events: none; opacity: 0; transition: opacity var(--dur-fast); will-change: transform; }
-  .icecream.is-on { opacity: 1; }
+  /* the year, split around my face */
+  .ab__big { grid-column: 1 / -1; align-self: center; display: flex; align-items: center; justify-content: center; gap: clamp(12px, 2.4vw, 48px); }
+  .ab__mask { display: inline-block; overflow: hidden; padding: 0.04em 0.06em 0.12em; }
+  .ab__n { display: inline-block; font-family: var(--font-serif); font-size: clamp(150px, 21vw, 380px); line-height: 0.8; letter-spacing: -0.04em; color: #ECEAE5; }
+  .ab__and { display: inline-block; font-family: var(--font-serif); font-style: italic; font-size: clamp(30px, 3vw, 54px); color: var(--red); }
+  .ab__face {
+    all: unset; cursor: pointer; position: relative; display: block; width: clamp(150px, 15vw, 260px);
+    transition: rotate 500ms cubic-bezier(.3,1.6,.5,1), scale 500ms cubic-bezier(.3,1.6,.5,1);
+  }
+  .ab__face img { display: block; width: 100%; height: auto; }
+  .ab__face:hover, .ab__face:focus-visible { rotate: -6deg; scale: 1.06; }
+  .ab__face:focus-visible { outline: 2px solid #070707; outline-offset: 6px; border-radius: 50%; }
+  /* the hint, handwritten, peeking out */
+  .ab__psst {
+    position: absolute; left: 72%; top: -6%; white-space: nowrap; rotate: 8deg;
+    font-family: var(--font-hand); font-size: clamp(20px, 1.5vw, 26px); color: #070707;
+    opacity: 0; translate: -6px 6px; transition: opacity 300ms var(--ease-out), translate 300ms var(--ease-out);
+  }
+  .ab__face:hover .ab__psst, .ab__face:focus-visible .ab__psst { opacity: 1; translate: 0 0; }
+  /* every few seconds the face gives a little nudge, so it gets found */
+  .ab__face img { animation: nudge 7s ease-in-out 3.5s infinite; transform-origin: 50% 90%; }
+  @keyframes nudge { 0%, 88%, 100% { rotate: 0deg; } 91% { rotate: -7deg; } 94% { rotate: 5deg; } 97% { rotate: -2deg; } }
 
-  @media (max-width: 1199px) {
-    .about { grid-template-columns: 1fr; height: auto; min-height: 0; }
-    .ab-left { aspect-ratio: 574 / 876; max-height: 90vh; width: 100%; max-width: 640px; margin: 0 auto; }
-    .ab-card { overflow: visible; padding: 48px 28px 40px; }
-    .ab-hint { display: none; }
+  .ab__cols { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 16px; row-gap: 20px; }
+
+  /* entry: the year rises from a mask, the face pops, words blur in */
+  .ab-rise { animation: ab-rise 1.05s cubic-bezier(.22,.75,.25,1) var(--d, 0ms) both; }
+  .ab-in { animation: ab-in 800ms cubic-bezier(.22,.75,.25,1) var(--d, 0ms) both; }
+  .ab__face { animation: ab-pop 900ms cubic-bezier(.3,1.3,.5,1) 650ms both; }
+  @keyframes ab-rise { from { translate: 0 105%; } to { translate: 0 0; } }
+  @keyframes ab-in { from { opacity: 0; filter: blur(12px); translate: 0 8px; } to { opacity: 1; filter: blur(0); translate: 0 0; } }
+  @keyframes ab-pop { 0% { opacity: 0; scale: .2; rotate: -25deg; } 60% { opacity: 1; scale: 1.1; rotate: 6deg; } 100% { opacity: 1; scale: 1; rotate: 0deg; } }
+  @media (prefers-reduced-motion: reduce) { .ab-rise, .ab-in, .ab__face, .ab__face img { animation: none; } }
+
+  /* the long version, small print on the frame */
+  .abx { --print: clamp(12px, 0.84vw, 14px); padding: 40px 12px 30px; color: var(--on-chrome); }
+  .abx p { margin: 0; }
+  .abx .ab__lab, .abx .ab__dim { color: var(--muted-ink); }
+  .abx__h { margin: 48px 0 6px; font-family: var(--font-serif); font-weight: 400; font-size: clamp(34px, 3.2vw, 56px); line-height: 1; letter-spacing: -0.02em; }
+  .abx__row { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 16px; padding: 16px 0; border-top: 1px solid #2a2926; }
+  .abx__row > :nth-child(1) { grid-column: span 2; }
+  .abx__row > :nth-child(2) { grid-column: span 3; }
+  .abx__row > :nth-child(3) { grid-column: span 5; }
+  .abx__row > :nth-child(4) { grid-column: span 2; }
+  .abx__row--intro { border-top: 0; padding-top: 0; }
+  .abx__row--intro > :nth-child(2) { grid-column: span 5; }
+  .abx__row--intro > :nth-child(3) { grid-column: 8 / span 5; }
+  .abx__t { margin: 0; font-family: var(--font-display); font-weight: 500; text-transform: uppercase; font-size: clamp(14px, 1.1vw, 18px); line-height: 1.2; }
+  .abx__text { font-family: var(--font-body); font-size: clamp(14px, 1vw, 16px); line-height: 1.55; max-width: 62ch; }
+  .abx__text :global(p + p) { margin-top: 0.8em; }
+  .abx__text :global(strong) { font-weight: 500; color: var(--white); }
+  .abx__tags { font-family: var(--font-body); font-size: var(--print); line-height: 1.5; color: var(--muted-ink); }
+  .abx__facts { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 16px; }
+  .abx__facts dt { font-family: var(--font-serif); font-size: clamp(40px, 3.6vw, 64px); line-height: 0.9; letter-spacing: -0.03em; }
+  .abx__facts dd { margin: 4px 0 0; font-family: var(--font-body); font-size: var(--print); line-height: 1.45; color: var(--muted-ink); max-width: 30ch; }
+
+  @media (max-width: 1099px) {
+    .ab__intro { grid-column: 1 / span 7; }
+    .ab__quirks { grid-column: 8 / span 5; }
+    .ab__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .abx__row > :nth-child(1) { grid-column: span 12; }
+    .abx__row > :nth-child(2) { grid-column: span 4; }
+    .abx__row > :nth-child(3) { grid-column: span 8; }
+    .abx__row > :nth-child(4) { grid-column: 5 / span 8; margin-top: 8px; }
+    .abx__row--intro > :nth-child(2) { grid-column: span 12; }
+    .abx__row--intro > :nth-child(3) { grid-column: span 12; margin-top: 24px; }
   }
   @media (max-width: 809px) {
-    .ab-left { aspect-ratio: 366 / 564; max-height: none; margin-top: 44px; }
-    .ab-left__h { padding-top: 4px; }
-    .ab-left__hob { bottom: 0; }
-    .ab-card { padding: 48px 20px 40px; }
+    .ab { padding: 20px 16px; min-height: 0; row-gap: 22px; }
+    .ab__intro, .ab__quirks { grid-column: 1 / -1; }
+    .ab__quirks { font-size: 15px; }
+    .ab__big { gap: 4px; justify-content: space-between; }
+    .ab__n { font-size: 31vw; }
+    .ab__face { width: 30vw; }
+    .ab__and { font-size: 20px; }
+    .ab__psst { left: 40%; top: -16%; font-size: 18px; opacity: 1; translate: 0 0; }
+    .abx__row > * { grid-column: 1 / -1 !important; margin-top: 4px; }
+    .abx__facts { grid-template-columns: 1fr 1fr; }
   }
 </style>
