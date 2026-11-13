@@ -8,6 +8,7 @@ lead: A banking platform used by both clients and bank employees.
 intro: '**Monexa** is a bank in two surfaces. **Acadexa**, on mobile, teaches clients to manage their money and turns each lesson into an action. On the web, **Exa**, the pink assistant, guides a client through anything that gets stuck, and a **manager view** shows the bank assistant what the client never sees. I designed both, and the system that keeps them one product.'
 teaser: Monexa is a banking platform for clients and employees
 cover: /images/f/work/cover-bank.jpg
+object: /images/objects/bank.webp
 hero: /images/f/bank/hero.mp4
 heroStyle: cover
 heroBg: '#E7E7E7'

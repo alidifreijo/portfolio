@@ -91,21 +91,19 @@ strong, b { font-weight: 700; }
 @keyframes fr-in { from { opacity: 0.4; transform: scale(0.82); filter: brightness(0.25); } }
 @media (prefers-reduced-motion: reduce) { ::view-transition-old(root), ::view-transition-new(root) { animation: none; } }
 
-/* The ink transition from the work page into a case (see work/index.astro).
-   It lives on <html>, outside <body>, so it outlasts the page swap; its
-   styles live here so they are still there on the case page. */
-  html > .ink { position: fixed; inset: 0; z-index: 1000; pointer-events: none; overflow: hidden; }
-  html > .ink i {
-    position: absolute; left: var(--x); top: var(--y); width: 40vmax; height: 40vmax; margin: -20vmax 0 0 -20vmax; border-radius: 50%;
-    background: var(--c); filter: blur(30px); scale: 0; transition: scale 900ms cubic-bezier(.5,0,.2,1);
-  }
-  html > .ink i:nth-child(2) { translate: -14vmax 6vmax; transition-delay: 70ms; }
-  html > .ink i:nth-child(3) { translate: 12vmax -9vmax; transition-delay: 130ms; }
-  html > .ink i:nth-child(4) { translate: 4vmax 14vmax; transition-delay: 190ms; }
-  html > .ink b { position: absolute; inset: 0; background: var(--c); opacity: 0; transition: opacity 300ms ease 600ms; }
-  html > .ink.is-in i { scale: 6; }
-  html > .ink.is-in b { opacity: 1; }
-  /* clearing: a hole grows from the middle */
-  html > .ink.is-out { transition: opacity 900ms ease; opacity: 0; -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 0, transparent 30%, #000 70%); mask-image: radial-gradient(circle at 50% 50%, transparent 0, transparent 30%, #000 70%); }
-  html > .ink.is-out b { transition: none; }
-
+/* The way into a case from the work page (see work/index.astro): the flat
+   shape behind the object grows until it fills the screen. It lives on
+   <html>, outside <body>, so it outlasts the page swap; the case clears it
+   (work/[slug].astro). Its styles live here so the case page has them too. */
+html > .ink { position: fixed; inset: 0; z-index: 1000; pointer-events: none; overflow: hidden; }
+html > .ink svg {
+  position: absolute; left: var(--x); top: var(--y); width: var(--w); height: calc(var(--w) * 0.5); translate: -50% -50%;
+  fill: var(--c); overflow: visible; rotate: -4deg; scale: 1; transition: scale 760ms cubic-bezier(.65,0,.35,1);
+}
+html > .ink::after { content: ''; position: absolute; inset: 0; background: var(--c); opacity: 0; transition: opacity 120ms linear 640ms; }
+html > .ink.is-in svg { scale: 16; }
+html > .ink.is-in::after { opacity: 1; }
+/* clearing: the colour shrinks back into its shape, then the shape goes */
+html > .ink.is-out::after { opacity: 0; transition: opacity 80ms linear; }
+html > .ink.is-out svg { scale: 0; transition: scale 650ms cubic-bezier(.65,0,.35,1); }
+html > .ink.is-fade { opacity: 0; transition: opacity 450ms ease; }

@@ -8,7 +8,9 @@ lead: A fully digital cockpit for an electric sports car.
 intro: A concept for the driver display of an electric sports car. **No analog parts**, everything readable at a glance, and a bold, sporty identity built from the shape of the dashboard itself.
 teaser: HMI automotive infotainment for driving experiences.
 cover: /images/f/work/cover-hmi.png
+object: /images/objects/hmi.webp
 hero: /images/f/hmi/amb-city.mp4
+introVideo: /images/f/hmi/mood.mp4
 heroStyle: cover
 heroBg: '#0B1620'
 heroLabel: hmi display

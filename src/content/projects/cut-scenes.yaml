@@ -10,7 +10,9 @@ heroStyle: cover
 nextLabel: cut scenes
 teaser: Film stills cut into puzzles, made to gift.
 cover: /images/projects/cut-scenes/desktop-recipient.jpg
+object: /images/objects/cut-scenes.webp
 hero: /images/projects/cut-scenes/hero.mp4
+introVideo: /images/projects/cut-scenes/intro.mp4
 heroLabel: cut scenes
 meta:
 - label: Year

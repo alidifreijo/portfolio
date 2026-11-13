@@ -1,0 +1,24 @@
+title: cutouts
+kind: exploration
+status: published
+order: 11
+accent: mat
+lead: Analog collages. Make your own mess.
+display: '**cut**outs'
+intro: '**Cut. Glue. No undo.** Analog collages made from magazines, maps and scraps, and a place to make your own mess. [DRAFT: the full case is still to come.]'
+heroStyle: cover
+heroBg: '#2B6A4D'
+teaser: Analog collages. Make your own mess.
+cover: /images/projects/cutouts/intro.poster.jpg
+object: /images/objects/cutouts.webp
+hero: /images/projects/cutouts/intro.mp4
+introVideo: /images/projects/cutouts/intro.mp4
+heroLabel: cutouts
+meta:
+- label: Year
+  value: '2026'
+- label: Project
+  value: Personal exploration
+- label: Role
+  value: Collage, design
+blocks: []

@@ -188,6 +188,8 @@ export default config({
         teaser: fields.text({ label: 'Teaser', description: 'One line for cards and the Next block.' }),
         cover: media('Cover (cards)', 'Vertical-friendly image, used on the work page and in Next.'),
         hero: media('Hero (left panel)', 'Image or video. Fills the sticky left panel.'),
+        object: media('Object (work page)', 'A cut-out with a transparent background (PNG/WebP): the case as an object on the work page.'),
+        introVideo: media('Intro video', 'Plays full screen when the case opens; scrolling sends it to the left panel.'),
         heroLabel: fields.text({ label: 'Hero label', description: 'Text in the black corner tab.' }),
         heroStyle: fields.select({ label: 'Hero style', options: [{ label: 'Fill the panel', value: 'cover' }, { label: 'Centred on a colour', value: 'contain' }, { label: 'Video inside a phone', value: 'phone' }], defaultValue: 'cover' }),
         heroBg: fields.text({ label: 'Hero background colour', description: 'Hex, e.g. #103429' }),

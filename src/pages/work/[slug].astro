@@ -56,6 +56,15 @@ const allChapters = (d.blocks || []).filter((b: any) => b.discriminant === 'chap
       </div>
     </div>
   </div>
+  {d.introVideo && (
+    <div class="intro" data-intro style={accentVars(d.accent)} role="dialog" aria-label={`${d.title}: intro film`}>
+      <video src={d.introVideo} muted playsinline autoplay preload="auto"></video>
+      <div class="intro__bar">
+        <p class="intro__name" set:html={d.display ? d.display.replace(/\*\*(.+?)\*\*/g, '<em>$1</em>') : d.title} />
+        <button class="intro__skip" type="button" data-intro-skip>Scroll or skip <span aria-hidden="true">↓</span></button>
+      </div>
+    </div>
+  )}
 </Base>
 
 <script>
@@ -86,6 +95,46 @@ const allChapters = (d.blocks || []).filter((b: any) => b.discriminant === 'chap
     pick();
   }
   initChapters();
+
+  // Intro film: on cases that have one it plays full screen when the case
+  // opens. Scrolling (or skip, or the end of the film) sends it into the left
+  // panel, where the case carries on. Also clears the colour we came in with.
+  function initIntro() {
+    const ink = document.querySelector<HTMLElement>('html > .ink');
+    const intro = document.querySelector<HTMLElement>('[data-intro]');
+    const clearInk = () => { if (!ink) return; if (intro) { ink.classList.add('is-fade'); } else { ink.classList.add('is-out'); } setTimeout(() => ink.remove(), 800); };
+    if (!intro || intro.dataset.ready) { setTimeout(clearInk, 150); return; }
+    intro.dataset.ready = '1';
+    const v = intro.querySelector('video')!;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.documentElement.classList.add('intro-on');
+    scrollTo(0, 0);
+    v.play().catch(() => {});
+    setTimeout(clearInk, 250);
+    let done = false;
+    const dismiss = () => {
+      if (done) return; done = true;
+      removeEventListener('wheel', onWheel); removeEventListener('touchmove', dismiss); removeEventListener('keydown', onKey);
+      const left = document.querySelector<HTMLElement>('.project__left');
+      const r = left?.getBoundingClientRect();
+      document.documentElement.classList.remove('intro-on');
+      if (reduce || !r) { intro.remove(); return; }
+      // shrink into the left panel
+      intro.style.clipPath = `inset(${r.top}px ${innerWidth - r.right}px ${innerHeight - r.bottom}px ${r.left}px round 12px)`;
+      intro.classList.add('is-going');
+      setTimeout(() => { intro.classList.add('is-gone'); setTimeout(() => intro.remove(), 500); }, 750);
+    };
+    const onWheel = (e: WheelEvent) => { if (e.deltaY > 4) dismiss(); };
+    const onKey = (e: KeyboardEvent) => { if (['ArrowDown', 'PageDown', ' ', 'Escape', 'Enter'].includes(e.key)) { e.preventDefault(); dismiss(); } };
+    addEventListener('wheel', onWheel, { passive: true });
+    addEventListener('touchmove', dismiss, { passive: true });
+    addEventListener('keydown', onKey);
+    intro.querySelector('[data-intro-skip]')!.addEventListener('click', dismiss);
+    v.addEventListener('ended', dismiss);
+    intro.querySelector<HTMLElement>('[data-intro-skip]')!.focus({ preventScroll: true });
+  }
+  initIntro();
+  document.addEventListener('astro:page-load', initIntro);
   document.addEventListener('astro:page-load', initChapters);
 </script>
 
@@ -113,4 +162,19 @@ const allChapters = (d.blocks || []).filter((b: any) => b.discriminant === 'chap
     .project__title { top: 0; }
     .project__blocks :global(.chap) { scroll-margin-top: 150px; }
   }
+  /* the intro film, full screen until you scroll */
+  .intro { position: fixed; inset: 0; z-index: 900; background: var(--acc); clip-path: inset(0 0 0 0 round 0px); transition: clip-path 750ms cubic-bezier(.65,0,.35,1), opacity 450ms ease; }
+  .intro video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .intro.is-gone { opacity: 0; }
+  .intro__bar { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; padding: 20px 24px; transition: opacity 300ms; }
+  .intro.is-going .intro__bar { opacity: 0; }
+  .intro__name { margin: 0; font-family: var(--font-serif); font-size: clamp(40px, 4vw, 72px); line-height: 0.9; letter-spacing: -0.03em; color: var(--paper); mix-blend-mode: difference; }
+  .intro__name :global(em) { font-style: italic; }
+  .intro__skip {
+    all: unset; cursor: pointer; box-sizing: border-box; min-height: 44px; padding: 0 18px; border-radius: 22px; display: inline-flex; align-items: center; gap: 8px;
+    background: var(--paper); color: #070707; font-family: var(--font-body); font-size: var(--fs-print);
+  }
+  .intro__skip:hover { background: #070707; color: var(--paper); }
+  .intro__skip:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
+  :global(html.intro-on) { overflow: hidden; }
 </style>
