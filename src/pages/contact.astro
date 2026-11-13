@@ -1,43 +1,98 @@
 ---
+/**
+ * Contact · v2. Two paper cards on the frame: "let's talk" (a few lines and
+ * the channels, one per row) and "let's play" (the crossword).
+ */
 import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
 import Crossword from '../components/Crossword.astro';
-import Button from '../components/Button.astro';
 import { getEntry } from 'astro:content';
 import { rich } from '../lib/utils';
-const c = (await getEntry('pages', 'contact'))!.data;
+const c = (await getEntry('pages', 'contact'))!.data as any;
+// "let’s talk" → "let’s" + "talk", the second word in italics
+const split = (t: string) => { const i = t.lastIndexOf(' '); return i > 0 ? [t.slice(0, i), t.slice(i + 1)] : ['', t]; };
+const [t1, t2] = split(c.talkTitle);
+const [p1, p2] = split(c.playTitle);
+const channels = [
+  ...c.links.map((l: any) => ({
+    label: l.label,
+    href: l.url,
+    value: l.url.startsWith('mailto:') ? l.url.replace('mailto:', '') : l.url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''),
+    ext: !l.url.startsWith('mailto:'),
+  })),
+  { label: 'CV', href: c.cv, value: 'Download the PDF', download: true },
+];
 ---
-<Base title="contact">
-  <div class="contact" style="--acc: var(--acc-cyan); --on-acc: var(--on-cyan)">
-    <section class="contact__play">
-      <header class="contact__head">
-        <h1 class="t-display">{c.playTitle}</h1>
-        <button class="resolve press" type="button" onclick="document.dispatchEvent(new Event('crossword:resolve'))">Resolve</button>
+<Base title="contact" nav={false}>
+  <SiteHeader />
+  <div class="ct2">
+    <section class="ct2__card ct2__talk" aria-labelledby="talk-h">
+      <h1 class="ct2__h" id="talk-h">{t1} <em>{t2}</em>.</h1>
+      <div class="ct2__body" set:html={rich(c.body)} />
+      <ul class="ct2__ch">
+        {channels.map((ch) => (
+          <li>
+            <a href={ch.href} class="ct2__row" target={ch.ext ? '_blank' : undefined} rel={ch.ext ? 'noopener' : undefined} download={ch.download ? '' : undefined}>
+              <span class="ct2__lab">{ch.label}</span>
+              <span class="ct2__val">{ch.value}</span>
+              <span class="ct2__arr" aria-hidden="true">{ch.download ? '↓' : '↗'}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="ct2__card ct2__play" aria-labelledby="play-h">
+      <header class="ct2__playhead">
+        <h2 class="ct2__h ct2__h--s" id="play-h">{p1} <em>{p2}</em>.</h2>
+        <button class="ct2__btn" type="button" onclick="document.dispatchEvent(new Event('crossword:resolve'))">Resolve</button>
       </header>
       <Crossword clues={c.clues} />
     </section>
-    <aside class="contact__talk">
-      <div class="talk">
-        <h2 class="t-display">{c.talkTitle}</h2>
-        <div class="t-body rich" set:html={rich(c.body)} />
-      </div>
-      <Button href={c.cv} variant="tile" icon="download" download>Download CV</Button>
-      {c.links.map((l: any) => <Button href={l.url} variant="tile" icon={l.icon}>{l.label}</Button>)}
-    </aside>
   </div>
 </Base>
 
 <style>
-  .contact { display: grid; grid-template-columns: minmax(0, 3fr) minmax(280px, 1fr); gap: var(--s-2); min-height: calc(100vh - var(--frame) * 2); }
-  .contact__play { background: var(--paper); border-radius: var(--r-md); padding: var(--s-8) var(--s-6) var(--s-6); display: flex; flex-direction: column; gap: var(--s-6); }
-  .contact__head { display: flex; justify-content: space-between; align-items: center; gap: var(--s-4); }
-  .resolve { border: 0; cursor: pointer; background: var(--ink); color: var(--paper); border-radius: var(--r-pill); padding: 12px var(--s-5); font-family: var(--font-body); font-weight: 700; font-size: var(--fs-label); }
-  .resolve:hover { background: var(--brand); }
-  .contact__talk { display: flex; flex-direction: column; gap: var(--s-2); }
-  .talk { flex: 1; background: var(--acc); color: var(--on-acc); border-radius: var(--r-md); padding: var(--s-8) var(--s-5) var(--s-5); display: flex; flex-direction: column; gap: var(--s-5); }
-  @media (max-width: 900px) {
-    .contact { grid-template-columns: 1fr; }
-    .contact__talk { order: -1; }
-    .contact__play { padding: var(--s-6) var(--s-4); }
-    .talk { padding-top: 72px; }
+  .ct2 { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 12px; min-height: calc(100svh - 140px); }
+  .ct2__card { background: var(--paper); color: #070707; border-radius: var(--r-md); padding: 28px; box-sizing: border-box; min-width: 0; }
+  .ct2__talk { display: flex; flex-direction: column; gap: 28px; }
+  .ct2__h { margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: clamp(64px, 7.4vw, 140px); line-height: 0.85; letter-spacing: -0.035em; }
+  .ct2__h em { font-style: italic; }
+  .ct2__h--s { font-size: clamp(44px, 4.4vw, 84px); }
+  .ct2__body { font-family: var(--font-body); font-size: clamp(15px, 1.1vw, 18px); line-height: 1.55; color: #2b2925; max-width: 46ch; }
+  .ct2__body :global(p + p) { margin-top: 0.7em; }
+  .ct2__body :global(strong) { font-weight: 500; color: #070707; }
+
+  /* channels: one per row; hovering one dims the rest */
+  .ct2__ch { list-style: none; margin: auto 0 0; padding: 0; }
+  .ct2__row {
+    display: grid; grid-template-columns: 7em minmax(0, 1fr) 24px; align-items: baseline; gap: 12px;
+    padding: 14px 0; border-top: 1px solid #b9b5ae; text-decoration: none; color: #070707;
+    transition: opacity 240ms var(--ease-out), padding 240ms var(--ease-out);
+  }
+  .ct2__ch li:last-child .ct2__row { border-bottom: 1px solid #b9b5ae; }
+  .ct2__ch:has(.ct2__row:hover) .ct2__row:not(:hover) { opacity: 0.4; }
+  .ct2__row:hover { padding-left: 8px; }
+  .ct2__row:focus-visible { outline: 2px solid #070707; outline-offset: 2px; }
+  .ct2__lab { font-family: var(--font-body); font-size: var(--fs-print); color: #57534d; }
+  .ct2__val { font-family: var(--font-display); font-weight: 500; text-transform: uppercase; font-size: clamp(16px, 1.35vw, 23px); line-height: 1.15; overflow-wrap: anywhere; }
+  .ct2__arr { justify-self: end; font-size: 18px; }
+
+  .ct2__play { display: flex; flex-direction: column; gap: 24px; }
+  .ct2__playhead { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; }
+  .ct2__btn {
+    all: unset; cursor: pointer; min-height: 44px; padding: 0 20px; border-radius: 22px; border: 1px solid #070707; box-sizing: border-box; display: inline-flex; align-items: center;
+    font-family: var(--font-body); font-size: var(--fs-print); color: #070707; transition: background 200ms, color 200ms;
+  }
+  .ct2__btn:hover, .ct2__btn:focus-visible { background: #070707; color: var(--paper); }
+  .ct2__btn:focus-visible { outline: 2px solid #070707; outline-offset: 3px; }
+
+  @media (max-width: 1099px) { .ct2 { grid-template-columns: 1fr; } .ct2__ch { margin-top: 8px; } }
+  @media (max-width: 809px) {
+    .ct2__card { padding: 20px 16px; }
+    .ct2__row { grid-template-columns: 1fr 24px; row-gap: 2px; }
+    .ct2__lab { grid-column: 1; }
+    .ct2__val { grid-column: 1; }
+    .ct2__arr { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
   }
 </style>

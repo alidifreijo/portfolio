@@ -314,8 +314,8 @@ const { blocks = [] } = Astro.props;
   /* Chapters, films and the live display */
   .chap { padding: var(--s-6) 0 var(--s-2); border-top: 1px solid rgba(212, 209, 203, 0.14); display: grid; grid-template-columns: 56px minmax(0, 1fr); column-gap: var(--s-3); row-gap: var(--s-1); }
   .chap:first-child { border-top: 0; padding-top: var(--s-2); }
-  .chap__n { grid-row: span 2; color: var(--acc); font-weight: 700; padding-top: 6px; }
-  .chap__t { color: var(--on-chrome); margin: 0; }
+  .chap__n { grid-row: span 2; color: var(--acc); font-family: var(--font-serif); font-size: 44px; line-height: 0.9; letter-spacing: -0.03em; }
+  .chap__t { color: var(--on-chrome); margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: clamp(36px, 3.2vw, 56px); line-height: 0.95; letter-spacing: -0.025em; }
   .chap__l { color: var(--on-chrome); opacity: 0.7; max-width: 52ch; margin: 0; }
   .film { position: relative; margin: 0; aspect-ratio: 16 / 9; border-radius: var(--r-md); overflow: hidden; background: var(--bg); }
   .film video { width: 100%; height: 100%; object-fit: cover; display: block; }

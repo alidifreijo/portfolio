@@ -6,6 +6,7 @@
  * Change something here and every project changes with it.
  */
 import Base from '../../layouts/Base.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
 import ProjectHero from '../../components/project/ProjectHero.astro';
 import ProjectTitle from '../../components/project/ProjectTitle.astro';
 import ProjectNext from '../../components/project/ProjectNext.astro';
@@ -25,7 +26,8 @@ const n = next.data;
 // Chapters with their own left-panel media: the panel follows the reader.
 const chapters = (d.blocks || []).filter((b: any) => b.discriminant === 'chapter' && b.value?.hero).map((b: any) => b.value);
 ---
-<Base title={d.title} description={d.lead || d.teaser} image={d.cover}>
+<Base title={d.title} description={d.lead || d.teaser} image={d.cover} nav={false}>
+  <SiteHeader />
   <div class="project" style={accentVars(d.accent)}>
     <div class="project__left" data-chapters={chapters.length || undefined}>
       <div class="chlayer is-on" data-for="0">
@@ -85,12 +87,11 @@ const chapters = (d.blocks || []).filter((b: any) => b.discriminant === 'chapter
   .chlayer { position: absolute; inset: 0; opacity: 0; transition: opacity 0.7s var(--ease-out); pointer-events: none; }
   .chlayer.is-on { opacity: 1; pointer-events: auto; }
   .project__left:not([data-chapters]) .chlayer { position: relative; height: 100%; opacity: 1; }
-  .project__title { position: sticky; top: 0; z-index: 5; background: var(--chrome); margin-top: calc(var(--frame) * -1); padding: var(--frame) 0 var(--s-3); }
+  .project__title { padding: 0 0 var(--s-2); }
   .project__blocks { display: flex; flex-direction: column; gap: var(--s-2); margin-top: 6px; }
   @media (max-width: 1199px) {
     .project { grid-template-columns: 1fr; }
     .project__left { position: relative; top: 0; height: min(72vh, 640px); }
-    .project__title { position: relative; top: 0; margin-top: 0; padding: 0 0 var(--s-2); }
     .project__blocks { margin-top: 0; }
   }
 </style>
