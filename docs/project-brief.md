@@ -69,7 +69,7 @@
 
 El portfolio estaba en **Framer** (alidadiazdefreijo.framer.website). Lo ha pasado a **código propio** por cuatro motivos:
 1. Tener el control, sin depender de una plataforma ni de un plugin que dejó de conectar.
-2. Poder hacer cosas que en Framer no se pueden: el hmi en vivo, la física de las caras, el crucigrama, el chat de Contact y la entrada a los casos con vídeo.
+2. Poder hacer cosas que en Framer no se pueden: la física de las caras, el crucigrama, el chat de Contact y la entrada a los casos con vídeo.
 3. Que el portfolio sea en sí una muestra de cómo trabaja: diseño, dirección y construcción con IA.
 4. Poder editar el contenido ella misma desde un panel visual (Keystatic), sin depender de nadie.
 
@@ -169,7 +169,10 @@ El portfolio estaba en **Framer** (alidadiazdefreijo.framer.website). Lo ha pasa
 
 ## 7. Proyectos: qué entra de verdad
 
-> **Estado: por decidir.** La lista definitiva la cierra Ali. Esta sección es el inventario completo, para decidir con todo delante.
+> **Estado (16 nov 2026):**
+> - **Entran:** Cut Scenes, cutouts, Silena (con el contenido por preparar), Cupra y Monexa.
+> - **Fuera de momento:** el hmi. Su caso sigue en el repo como borrador.
+> - **Pendiente de confirmar:** South, propuesta fuera.
 
 ### 7.1 Criterio para que un proyecto entre
 
@@ -192,35 +195,23 @@ Si no cumple ninguna, se queda fuera. Si dos casos cuentan lo mismo, entra solo 
 
 **Trabajo profesional.**
 
-| Proyecto | Qué es | Dónde está la información | Propuesta |
+| Proyecto | Qué es | Dónde está la información | Decisión |
 |---|---|---|---|
-| **Cupra** (North) | Trabajo de cliente real. Bajo NDA | `src/content/projects/cupra.yaml` y la página del portfolio de Framer. Solo material ya publicado | **Entra**, reescrito como caso de rol y proceso: qué equipo coordinaba, cómo presentaba al cliente y qué decidía. Sin material nuevo |
+| **Cupra** (North) | Trabajo de cliente real, bajo NDA | `src/content/projects/cupra.yaml` y la página del portfolio de Framer. Solo material ya publicado | **Entra**, reescrito como caso de rol y proceso: qué equipo coordinaba, cómo presentaba al cliente y qué decidía. Sin material nuevo |
+| **Monexa** (North, bank platform) | Propuesta hecha para ganar proyectos nuevos de CaixaBank: Acadexa, una app para gestionar dinero, y su versión desktop, donde Exa, el bot rosa, guía al usuario | `src/content/projects/bank-platform.yaml` y el canvas de propuestas | **Entra.** Es lo único que enseña pensamiento de sistema, diseño de IA y saber vender una idea a cliente. `[PENDIENTE]` ¿Se puede enseñar todo? ¿Se ganó el proyecto? |
 | **Roche** (Garaje de Ideas) | Design system y producto regulado | No hay material; todo es confidencial | **Idea.** Caso corto de texto sobre cómo trabaja (migración de tokens, gobernanza, IA), sin pantallas. Solo si a Ali le apetece contarlo |
 
-**Concepts.**
+**Fuera.**
 
-| Proyecto | Qué es | Dónde está la información | Propuesta |
+| Proyecto | Qué es | Dónde está | Decisión |
 |---|---|---|---|
-| **Monexa** (bank platform) | Acadexa, una app para gestionar dinero, y su versión desktop, donde Exa, el bot rosa, guía al usuario | `src/content/projects/bank-platform.yaml` y el canvas de propuestas | **Probablemente entra.** Es lo único que enseña pensamiento de sistema y diseño de IA. `[PENDIENTE]` ¿Fue proyecto real o concept? |
-| **hmi display** | Concept de cockpit digital con el hmi animado en vivo | `src/content/projects/hmi.yaml` y `public/images/f/hmi/` | **En duda** (ver §7.3) |
-| **South** (fintech app) | App fintech | `src/content/projects/fintech.yaml` | **Fuera.** Se pisa con Monexa |
+| **hmi display** | Concept de cockpit digital con el hmi animado en vivo | `src/content/projects/hmi.yaml` (en `draft`) y `public/images/f/hmi/` | **Fuera de momento.** Al lado de tres webs reales hechas desde cero, un concept pesa menos y no cuenta nada nuevo. Se puede recuperar más adelante como pieza corta (un vídeo y dos líneas) |
+| **South** (fintech app) | App fintech | `src/content/projects/fintech.yaml` | **Propuesta: fuera.** Se pisa con Monexa. `[PENDIENTE]` Que Ali lo confirme |
 
-### 7.3 La duda del hmi
-
-Ali lo duda porque «las webs que hemos montado son desde cero y reales». Tiene razón: al lado de tres webs publicadas, un concept de cockpit pesa menos.
-
-Lo que aporta: es lo más vistoso a nivel visual y es el único caso de interfaz de producto en pantalla grande. Lo que resta: es un concept, compite con las webs por la atención y no cuenta nada que las webs no cuenten ya.
-
-**Opciones:**
-1. **Fuera.** La lista queda más limpia y más honesta.
-2. **Pieza corta.** Un vídeo y dos líneas, sin capítulos, en una sección tipo «Lab» o al final de Work.
-3. **Se queda como caso completo**, tal y como está.
-
-**Recomendación:** la opción 1 o la 2. Con la 3 hay demasiados casos y el portfolio pierde foco.
-
-### 7.4 Cómo se ordena la información de cada caso
+### 7.3 Cómo se ordena la información de cada caso
 
 **Webs propias** (Cut Scenes, cutouts, Silena). Lo primero es que se pueda probar.
+Silena aún no tiene caso: se monta con esta misma estructura.
 1. **Qué es**, en una línea, con el **enlace en vivo** bien visible.
 2. **El vídeo de intro**: el tráiler o el reel.
 3. **Por qué existe**: de dónde sale la idea y para quién es.
@@ -234,22 +225,22 @@ Lo que aporta: es lo más vistoso a nivel visual y es el único caso de interfaz
 3. El proceso: cómo trabajaba, cómo presentaba y qué cambió gracias a ella.
 4. El resultado, con lo que se pueda contar.
 
-**Concepts** (Monexa y, si entra, el hmi).
-1. La pregunta que intentaba responder.
-2. El sistema: las piezas y cómo se relacionan.
-3. Los detalles visuales que lo hacen suyo.
-4. Corto. Un concept no necesita la misma extensión que un caso real.
+**Propuesta a cliente** (Monexa). Lo primero es el reto: había que convencer a CaixaBank.
+1. **El reto**: ganar proyectos nuevos, y qué tenía que demostrar la propuesta.
+2. **La idea**: Acadexa, Exa y por qué un asistente.
+3. **El sistema**: app y desktop, y qué ve el asistente frente a lo que ve el usuario (el amarillo).
+4. **Los detalles visuales** que la hacen suya.
+5. **Qué pasó**: si se ganó o qué se llevó el cliente. Solo si se puede contar.
 
-### 7.5 Orden propuesto en Work
+### 7.4 Orden propuesto en Work
 
 1. Cut Scenes
 2. cutouts
-3. Silena
-4. Cupra
-5. Monexa
-6. hmi, si entra
+3. Silena, cuando tenga el caso
+4. Monexa
+5. Cupra
 
-`[PENDIENTE]` Ali decide la lista final y el orden.
+`[PENDIENTE]` Ali confirma el orden.
 
 ---
 
@@ -279,9 +270,9 @@ Lo que aporta: es lo más vistoso a nivel visual y es el único caso de interfaz
 2. **Corregir incoherencias:**
    - Cupra dice «2023 – Today», pero North termina en 2026;
    - «Teaches UI» no aparece en Learn & teach.
-3. **Cerrar la lista de proyectos** (ver §7): el hmi, South y si Monexa fue real o concept.
+3. **Preparar el caso de Silena** y confirmar South (ver §7).
 4. **Reescribir Cupra** como caso de rol y proceso.
 5. **Objetos recortados definitivos.** Los actuales son borradores y Ali los hará en Figma.
-6. **Capítulos para los demás casos** (contexto → proceso → resultado), como el hmi.
+6. **Capítulos para los demás casos**, con el formato de capítulos que ya tiene el hmi y la estructura de §7.3.
 7. **Contact en móvil:** la cara tapa parte de las pistas.
-8. **Datos por confirmar:** años y rol del hmi, y la lista de clientes.
+8. **Datos por confirmar:** qué se puede enseñar de Monexa y la lista de clientes.

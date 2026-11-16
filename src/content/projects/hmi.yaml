@@ -1,6 +1,6 @@
 title: hmi display
 kind: client
-status: published
+status: draft
 order: 4
 accent: sky
 display: '**hmi** display'
