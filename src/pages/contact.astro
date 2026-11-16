@@ -139,11 +139,9 @@ const B = BUBBLES['bucket-hat'];
 
   /* the crossword in the middle, the clues underneath */
   .ct3__cw { flex: 1; display: flex; }
-  .ct3__cw :global(.cw) { flex: 1; justify-content: center; gap: clamp(28px, 3vw, 48px); }
-  .ct3__cw :global(.cw__grid) { --cell: min(calc(100cqw / var(--cols)), 54px); }
+  .ct3__cw :global(.cw) { flex: 1; justify-content: center; gap: clamp(28px, 3vw, 48px); --cw-max: 54px; }
   .ct3__cw :global(.cw__foot) { padding-right: 170px; }
   .ct3__cw :global(.cw__clues) { columns: 4 230px; }
-  .ct3__cw :global(.cw__clues li) { font-size: clamp(15px, 1.05vw, 17px); }
 
   /* the talking head, bottom right */
   .talk { position: absolute; right: 22px; bottom: 18px; z-index: 5; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }

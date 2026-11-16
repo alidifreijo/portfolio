@@ -1,144 +1,241 @@
 ---
 /**
- * Crossword · eight clues that sum me up.
- * Grid and answers live in src/data/crossword.json; clue texts come from
- * the contact page content (editable in Keystatic).
+ * Crossword · eight clues that sum me up. Rebuilt from scratch (v2).
+ * Grid and answers: src/data/crossword.json. Clue texts: contact page
+ * content (Keystatic), in the same order as the words.
+ *
+ * Lines: every cell draws only its right and bottom edge, plus its top/left
+ * edge when nothing sits above/left of it. So shared edges are drawn once,
+ * never twice, and the cell size is rounded to whole pixels: all lines come
+ * out the same weight, no thick/thin mix.
+ *
+ * Cell states: (none) · in the active word · cursor · solved word ·
+ * revealed by "Resolve". Each clue shows the same: active / solved.
+ * Keyboard: type to fill and advance; Backspace clears and goes back;
+ * arrows move (and turn the direction); Tab / Shift+Tab jump between words;
+ * Space or a second click on a crossing turns the direction.
  */
 import data from '../data/crossword.json';
 interface Props { clues: string[] }
 const { clues } = Astro.props;
 
-type Cell = { x: number; y: number; n?: number; a: string; words: number[] };
+type W = { number: number; word: string; direction: 'across' | 'down'; x: number; y: number };
+const words = data.words as W[];
+type Cell = { x: number; y: number; a: string; n?: number; across?: number; down?: number };
 const map = new Map<string, Cell>();
-data.words.forEach((w, wi) => {
+words.forEach((w, wi) => {
   [...w.word].forEach((ch, i) => {
     const x = w.direction === 'across' ? w.x + i : w.x;
     const y = w.direction === 'down' ? w.y + i : w.y;
     const k = `${x},${y}`;
-    const c = map.get(k) ?? { x, y, a: ch, words: [] };
-    c.words.push(wi);
+    const c = map.get(k) ?? { x, y, a: ch };
+    c[w.direction] = wi;
     if (i === 0) c.n = w.number;
     map.set(k, c);
   });
 });
-const cells = [...map.values()];
+const cells = [...map.values()].sort((p, q) => p.y - q.y || p.x - q.x);
+const has = (x: number, y: number) => map.has(`${x},${y}`);
 const cols = Math.max(...cells.map((c) => c.x)) + 1;
 const rows = Math.max(...cells.map((c) => c.y)) + 1;
 ---
-<div class="cw" data-cw data-words={JSON.stringify(data.words)}>
-  <div class="cw__grid" style={`--cols:${cols};--rows:${rows}`} role="grid" aria-label="Crossword">
-    {cells.map((c) => (
-      <label class="cw__cell" style={`grid-column:${c.x + 1};grid-row:${c.y + 1}`} data-x={c.x} data-y={c.y} data-a={c.a} data-words={c.words.join(',')}>
-        {c.n && <span class="cw__n">{c.n}</span>}
-        <input maxlength="1" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label={`Row ${c.y + 1}, column ${c.x + 1}`} />
-      </label>
-    ))}
+<div class="cw" data-cw data-words={JSON.stringify(words)}>
+  <div class="cw__scroll">
+    <div class="cw__grid" style={`--cols:${cols};--rows:${rows}`} role="group" aria-label="Crossword grid">
+      {cells.map((c) => (
+        <div
+          class:list={['cw__c', { 'cw__c--t': !has(c.x, c.y - 1), 'cw__c--l': !has(c.x - 1, c.y) }]}
+          style={`grid-column:${c.x + 1};grid-row:${c.y + 1}`}
+          data-x={c.x} data-y={c.y} data-a={c.a}
+          data-across={c.across ?? ''} data-down={c.down ?? ''}
+        >
+          {c.n && <span class="cw__n" aria-hidden="true">{c.n}</span>}
+          <input
+            type="text" inputmode="text" maxlength="2" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"
+            aria-label={`${c.across != null ? `${words[c.across].number} across` : ''}${c.across != null && c.down != null ? ', ' : ''}${c.down != null ? `${words[c.down].number} down` : ''}, letter`}
+          />
+        </div>
+      ))}
+    </div>
   </div>
   <div class="cw__foot">
-    <p class="t-eyebrow">Clues</p>
+    <p class="cw__lab">Clues</p>
     <ol class="cw__clues">
-      {clues.map((c, i) => (
-        <li data-clue={i}><span class="cw__cn">{String(i + 1).padStart(2, '0')}</span> <span>{c}</span> <em class="t-small">{data.words[i]?.direction}</em></li>
+      {clues.map((t, i) => words[i] && (
+        <li><button type="button" class="cw__clue" data-clue={i}>
+          <span class="cw__cn">{String(words[i].number).padStart(2, '0')}</span>
+          <span class="cw__ct">{t}</span>
+          <span class="cw__cd">{words[i].direction}</span>
+        </button></li>
       ))}
     </ol>
+    <p class="cw__done" aria-live="polite" data-done></p>
   </div>
 </div>
 
 <script>
+  type W = { number: number; word: string; direction: 'across' | 'down'; x: number; y: number };
+  type Dir = 'across' | 'down';
+
   function initCrossword() {
-  document.querySelectorAll<HTMLElement>('[data-cw]').forEach((root) => {
-    const words: { number: number; word: string; direction: string; x: number; y: number }[] = JSON.parse(root.dataset.words!);
-    const cells = [...root.querySelectorAll<HTMLElement>('.cw__cell')];
-    const at = (x: number, y: number) => cells.find((c) => +c.dataset.x! === x && +c.dataset.y! === y);
-    let dir: 'across' | 'down' = 'across';
-    let active = -1;
+    document.querySelectorAll<HTMLElement>('[data-cw]').forEach((root) => {
+      if (root.dataset.ready) return; root.dataset.ready = '1';
+      const words: W[] = JSON.parse(root.dataset.words!);
+      const cells = [...root.querySelectorAll<HTMLElement>('.cw__c')];
+      const byPos = new Map(cells.map((c) => [`${c.dataset.x},${c.dataset.y}`, c]));
+      const at = (x: number, y: number) => byPos.get(`${x},${y}`);
+      const inp = (c: HTMLElement) => c.querySelector('input')!;
+      const pos = (c: HTMLElement) => [+c.dataset.x!, +c.dataset.y!];
+      const wordOf = (c: HTMLElement, d: Dir) => (c.dataset[d] === '' ? -1 : +c.dataset[d]!);
+      const cellsOf = (wi: number) => { const w = words[wi]; return [...w.word].map((_, i) => at(w.direction === 'across' ? w.x + i : w.x, w.direction === 'down' ? w.y + i : w.y)!); };
+      const clues = [...root.querySelectorAll<HTMLButtonElement>('[data-clue]')];
+      const done = root.querySelector<HTMLElement>('[data-done]')!;
+      let dir: Dir = 'across', word = -1, cur: HTMLElement | null = null;
 
-    const cellsOf = (wi: number) => {
-      const w = words[wi];
-      return [...w.word].map((_, i) => at(w.direction === 'across' ? w.x + i : w.x, w.direction === 'down' ? w.y + i : w.y)!);
-    };
-    const highlight = (wi: number) => {
-      active = wi;
-      cells.forEach((c) => c.classList.remove('is-word'));
-      root.querySelectorAll('[data-clue]').forEach((l) => l.classList.toggle('is-on', +(l as HTMLElement).dataset.clue! === wi));
-      if (wi >= 0) cellsOf(wi).forEach((c) => c.classList.add('is-word'));
-    };
-    const check = () => {
-      words.forEach((_, wi) => {
-        const cs = cellsOf(wi);
-        const ok = cs.every((c) => c.querySelector('input')!.value.toUpperCase() === c.dataset.a);
-        cs.forEach((c) => c.classList.toggle(`ok-${wi}`, ok));
-      });
-      cells.forEach((c) => c.classList.toggle('is-ok', [...c.classList].some((k) => k.startsWith('ok-'))));
-      if (cells.every((c) => c.classList.contains('is-ok'))) root.classList.add('is-solved');
-    };
-    const wordFor = (cell: HTMLElement) => {
-      const ws = cell.dataset.words!.split(',').map(Number);
-      return ws.find((w) => words[w].direction === dir) ?? ws[0];
-    };
-    const move = (cell: HTMLElement, step: number) => {
-      const wi = active >= 0 ? active : wordFor(cell);
-      const cs = cellsOf(wi);
-      const i = cs.indexOf(cell) + step;
-      if (i >= 0 && i < cs.length) cs[i].querySelector('input')!.focus();
-    };
-
-    cells.forEach((cell) => {
-      const input = cell.querySelector('input')!;
-      input.addEventListener('focus', () => {
-        const ws = cell.dataset.words!.split(',').map(Number);
-        if (!ws.includes(active)) { const w = wordFor(cell); dir = words[w].direction as any; highlight(w); }
-        input.select();
-      });
-      input.addEventListener('click', () => {
-        const ws = cell.dataset.words!.split(',').map(Number);
-        if (ws.length > 1) { const other = ws.find((w) => w !== active)!; dir = words[other].direction as any; highlight(other); }
-      });
-      input.addEventListener('input', () => {
-        input.value = input.value.slice(-1).toUpperCase();
+      // paint the states
+      const paint = () => {
+        const inWord = new Set(word >= 0 ? cellsOf(word) : []);
+        cells.forEach((c) => { c.classList.toggle('is-word', inWord.has(c)); c.classList.toggle('is-cur', c === cur); });
+        clues.forEach((b) => b.classList.toggle('is-on', +b.dataset.clue! === word));
+      };
+      const check = () => {
+        const solved = words.map((_, wi) => cellsOf(wi).every((c) => inp(c).value === c.dataset.a));
+        cells.forEach((c) => c.classList.toggle('is-ok', (['across', 'down'] as Dir[]).some((d) => wordOf(c, d) >= 0 && solved[wordOf(c, d)])));
+        clues.forEach((b) => b.classList.toggle('is-ok', solved[+b.dataset.clue!]));
+        const all = solved.every(Boolean);
+        root.classList.toggle('is-solved', all);
+        done.textContent = all ? (root.classList.contains('is-revealed') ? 'Solved (with a little help).' : 'All eight. We should definitely talk.') : '';
+      };
+      // put the cursor on a cell, in a direction (falls back to the one it has)
+      const go = (c: HTMLElement, d: Dir = dir, focus = true) => {
+        if (wordOf(c, d) < 0) d = d === 'across' ? 'down' : 'across';
+        dir = d; word = wordOf(c, d); cur = c;
+        paint();
+        if (focus && document.activeElement !== inp(c)) inp(c).focus({ preventScroll: false });
+      };
+      const step = (by: number) => {
+        if (!cur || word < 0) return;
+        const cs = cellsOf(word), i = cs.indexOf(cur) + by;
+        if (i >= 0 && i < cs.length) go(cs[i], dir);
+      };
+      const firstEmpty = (wi: number) => cellsOf(wi).find((c) => !inp(c).value) ?? cellsOf(wi)[0];
+      const jumpWord = (by: number) => {
+        const next = ((word < 0 ? 0 : word) + by + words.length) % words.length;
+        go(firstEmpty(next), words[next].direction);
+      };
+      const put = (c: HTMLElement, ch: string) => {
+        inp(c).value = ch; c.classList.remove('is-rev');
         check();
-        if (input.value) move(cell, 1);
+      };
+
+      cells.forEach((c) => {
+        const i = inp(c);
+        // a click on the cell you're on turns the direction (where two words cross)
+        i.addEventListener('pointerdown', (e) => {
+          if (cur === c && wordOf(c, dir === 'across' ? 'down' : 'across') >= 0) { e.preventDefault(); go(c, dir === 'across' ? 'down' : 'across'); }
+        });
+        i.addEventListener('focus', () => { if (cur !== c) go(c, dir, false); i.select(); });
+        i.addEventListener('blur', () => setTimeout(() => { if (!root.contains(document.activeElement)) { cur = null; paint(); } }, 0));
+        i.addEventListener('beforeinput', (e) => {
+          const ie = e as InputEvent;
+          if (ie.inputType.startsWith('insert') && ie.data) {
+            e.preventDefault();
+            const ch = ie.data.slice(-1).toUpperCase();
+            if (!/[A-ZÁÉÍÓÚÑ]/.test(ch)) return;
+            put(c, ch); step(1);
+          }
+        });
+        // fallback for keyboards that skip beforeinput (some Android IMEs)
+        i.addEventListener('input', () => {
+          const v = i.value.replace(/[^a-zA-ZáéíóúñÁÉÍÓÚÑ]/g, '').slice(-1).toUpperCase();
+          if (i.value !== v) { put(c, v); if (v) step(1); }
+        });
+        i.addEventListener('keydown', (e) => {
+          const k = e.key;
+          if (k === 'Backspace') {
+            e.preventDefault();
+            if (i.value) { put(c, ''); } else { step(-1); if (cur && cur !== c) put(cur, ''); }
+          } else if (k === 'Delete') { e.preventDefault(); put(c, ''); }
+          else if (k === ' ') { e.preventDefault(); go(c, dir === 'across' ? 'down' : 'across'); }
+          else if (k === 'Tab') { e.preventDefault(); jumpWord(e.shiftKey ? -1 : 1); }
+          else if (k === 'Enter') { e.preventDefault(); jumpWord(1); }
+          else if (k.startsWith('Arrow')) {
+            e.preventDefault();
+            const [dx, dy] = ({ ArrowRight: [1, 0], ArrowLeft: [-1, 0], ArrowDown: [0, 1], ArrowUp: [0, -1] } as Record<string, number[]>)[k];
+            const d: Dir = dx ? 'across' : 'down';
+            // first press along the other axis just turns the direction, if it can
+            if (d !== dir && wordOf(c, d) >= 0) { go(c, d); return; }
+            const [x, y] = pos(c);
+            const n = at(x + dx, y + dy);
+            if (n) go(n, d);
+          }
+        });
       });
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Backspace' && !input.value) { e.preventDefault(); move(cell, -1); }
-        const arrows: Record<string, [number, number]> = { ArrowRight: [1, 0], ArrowLeft: [-1, 0], ArrowDown: [0, 1], ArrowUp: [0, -1] };
-        if (arrows[e.key]) {
-          e.preventDefault();
-          const [dx, dy] = arrows[e.key];
-          const n = at(+cell.dataset.x! + dx, +cell.dataset.y! + dy);
-          if (n) { dir = dx ? 'across' : 'down'; active = -1; n.querySelector('input')!.focus(); }
-        }
+      clues.forEach((b) => b.addEventListener('click', () => { const wi = +b.dataset.clue!; go(firstEmpty(wi), words[wi].direction); }));
+      document.addEventListener('crossword:resolve', () => {
+        if (!root.isConnected) return;
+        root.classList.add('is-revealed');
+        const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        cells.forEach((c, n) => setTimeout(() => {
+          if (inp(c).value !== c.dataset.a) { inp(c).value = c.dataset.a!; c.classList.add('is-rev'); }
+          if (n === cells.length - 1) check();
+        }, reduce ? 0 : n * 16));
       });
     });
-    root.querySelectorAll<HTMLElement>('[data-clue]').forEach((li) => li.addEventListener('click', () => {
-      const wi = +li.dataset.clue!; dir = words[wi].direction as any; highlight(wi);
-      cellsOf(wi)[0].querySelector('input')!.focus();
-    }));
-    document.addEventListener('crossword:resolve', () => {
-      cells.forEach((c, i) => setTimeout(() => { c.querySelector('input')!.value = c.dataset.a!; check(); }, i * 18));
-    });
-  });
   }
   initCrossword();
   document.addEventListener('astro:page-load', initCrossword);
 </script>
 
 <style>
-  .cw { display: flex; flex-direction: column; gap: var(--s-6); height: 100%; }
-  .cw__grid { --cell: min(calc((100cqw) / var(--cols)), 44px); display: grid; grid-template-columns: repeat(var(--cols), var(--cell)); grid-template-rows: repeat(var(--rows), var(--cell)); justify-content: center; container-type: inline-size; }
-  .cw { container-type: inline-size; }
-  .cw__grid { --cell: min(calc(100cqw / var(--cols)), 46px); }
-  .cw__cell { position: relative; border: 1.5px solid var(--ink); margin: -0.75px; background: transparent; transition: background var(--dur-fast); }
-  .cw__cell.is-word { background: rgba(152, 231, 235, 0.45); }
-  .cw__cell.is-ok { background: var(--acc-cyan); }
-  .cw__n { position: absolute; left: 3px; top: 1px; font-size: 9px; font-weight: 500; pointer-events: none; }
-  .cw__cell input { all: unset; width: 100%; height: 100%; text-align: center; font-family: var(--font-display); font-weight: 700; font-size: calc(var(--cell) * 0.5); text-transform: uppercase; caret-color: var(--brand); }
+  .cw { --ink: #070707; --line: 1.5px; --hl: #CDEFF1; --cur: #98E7EB; --ok: #6FD3D9; --cw-max: 46px; container-type: inline-size; display: flex; flex-direction: column; gap: var(--s-6); }
+  .cw__scroll { overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; padding: 2px; }
+  .cw__scroll::-webkit-scrollbar { display: none; }
+  /* whole-pixel cells: lines land on the same sub-pixel every time */
+  .cw__grid {
+    --cell: max(28px, min(calc((100cqw - 4px) / var(--cols)), var(--cw-max)));
+    display: grid; grid-template-columns: repeat(var(--cols), var(--cell)); grid-template-rows: repeat(var(--rows), var(--cell));
+    width: max-content; margin-inline: auto;
+  }
+  @supports (width: round(down, 10.5px, 1px)) {
+    .cw__grid { --cell: max(28px, round(down, min(calc((100cqw - 4px) / var(--cols)), var(--cw-max)), 1px)); }
+  }
+  .cw__c {
+    position: relative; box-sizing: border-box; border-right: var(--line) solid var(--ink); border-bottom: var(--line) solid var(--ink);
+    background: transparent; transition: background-color 160ms ease;
+  }
+  .cw__c--t { border-top: var(--line) solid var(--ink); }
+  .cw__c--l { border-left: var(--line) solid var(--ink); }
+  .cw__c.is-word { background: var(--hl); }
+  .cw__c.is-ok { background: var(--ok); }
+  .cw__c.is-cur { background: var(--cur); }
+  .cw__c.is-cur::after { content: ''; position: absolute; inset: 2px; border: 2px solid var(--ink); pointer-events: none; }
+  .cw__n { position: absolute; left: 3px; top: 2px; font-family: var(--font-body); font-size: 10px; line-height: 1; font-weight: 500; pointer-events: none; z-index: 1; }
+  .cw__c input {
+    all: unset; box-sizing: border-box; display: block; width: 100%; height: 100%; padding-top: 2px; text-align: center; cursor: pointer;
+    font-family: var(--font-display); font-weight: 700; font-size: max(16px, calc(var(--cell) * 0.5)); line-height: 1; text-transform: uppercase; color: var(--ink);
+    caret-color: transparent;
+  }
+  .cw__c.is-rev input { color: #57534d; }
+  .cw__c input::selection { background: transparent; }
+
   .cw__foot { display: flex; flex-direction: column; gap: var(--s-3); }
+  .cw__lab { margin: 0; font-family: var(--font-body); font-size: var(--fs-print); color: #57534d; }
   .cw__clues { list-style: none; margin: 0; padding: 0; columns: 3 220px; column-gap: var(--s-6); }
-  .cw__clues li { break-inside: avoid; font-size: var(--fs-body); line-height: 1.45; margin-bottom: var(--s-3); cursor: pointer; border-radius: var(--r-xs); transition: background var(--dur-fast); }
-  .cw__clues li.is-on { background: rgba(152, 231, 235, 0.55); }
-  .cw__clues em { opacity: 0.55; font-style: normal; }
-  .cw__cn { font-family: var(--font-display); font-weight: 700; }
-  .is-solved .cw__grid { animation: pop var(--dur-slow) var(--ease-out); }
-  @keyframes pop { 50% { transform: scale(1.02); } }
+  .cw__clues li { break-inside: avoid; margin-bottom: 4px; }
+  .cw__clue {
+    all: unset; box-sizing: border-box; cursor: pointer; display: block; width: 100%; padding: 6px 8px; border-radius: 6px;
+    font-family: var(--font-body); font-size: clamp(15px, 1.05vw, 17px); line-height: 1.4; color: var(--ink); transition: background-color 160ms ease;
+  }
+  .cw__clue:hover { background: rgba(7, 7, 7, 0.05); }
+  .cw__clue:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+  .cw__clue.is-on { background: var(--hl); }
+  .cw__cn { font-family: var(--font-display); font-weight: 700; margin-right: 4px; }
+  .cw__cd { margin-left: 4px; font-size: 0.8em; color: #57534d; }
+  .cw__clue.is-ok .cw__ct { text-decoration: line-through; text-decoration-thickness: 1.5px; color: #57534d; }
+  .cw__clue.is-ok .cw__cn::after { content: ' ✓'; }
+  .cw__done { margin: 0; min-height: 1.4em; font-family: var(--font-display); font-weight: 500; text-transform: uppercase; font-size: 16px; }
+  .is-solved .cw__grid { animation: cw-pop 600ms cubic-bezier(.3,1.4,.5,1); }
+  @keyframes cw-pop { 50% { scale: 1.02; } }
+  @media (prefers-reduced-motion: reduce) { .cw__c, .cw__clue { transition: none; } .is-solved .cw__grid { animation: none; } }
 </style>
