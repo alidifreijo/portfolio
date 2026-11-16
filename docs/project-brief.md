@@ -103,7 +103,7 @@ El portfolio estaba en **Framer** (alidadiazdefreijo.framer.website). Lo ha pasa
 ## 4. Límites que no se cruzan
 
 - **Cupra está bajo NDA.** No se publica material nuevo de Cupra ni se usan sus fotos en montajes nuevos. Solo se puede usar lo que ya estaba publicado.
-- **South (fintech) y el hmi no se presentan como pruebas técnicas.** El hmi es un «digital cockpit concept».
+- **South (fintech) y el hmi** están fuera ahora. Si vuelven, no se presentan como pruebas técnicas: el hmi es un «digital cockpit concept».
 - **Material de cliente** (por ejemplo la RFP de North) sirve solo para entender un proyecto, nunca para publicarse.
 - **Fuera:** los slides de BNPL de CaixaBank.
 - **Datos privados:**
@@ -171,8 +171,7 @@ El portfolio estaba en **Framer** (alidadiazdefreijo.framer.website). Lo ha pasa
 
 > **Estado (16 nov 2026):**
 > - **Entran:** Cut Scenes, cutouts, Silena (con el contenido por preparar), Cupra y Monexa.
-> - **Fuera de momento:** el hmi. Su caso sigue en el repo como borrador.
-> - **Pendiente de confirmar:** South, propuesta fuera.
+> - **Fuera:** el hmi (de momento) y South. Sus casos siguen en el repo como borrador.
 
 ### 7.1 Criterio para que un proyecto entre
 
@@ -191,14 +190,14 @@ Si no cumple ninguna, se queda fuera. Si dos casos cuentan lo mismo, entra solo 
 |---|---|---|---|
 | **Cut Scenes** | Web de puzzles con fotogramas de cine, pensada para regalar | Web en vivo, repo y Supabase (ver §0). Caso en `src/content/projects/cut-scenes.yaml`. Tráiler en `public/images/projects/cut-scenes/` | **Entra.** Caso principal |
 | **cutouts** | Sus collages analógicos recortados, más «make your own mess»: cualquiera hace su collage con los recortes | Web en vivo y repo (ver §0). Borrador en `src/content/projects/cutouts.yaml`. Reel en `public/images/projects/cutouts/` | **Entra.** Caso principal; el borrador está por terminar |
-| **Silena** | Web de producto (concept) a partir de la lámpara VARMBLIXT de IKEA | Web en vivo, repo y versión Framer (ver §0). Aún no tiene caso en el portfolio | **Entra.** Hay que crear el caso. `[PENDIENTE]` ¿Está terminada? |
+| **Silena** | Web de producto (concept) a partir de la lámpara VARMBLIXT de IKEA | Web en vivo, repo y versión Framer (ver §0). Aún no tiene caso en el portfolio | **Entra.** Hay que preparar el contenido y crear el caso |
 
 **Trabajo profesional.**
 
 | Proyecto | Qué es | Dónde está la información | Decisión |
 |---|---|---|---|
 | **Cupra** (North) | Trabajo de cliente real, bajo NDA | `src/content/projects/cupra.yaml` y la página del portfolio de Framer. Solo material ya publicado | **Entra**, reescrito como caso de rol y proceso: qué equipo coordinaba, cómo presentaba al cliente y qué decidía. Sin material nuevo |
-| **Monexa** (North, bank platform) | Propuesta hecha para ganar proyectos nuevos de CaixaBank: Acadexa, una app para gestionar dinero, y su versión desktop, donde Exa, el bot rosa, guía al usuario | `src/content/projects/bank-platform.yaml` y el canvas de propuestas | **Entra.** Es lo único que enseña pensamiento de sistema, diseño de IA y saber vender una idea a cliente. `[PENDIENTE]` ¿Se puede enseñar todo? ¿Se ganó el proyecto? |
+| **Monexa** (North, bank platform) | Propuesta para ganar proyectos nuevos de CaixaBank, y se ganó: Acadexa, una app para gestionar dinero, y su versión desktop, donde Exa, el bot rosa, guía al usuario | `src/content/projects/bank-platform.yaml` y el canvas de propuestas | **Entra.** Es lo único que enseña pensamiento de sistema, diseño de IA y saber vender una idea a cliente. **Se ganó el proyecto** y se puede enseñar todo |
 | **Roche** (Garaje de Ideas) | Design system y producto regulado | No hay material; todo es confidencial | **Idea.** Caso corto de texto sobre cómo trabaja (migración de tokens, gobernanza, IA), sin pantallas. Solo si a Ali le apetece contarlo |
 
 **Fuera.**
@@ -206,7 +205,7 @@ Si no cumple ninguna, se queda fuera. Si dos casos cuentan lo mismo, entra solo 
 | Proyecto | Qué es | Dónde está | Decisión |
 |---|---|---|---|
 | **hmi display** | Concept de cockpit digital con el hmi animado en vivo | `src/content/projects/hmi.yaml` (en `draft`) y `public/images/f/hmi/` | **Fuera de momento.** Al lado de tres webs reales hechas desde cero, un concept pesa menos y no cuenta nada nuevo. Se puede recuperar más adelante como pieza corta (un vídeo y dos líneas) |
-| **South** (fintech app) | App fintech | `src/content/projects/fintech.yaml` | **Propuesta: fuera.** Se pisa con Monexa. `[PENDIENTE]` Que Ali lo confirme |
+| **South** (fintech app) | App fintech | `src/content/projects/fintech.yaml` (en `draft`) | **Fuera.** Se pisa con Monexa |
 
 ### 7.3 Cómo se ordena la información de cada caso
 
@@ -230,7 +229,7 @@ Silena aún no tiene caso: se monta con esta misma estructura.
 2. **La idea**: Acadexa, Exa y por qué un asistente.
 3. **El sistema**: app y desktop, y qué ve el asistente frente a lo que ve el usuario (el amarillo).
 4. **Los detalles visuales** que la hacen suya.
-5. **Qué pasó**: si se ganó o qué se llevó el cliente. Solo si se puede contar.
+5. **Qué pasó**: se ganó el proyecto. Es el cierre del caso.
 
 ### 7.4 Orden propuesto en Work
 
@@ -240,7 +239,7 @@ Silena aún no tiene caso: se monta con esta misma estructura.
 4. Monexa
 5. Cupra
 
-`[PENDIENTE]` Ali confirma el orden.
+Ya aplicado en el campo `order` de cada caso (Silena tendrá el 3).
 
 ---
 
@@ -270,9 +269,9 @@ Silena aún no tiene caso: se monta con esta misma estructura.
 2. **Corregir incoherencias:**
    - Cupra dice «2023 – Today», pero North termina en 2026;
    - «Teaches UI» no aparece en Learn & teach.
-3. **Preparar el caso de Silena** y confirmar South (ver §7).
+3. **Preparar el caso de Silena** (ver §7).
 4. **Reescribir Cupra** como caso de rol y proceso.
 5. **Objetos recortados definitivos.** Los actuales son borradores y Ali los hará en Figma.
 6. **Capítulos para los demás casos**, con el formato de capítulos que ya tiene el hmi y la estructura de §7.3.
 7. **Contact en móvil:** la cara tapa parte de las pistas.
-8. **Datos por confirmar:** qué se puede enseñar de Monexa y la lista de clientes.
+8. **Datos por confirmar:** la lista de clientes.
