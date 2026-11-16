@@ -1,6 +1,6 @@
 # Portfolio de Ali · brief del proyecto
 
-> Documento base para cualquier conversación sobre el portfolio. Léelo entero antes de proponer nada.
+> Documento base para cualquier conversación sobre el portfolio. Léelo entero antes de proponer nada, junto con `docs/historial.md` (qué se probó y qué se descartó).
 > Última actualización: 16 de noviembre de 2026.
 
 ---
