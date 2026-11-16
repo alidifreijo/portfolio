@@ -38,7 +38,7 @@ const isCurrent = (href: string) => path === href || path.startsWith(href + '/')
     {current ? (
       <><p class="sh__lab">{current.label}</p><p class="sh__val sh__case">{current.value}</p></>
     ) : (
-      <><p class="sh__lab">Status</p><p class="sh__val">{home.status || 'Open to senior and lead product roles'}</p></>
+      <><p class="sh__lab">Up for</p><p class="sh__val">{home.status || 'Meeting people and good collabs'}</p></>
     )}
   </div>
   {email && (
