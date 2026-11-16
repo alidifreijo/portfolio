@@ -5,6 +5,36 @@
 
 ---
 
+## 0. Enlaces importantes
+
+**Portfolio**
+- Portfolio actual (Framer, el que está publicado): https://alidadiazdefreijo.framer.website/
+- Acceso al proyecto de Framer (editor): `[PLACEHOLDER: link de acceso al proyecto Framer]`
+- Portfolio en código, producción: https://portfolio-alidifreijo.vercel.app/
+- Portfolio en código, vista previa de la rama `home-v2`: https://portfolio-git-home-v2-alidifreijo.vercel.app/
+- Repo: https://github.com/alidifreijo/portfolio
+- Panel de contenido (Keystatic): `/keystatic` en local (`npm run dev`)
+
+**CV**
+- PDF en el repo: `public/cv/Alida_Diaz_de_Freijo_CV.pdf`, servido en `/cv/Alida_Diaz_de_Freijo_CV.pdf`. Última subida: 25 de octubre de 2026.
+- `[PENDIENTE]` Confirmar que es la versión actualizada; falta añadir la docencia en ESDi de este curso.
+
+**Perfil**
+- LinkedIn: https://www.linkedin.com/in/alidadiazdefreijo/
+
+**Diseño**
+- Figma de trabajo, «Portfolio v2 · main screens»: https://www.figma.com/design/Ty7Ju5cZnErvhx0xd6yJRO
+- Canvas de propuestas: https://claude.ai/artifact/F4WYTEutPJheaci5VsLKXk
+
+**Webs propias**
+| Web | En vivo | Repo | Notas |
+|---|---|---|---|
+| Cut Scenes | https://cut-scenes.vercel.app/ | `alidifreijo/cut-scenes` | Supabase (proyecto «cut-scenes») |
+| cutouts | https://cut-outs.vercel.app/ | `alidifreijo/cut-outs` | Antes en GitHub Pages y Netlify, ya despublicadas |
+| Silena | https://silena-lamp.vercel.app | `alidifreijo/silena-lamp` | Hay también versión Framer: silena-lamp.framer.website |
+
+---
+
 ## 1. Quién es Ali
 
 **Álida Díaz de Freijo Valiño**, firma como **Ali**. Product designer. Nació en 1994 en A Coruña y vive en Barcelona desde 2017, cuando llegó para hacer un máster.
@@ -25,7 +55,7 @@
 
 **Docencia.**
 - Computer II en ESDi (2019–2020), en inglés.
-- Desde octubre de 2026, clases de UI.
+- Desde octubre de 2026, vuelve a dar clases de UI en ESDi. Tiene que constar en el CV.
 
 **Idiomas.** Español, gallego e inglés.
 
@@ -137,19 +167,89 @@ El portfolio estaba en **Framer** (alidadiazdefreijo.framer.website). Lo ha pasa
 
 ---
 
-## 7. Proyectos
+## 7. Proyectos: qué entra de verdad
 
-| Caso | Estado | Nota |
-|---|---|---|
-| **hmi display** | Se queda; caso estrella visual | Concept de cockpit. Hmi animado en vivo, capítulos y película de construcción. Idea futura: montado en coche y un minijuego |
-| **Monexa** (bank platform) | Se queda | Acadexa (app para gestionar dinero) + versión desktop donde Exa, el bot rosa, guía al usuario. El amarillo marca lo que ve el asistente y no el usuario. Falta el icono de Exa |
-| **Cupra** | Se queda, pendiente de reescribir | Caso de rol y proceso, sin material nuevo, por el NDA |
-| **Cut Scenes** | Se queda (exploration) | Web de puzzles con fotogramas de cine, para regalar. Publicada en cut-scenes.vercel.app. Tráiler como vídeo de intro |
-| **Cutouts** | Se queda (exploration), caso en borrador | Collages analógicos y «make your own mess». Publicada en cut-outs.vercel.app. Reel como vídeo de intro |
-| **Silena** | Entra cuando Ali diga que está terminada | Web de producto concept basada en la lámpara VARMBLIXT de IKEA |
-| **South** (fintech) | Propuesta: archivar | Se pisa con Monexa. Pendiente de que Ali lo confirme |
+> **Estado: por decidir.** La lista definitiva la cierra Ali. Esta sección es el inventario completo, para decidir con todo delante.
 
-**Idea abierta:** un caso corto sobre cómo trabaja en Roche (design systems, producto regulado), sin pantallas confidenciales.
+### 7.1 Criterio para que un proyecto entre
+
+Tiene que cumplir al menos una de estas tres condiciones:
+1. **Es real.** Está publicado y funciona, o se hizo para un cliente de verdad.
+2. **Enseña algo que ningún otro caso enseña.** Por ejemplo: pensar en sistemas, dirigir un equipo o el oficio visual.
+3. **Ali lo defendería en una entrevista sin excusas.**
+
+Si no cumple ninguna, se queda fuera. Si dos casos cuentan lo mismo, entra solo el mejor.
+
+### 7.2 Inventario
+
+**Webs propias, hechas desde cero y publicadas.** Son lo más fuerte que tiene ahora: son reales, son suyas y enseñan cómo trabaja con IA.
+
+| Proyecto | Qué es | Dónde está la información | Propuesta |
+|---|---|---|---|
+| **Cut Scenes** | Web de puzzles con fotogramas de cine, pensada para regalar | Web en vivo, repo y Supabase (ver §0). Caso en `src/content/projects/cut-scenes.yaml`. Tráiler en `public/images/projects/cut-scenes/` | **Entra.** Caso principal |
+| **cutouts** | Sus collages analógicos recortados, más «make your own mess»: cualquiera hace su collage con los recortes | Web en vivo y repo (ver §0). Borrador en `src/content/projects/cutouts.yaml`. Reel en `public/images/projects/cutouts/` | **Entra.** Caso principal; el borrador está por terminar |
+| **Silena** | Web de producto (concept) a partir de la lámpara VARMBLIXT de IKEA | Web en vivo, repo y versión Framer (ver §0). Aún no tiene caso en el portfolio | **Entra.** Hay que crear el caso. `[PENDIENTE]` ¿Está terminada? |
+
+**Trabajo profesional.**
+
+| Proyecto | Qué es | Dónde está la información | Propuesta |
+|---|---|---|---|
+| **Cupra** (North) | Trabajo de cliente real. Bajo NDA | `src/content/projects/cupra.yaml` y la página del portfolio de Framer. Solo material ya publicado | **Entra**, reescrito como caso de rol y proceso: qué equipo coordinaba, cómo presentaba al cliente y qué decidía. Sin material nuevo |
+| **Roche** (Garaje de Ideas) | Design system y producto regulado | No hay material; todo es confidencial | **Idea.** Caso corto de texto sobre cómo trabaja (migración de tokens, gobernanza, IA), sin pantallas. Solo si a Ali le apetece contarlo |
+
+**Concepts.**
+
+| Proyecto | Qué es | Dónde está la información | Propuesta |
+|---|---|---|---|
+| **Monexa** (bank platform) | Acadexa, una app para gestionar dinero, y su versión desktop, donde Exa, el bot rosa, guía al usuario | `src/content/projects/bank-platform.yaml` y el canvas de propuestas | **Probablemente entra.** Es lo único que enseña pensamiento de sistema y diseño de IA. `[PENDIENTE]` ¿Fue proyecto real o concept? |
+| **hmi display** | Concept de cockpit digital con el hmi animado en vivo | `src/content/projects/hmi.yaml` y `public/images/f/hmi/` | **En duda** (ver §7.3) |
+| **South** (fintech app) | App fintech | `src/content/projects/fintech.yaml` | **Fuera.** Se pisa con Monexa |
+
+### 7.3 La duda del hmi
+
+Ali lo duda porque «las webs que hemos montado son desde cero y reales». Tiene razón: al lado de tres webs publicadas, un concept de cockpit pesa menos.
+
+Lo que aporta: es lo más vistoso a nivel visual y es el único caso de interfaz de producto en pantalla grande. Lo que resta: es un concept, compite con las webs por la atención y no cuenta nada que las webs no cuenten ya.
+
+**Opciones:**
+1. **Fuera.** La lista queda más limpia y más honesta.
+2. **Pieza corta.** Un vídeo y dos líneas, sin capítulos, en una sección tipo «Lab» o al final de Work.
+3. **Se queda como caso completo**, tal y como está.
+
+**Recomendación:** la opción 1 o la 2. Con la 3 hay demasiados casos y el portfolio pierde foco.
+
+### 7.4 Cómo se ordena la información de cada caso
+
+**Webs propias** (Cut Scenes, cutouts, Silena). Lo primero es que se pueda probar.
+1. **Qué es**, en una línea, con el **enlace en vivo** bien visible.
+2. **El vídeo de intro**: el tráiler o el reel.
+3. **Por qué existe**: de dónde sale la idea y para quién es.
+4. **Cómo funciona**: las dos o tres interacciones clave, con capturas o clips.
+5. **Cómo se hizo**: qué dirigió Ali y qué se construyó con IA, con el stack en una línea.
+6. **Qué aprendió o qué viene después**. Solo si hay algo de verdad.
+
+**Trabajo profesional** (Cupra y, si entra, Roche). Lo primero es el rol, no las pantallas.
+1. El contexto y el problema del cliente, sin datos confidenciales.
+2. **Su rol**: equipo, responsabilidades y decisiones.
+3. El proceso: cómo trabajaba, cómo presentaba y qué cambió gracias a ella.
+4. El resultado, con lo que se pueda contar.
+
+**Concepts** (Monexa y, si entra, el hmi).
+1. La pregunta que intentaba responder.
+2. El sistema: las piezas y cómo se relacionan.
+3. Los detalles visuales que lo hacen suyo.
+4. Corto. Un concept no necesita la misma extensión que un caso real.
+
+### 7.5 Orden propuesto en Work
+
+1. Cut Scenes
+2. cutouts
+3. Silena
+4. Cupra
+5. Monexa
+6. hmi, si entra
+
+`[PENDIENTE]` Ali decide la lista final y el orden.
 
 ---
 
@@ -179,7 +279,7 @@ El portfolio estaba en **Framer** (alidadiazdefreijo.framer.website). Lo ha pasa
 2. **Corregir incoherencias:**
    - Cupra dice «2023 – Today», pero North termina en 2026;
    - «Teaches UI» no aparece en Learn & teach.
-3. **Archivar South**, si Ali lo confirma.
+3. **Cerrar la lista de proyectos** (ver §7): el hmi, South y si Monexa fue real o concept.
 4. **Reescribir Cupra** como caso de rol y proceso.
 5. **Objetos recortados definitivos.** Los actuales son borradores y Ali los hará en Figma.
 6. **Capítulos para los demás casos** (contexto → proceso → resultado), como el hmi.
