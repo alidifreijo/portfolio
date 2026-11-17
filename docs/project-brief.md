@@ -11,7 +11,6 @@
 - Portfolio actual (Framer, el que está publicado): https://alidadiazdefreijo.framer.website/
 - Acceso al proyecto de Framer (editor): `[PLACEHOLDER: link de acceso al proyecto Framer]`
 - Portfolio en código, producción: https://portfolio-alidifreijo.vercel.app/
-- Portfolio en código, vista previa de la rama `home-v2`: https://portfolio-git-home-v2-alidifreijo.vercel.app/
 - Repo: https://github.com/alidifreijo/portfolio
 - Panel de contenido (Keystatic): `/keystatic` en local (`npm run dev`)
 
@@ -142,7 +141,7 @@ El portfolio estaba en **Framer** (alidadiazdefreijo.framer.website). Lo ha pasa
 
 ---
 
-## 6. Qué hay hecho (rama `home-v2`)
+## 6. Qué hay hecho
 
 **Home**
 - Las caras están repartidas alrededor del titular. Se colorean, hablan en su bocadillo, se pueden lanzar y chocan entre ellas con física pesada. Un clic lleva a su caso.
@@ -246,7 +245,7 @@ Ya aplicado en el campo `order` de cada caso (Silena tendrá el 3).
 ## 8. Cómo está montado
 
 - **Repo:** `alidifreijo/portfolio` (GitHub). Astro, con contenido en YAML editable en **Keystatic**.
-- **Rama de trabajo:** `home-v2`. Producción en `main`.
+- **Rama de trabajo:** `main`, que es también producción. Desde el 17 de noviembre de 2026 se trabaja directamente en `main`; nadie visita aún la web en código. Para un cambio grande o arriesgado se abre una rama y se revisa en su vista previa antes de juntarla.
 - **Hosting:** Vercel. Cada rama tiene su vista previa: `portfolio-git-<rama>-alidifreijo.vercel.app`.
   - Producción: https://portfolio-alidifreijo.vercel.app/
 - **Contenido:**

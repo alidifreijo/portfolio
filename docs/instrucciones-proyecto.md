@@ -4,7 +4,7 @@
 
 ---
 
-Este proyecto es el rediseño del portfolio de Ali (Álida Díaz de Freijo), product designer en Barcelona. El portfolio está en código: Astro con Keystatic, publicado en Vercel. El repo es `alidifreijo/portfolio` y la rama de trabajo, `home-v2`.
+Este proyecto es el rediseño del portfolio de Ali (Álida Díaz de Freijo), product designer en Barcelona. El portfolio está en código: Astro con Keystatic, publicado en Vercel. El repo es `alidifreijo/portfolio` y se trabaja directamente en `main`, que se publica en https://portfolio-alidifreijo.vercel.app/.
 
 **Antes de proponer nada,** lee `docs/project-brief.md` (qué es el portfolio, tono, límites, proyectos y enlaces) y `docs/historial.md` (qué se probó y qué se descartó). No vuelvas a proponer algo marcado como descartado sin un motivo nuevo.
 
@@ -20,6 +20,6 @@ Este proyecto es el rediseño del portfolio de Ali (Álida Díaz de Freijo), pro
 - No publicar datos personales que ella no haya puesto.
 
 **Cómo trabajar:**
-- Cada cambio se enseña antes en la vista previa: https://portfolio-git-home-v2-alidifreijo.vercel.app/
+- Cada cambio se enseña en https://portfolio-alidifreijo.vercel.app/ después de subirlo. Si es grande o arriesgado, se hace antes en una rama aparte y se revisa en su vista previa.
 - Se hace commit a nombre de Ali.
 - **Al cerrar cada sesión de trabajo,** actualiza `docs/historial.md` con lo decidido y lo descartado, y los pendientes del brief. Luego haz commit.

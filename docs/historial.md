@@ -13,6 +13,11 @@
 
 ---
 
+## 17 nov 2026 · Todo a main
+
+- ✔ **`home-v2` se junta con `main`** y la web nueva queda publicada en producción. Nadie la visita todavía, y así el proyecto de Claude lee los documentos siempre al día.
+- ✔ **Se trabaja directamente en `main`.** Los cambios grandes van en una rama aparte con su vista previa.
+
 ## 16 nov 2026 · Lista de proyectos y brief
 
 - ✔ **Brief del proyecto** en `docs/project-brief.md`: quién es Ali, por qué se hace el portfolio, tono, límites, identidad, qué hay hecho, proyectos y cómo está montado.
