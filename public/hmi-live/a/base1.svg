@@ -1,0 +1,19 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="774.5" height="42" viewBox="0 0 774.5 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Base">
+<path d="M0 0H774.5L554.372 37.9451C538.718 40.6434 522.862 42 506.977 42H261.942C250.002 42 238.085 40.9818 226.318 38.9564L0 0Z" fill="url(#paint0_radial_0_46)"/>
+<mask id="stroke0_0_46" fill="white">
+<path d="M0 0H774.5L554.372 37.9451C538.718 40.6434 522.862 42 506.977 42H261.942C250.002 42 238.085 40.9818 226.318 38.9564L0 0Z"/>
+</mask>
+<path d="M0 0L226.318 38.9564C238.085 40.9818 250.002 42 261.942 42H506.977C522.862 42 538.718 40.6434 554.372 37.9451L774.5 0H0Z" stroke-width="2" stroke="url(#paint1_radial_0_46)" mask="url(#stroke0_0_46)"/>
+</g>
+<defs>
+<radialGradient id="paint0_radial_0_46" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(386.5 107.5) rotate(-88.7451) scale(148.404 1478.15)">
+<stop stop-color="#1C1D24"/>
+<stop offset="1" stop-color="#1C1E25"/>
+</radialGradient>
+<radialGradient id="paint1_radial_0_46" cx="0" cy="0" r="1" gradientTransform="matrix(-0.250173 47 -722 -5.87093 389.75 -5.00003)" gradientUnits="userSpaceOnUse">
+<stop offset="0.586458" stop-opacity="0"/>
+<stop offset="1" stop-color="#9EA1A2"/>
+</radialGradient>
+</defs>
+</svg>

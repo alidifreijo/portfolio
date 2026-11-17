@@ -18,6 +18,8 @@ const projects = defineCollection({
     teaser: z.string().default(''),
     cover: z.string(),
     hero: z.string(),
+    object: z.string().optional(),
+    introVideo: z.string().optional(),
     heroLabel: z.string().optional(),
     heroStyle: z.enum(['cover', 'contain', 'phone']).default('cover'),
     heroBg: z.string().optional(),

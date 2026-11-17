@@ -1,9 +1,30 @@
 playTitle: let’s play
 talkTitle: let’s talk
 body: |-
-  **Based in Barcelona**, open to senior and lead product roles, and **always up for a good conversation about messy problems.** Pick a channel below, or download the CV and judge me in private.
+  **Always up for meeting people, a good conversation about messy problems, or a collab with a good idea behind it.** Pick a channel below, or download the CV and judge me in private.
 
   Slightly suspicious recruiter? **The crossword has eight clues that pretty much sum me up.** Solve them and maybe we’ll both feel seen.
+chat:
+  - Oh hey, you found me!
+  - I'm Ali, a product designer in **Barcelona**.
+  - Ask me anything. Well, anything from the list.
+chatReplies:
+  - ask: Fancy a collab?
+    say: Always up for **meeting people** and for **side projects with a good idea behind them**.
+    link: none
+  - ask: Where can I see more of you?
+    say: LinkedIn is the formal version of me
+    link: linkedin
+  - ask: Can I take your CV with me?
+    say: Of course, here it is
+    link: cv
+  - ask: And when you're not designing?
+    say: Watching too many films, mostly. Here's the proof
+    link: letterboxd
+  - ask: How do I get in touch?
+    say: Easiest is email. I'd love to hear from you
+    link: email
+chatEnd: That's me, more or less. Hope we talk soon!
 cv: /cv/Alida_Diaz_de_Freijo_CV.pdf
 links:
   - label: LinkedIn

@@ -1,144 +1,266 @@
 ---
 /**
- * Crossword · eight clues that sum me up.
- * Grid and answers live in src/data/crossword.json; clue texts come from
- * the contact page content (editable in Keystatic).
+ * Crossword · eight clues that sum me up. Rebuilt from scratch (v2).
+ * Grid and answers: src/data/crossword.json. Clue texts: contact page
+ * content (Keystatic), in the same order as the words.
+ *
+ * Lines: every cell draws only its right and bottom edge, plus its top/left
+ * edge when nothing sits above/left of it. So shared edges are drawn once,
+ * never twice, and the cell size is rounded to whole pixels: all lines come
+ * out the same weight, no thick/thin mix.
+ *
+ * Layouts: the same words twice, wide (desktop) and tall (phones); only one
+ * shows, and letters typed in one are copied to the other (by word:letter).
+ *
+ * Cell states: (none) · in the active word · cursor · solved word ·
+ * revealed by "Resolve". Each clue shows the same: active / solved.
+ * Keyboard: type to fill and advance; Backspace clears and goes back;
+ * arrows move (and turn the direction); Tab / Shift+Tab jump between words;
+ * Space or a second click on a crossing turns the direction.
  */
 import data from '../data/crossword.json';
 interface Props { clues: string[] }
 const { clues } = Astro.props;
 
-type Cell = { x: number; y: number; n?: number; a: string; words: number[] };
-const map = new Map<string, Cell>();
-data.words.forEach((w, wi) => {
-  [...w.word].forEach((ch, i) => {
-    const x = w.direction === 'across' ? w.x + i : w.x;
-    const y = w.direction === 'down' ? w.y + i : w.y;
-    const k = `${x},${y}`;
-    const c = map.get(k) ?? { x, y, a: ch, words: [] };
-    c.words.push(wi);
-    if (i === 0) c.n = w.number;
-    map.set(k, c);
+type Dir = 'across' | 'down';
+type W = { number: number; word: string; direction: Dir; x: number; y: number };
+// two layouts of the same words: wide for desktop, narrow and tall for phones
+const layouts: { key: string; words: W[] }[] = [
+  { key: 'wide', words: data.words as W[] },
+  { key: 'tall', words: (data.words as W[]).map((w, i) => ({ ...w, ...(data as any).mobile[i] })) },
+];
+type Cell = { x: number; y: number; a: string; n?: number; across?: number; down?: number; keys: string[] };
+const boards = layouts.map(({ key, words }) => {
+  const map = new Map<string, Cell>();
+  words.forEach((w, wi) => {
+    [...w.word].forEach((ch, i) => {
+      const x = w.direction === 'across' ? w.x + i : w.x;
+      const y = w.direction === 'down' ? w.y + i : w.y;
+      const k = `${x},${y}`;
+      const c = map.get(k) ?? { x, y, a: ch, keys: [] };
+      c[w.direction] = wi; c.keys.push(`${wi}:${i}`);   // word:letter, the same in both layouts
+      if (i === 0) c.n = w.number;
+      map.set(k, c);
+    });
   });
+  const cells = [...map.values()].sort((p, q) => p.y - q.y || p.x - q.x);
+  const has = (x: number, y: number) => map.has(`${x},${y}`);
+  return { key, words, cells, has, cols: Math.max(...cells.map((c) => c.x)) + 1, rows: Math.max(...cells.map((c) => c.y)) + 1 };
 });
-const cells = [...map.values()];
-const cols = Math.max(...cells.map((c) => c.x)) + 1;
-const rows = Math.max(...cells.map((c) => c.y)) + 1;
+const words = layouts[0].words;
+const label = (bw: W[], c: Cell) => [c.across != null ? `${bw[c.across].number} across` : '', c.down != null ? `${bw[c.down].number} down` : ''].filter(Boolean).join(', ') + ', letter';
 ---
-<div class="cw" data-cw data-words={JSON.stringify(data.words)}>
-  <div class="cw__grid" style={`--cols:${cols};--rows:${rows}`} role="grid" aria-label="Crossword">
-    {cells.map((c) => (
-      <label class="cw__cell" style={`grid-column:${c.x + 1};grid-row:${c.y + 1}`} data-x={c.x} data-y={c.y} data-a={c.a} data-words={c.words.join(',')}>
-        {c.n && <span class="cw__n">{c.n}</span>}
-        <input maxlength="1" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label={`Row ${c.y + 1}, column ${c.x + 1}`} />
-      </label>
-    ))}
-  </div>
+<div class="cw" data-cw>
+  {boards.map((bd) => (
+    <div class:list={['cw__scroll', `cw__scroll--${bd.key}`]}>
+      <div class="cw__grid" data-board data-words={JSON.stringify(bd.words)} style={`--cols:${bd.cols};--rows:${bd.rows}`} role="group" aria-label="Crossword grid">
+        {bd.cells.map((c) => (
+          <div
+            class:list={['cw__c', { 'cw__c--t': !bd.has(c.x, c.y - 1), 'cw__c--l': !bd.has(c.x - 1, c.y) }]}
+            style={`grid-column:${c.x + 1};grid-row:${c.y + 1}`}
+            data-x={c.x} data-y={c.y} data-a={c.a} data-keys={c.keys.join(' ')}
+            data-across={c.across ?? ''} data-down={c.down ?? ''}
+          >
+            {c.n && <span class="cw__n" aria-hidden="true">{c.n}</span>}
+            <input type="text" inputmode="text" maxlength="2" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" aria-label={label(bd.words, c)} />
+          </div>
+        ))}
+      </div>
+    </div>
+  ))}
   <div class="cw__foot">
-    <p class="t-eyebrow">Clues</p>
+    <p class="cw__lab">Clues</p>
     <ol class="cw__clues">
-      {clues.map((c, i) => (
-        <li data-clue={i}><span class="cw__cn">{String(i + 1).padStart(2, '0')}</span> <span>{c}</span> <em class="t-small">{data.words[i]?.direction}</em></li>
+      {clues.map((t, i) => words[i] && (
+        <li><button type="button" class="cw__clue" data-clue={i}>
+          <span class="cw__cn">{String(words[i].number).padStart(2, '0')}</span>
+          <span class="cw__ct">{t}</span>
+          <span class="cw__cd cw__cd--wide">{boards[0].words[i].direction}</span><span class="cw__cd cw__cd--tall">{boards[1].words[i].direction}</span>
+        </button></li>
       ))}
     </ol>
+    <p class="cw__done" aria-live="polite" data-done></p>
   </div>
 </div>
 
 <script>
+  type Dir = 'across' | 'down';
+  type W = { number: number; word: string; direction: Dir; x: number; y: number };
+
   function initCrossword() {
-  document.querySelectorAll<HTMLElement>('[data-cw]').forEach((root) => {
-    const words: { number: number; word: string; direction: string; x: number; y: number }[] = JSON.parse(root.dataset.words!);
-    const cells = [...root.querySelectorAll<HTMLElement>('.cw__cell')];
-    const at = (x: number, y: number) => cells.find((c) => +c.dataset.x! === x && +c.dataset.y! === y);
-    let dir: 'across' | 'down' = 'across';
-    let active = -1;
+    document.querySelectorAll<HTMLElement>('[data-cw]').forEach((root) => {
+      if (root.dataset.ready) return; root.dataset.ready = '1';
+      const clues = [...root.querySelectorAll<HTMLButtonElement>('[data-clue]')];
+      const done = root.querySelector<HTMLElement>('[data-done]')!;
+      const inp = (c: HTMLElement) => c.querySelector('input')!;
+      const allCells = [...root.querySelectorAll<HTMLElement>('.cw__c')];
+      const byKey = new Map<string, HTMLElement[]>();
+      allCells.forEach((c) => c.dataset.keys!.split(' ').forEach((k) => byKey.set(k, [...(byKey.get(k) || []), c])));
+      let revealed = false;
 
-    const cellsOf = (wi: number) => {
-      const w = words[wi];
-      return [...w.word].map((_, i) => at(w.direction === 'across' ? w.x + i : w.x, w.direction === 'down' ? w.y + i : w.y)!);
-    };
-    const highlight = (wi: number) => {
-      active = wi;
-      cells.forEach((c) => c.classList.remove('is-word'));
-      root.querySelectorAll('[data-clue]').forEach((l) => l.classList.toggle('is-on', +(l as HTMLElement).dataset.clue! === wi));
-      if (wi >= 0) cellsOf(wi).forEach((c) => c.classList.add('is-word'));
-    };
-    const check = () => {
-      words.forEach((_, wi) => {
-        const cs = cellsOf(wi);
-        const ok = cs.every((c) => c.querySelector('input')!.value.toUpperCase() === c.dataset.a);
-        cs.forEach((c) => c.classList.toggle(`ok-${wi}`, ok));
+      const boards = [...root.querySelectorAll<HTMLElement>('[data-board]')].map((grid) => {
+        const words: W[] = JSON.parse(grid.dataset.words!);
+        const cells = [...grid.querySelectorAll<HTMLElement>('.cw__c')];
+        const byPos = new Map(cells.map((c) => [`${c.dataset.x},${c.dataset.y}`, c]));
+        const at = (x: number, y: number) => byPos.get(`${x},${y}`);
+        const cellsOf = (wi: number) => { const w = words[wi]; return [...w.word].map((_, i) => at(w.direction === 'across' ? w.x + i : w.x, w.direction === 'down' ? w.y + i : w.y)!); };
+        const wordOf = (c: HTMLElement, d: Dir) => (c.dataset[d] === '' ? -1 : +c.dataset[d]!);
+        return { grid, words, cells, at, cellsOf, wordOf, dir: 'across' as Dir, word: -1, cur: null as HTMLElement | null };
       });
-      cells.forEach((c) => c.classList.toggle('is-ok', [...c.classList].some((k) => k.startsWith('ok-'))));
-      if (cells.every((c) => c.classList.contains('is-ok'))) root.classList.add('is-solved');
-    };
-    const wordFor = (cell: HTMLElement) => {
-      const ws = cell.dataset.words!.split(',').map(Number);
-      return ws.find((w) => words[w].direction === dir) ?? ws[0];
-    };
-    const move = (cell: HTMLElement, step: number) => {
-      const wi = active >= 0 ? active : wordFor(cell);
-      const cs = cellsOf(wi);
-      const i = cs.indexOf(cell) + step;
-      if (i >= 0 && i < cs.length) cs[i].querySelector('input')!.focus();
-    };
+      type B = (typeof boards)[number];
+      const visible = () => boards.find((b) => b.grid.getClientRects().length > 0) || boards[0];
+      const boardOf = (c: HTMLElement) => boards.find((b) => b.grid.contains(c))!;
 
-    cells.forEach((cell) => {
-      const input = cell.querySelector('input')!;
-      input.addEventListener('focus', () => {
-        const ws = cell.dataset.words!.split(',').map(Number);
-        if (!ws.includes(active)) { const w = wordFor(cell); dir = words[w].direction as any; highlight(w); }
-        input.select();
-      });
-      input.addEventListener('click', () => {
-        const ws = cell.dataset.words!.split(',').map(Number);
-        if (ws.length > 1) { const other = ws.find((w) => w !== active)!; dir = words[other].direction as any; highlight(other); }
-      });
-      input.addEventListener('input', () => {
-        input.value = input.value.slice(-1).toUpperCase();
-        check();
-        if (input.value) move(cell, 1);
-      });
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Backspace' && !input.value) { e.preventDefault(); move(cell, -1); }
-        const arrows: Record<string, [number, number]> = { ArrowRight: [1, 0], ArrowLeft: [-1, 0], ArrowDown: [0, 1], ArrowUp: [0, -1] };
-        if (arrows[e.key]) {
-          e.preventDefault();
-          const [dx, dy] = arrows[e.key];
-          const n = at(+cell.dataset.x! + dx, +cell.dataset.y! + dy);
-          if (n) { dir = dx ? 'across' : 'down'; active = -1; n.querySelector('input')!.focus(); }
-        }
+      const paint = (b: B) => {
+        const inWord = new Set(b.word >= 0 ? b.cellsOf(b.word) : []);
+        b.cells.forEach((c) => { c.classList.toggle('is-word', inWord.has(c)); c.classList.toggle('is-cur', c === b.cur); });
+        if (b === visible()) clues.forEach((cl) => cl.classList.toggle('is-on', +cl.dataset.clue! === b.word));
+      };
+      const check = () => {
+        const b0 = boards[0];
+        const solved = b0.words.map((_, wi) => b0.cellsOf(wi).every((c) => inp(c).value === c.dataset.a));
+        boards.forEach((b) => b.cells.forEach((c) => c.classList.toggle('is-ok', (['across', 'down'] as Dir[]).some((d) => b.wordOf(c, d) >= 0 && solved[b.wordOf(c, d)]))));
+        clues.forEach((cl) => cl.classList.toggle('is-ok', solved[+cl.dataset.clue!]));
+        const all = solved.every(Boolean);
+        root.classList.toggle('is-solved', all);
+        done.textContent = all ? (revealed ? 'Solved (with a little help).' : 'All eight. We should definitely talk.') : '';
+      };
+      // write a letter: into this cell and its twin(s) in the other layout
+      const put = (c: HTMLElement, ch: string, rev = false) => {
+        const twins = new Set<HTMLElement>();
+        c.dataset.keys!.split(' ').forEach((k) => byKey.get(k)!.forEach((t) => twins.add(t)));
+        twins.forEach((t) => { inp(t).value = ch; t.classList.toggle('is-rev', rev && !!ch); });
+      };
+      const go = (b: B, c: HTMLElement, d: Dir = b.dir, focus = true) => {
+        if (b.wordOf(c, d) < 0) d = d === 'across' ? 'down' : 'across';
+        b.dir = d; b.word = b.wordOf(c, d); b.cur = c;
+        paint(b);
+        if (focus && document.activeElement !== inp(c)) inp(c).focus();
+      };
+      const step = (b: B, by: number) => {
+        if (!b.cur || b.word < 0) return;
+        const cs = b.cellsOf(b.word), i = cs.indexOf(b.cur) + by;
+        if (i >= 0 && i < cs.length) go(b, cs[i], b.dir);
+      };
+      const firstEmpty = (b: B, wi: number) => b.cellsOf(wi).find((c) => !inp(c).value) ?? b.cellsOf(wi)[0];
+      const jumpWord = (b: B, by: number) => {
+        const next = ((b.word < 0 ? 0 : b.word) + by + b.words.length) % b.words.length;
+        go(b, firstEmpty(b, next), b.words[next].direction);
+      };
+
+      boards.forEach((b) => b.cells.forEach((c) => {
+        const i = inp(c);
+        const other = () => (b.dir === 'across' ? 'down' : 'across') as Dir;
+        i.addEventListener('pointerdown', (e) => { if (b.cur === c && b.wordOf(c, other()) >= 0) { e.preventDefault(); go(b, c, other()); } });
+        i.addEventListener('focus', () => { if (b.cur !== c) go(b, c, b.dir, false); i.select(); });
+        i.addEventListener('blur', () => setTimeout(() => { if (!b.grid.contains(document.activeElement)) { b.cur = null; paint(b); } }, 0));
+        i.addEventListener('beforeinput', (e) => {
+          const ie = e as InputEvent;
+          if (ie.inputType.startsWith('insert') && ie.data) {
+            e.preventDefault();
+            const ch = ie.data.slice(-1).toUpperCase();
+            if (!/[A-ZÁÉÍÓÚÑ]/.test(ch)) return;
+            put(c, ch); check(); step(b, 1);
+          }
+        });
+        // fallback for keyboards that skip beforeinput (some Android IMEs)
+        i.addEventListener('input', () => {
+          const v = i.value.replace(/[^a-zA-ZáéíóúñÁÉÍÓÚÑ]/g, '').slice(-1).toUpperCase();
+          if (i.value !== v) { put(c, v); check(); if (v) step(b, 1); }
+        });
+        i.addEventListener('keydown', (e) => {
+          const k = e.key;
+          if (k === 'Backspace') {
+            e.preventDefault();
+            if (i.value) put(c, ''); else { step(b, -1); if (b.cur && b.cur !== c) put(b.cur, ''); }
+            check();
+          } else if (k === 'Delete') { e.preventDefault(); put(c, ''); check(); }
+          else if (k === ' ') { e.preventDefault(); go(b, c, other()); }
+          else if (k === 'Tab') { e.preventDefault(); jumpWord(b, e.shiftKey ? -1 : 1); }
+          else if (k === 'Enter') { e.preventDefault(); jumpWord(b, 1); }
+          else if (k.startsWith('Arrow')) {
+            e.preventDefault();
+            const [dx, dy] = ({ ArrowRight: [1, 0], ArrowLeft: [-1, 0], ArrowDown: [0, 1], ArrowUp: [0, -1] } as Record<string, number[]>)[k];
+            const d: Dir = dx ? 'across' : 'down';
+            if (d !== b.dir && b.wordOf(c, d) >= 0) { go(b, c, d); return; } // first press only turns
+            const n = b.at(+c.dataset.x! + dx, +c.dataset.y! + dy);
+            if (n) go(b, n, d);
+          }
+        });
+      }));
+      clues.forEach((cl) => cl.addEventListener('click', () => { const b = visible(); const wi = +cl.dataset.clue!; go(b, firstEmpty(b, wi), b.words[wi].direction); }));
+      document.addEventListener('crossword:resolve', () => {
+        if (!root.isConnected) return;
+        revealed = true;
+        const b = visible();
+        const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        b.cells.forEach((c, n) => setTimeout(() => {
+          if (inp(c).value !== c.dataset.a) put(c, c.dataset.a!, true);
+          if (n === b.cells.length - 1) check();
+        }, reduce ? 0 : n * 16));
       });
     });
-    root.querySelectorAll<HTMLElement>('[data-clue]').forEach((li) => li.addEventListener('click', () => {
-      const wi = +li.dataset.clue!; dir = words[wi].direction as any; highlight(wi);
-      cellsOf(wi)[0].querySelector('input')!.focus();
-    }));
-    document.addEventListener('crossword:resolve', () => {
-      cells.forEach((c, i) => setTimeout(() => { c.querySelector('input')!.value = c.dataset.a!; check(); }, i * 18));
-    });
-  });
   }
   initCrossword();
   document.addEventListener('astro:page-load', initCrossword);
 </script>
 
 <style>
-  .cw { display: flex; flex-direction: column; gap: var(--s-6); height: 100%; }
-  .cw__grid { --cell: min(calc((100cqw) / var(--cols)), 44px); display: grid; grid-template-columns: repeat(var(--cols), var(--cell)); grid-template-rows: repeat(var(--rows), var(--cell)); justify-content: center; container-type: inline-size; }
-  .cw { container-type: inline-size; }
-  .cw__grid { --cell: min(calc(100cqw / var(--cols)), 46px); }
-  .cw__cell { position: relative; border: 1.5px solid var(--ink); margin: -0.75px; background: transparent; transition: background var(--dur-fast); }
-  .cw__cell.is-word { background: rgba(152, 231, 235, 0.45); }
-  .cw__cell.is-ok { background: var(--acc-cyan); }
-  .cw__n { position: absolute; left: 3px; top: 1px; font-size: 9px; font-weight: 500; pointer-events: none; }
-  .cw__cell input { all: unset; width: 100%; height: 100%; text-align: center; font-family: var(--font-display); font-weight: 700; font-size: calc(var(--cell) * 0.5); text-transform: uppercase; caret-color: var(--brand); }
+  .cw { --ink: #070707; --line: 1.5px; --hl: #CDEFF1; --cur: #98E7EB; --ok: #6FD3D9; --cw-max: 46px; container-type: inline-size; display: flex; flex-direction: column; gap: var(--s-6); }
+  .cw__scroll { overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; padding: 2px; }
+  .cw__scroll::-webkit-scrollbar { display: none; }
+  /* one layout per screen: wide on desktop/tablet, tall on phones */
+  .cw__scroll--tall, .cw__cd--tall { display: none; }
+  @media (max-width: 809px) {
+    .cw__scroll--wide, .cw__cd--wide { display: none; }
+    .cw__scroll--tall { display: block; }
+    .cw__cd--tall { display: inline; }
+  }
+  /* whole-pixel cells: lines land on the same sub-pixel every time */
+  .cw__grid {
+    --cell: max(28px, min(calc((100cqw - 4px) / var(--cols)), var(--cw-max)));
+    display: grid; grid-template-columns: repeat(var(--cols), var(--cell)); grid-template-rows: repeat(var(--rows), var(--cell));
+    width: max-content; margin-inline: auto;
+  }
+  @supports (width: round(down, 10.5px, 1px)) {
+    .cw__grid { --cell: max(28px, round(down, min(calc((100cqw - 4px) / var(--cols)), var(--cw-max)), 1px)); }
+  }
+  .cw__c {
+    position: relative; box-sizing: border-box; border-right: var(--line) solid var(--ink); border-bottom: var(--line) solid var(--ink);
+    background: transparent; transition: background-color 160ms ease;
+  }
+  .cw__c--t { border-top: var(--line) solid var(--ink); }
+  .cw__c--l { border-left: var(--line) solid var(--ink); }
+  .cw__c.is-word { background: var(--hl); }
+  .cw__c.is-ok { background: var(--ok); }
+  .cw__c.is-cur { background: var(--cur); }
+  .cw__c.is-cur::after { content: ''; position: absolute; inset: 2px; border: 2px solid var(--ink); pointer-events: none; }
+  .cw__n { position: absolute; left: 3px; top: 2px; font-family: var(--font-body); font-size: 10px; line-height: 1; font-weight: 500; pointer-events: none; z-index: 1; }
+  .cw__c input {
+    all: unset; box-sizing: border-box; display: block; width: 100%; height: 100%; padding-top: 2px; text-align: center; cursor: pointer;
+    font-family: var(--font-display); font-weight: 700; font-size: max(16px, calc(var(--cell) * 0.5)); line-height: 1; text-transform: uppercase; color: var(--ink);
+    caret-color: transparent;
+  }
+  .cw__c.is-rev input { color: #57534d; }
+  .cw__c input::selection { background: transparent; }
+
   .cw__foot { display: flex; flex-direction: column; gap: var(--s-3); }
+  .cw__lab { margin: 0; font-family: var(--font-body); font-size: var(--fs-print); color: #57534d; }
   .cw__clues { list-style: none; margin: 0; padding: 0; columns: 3 220px; column-gap: var(--s-6); }
-  .cw__clues li { break-inside: avoid; font-size: var(--fs-body); line-height: 1.45; margin-bottom: var(--s-3); cursor: pointer; border-radius: var(--r-xs); transition: background var(--dur-fast); }
-  .cw__clues li.is-on { background: rgba(152, 231, 235, 0.55); }
-  .cw__clues em { opacity: 0.55; font-style: normal; }
-  .cw__cn { font-family: var(--font-display); font-weight: 700; }
-  .is-solved .cw__grid { animation: pop var(--dur-slow) var(--ease-out); }
-  @keyframes pop { 50% { transform: scale(1.02); } }
+  .cw__clues li { break-inside: avoid; margin-bottom: 4px; }
+  .cw__clue {
+    all: unset; box-sizing: border-box; cursor: pointer; display: block; width: 100%; padding: 6px 8px; border-radius: 6px;
+    font-family: var(--font-body); font-size: clamp(15px, 1.05vw, 17px); line-height: 1.4; color: var(--ink); transition: background-color 160ms ease;
+  }
+  .cw__clue:hover { background: rgba(7, 7, 7, 0.05); }
+  .cw__clue:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+  .cw__clue.is-on { background: var(--hl); }
+  .cw__cn { font-family: var(--font-display); font-weight: 700; margin-right: 4px; }
+  .cw__cd { margin-left: 4px; font-size: 0.8em; color: #57534d; }
+  .cw__clue.is-ok .cw__ct { text-decoration: line-through; text-decoration-thickness: 1.5px; color: #57534d; }
+  .cw__clue.is-ok .cw__cn::after { content: ' ✓'; }
+  .cw__done { margin: 0; min-height: 1.4em; font-family: var(--font-display); font-weight: 500; text-transform: uppercase; font-size: 16px; }
+  .is-solved .cw__grid { animation: cw-pop 600ms cubic-bezier(.3,1.4,.5,1); }
+  @keyframes cw-pop { 50% { scale: 1.02; } }
+  @media (prefers-reduced-motion: reduce) { .cw__c, .cw__clue { transition: none; } .is-solved .cw__grid { animation: none; } }
 </style>

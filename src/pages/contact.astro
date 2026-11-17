@@ -1,43 +1,213 @@
 ---
+/**
+ * Contact · v2, same frame as the home: the header and one paper panel.
+ * The crossword takes the panel ("let's play"), clues underneath. In the
+ * corner, a face: click it and it chats with you so you get to know me
+ * (questions and answers editable in Keystatic).
+ */
 import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
 import Crossword from '../components/Crossword.astro';
-import Button from '../components/Button.astro';
 import { getEntry } from 'astro:content';
 import { rich } from '../lib/utils';
-const c = (await getEntry('pages', 'contact'))!.data;
+const c = (await getEntry('pages', 'contact'))!.data as any;
+const split = (t: string) => { const i = t.lastIndexOf(' '); return i > 0 ? [t.slice(0, i), t.slice(i + 1)] : ['', t]; };
+const [p1, p2] = split(c.playTitle);
+import { BUBBLES } from '../data/bubbles';
+const chat: string[] = (c.chat || []).map((l: string) => rich(l, false));
+const byIcon = (k: string) => c.links.find((l: any) => (k === 'email' ? String(l.url).startsWith('mailto:') : l.icon === (k === 'letterboxd' ? 'film' : k)));
+const linkFor = (k: string) => {
+  if (k === 'cv') return { href: c.cv, shown: 'Download my CV (PDF)', ext: false, download: true };
+  const l = byIcon(k); if (!l) return null;
+  const mail = String(l.url).startsWith('mailto:');
+  return { href: l.url, shown: mail ? l.url.replace('mailto:', '') : l.url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''), ext: !mail, download: false };
+};
+const replies = (c.chatReplies || []).map((r: any) => ({ ask: r.ask, say: rich(r.say, false), link: r.link && r.link !== 'none' ? linkFor(r.link) : null }));
+const B = BUBBLES['bucket-hat'];
 ---
-<Base title="contact">
-  <div class="contact" style="--acc: var(--acc-cyan); --on-acc: var(--on-cyan)">
-    <section class="contact__play">
-      <header class="contact__head">
-        <h1 class="t-display">{c.playTitle}</h1>
-        <button class="resolve press" type="button" onclick="document.dispatchEvent(new Event('crossword:resolve'))">Resolve</button>
+<Base title="contact" nav={false}>
+  <div class="ctp">
+    <SiteHeader />
+    <section class="ct3" aria-labelledby="play-h">
+      <header class="ct3__head">
+        <h1 class="ct3__h" id="play-h">{p1} <em>{p2}</em>.</h1>
+        <button class="ct3__btn" type="button" onclick="document.dispatchEvent(new Event('crossword:resolve'))">Resolve</button>
       </header>
-      <Crossword clues={c.clues} />
-    </section>
-    <aside class="contact__talk">
-      <div class="talk">
-        <h2 class="t-display">{c.talkTitle}</h2>
-        <div class="t-body rich" set:html={rich(c.body)} />
+      <div class="ct3__cw"><Crossword clues={c.clues} /></div>
+
+      <!-- the talking head -->
+      <div class="talk" data-talk style={`--ink:${B.ink};--light:${B.light}`}>
+        <div class="talk__card" id="talk-card" role="dialog" aria-label={c.talkTitle} hidden>
+          <button class="talk__x" type="button" data-talk-close aria-label="Close the chat">close ×</button>
+          <div class="talk__log" data-talk-log aria-live="polite"></div>
+          <div class="talk__chips" data-talk-chips></div>
+        </div>
+        <button class="talk__face" type="button" data-talk-open aria-expanded="false" aria-controls="talk-card">
+          <span class="talk__img">
+            <img class="talk__line" src="/images/faces/bucket-hat.png" alt="" width="110" height="137" />
+            <img class="talk__color" src="/images/faces/color/open/bucket-hat.png" alt="" width="110" height="137" loading="lazy" />
+          </span>
+          <span class="talk__note">{c.talkTitle}?</span>
+          <span class="sr-only">Open a chat to get to know me</span>
+        </button>
       </div>
-      <Button href={c.cv} variant="tile" icon="download" download>Download CV</Button>
-      {c.links.map((l: any) => <Button href={l.url} variant="tile" icon={l.icon}>{l.label}</Button>)}
-    </aside>
+      <script is:inline type="application/json" data-talk-data set:html={JSON.stringify({ chat, replies, end: rich(c.chatEnd || '', false), shape: B.shape, under: B.under })} />
+    </section>
   </div>
 </Base>
 
+<script>
+  // The head fakes a chat: it types its first lines, then offers questions
+  // the visitor might ask; each gets its answer (and a link, if it has one).
+  // Bubbles are drawn with the same hand-made shapes as the home faces.
+  function initTalk() {
+    const root = document.querySelector<HTMLElement>('[data-talk]');
+    if (!root || root.dataset.ready) return; root.dataset.ready = '1';
+    const data = JSON.parse(document.querySelector('[data-talk-data]')!.textContent || '{}');
+    const card = root.querySelector<HTMLElement>('.talk__card')!;
+    const log = root.querySelector<HTMLElement>('[data-talk-log]')!;
+    const chips = root.querySelector<HTMLElement>('[data-talk-chips]')!;
+    const face = root.querySelector<HTMLButtonElement>('[data-talk-open]')!;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let started = false, busy = false, k = 0;
+    const wait = (ms: number) => new Promise((r) => setTimeout(r, reduce ? 0 : ms));
+    const svg = (cls: string, s: any) => `<svg class="${cls}" viewBox="-2 -2 ${s.w} ${s.h}" preserveAspectRatio="none" aria-hidden="true"><path d="${s.d}"/></svg>`;
+    const bubble = (html: string, who: 'me' | 'you') => {
+      const b = document.createElement('div'); b.className = `talk__b talk__b--${who}`;
+      b.style.setProperty('--tilt', `${(k++ % 2 ? 1 : -1) * (0.6 + Math.random() * 0.8)}deg`);
+      b.innerHTML = `${svg('talk__under', data.under)}${svg('talk__shape', data.shape)}<p class="talk__t">${html}</p>`;
+      log.append(b); log.scrollTop = log.scrollHeight; return b;
+    };
+    const say = async (html: string) => {
+      const t = bubble('<span class="talk__dots"><i></i><i></i><i></i></span>', 'me'); t.setAttribute('aria-hidden', 'true');
+      await wait(Math.min(1300, 420 + html.replace(/<[^>]+>/g, '').length * 11));
+      t.removeAttribute('aria-hidden'); t.querySelector('.talk__t')!.innerHTML = html; log.scrollTop = log.scrollHeight;
+      await wait(220);
+    };
+    const esc = (s: string) => s.replace(/[&<>"]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' } as any)[m]);
+    const offer = () => {
+      chips.innerHTML = '';
+      data.replies.forEach((r: any) => {
+        if (r.used) return;
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'talk__chip'; b.textContent = r.ask;
+        b.addEventListener('click', async () => {
+          if (busy) return; busy = true; r.used = true; chips.innerHTML = '';
+          bubble(esc(r.ask), 'you');
+          await wait(350);
+          const l = r.link;
+          const link = l ? `: <a href="${esc(l.href)}"${l.ext ? ' target="_blank" rel="noopener"' : ''}${l.download ? ' download' : ''}>${esc(l.shown)}</a>` : '';
+          await say(`${r.say}${link}`);
+          if (data.end && data.replies.every((x: any) => x.used)) await say(data.end);
+          busy = false; offer();
+          (chips.querySelector('button') as HTMLElement | null)?.focus({ preventScroll: true });
+        });
+        chips.append(b);
+      });
+    };
+    const open = async () => {
+      card.hidden = false; root.classList.add('is-open'); face.setAttribute('aria-expanded', 'true');
+      if (started) { offer(); return; }
+      started = true; busy = true;
+      for (const l of data.chat) await say(l);
+      busy = false; offer();
+      (chips.querySelector('button') as HTMLElement | null)?.focus({ preventScroll: true });
+    };
+    const close = () => { card.hidden = true; root.classList.remove('is-open'); face.setAttribute('aria-expanded', 'false'); face.focus({ preventScroll: true }); };
+    face.addEventListener('click', () => (card.hidden ? open() : close()));
+    root.querySelector('[data-talk-close]')!.addEventListener('click', close);
+    addEventListener('keydown', (e) => { if (e.key === 'Escape' && !card.hidden) close(); });
+  }
+  initTalk();
+  document.addEventListener('astro:page-load', initTalk);
+</script>
+
 <style>
-  .contact { display: grid; grid-template-columns: minmax(0, 3fr) minmax(280px, 1fr); gap: var(--s-2); min-height: calc(100vh - var(--frame) * 2); }
-  .contact__play { background: var(--paper); border-radius: var(--r-md); padding: var(--s-8) var(--s-6) var(--s-6); display: flex; flex-direction: column; gap: var(--s-6); }
-  .contact__head { display: flex; justify-content: space-between; align-items: center; gap: var(--s-4); }
-  .resolve { border: 0; cursor: pointer; background: var(--ink); color: var(--paper); border-radius: var(--r-pill); padding: 12px var(--s-5); font-family: var(--font-body); font-weight: 700; font-size: var(--fs-label); }
-  .resolve:hover { background: var(--brand); }
-  .contact__talk { display: flex; flex-direction: column; gap: var(--s-2); }
-  .talk { flex: 1; background: var(--acc); color: var(--on-acc); border-radius: var(--r-md); padding: var(--s-8) var(--s-5) var(--s-5); display: flex; flex-direction: column; gap: var(--s-5); }
-  @media (max-width: 900px) {
-    .contact { grid-template-columns: 1fr; }
-    .contact__talk { order: -1; }
-    .contact__play { padding: var(--s-6) var(--s-4); }
-    .talk { padding-top: 72px; }
+  .ctp { min-height: calc(100svh - var(--frame) * 2); display: flex; flex-direction: column; }
+  .ct3 {
+    position: relative; flex: 1; min-height: 600px; background: var(--paper); color: #070707; border-radius: var(--r-md);
+    padding: 28px 28px 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 28px;
+  }
+  .ct3__head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; }
+  .ct3__h { margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: clamp(56px, 6vw, 112px); line-height: 0.85; letter-spacing: -0.035em; }
+  .ct3__h em { font-style: italic; }
+  .ct3__btn {
+    all: unset; cursor: pointer; min-height: 44px; padding: 0 20px; border-radius: 22px; border: 1px solid #070707; box-sizing: border-box; display: inline-flex; align-items: center;
+    font-family: var(--font-body); font-size: var(--fs-print); color: #070707; transition: background 200ms, color 200ms;
+  }
+  .ct3__btn:hover, .ct3__btn:focus-visible { background: #070707; color: var(--paper); }
+  .ct3__btn:focus-visible { outline: 2px solid #070707; outline-offset: 3px; }
+
+  /* the crossword in the middle, the clues underneath */
+  .ct3__cw { flex: 1; display: flex; }
+  .ct3__cw :global(.cw) { flex: 1; justify-content: center; gap: clamp(28px, 3vw, 48px); --cw-max: 54px; }
+  .ct3__cw :global(.cw__foot) { padding-right: 170px; }
+  .ct3__cw :global(.cw__clues) { columns: 4 230px; }
+
+  /* the talking head, bottom right */
+  .talk { position: absolute; right: 22px; bottom: 18px; z-index: 5; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+  .talk__face { all: unset; cursor: pointer; position: relative; display: block; width: clamp(96px, 8.4vw, 128px); aspect-ratio: 110 / 137; }
+  .talk__img { position: absolute; inset: 0; transform-origin: 50% 85%; transition: rotate 500ms cubic-bezier(.3,1.6,.5,1), scale 500ms cubic-bezier(.3,1.6,.5,1); animation: talk-idle 7s ease-in-out 2s infinite; }
+  .talk__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transition: opacity 250ms var(--ease-out); }
+  .talk__color { opacity: 0; }
+  .talk__face:hover .talk__img, .talk__face:focus-visible .talk__img { rotate: -8deg; scale: 1.12; animation-play-state: paused; }
+  .talk.is-open .talk__img { rotate: -10deg; scale: 1.08; animation: none; }
+  .talk__face:hover .talk__color, .talk__face:focus-visible .talk__color, .talk.is-open .talk__color { opacity: 1; }
+  .talk__face:hover .talk__line, .talk__face:focus-visible .talk__line, .talk.is-open .talk__line { opacity: 0; }
+  .talk__face:focus-visible { outline: 2px solid #070707; outline-offset: 6px; border-radius: 50%; }
+  /* idle: a slow look around, then a little nod */
+  @keyframes talk-idle { 0%, 70%, 100% { rotate: 0deg; } 76% { rotate: -7deg; } 82% { rotate: 5deg; } 88% { rotate: -2deg; } 93% { rotate: 0deg; translate: 0 -3px; } 96% { translate: 0 0; } }
+  .talk__note { position: absolute; right: 92%; top: 4%; white-space: nowrap; rotate: -8deg; font-family: var(--font-hand); font-size: clamp(22px, 1.6vw, 28px); color: #070707; transition: opacity 250ms, translate 300ms var(--ease-out); }
+  .talk__face:hover .talk__note { translate: -6px -2px; }
+  .talk.is-open .talk__note { opacity: 0; }
+
+  /* the chat: no box, just bubbles floating above the head */
+  .talk__card { width: min(400px, calc(100vw - 40px)); max-height: min(560px, 66vh); display: flex; flex-direction: column; gap: 10px; }
+  .talk__card[hidden] { display: none; }
+  .talk__x {
+    all: unset; cursor: pointer; align-self: flex-end; box-sizing: border-box; min-height: 36px; padding: 0 14px; border-radius: 18px; border: 1px solid #070707;
+    font-family: var(--font-body); font-size: var(--fs-print); color: #070707; background: var(--paper); transition: background 200ms, color 200ms;
+  }
+  .talk__x:hover, .talk__x:focus-visible { background: #070707; color: var(--paper); }
+  .talk__log { overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding: 8px 10px 4px 6px; mask-image: linear-gradient(to bottom, transparent 0, #000 24px); }
+  .talk__log :global(.talk__b) { position: relative; max-width: 88%; rotate: var(--tilt); animation: talk-b 420ms cubic-bezier(.3,1.4,.5,1) both; transform-origin: 0 100%; }
+  .talk__log :global(.talk__b svg) { position: absolute; overflow: visible; }
+  .talk__log :global(.talk__under) { inset: 6px -6px -8px 4px; width: calc(100% + 2px); height: calc(100% + 2px); }
+  .talk__log :global(.talk__shape) { inset: 0; width: 100%; height: 100%; }
+  .talk__log :global(.talk__t) { position: relative; margin: 0; padding: 14px 22px 18px 26px; font-family: var(--font-body); font-size: clamp(14px, 1vw, 16px); line-height: 1.45; }
+  .talk__log :global(.talk__b--me) { align-self: flex-start; }
+  .talk__log :global(.talk__b--me .talk__under) { fill: var(--light); }
+  .talk__log :global(.talk__b--me .talk__shape) { fill: var(--ink); }
+  .talk__log :global(.talk__b--me .talk__t) { color: var(--light); }
+  .talk__log :global(.talk__b--you) { align-self: flex-end; transform-origin: 100% 100%; }
+  .talk__log :global(.talk__b--you svg) { scale: -1 1; }
+  .talk__log :global(.talk__b--you .talk__under) { fill: #b9b5ae; }
+  .talk__log :global(.talk__b--you .talk__shape) { fill: #070707; }
+  .talk__log :global(.talk__b--you .talk__t) { color: var(--paper); padding: 14px 26px 18px 22px; }
+  .talk__log :global(.talk__t strong) { font-weight: 700; }
+  .talk__log :global(.talk__t a) { color: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; overflow-wrap: anywhere; }
+  .talk__log :global(.talk__dots) { display: inline-flex; gap: 5px; padding: 6px 2px; }
+  .talk__log :global(.talk__dots i) { width: 7px; height: 7px; border-radius: 50%; background: currentColor; opacity: 0.4; animation: talk-dot 1s infinite; }
+  .talk__log :global(.talk__dots i:nth-child(2)) { animation-delay: 0.15s; }
+  .talk__log :global(.talk__dots i:nth-child(3)) { animation-delay: 0.3s; }
+  @keyframes talk-dot { 30% { opacity: 1; translate: 0 -3px; } }
+  @keyframes talk-b { from { opacity: 0; scale: 0.6; } to { opacity: 1; scale: 1; } }
+  .talk__chips { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+  .talk__chips:empty { display: none; }
+  .talk__chips :global(.talk__chip) {
+    all: unset; cursor: pointer; box-sizing: border-box; min-height: 40px; padding: 8px 14px; border-radius: 20px; border: 1px solid #070707; color: #070707; background: var(--paper);
+    font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.3; transition: background 200ms, color 200ms;
+  }
+  .talk__chips :global(.talk__chip:hover), .talk__chips :global(.talk__chip:focus-visible) { background: #070707; color: var(--paper); }
+  .talk__chips :global(.talk__chip:focus-visible) { outline: 2px solid #070707; outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { .talk__img, .talk__log :global(*) { animation: none !important; } }
+
+  @media (max-width: 1099px) {
+    .ct3__cw :global(.cw__foot) { padding-right: 0; padding-bottom: 150px; }
+    .ct3__cw :global(.cw__clues) { columns: 2 220px; }
+  }
+  @media (max-width: 809px) {
+    .ct3 { padding: 20px 16px 24px; }
+    .ct3__head { flex-wrap: wrap; align-items: center; }
+    .talk { position: fixed; right: 16px; bottom: 16px; }
   }
 </style>
