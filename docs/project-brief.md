@@ -18,8 +18,8 @@
 - PDF en el repo: `public/cv/Alida_Diaz_de_Freijo_CV.pdf`, servido en `/cv/Alida_Diaz_de_Freijo_CV.pdf`. Última subida: 25 de octubre de 2026.
 - **Editable:** el artifact «CV Álida 2026», hecho con Claude: https://claude.ai/artifact/D18HB2JSGDPfWkLMncFDpw. El PDF se exporta desde ahí.
 - **Si cambia el CV,** se edita el artifact, se vuelve a exportar el PDF y se sustituye el del repo con el mismo nombre, para que el enlace de la web no cambie.
-- Esa versión se hizo pensando en un puesto de Lead, así que los textos tiran a liderazgo.
-- `[PENDIENTE]` Añadir la docencia en ESDi de este curso.
+- **Última versión: 16 de noviembre de 2026**, actualizada en la conversación «Oferta de trabajo mobile». Pone el design system en primer plano, incluye «Lecturer, UI Design · ESDi, master's programme, 2026 — now» y quita la entrada de 2019–2020. El enlace «portfolio» del CV apunta todavía al de Framer.
+- `[PENDIENTE]` El PDF del repo es el anterior, del 25 de octubre. Hay que exportar el nuevo desde el artifact y sustituirlo.
 
 **Perfil**
 - LinkedIn: https://www.linkedin.com/in/alidadiazdefreijo/

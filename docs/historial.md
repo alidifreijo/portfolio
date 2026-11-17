@@ -32,7 +32,7 @@
 - ✔ **Caras de la Home:** la del hmi ahora abre cutouts y la de South abre el About.
 - ✔ **Índice de la Home:** Cut Scenes y cutouts ya no salen apagadas por ser «explorations».
 - ✘ **«12 designers (summer cover included)».** Ali no quiere ese dato en la web.
-- … **CV:** confirmar que el PDF del repo es el actualizado y añadir las clases en ESDi.
+- … **CV:** el editable («CV Álida 2026») se actualizó el 16 de noviembre e incluye ESDi. Falta cambiar el PDF del repo por el nuevo.
 - … **Acceso al editor de Framer:** falta el link.
 
 ## Contact
