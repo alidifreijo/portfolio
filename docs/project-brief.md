@@ -16,7 +16,10 @@
 
 **CV**
 - PDF en el repo: `public/cv/Alida_Diaz_de_Freijo_CV.pdf`, servido en `/cv/Alida_Diaz_de_Freijo_CV.pdf`. Última subida: 25 de octubre de 2026.
-- `[PENDIENTE]` Confirmar que es la versión actualizada; falta añadir la docencia en ESDi de este curso.
+- **Editable:** el artifact «CV Álida 2026», hecho con Claude: https://claude.ai/artifact/D18HB2JSGDPfWkLMncFDpw. El PDF se exporta desde ahí.
+- **Si cambia el CV,** se edita el artifact, se vuelve a exportar el PDF y se sustituye el del repo con el mismo nombre, para que el enlace de la web no cambie.
+- Esa versión se hizo pensando en un puesto de Lead, así que los textos tiran a liderazgo.
+- `[PENDIENTE]` Añadir la docencia en ESDi de este curso.
 
 **Perfil**
 - LinkedIn: https://www.linkedin.com/in/alidadiazdefreijo/
