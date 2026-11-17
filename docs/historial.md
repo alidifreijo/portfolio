@@ -15,6 +15,8 @@
 
 ## 17 nov 2026 · Todo a main
 
+- ✔ **Fichas de los casos** en `docs/casos/`: Cut Scenes, cutouts, Silena, Monexa y Cupra. Cada una recoge lo que se sabe, dónde está el material y las preguntas para Ali. Los casos se escriben a partir de ellas.
+- ✔ **CV:** el editable «CV Álida 2026» es la fuente; está enlazado en el brief.
 - ✔ **`home-v2` se junta con `main`** y la web nueva queda publicada en producción. Nadie la visita todavía, y así el proyecto de Claude lee los documentos siempre al día.
 - ✔ **Se trabaja directamente en `main`.** Los cambios grandes van en una rama aparte con su vista previa.
 

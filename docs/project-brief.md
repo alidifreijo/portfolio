@@ -175,6 +175,8 @@ El portfolio estaba en **Framer** (alidadiazdefreijo.framer.website). Lo ha pasa
 > - **Entran:** Cut Scenes, cutouts, Silena (con el contenido por preparar), Cupra y Monexa.
 > - **Fuera:** el hmi (de momento) y South. Sus casos siguen en el repo como borrador.
 
+**Fichas de cada caso:** `docs/casos/`, con lo que se sabe, dónde está el material y las preguntas pendientes para Ali.
+
 ### 7.1 Criterio para que un proyecto entre
 
 Tiene que cumplir al menos una de estas tres condiciones:
