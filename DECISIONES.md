@@ -40,6 +40,12 @@ Las entradas anteriores al 27 nov salen de `docs/historial.md` y de los commits.
 - 2026-11-27 · El sistema de diseño será agéntico: legible por máquina (tokens DTCG, manifiesto de componentes, `DESIGN.md`), con una skill que lo hace cumplir, comprobación automática en cada build y una guía generada desde el código. Cambiar un token es una duda de gusto: lo aprueba Ali.
 - 2026-11-27 · Se guardan en el repo los archivos del método, `estilos/` y el paquete de los muñecos: prototipo de la radiografía y Bob en `exploraciones/`, recortes de los personajes en `assets/personajes/`.
 
+- 2026-11-27 · Bloque 1: Roche entra ya como fila en `/work` con lo público (Roche · 2026–now · Senior Product Designer · via Garaje de Ideas) y la frase como `[PLACEHOLDER]`. No se une a `main` hasta que Ali apruebe su texto en el Bloque 2.
+- 2026-11-27 · Monexa pasa a `/work/monexa`; `/work/bank-platform` y `/bank-platform` redirigen. El nombre visible se cambia en el Bloque 2.
+- 2026-11-27 · Las empresas llevan un campo «via»: Garaje de Ideas para Roche; North para Monexa y Cupra.
+- 2026-11-27 · Cada caso usa el color de su agente: Roche y Monexa menta (Systems), Cupra azul cielo (Ops), Cut Scenes cian (Creative), cutouts rosa (Collab). Silena, amarillo lima (Empathy), cuando entre.
+- 2026-11-27 · Las páginas viejas pueden seguir con valores fuera de los tokens mientras se rehacen: la comprobación del build guarda un listado de lo que ya incumplen, que no puede crecer y se vacía al rehacerlas.
+
 ## Aparcamiento de ideas
 
 - Plantillas de front-end reutilizables para las otras webs de Ali, a partir del sistema del portfolio.
