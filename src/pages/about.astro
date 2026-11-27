@@ -187,12 +187,12 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
     --red: #B0161B; /* accent red, darkened to read on paper */
     position: relative; min-height: calc(100svh - 150px);
     background: var(--paper); border-radius: var(--r-md); color: #070707;
-    box-sizing: border-box; padding: 28px 28px 24px;
-    display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto 1fr auto; column-gap: 16px; row-gap: 16px;
+    box-sizing: border-box; padding: 28px 28px var(--s-5);
+    display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto 1fr auto; column-gap: var(--s-4); row-gap: var(--s-4);
   }
   .ab p { margin: 0; }
   .ab__lab, .ab__val { font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.5; letter-spacing: 0.02em; }
-  .ab__lab { color: #57534d; margin-bottom: 4px !important; }
+  .ab__lab { color: #57534d; margin-bottom: var(--s-1) !important; }
   .ab__dim { color: #57534d; }
   .ab__u { display: inline-block; margin-top: 10px; text-decoration: underline; text-underline-offset: 2px; }
   .ab__case { text-decoration: underline; text-underline-offset: 0.2em; }
@@ -202,14 +202,14 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
   .ab__lead :global(strong) { font-weight: 400; font-style: italic; }
   .ab__quirks {
     grid-column: 8 / span 5; list-style: none; margin: 0; padding: 0;
-    font-family: var(--font-display); font-weight: 500; text-transform: uppercase; color: var(--red);
+    font-family: var(--font-ui); font-weight: 500; text-transform: uppercase; color: var(--red);
     font-size: clamp(16px, 1.55vw, 26px); line-height: 1.14;
   }
 
   /* the year, split around my face */
-  .ab__big { grid-column: 1 / -1; align-self: center; display: flex; align-items: center; justify-content: center; gap: clamp(12px, 2.4vw, 48px); }
+  .ab__big { grid-column: 1 / -1; align-self: center; display: flex; align-items: center; justify-content: center; gap: clamp(var(--s-3), 2.4vw, 48px); }
   .ab__mask { display: inline-block; overflow: hidden; padding: 0.04em 0.06em 0.12em; }
-  .ab__n { display: inline-block; font-family: var(--font-serif); font-size: clamp(150px, 21vw, 380px); line-height: 0.8; letter-spacing: -0.04em; color: #ECEAE5; }
+  .ab__n { display: inline-block; font-family: var(--font-serif); font-size: clamp(150px, 21vw, 380px); line-height: 0.8; letter-spacing: -0.04em; color: var(--paper-2); }
   .ab__and { display: inline-block; font-family: var(--font-serif); font-style: italic; font-size: clamp(30px, 3vw, 54px); color: var(--red); }
   .ab__face {
     all: unset; cursor: pointer; position: relative; display: block; width: clamp(150px, 15vw, 260px);
@@ -236,7 +236,7 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
   .ab__bub-t { position: absolute; inset: 0 12% 6% 6%; display: grid; place-items: center; text-align: center; font-family: var(--font-body); font-weight: 600; font-size: clamp(14px, 1vw, 16px); line-height: 1.2; color: var(--light); }
   @keyframes nudge { 0%, 88%, 100% { rotate: 0deg; } 91% { rotate: -7deg; } 94% { rotate: 5deg; } 97% { rotate: -2deg; } }
 
-  .ab__cols { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 16px; row-gap: 20px; }
+  .ab__cols { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--s-4); row-gap: 20px; }
 
   /* entry: the year rises from a mask, the face pops, words rise in */
   .ab-rise { animation: ab-rise 1.05s cubic-bezier(.22,.75,.25,1) var(--d, 0ms) both; }
@@ -249,58 +249,58 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
 
   /* the long version, on the frame: a sticky serif heading on the left,
      the content on the right; the detail opens on demand */
-  .abx { padding: 56px 12px 40px; color: var(--on-chrome); display: flex; flex-direction: column; gap: 72px; }
+  .abx { padding: 56px var(--s-3) var(--s-7); color: var(--paper); display: flex; flex-direction: column; gap: 72px; }
   .abx p { margin: 0; }
-  .abx__block { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 16px; }
+  .abx__block { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--s-4); }
   .abx__h { grid-column: span 4; align-self: start; position: sticky; top: 24px; margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: clamp(40px, 4vw, 72px); line-height: 0.9; letter-spacing: -0.025em; }
   .abx__body { grid-column: 5 / span 8; min-width: 0; }
 
   .abx__intro { font-family: var(--font-serif); font-size: clamp(22px, 1.9vw, 32px); line-height: 1.2; letter-spacing: -0.01em; max-width: 34ch; }
   .abx__intro :global(p + p) { margin-top: 0.7em; color: var(--muted-ink); }
   .abx__intro :global(strong) { font-weight: 400; font-style: italic; }
-  .abx__facts { margin: 40px 0 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; border-top: 1px solid #2a2926; padding-top: 18px; }
+  .abx__facts { margin: var(--s-7) 0 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-4); border-top: 1px solid #2a2926; padding-top: 18px; }
   .abx__facts dt { font-family: var(--font-serif); font-size: clamp(44px, 4vw, 72px); line-height: 0.9; letter-spacing: -0.03em; }
-  .abx__facts dd { margin: 8px 0 0; font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.45; color: var(--muted-ink); max-width: 24ch; }
+  .abx__facts dd { margin: var(--s-2) 0 0; font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.45; color: var(--muted-ink); max-width: 24ch; }
 
   /* experience: one line per job; open one for the story */
   .abx__job { border-top: 1px solid #2a2926; }
   .abx__job:last-child { border-bottom: 1px solid #2a2926; }
   .abx__job summary {
-    list-style: none; cursor: pointer; display: grid; grid-template-columns: 9em minmax(0, 1.3fr) minmax(0, 1fr) 24px; gap: 16px; align-items: baseline;
+    list-style: none; cursor: pointer; display: grid; grid-template-columns: 9em minmax(0, 1.3fr) minmax(0, 1fr) 24px; gap: var(--s-4); align-items: baseline;
     padding: 18px 0; font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.4; transition: opacity 200ms var(--ease-out);
   }
   .abx__job summary::-webkit-details-marker { display: none; }
   .abx__row { display: grid; grid-template-columns: 9em minmax(0, 1.3fr) minmax(0, 1fr) 24px; gap: var(--s-4); align-items: baseline; padding: var(--s-4) 0; margin: 0; font-family: var(--font-body); font-size: var(--fs-text); line-height: var(--lh-text); }
   .abx__row .abx__role { grid-column: 2; }
   .abx__row a { color: var(--paper); text-decoration: underline; text-underline-offset: 0.2em; }
-  .abx__job summary:focus-visible { outline: 2px solid var(--on-chrome); outline-offset: 4px; }
+  .abx__job summary:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; }
   .abx__body:has(.abx__job summary:hover) .abx__job:not(:hover) summary { opacity: 0.45; }
   .abx__yr, .abx__co { color: var(--muted-ink); }
-  .abx__role { font-family: var(--font-display); font-weight: 500; text-transform: uppercase; font-size: clamp(16px, 1.3vw, 22px); line-height: 1.15; color: var(--white); }
+  .abx__role { font-family: var(--font-ui); font-weight: 500; text-transform: uppercase; font-size: clamp(16px, 1.3vw, 22px); line-height: 1.15; color: var(--white); }
   .abx__plus { position: relative; width: 14px; height: 14px; justify-self: end; align-self: center; }
   .abx__plus::before, .abx__plus::after { content: ''; position: absolute; left: 0; top: 6px; width: 14px; height: 1.5px; background: currentColor; transition: rotate 300ms var(--ease-out); }
   .abx__plus::after { rotate: 90deg; }
   .abx__job[open] .abx__plus::after { rotate: 0deg; }
-  .abx__more { display: grid; grid-template-columns: 9em minmax(0, 1fr); gap: 16px; padding: 0 0 26px; }
+  .abx__more { display: grid; grid-template-columns: 9em minmax(0, 1fr); gap: var(--s-4); padding: 0 0 26px; }
   .abx__more > * { grid-column: 2; }
   .abx__job[open] .abx__more { animation: abx-open 450ms var(--ease-out) both; }
   @keyframes abx-open { from { opacity: 0; translate: 0 -6px; } to { opacity: 1; translate: 0 0; } }
   .abx__text { font-family: var(--font-body); font-size: clamp(16px, 1.15vw, 19px); line-height: 1.55; max-width: 60ch; color: var(--muted-ink); }
   .abx__text :global(strong) { font-weight: 400; color: var(--white); }
-  .abx__tags { margin-top: 12px !important; font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.5; color: var(--muted-ink); }
+  .abx__tags { margin-top: var(--s-3) !important; font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.5; color: var(--muted-ink); }
 
   /* how I work: tabs; the chosen one says it in serif */
-  .abx__tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+  .abx__tabs { display: flex; flex-wrap: wrap; gap: var(--s-2); }
   .abx__tab {
-    all: unset; cursor: pointer; display: inline-flex; align-items: baseline; gap: 8px; min-height: 44px; box-sizing: border-box; padding: 10px 16px; border-radius: 22px;
+    all: unset; cursor: pointer; display: inline-flex; align-items: baseline; gap: var(--s-2); min-height: 44px; box-sizing: border-box; padding: 10px var(--s-4); border-radius: 22px;
     border: 1px solid #3a3835; color: var(--muted-ink); font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.4;
     transition: background 200ms var(--ease-out), color 200ms var(--ease-out), border-color 200ms var(--ease-out);
   }
   .abx__tab:hover { color: var(--white); border-color: var(--muted-ink); }
-  .abx__tab[aria-selected='true'] { background: var(--on-chrome); border-color: var(--on-chrome); color: #070707; }
-  .abx__tab:focus-visible { outline: 2px solid var(--on-chrome); outline-offset: 3px; }
+  .abx__tab[aria-selected='true'] { background: var(--paper); border-color: var(--paper); color: #070707; }
+  .abx__tab:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
   .abx__n { font-size: 0.85em; opacity: 0.6; }
-  .abx__panel { padding-top: 32px; display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 32px; }
+  .abx__panel { padding-top: var(--s-6); display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: var(--s-6); }
   .abx__panel[hidden] { display: none; }
   .abx__panel:not([hidden]) { animation: abx-open 450ms var(--ease-out) both; }
   .abx__say { font-family: var(--font-serif); font-size: clamp(26px, 2.4vw, 42px); line-height: 1.1; letter-spacing: -0.015em; max-width: 26ch; color: var(--muted-ink); }
@@ -310,7 +310,7 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
   @media (prefers-reduced-motion: reduce) { .abx__job[open] .abx__more, .abx__panel:not([hidden]) { animation: none; } }
 
   @media (max-width: 1099px) {
-    .abx__h { grid-column: 1 / -1; position: static; margin-bottom: 24px; }
+    .abx__h { grid-column: 1 / -1; position: static; margin-bottom: var(--s-5); }
     .abx__body { grid-column: 1 / -1; }
     .ab__intro { grid-column: 1 / span 7; }
     .ab__quirks { grid-column: 8 / span 5; }
@@ -318,8 +318,8 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
   }
   @media (max-width: 809px) {
     .abx { gap: 56px; }
-    .abx__facts { grid-template-columns: 1fr 1fr; row-gap: 24px; }
-    .abx__job summary { grid-template-columns: minmax(0, 1fr) 24px; row-gap: 4px; }
+    .abx__facts { grid-template-columns: 1fr 1fr; row-gap: var(--s-5); }
+    .abx__job summary { grid-template-columns: minmax(0, 1fr) 24px; row-gap: var(--s-1); }
     .abx__row { grid-template-columns: minmax(0, 1fr); row-gap: var(--s-1); }
     .abx__row .abx__role { grid-column: 1; }
     .abx__yr, .abx__co { grid-column: 1; }
@@ -328,10 +328,10 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
     .abx__more { grid-template-columns: 1fr; }
     .abx__more > * { grid-column: 1; }
     .abx__panel { grid-template-columns: 1fr; }
-    .ab { padding: 20px 16px; min-height: 0; row-gap: 22px; }
+    .ab { padding: 20px var(--s-4); min-height: 0; row-gap: 22px; }
     .ab__intro, .ab__quirks { grid-column: 1 / -1; }
     .ab__quirks { font-size: 15px; }
-    .ab__big { gap: 4px; justify-content: space-between; }
+    .ab__big { gap: var(--s-1); justify-content: space-between; }
     .ab__n { font-size: 31vw; }
     .ab__face { width: 30vw; }
     .ab__and { font-size: 20px; }

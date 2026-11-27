@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisión · How it’s built y Biblioteca · 27 nov 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:#070707; --paper:#D4D1CB; --paper-2:#ECEAE5; --muted:#4A4744; --muted-ink:#8E8A84;
+    --line:rgba(7,7,7,.14); --red:#E92C30; --red-text:#B0161B;
+    --systems:#A3FFA9; --on-systems:#113830; --amber:#E89A3C;
+    --serif:'Instrument Serif',Georgia,serif; --ui:'Space Grotesk',system-ui,sans-serif; --body:'Satoshi',system-ui,sans-serif;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--ink); color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.55; padding:12px; }
+  .panel { background:var(--paper); border-radius:12px; padding:40px; max-width:1200px; margin:0 auto 12px; }
+  h1,h2,h3 { font-family:var(--serif); font-weight:400; margin:0; }
+  h1 { font-size:clamp(40px,5vw,64px); line-height:1; }
+  h1 em, h2 em { font-style:italic; }
+  h2 { font-size:clamp(28px,2.6vw,40px); line-height:1.05; margin-bottom:16px; }
+  h3 { font-size:26px; line-height:1.1; }
+  .label { font-family:var(--ui); font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:500; }
+  .top { display:grid; grid-template-columns:auto 1fr; gap:32px; align-items:start; }
+  .light { display:flex; flex-direction:column; gap:8px; background:var(--ink); padding:14px; border-radius:999px; }
+  .light span { width:40px; height:40px; border-radius:50%; background:#2a2826; }
+  .light .on { background:var(--red); }
+  .pills { display:flex; flex-wrap:wrap; gap:8px; margin:16px 0; }
+  .pill { font-family:var(--ui); font-size:13px; padding:6px 12px; border-radius:999px; background:var(--paper-2); }
+  .pill b { font-weight:500; }
+  .pill.r { background:var(--red); color:#fff; }
+  .pill.a { background:var(--amber); color:#261E13; }
+  ul.ok { margin:8px 0 0; padding-left:20px; }
+  .find { border-top:1px solid var(--line); padding:32px 0; display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:32px; }
+  .find:first-of-type { border-top:0; }
+  .find img { width:100%; border-radius:8px; display:block; border:1px solid var(--line); }
+  .imgs { display:flex; flex-direction:column; gap:12px; }
+  .cap { font-family:var(--ui); font-size:12px; color:var(--muted); margin-top:4px; }
+  .lvl { display:inline-block; font-family:var(--ui); font-size:12px; letter-spacing:.06em; text-transform:uppercase; padding:3px 10px; border-radius:999px; margin-bottom:10px; }
+  .lvl.rompe { background:var(--red); color:#fff; }
+  .lvl.nota { background:var(--amber); color:#261E13; }
+  .lvl.det { background:var(--paper-2); color:var(--ink); }
+  .visitor { font-family:var(--serif); font-style:italic; font-size:22px; line-height:1.2; margin:8px 0 12px; }
+  .why { color:var(--muted); font-size:15px; }
+  .why code { font-family:var(--ui); font-size:13px; background:var(--paper-2); padding:1px 6px; border-radius:4px; }
+  .card { background:var(--ink); color:var(--paper); border-radius:8px; padding:20px; font-family:var(--ui); font-size:14px; }
+  .card .hide { background:var(--red); color:#fff; padding:0 6px; border-radius:4px; }
+  details.more { margin-top:8px; }
+  details.more > summary { cursor:pointer; font-family:var(--ui); font-size:14px; text-transform:uppercase; letter-spacing:.06em; padding:16px 0; border-top:1px solid var(--line); }
+  .ba { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .ba img { width:100%; border-radius:8px; border:1px solid var(--line); display:block; }
+  .ba .scroll { max-height:720px; overflow:auto; border-radius:8px; }
+  .grid3 { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; align-items:start; }
+  .grid3 img { width:100%; border-radius:6px; border:1px solid var(--line); }
+  .grid3 .scroll { max-height:520px; overflow:auto; border-radius:6px; }
+  table { width:100%; border-collapse:collapse; font-size:15px; }
+  td { padding:10px 8px; border-top:1px solid var(--line); vertical-align:top; }
+  td:first-child { font-family:var(--ui); font-size:13px; white-space:nowrap; }
+  @media (max-width:760px) { .panel { padding:22px; } .find, .ba, .grid3 { grid-template-columns:1fr; } .top { grid-template-columns:1fr; } .light { flex-direction:row; width:max-content; } }
+  .light .amb { background:var(--amber); }
+  .q { background:var(--paper-2); border-radius:8px; padding:16px 20px; margin-top:12px; }
+</style>
+</head>
+<body>
+
+<section class="panel">
+  <div class="top">
+    <div class="light" aria-label="Semáforo: ámbar"><span></span><span class="amb"></span><span></span></div>
+    <div>
+      <p class="label">Revisión completa · 27 nov 2026 · ramas pagina-how-built y pagina-biblioteca (commit 2cf37b1)</p>
+      <h1>How it’s built y la <em>Biblioteca</em>: en ámbar</h1>
+      <p>Nada se rompe. Las dos páginas se ven bien a 390, 768 y 1440 px, no hay errores en la consola, se navegan con teclado y no tienen animaciones (así que con movimiento reducido no cambia nada). Están hechas con piezas del sistema y la comprobación del build pasa. Las dos se editan en Keystatic.</p>
+      <p>Es ámbar por el texto, no por el código: el borrador de «How it’s built» habla de una home de agentes que todavía no existe y mezcla «yo» con «Ali» en tercera persona. Y, aunque las dos son la misma plantilla (página larga sobre negro), About y «How it’s built» parecen de webs distintas.</p>
+      <div class="pills">
+        <span class="pill r"><b>0</b> rompe algo</span>
+        <span class="pill a"><b>3</b> se nota</span>
+        <span class="pill"><b>5</b> detalles</span>
+      </div>
+      <div class="q">
+        <p class="label">Preguntas para Ali (no son fallos)</p>
+        <ul class="ok">
+          <li><b>El menú.</b> Ninguna de las dos está en el menú, a propósito (el menú del brief es Play, Work, About y Contact). Ahora mismo no se llega a ninguna de las dos desde ningún sitio. ¿Por dónde entra la gente a «How it’s built»? ¿Desde About, desde el pie o desde un agente de la home? La Biblioteca solo tendrá entrada cuando exista el agente Research de la home.</li>
+          <li><b>¿Quién habla?</b> ¿La página va en primera persona («I») o hablando de «Ali»? Ver hallazgo 2.</li>
+          <li><b>Antes de publicar:</b> el brief pide que no quede ningún «[DRAFT]» ni relleno a la vista. Ahora hay 5 «[DRAFT FOR ALI]» y 3 «[PLACEHOLDER]», como se esperaba. Las dos páginas no pueden ir a <code>main</code> así.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Los cinco <em>más importantes</em></h2>
+
+  <div class="find">
+    <div class="imgs"><img src="h-equipo-voz.png" alt="Sección The team con el párrafo de los seis agentes marcado"><p class="cap">1440 px · «The team», abajo</p></div>
+    <div>
+      <span class="lvl nota">Se nota</span>
+      <h3>1 · Habla de una home de agentes que aún no existe</h3>
+      <p class="visitor">«Dice que en la home hay seis agentes… voy a la home y veo caras, no agentes.»</p>
+      <p class="why">El párrafo «And on the home, six agents… Each one opens the case that proves it» describe la home v8, que es la última pieza (DECISIONES 27 nov; PROYECTO.md: hasta entonces se queda la home de caras). Si la página sale antes que la home, la frase es falsa. Además, Research no abre un caso, abre la Biblioteca (WIP). Lo demás del texto lo he cruzado con CLAUDE.md, DESIGN.md, DECISIONES.md y el código y cuadra: tokens DTCG, DESIGN.md, manifiesto, skill, comprobación antes del build con deuda que solo baja, styleguide generado, una rama por pieza, revisor con semáforo, cierre, y Astro + Keystatic + GitHub + Vercel. No he encontrado datos inventados de Ali ni nada de Cupra, Roche o búsqueda de trabajo.</p>
+    </div>
+  </div>
+
+  <div class="find">
+    <div class="imgs"><img src="h-equipo-voz.png" alt="Sección The team con la línea de Ali y la de los agentes marcadas"><p class="cap">1440 px · las dos zonas marcadas</p></div>
+    <div>
+      <span class="lvl nota">Se nota</span>
+      <h3>2 · Unas veces habla Ali y otras se habla de Ali</h3>
+      <p class="visitor">«¿Quién me está contando esto? Primero “Ali sets the direction”, luego “how I work”.»</p>
+      <p class="why">«Ali sets the direction…» y «Nothing reaches the live site without Ali’s yes» van en tercera persona; «six sides of how I work» va en primera. En una web personal, el salto se lee raro. Es elección de Ali: una voz para toda la página.</p>
+    </div>
+  </div>
+
+  <div class="find">
+    <div class="imgs">
+      <img src="about-1440-ref.png" alt="About: sobre panel de papel">
+      <img src="built-1440-arriba.png" alt="How it's built: sobre negro, título a la izquierda">
+      <p class="cap">1440 px · arriba About, abajo «How it’s built»</p>
+    </div>
+    <div>
+      <span class="lvl nota">Se nota</span>
+      <h3>3 · About y «How it’s built» son la misma plantilla y no se parecen</h3>
+      <p class="visitor">«Paso de About a esta página y parece otra web: una es de papel, la otra negra con títulos a la izquierda.»</p>
+      <p class="why">Los estilos dicen que la plantilla 6 (página larga) es para las dos: «título de sección a la izquierda y contenido a la derecha, sobre negro». «How it’s built» la cumple; About (ya aprobada antes) va sobre papel y con otra composición. No es un fallo de esta pieza, pero ahora que existe el componente LongSection se nota la diferencia. Pregunta para Ali: ¿About pasa a LongSection, o la plantilla 6 se queda solo para esta página?</p>
+    </div>
+  </div>
+
+  <div class="find">
+    <div class="imgs"><img src="h-jerarquia.png" alt="Título de la página y título de la primera sección marcados, del mismo tamaño"><p class="cap">1440 px · título de página y de sección</p></div>
+    <div>
+      <span class="lvl det">Detalle</span>
+      <h3>4 · El título de la página mide lo mismo que «The team»</h3>
+      <p class="visitor">«No sé bien cuál es el título de la página y cuál el de la sección.»</p>
+      <p class="why">Los dos usan el tamaño «sección». Es lo que permite el sistema (el tamaño display es solo para la home), así que no es un error de construcción; lo separan la posición y el espacio. Si a Ali le chirría, es una pregunta de gusto.</p>
+    </div>
+  </div>
+
+  <div class="find">
+    <div class="imgs"><img src="h-library-768-hueco.png" alt="Biblioteca a 768 px con la franja negra bajo el pie marcada"><p class="cap">768 px · franja negra bajo el pie</p></div>
+    <div>
+      <span class="lvl det">Detalle</span>
+      <h3>5 · En tableta queda una franja negra vacía bajo el pie de la Biblioteca</h3>
+      <p class="visitor">«El pie no está abajo del todo; sobra un trozo negro.»</p>
+      <p class="why">El panel se estira con una altura calculada a ojo (la pantalla menos 260 px) y un ancho máximo de 900 px; ninguno de los dos valores está en el styleguide. A 1440 y 390 cuadra; a 768 sobran unos 50 px. Es pequeño, pero es estilo puesto a mano.</p>
+    </div>
+  </div>
+
+  <details class="more">
+    <summary>Tres detalles más</summary>
+
+    <div class="find">
+      <div class="imgs"><img src="h-placeholders.png" alt="Marcas PLACEHOLDER de la Biblioteca resaltadas"><p class="cap">1440 px · marcas de borrador</p></div>
+      <div>
+        <span class="lvl det">Detalle</span>
+        <h3>6 · Las marcas de borrador están dibujadas a mano, dos veces</h3>
+        <p class="visitor">Un visitante no lo notaría (y antes de publicar desaparecen).</p>
+        <p class="why">El estilo de «[DRAFT FOR ALI]» y «[PLACEHOLDER]» está copiado igual en las dos páginas y no es un componente del styleguide. Además, el ancho de lectura cambia: 56, 60 y 64 caracteres según el bloque. Se lee bien y el contraste es bueno (5,9:1), pero es estilo fuera del sistema.</p>
+      </div>
+    </div>
+
+    <div class="find">
+      <div class="imgs"><img src="styleguide-agentcard-1440.png" alt="Ficha del agente Systems en el styleguide, con los dos botones"><p class="cap">/styleguide · ficha con dos botones</p></div>
+      <div>
+        <span class="lvl det">Detalle</span>
+        <h3>7 · Agentes en Keystatic: se editan, pero todavía no se ven en ningún sitio</h3>
+        <p class="visitor">«Cambio el texto de un agente en Keystatic y no veo el cambio en ninguna página.»</p>
+        <p class="why">La colección de agentes tiene los seis textos aprobados y la ficha abre uno o dos casos (Systems → Roche y Monexa; Research → la Biblioteca). Se ve bien en el styleguide a 1440 y 390 px y coincide con DECISIONES. Pero ninguna página lee todavía la colección (la usará la home de agentes) y la ficha del styleguide es un ejemplo fijo. Además, el campo «Agent» tiene que ser exactamente <code>systems</code>, <code>research</code>…, en minúsculas: con cualquier otra cosa el build falla.</p>
+      </div>
+    </div>
+
+    <div class="find">
+      <div class="imgs"><img src="library-1440.png" alt="Biblioteca a 1440 px"><p class="cap">1440 px · Biblioteca</p></div>
+      <div>
+        <span class="lvl det">Detalle</span>
+        <h3>8 · Avance de la Biblioteca: si falta el ancho o el alto, la imagen pierde su proporción</h3>
+        <p class="visitor">Nada todavía: el avance está vacío.</p>
+        <p class="why">En Keystatic, «Preview» pide imagen, ancho, alto, texto alternativo y pie, pero ancho y alto no son obligatorios. Si Ali sube una imagen sin rellenarlos, la caja se queda sin proporción. Igual pasa con «Lead» de «How it’s built»: admite negritas y enlaces, pero la ayuda del campo no lo dice.</p>
+      </div>
+    </div>
+  </details>
+</section>
+
+<section class="panel">
+  <h2>Las dos páginas <em>a tres anchos</em></h2>
+  <p class="label">How this portfolio is built · 390 · 768 · 1440</p>
+  <div class="grid3">
+    <div class="scroll"><img src="built-390.png" alt="How it's built a 390 px"></div>
+    <div class="scroll"><img src="built-768.png" alt="How it's built a 768 px"></div>
+    <div class="scroll"><img src="built-1440.png" alt="How it's built a 1440 px"></div>
+  </div>
+  <p class="label" style="margin-top:24px">Library · 390 · 768 · 1440</p>
+  <div class="grid3">
+    <div class="scroll"><img src="library-390.png" alt="Biblioteca a 390 px"></div>
+    <div class="scroll"><img src="library-768.png" alt="Biblioteca a 768 px"></div>
+    <div class="scroll"><img src="library-1440.png" alt="Biblioteca a 1440 px"></div>
+  </div>
+  <p class="label" style="margin-top:24px">LongSection en el styleguide · 1440 y 390 (se ve igual que en la página)</p>
+  <div class="ba">
+    <img src="styleguide-longsection-1440.png" alt="LongSection en el styleguide a 1440 px">
+    <img src="styleguide-longsection-390.png" alt="LongSection en el styleguide a 390 px">
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Lo que <em>funciona</em></h2>
+  <table>
+    <tr><td>Criterios</td><td>«How it’s built» cuenta el equipo, el sistema agéntico (tokens DTCG, DESIGN.md, manifiesto, skill, comprobación del build, styleguide generado) y el proceso (decidir en el chat, construir en Claude Code, revisor, cierre), marcado [DRAFT FOR ALI]. La Biblioteca tiene qué es, por qué y avance, con [PLACEHOLDER] visibles y la píldora y los números en ámbar (Research).</td></tr>
+    <tr><td>Sistema</td><td><code>npm run check</code> pasa (55 tokens, sin roturas nuevas, deuda 304). Solo componentes del sistema; LongSection está en el manifiesto y en /styleguide, y se ve igual que en la página.</td></tr>
+    <tr><td>Keystatic</td><td>Singletons «How it’s built» y «Library (WIP)» y colección «Agents» con los campos que pintan las páginas. Lo que se ve sale de esos archivos, nada escrito a mano en la página.</td></tr>
+    <tr><td>Pantallas</td><td>390, 768 y 1440 px sin nada cortado, tapado ni desbordado. A partir de 1100 px el título va a la izquierda y se queda fijo mientras bajas por su sección; por debajo, se apila.</td></tr>
+    <tr><td>Consola y enlaces</td><td>Sin errores ni avisos, sin peticiones fallidas. Todos los enlaces abren (incluido el de styleguide).</td></tr>
+    <tr><td>Teclado</td><td>Foco visible (contorno claro de 2 px) en todos los enlaces, en orden lógico.</td></tr>
+    <tr><td>Movimiento</td><td>Ninguna animación en las dos páginas; con movimiento reducido se ven igual.</td></tr>
+    <tr><td>Lectura</td><td>Texto sobre negro 13,2:1; píldora ámbar 7,1:1; marcas rojas 5,9:1. Sin imágenes, así que no hay textos alternativos que revisar.</td></tr>
+    <tr><td>Peso</td><td>Unos 126 KB por página (letra y CSS); sin imágenes ni vídeo.</td></tr>
+  </table>
+</section>
+
+<section class="panel">
+  <h2>No he podido <em>comprobar</em></h2>
+  <table>
+    <tr><td>Editar en Keystatic</td><td>La vista previa es una copia estática: no he abierto el panel de Keystatic ni he guardado un cambio para verlo en la página. Lo he revisado leyendo la configuración.</td></tr>
+    <tr><td>La web en Vercel</td><td>He revisado en local (copia estática en localhost:4328), no en una vista previa de Vercel. En local los enlaces van a «.html»; no he visto cómo se resuelven allí.</td></tr>
+    <tr><td>Móvil y tableta reales</td><td>Solo emulados en Chromium a 390 y 768 px, con táctil simulado. Ni Safari ni un iPhone de verdad.</td></tr>
+    <tr><td>Red lenta</td><td>No he limitado la conexión. Son páginas de solo texto y muy ligeras, así que el riesgo es bajo.</td></tr>
+    <tr><td>Lector de pantalla</td><td>He mirado la estructura (un título principal y secciones con su título), pero no las he escuchado con un lector.</td></tr>
+    <tr><td>La ficha de agente en la home</td><td>La home de agentes aún no existe; solo he visto la ficha en el styleguide.</td></tr>
+  </table>
+</section>
+
+</body>
+</html>

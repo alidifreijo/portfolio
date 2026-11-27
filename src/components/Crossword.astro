@@ -238,7 +238,7 @@ const label = (bw: W[], c: Cell) => [c.across != null ? `${bw[c.across].number} 
   .cw__n { position: absolute; left: 3px; top: 2px; font-family: var(--font-body); font-size: 10px; line-height: 1; font-weight: 500; pointer-events: none; z-index: 1; }
   .cw__c input {
     all: unset; box-sizing: border-box; display: block; width: 100%; height: 100%; padding-top: 2px; text-align: center; cursor: pointer;
-    font-family: var(--font-display); font-weight: 700; font-size: max(16px, calc(var(--cell) * 0.5)); line-height: 1; text-transform: uppercase; color: var(--ink);
+    font-family: var(--font-ui); font-weight: 700; font-size: max(16px, calc(var(--cell) * 0.5)); line-height: 1; text-transform: uppercase; color: var(--ink);
     caret-color: transparent;
   }
   .cw__c.is-rev input { color: #57534d; }
@@ -247,19 +247,19 @@ const label = (bw: W[], c: Cell) => [c.across != null ? `${bw[c.across].number} 
   .cw__foot { display: flex; flex-direction: column; gap: var(--s-3); }
   .cw__lab { margin: 0; font-family: var(--font-body); font-size: var(--fs-print); color: #57534d; }
   .cw__clues { list-style: none; margin: 0; padding: 0; columns: 3 220px; column-gap: var(--s-6); }
-  .cw__clues li { break-inside: avoid; margin-bottom: 4px; }
+  .cw__clues li { break-inside: avoid; margin-bottom: var(--s-1); }
   .cw__clue {
-    all: unset; box-sizing: border-box; cursor: pointer; display: block; width: 100%; padding: 6px 8px; border-radius: 6px;
+    all: unset; box-sizing: border-box; cursor: pointer; display: block; width: 100%; padding: 6px var(--s-2); border-radius: 6px;
     font-family: var(--font-body); font-size: clamp(15px, 1.05vw, 17px); line-height: 1.4; color: var(--ink); transition: background-color 160ms ease;
   }
   .cw__clue:hover { background: rgba(7, 7, 7, 0.05); }
   .cw__clue:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
   .cw__clue.is-on { background: var(--hl); }
-  .cw__cn { font-family: var(--font-display); font-weight: 700; margin-right: 4px; }
-  .cw__cd { margin-left: 4px; font-size: 0.8em; color: #57534d; }
+  .cw__cn { font-family: var(--font-ui); font-weight: 700; margin-right: var(--s-1); }
+  .cw__cd { margin-left: var(--s-1); font-size: 0.8em; color: #57534d; }
   .cw__clue.is-ok .cw__ct { text-decoration: line-through; text-decoration-thickness: 1.5px; color: #57534d; }
   .cw__clue.is-ok .cw__cn::after { content: ' ✓'; }
-  .cw__done { margin: 0; min-height: 1.4em; font-family: var(--font-display); font-weight: 500; text-transform: uppercase; font-size: 16px; }
+  .cw__done { margin: 0; min-height: 1.4em; font-family: var(--font-ui); font-weight: 500; text-transform: uppercase; font-size: 16px; }
   .is-solved .cw__grid { animation: cw-pop 600ms cubic-bezier(.3,1.4,.5,1); }
   @keyframes cw-pop { 50% { scale: 1.02; } }
   @media (prefers-reduced-motion: reduce) { .cw__c, .cw__clue { transition: none; } .is-solved .cw__grid { animation: none; } }

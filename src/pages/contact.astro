@@ -125,9 +125,9 @@ const B = BUBBLES['bucket-hat'];
   .ctp { min-height: calc(100svh - var(--frame) * 2); display: flex; flex-direction: column; }
   .ct3 {
     position: relative; flex: 1; min-height: 600px; background: var(--paper); color: #070707; border-radius: var(--r-md);
-    padding: 28px 28px 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 28px;
+    padding: 28px 28px var(--s-6); box-sizing: border-box; display: flex; flex-direction: column; gap: 28px;
   }
-  .ct3__head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; }
+  .ct3__head { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--s-4); }
   .ct3__h { margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: clamp(56px, 6vw, 112px); line-height: 0.85; letter-spacing: -0.035em; }
   .ct3__h em { font-style: italic; }
   .ct3__btn {
@@ -144,7 +144,7 @@ const B = BUBBLES['bucket-hat'];
   .ct3__cw :global(.cw__clues) { columns: 4 230px; }
 
   /* the talking head, bottom right */
-  .talk { position: absolute; right: 22px; bottom: 18px; z-index: 5; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+  .talk { position: absolute; right: 22px; bottom: 18px; z-index: 5; display: flex; flex-direction: column; align-items: flex-end; gap: var(--s-2); }
   .talk__face { all: unset; cursor: pointer; position: relative; display: block; width: clamp(96px, 8.4vw, 128px); aspect-ratio: 110 / 137; }
   .talk__img { position: absolute; inset: 0; transform-origin: 50% 85%; transition: rotate 500ms cubic-bezier(.3,1.6,.5,1), scale 500ms cubic-bezier(.3,1.6,.5,1); animation: talk-idle 7s ease-in-out 2s infinite; }
   .talk__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transition: opacity 250ms var(--ease-out); }
@@ -156,7 +156,7 @@ const B = BUBBLES['bucket-hat'];
   .talk__face:focus-visible { outline: 2px solid #070707; outline-offset: 6px; border-radius: 50%; }
   /* idle: a slow look around, then a little nod */
   @keyframes talk-idle { 0%, 70%, 100% { rotate: 0deg; } 76% { rotate: -7deg; } 82% { rotate: 5deg; } 88% { rotate: -2deg; } 93% { rotate: 0deg; translate: 0 -3px; } 96% { translate: 0 0; } }
-  .talk__note { position: absolute; right: 92%; top: 4%; white-space: nowrap; rotate: -8deg; font-family: var(--font-hand); font-size: clamp(22px, 1.6vw, 28px); color: #070707; transition: opacity 250ms, translate 300ms var(--ease-out); }
+  .talk__note { position: absolute; right: 92%; top: 4%; white-space: nowrap; rotate: -8deg; font-family: var(--font-serif); font-size: clamp(22px, 1.6vw, 28px); color: #070707; transition: opacity 250ms, translate 300ms var(--ease-out); }
   .talk__face:hover .talk__note { translate: -6px -2px; }
   .talk.is-open .talk__note { opacity: 0; }
 
@@ -168,7 +168,7 @@ const B = BUBBLES['bucket-hat'];
     font-family: var(--font-body); font-size: var(--fs-print); color: #070707; background: var(--paper); transition: background 200ms, color 200ms;
   }
   .talk__x:hover, .talk__x:focus-visible { background: #070707; color: var(--paper); }
-  .talk__log { overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding: 8px 10px 4px 6px; mask-image: linear-gradient(to bottom, transparent 0, #000 24px); }
+  .talk__log { overflow-y: auto; display: flex; flex-direction: column; gap: var(--s-3); padding: var(--s-2) 10px var(--s-1) 6px; mask-image: linear-gradient(to bottom, transparent 0, #000 24px); }
   .talk__log :global(.talk__b) { position: relative; max-width: 88%; rotate: var(--tilt); animation: talk-b 420ms cubic-bezier(.3,1.4,.5,1) both; transform-origin: 0 100%; }
   .talk__log :global(.talk__b svg) { position: absolute; overflow: visible; }
   .talk__log :global(.talk__under) { inset: 6px -6px -8px 4px; width: calc(100% + 2px); height: calc(100% + 2px); }
@@ -194,7 +194,7 @@ const B = BUBBLES['bucket-hat'];
   .talk__chips { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
   .talk__chips:empty { display: none; }
   .talk__chips :global(.talk__chip) {
-    all: unset; cursor: pointer; box-sizing: border-box; min-height: 40px; padding: 8px 14px; border-radius: 20px; border: 1px solid #070707; color: #070707; background: var(--paper);
+    all: unset; cursor: pointer; box-sizing: border-box; min-height: 40px; padding: var(--s-2) 14px; border-radius: 20px; border: 1px solid #070707; color: #070707; background: var(--paper);
     font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.3; transition: background 200ms, color 200ms;
   }
   .talk__chips :global(.talk__chip:hover), .talk__chips :global(.talk__chip:focus-visible) { background: #070707; color: var(--paper); }
@@ -206,7 +206,7 @@ const B = BUBBLES['bucket-hat'];
     .ct3__cw :global(.cw__clues) { columns: 2 220px; }
   }
   @media (max-width: 809px) {
-    .ct3 { padding: 20px 16px 24px; }
+    .ct3 { padding: 20px var(--s-4) var(--s-5); }
     .ct3__head { flex-wrap: wrap; align-items: center; }
     .talk { position: fixed; right: 16px; bottom: 16px; }
   }
