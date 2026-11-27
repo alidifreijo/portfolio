@@ -1,6 +1,6 @@
 # Guía del portfolio
 
-Todo lo que necesitas para mantener la web sin depender de nadie. Si algo de aquí deja de ser verdad, actualízalo.
+Todo lo que necesitas para mantener la web sin depender de nadie. Si algo de aquí deja de ser verdad, actualízalo. Actualizada el 27 nov 2026 (sistema v3, Play y Work).
 
 ---
 
@@ -11,149 +11,155 @@ Todo lo que necesitas para mantener la web sin depender de nadie. Si algo de aqu
 | **Astro** | Genera la web. Cada página es un archivo en `src/pages`. |
 | **Keystatic** | El editor visual en `/keystatic`. Guarda el contenido como archivos de texto (YAML) en `src/content`. |
 | **GitHub** (`alidifreijo/portfolio`) | Guarda todo: código, textos e imágenes. Cada cambio es un *commit*. |
-| **Vercel** | Publica la web. Cada vez que algo cambia en GitHub, la web se actualiza sola en un minuto. |
+| **Vercel** | Publica la web. La rama `main` es la web; cada rama tiene su vista previa. |
 
 ```
+estilos/                    ← EL ESTILO APROBADO (lo decide Ali): LEEME.md y tokens.css
+DESIGN.md                   ← las reglas del sistema, en llano
 src/
-  styles/tokens.css     ← EL SISTEMA: colores, tipos, espacios, radios, motion
-  styles/base.css       ← estilos de texto (.t-display, .t-body…) y animaciones
-  components/           ← piezas reutilizables (Card, Tag, Button, Carousel, Blocks…)
-  components/project/   ← partes de la plantilla de proyecto (hero, título, next)
-  layouts/Base.astro    ← lo común a todas las páginas (menú, head, animaciones)
-  pages/                ← home, about, work, contact, styleguide, 404
-  pages/work/[slug]     ← LA plantilla de todos los proyectos
-  content/projects/     ← un archivo por proyecto (lo editas en Keystatic)
-  content/pages/        ← textos de home, about, work y contact
-public/images/          ← imágenes y vídeos
-docs/GUIA.md            ← esta guía
+  styles/tokens.css         ← generado desde estilos/ (no se edita a mano)
+  styles/tokens.json        ← lo mismo en formato DTCG, para agentes y herramientas
+  styles/legacy-tokens.css  ← nombres viejos que aún usan páginas antiguas (se van vaciando)
+  styles/system-debt.json   ← lo que las páginas viejas aún incumplen (solo baja)
+  styles/base.css           ← reset, clases de texto (.type-*) y animaciones
+  components/system/        ← LOS COMPONENTES BASE y su manifest.json
+  components/               ← piezas antiguas que aún usan la home, About y Contact
+  layouts/Base.astro        ← lo común: cabecera, pie, <head>
+  pages/                    ← home, about, contact, styleguide, library, how-this-portfolio-is-built, 404
+  pages/play/               ← índice de Play (diagonal) y plantilla de caso Play
+  pages/work/               ← índice de Work (filas) y plantilla de empresa
+  content/projects/         ← un archivo por caso (Play y Work)
+  content/agents/           ← los seis agentes de la home
+  content/pages/            ← textos de las páginas
+scripts/                    ← tokens.mjs, check-system.mjs, video.sh, relativize.mjs
+public/images/              ← imágenes y vídeos
+.claude/                    ← skills y agentes (método de Ali y portfolio-system)
 ```
 
 ---
 
 ## 2. El día a día: editar en Keystatic
 
-1. Entra en **tudominio.com/keystatic** (la primera vez te pedirá conectar con GitHub).
-2. Elige **Projects** o una página (**Home, About, Work, Contact**).
-3. Edita, sube imágenes o vídeos y pulsa **Save**.
-4. Keystatic guarda el cambio en GitHub y Vercel lo publica en ~1 minuto.
+1. Entra en **/keystatic** (la primera vez te pedirá conectar con GitHub).
+2. Elige **Projects**, **Agents** o una página (**Home, About, Work, Contact, How it's built, Library**).
+3. Edita, sube imágenes o vídeos y pulsa **Save**. Keystatic guarda en GitHub y Vercel publica.
 
-**Formato de texto** en los campos largos:
-- `**negrita**` → **negrita**
+**Formato en los campos de texto largos**
+- `**negrita**` · `*cursiva*` (en los títulos en serif, la parte en cursiva es la importante)
 - una línea en blanco → párrafo nuevo
+- líneas que empiezan por `- ` → lista
+- `[texto](/ruta)` → enlace
+- `[PLACEHOLDER: …]` sale marcado en rojo a propósito: es lo que falta por escribir.
 
-### Añadir un proyecto nuevo
+### Un caso de Play (tus webs)
 
-1. **Projects → Add**.
-2. Rellena la cabecera: título (en minúsculas), *Title as shown*, tipo (*Client case* o *Exploration*), color de acento, intro, teaser, cover, hero (+ estilo) y meta cards.
-3. Deja **Status: Draft** mientras trabajas. No aparece en la web hasta que lo pases a **Published**.
-4. Añade **bloques** (sección 4) siguiendo el orden recomendado (sección 3).
-5. **Order** decide la posición: clientes del 1 al 9, exploraciones del 10 en adelante. El bloque *Next* sigue ese orden.
+*Type: Exploration*. Campos que se usan:
+- **Title as shown** (`**cut** scenes`), **Intro**, **Meta cards** (Year, Type, Role, Built), **Buttons** (View live…), **Accent colour** (el color de su agente).
+- **Intro video**: vídeo a pantalla completa al entrar (opcional).
+- **Play · Chapters**: capítulos numerados. Cada uno con título (`What it *is*`), texto y material. **El primer material de cada capítulo va al escenario** (la columna izquierda, que cambia al leer); el resto sale debajo del texto.
+- **Object**: el recorte para la diagonal de `/play`. Sin él, sale la *Cover*.
+- **Order** decide la posición en `/play` y el *Next case*.
+
+### Un caso de Work (empresas)
+
+*Type: Client case*. Campos que se usan:
+- **Work · Company, Years, Role, Via, One line**: la fila de `/work` y la tarjeta de título.
+- **Work · 01 Context, 02 Role, 03 Process, 04 Result**: los capítulos. **Work · Chapter titles** cambia sus títulos si hace falta (Roche usa *My role*, *How we worked*, *Outcome*).
+- **Work · Material**: imágenes o vídeos, cada uno en su capítulo (*Top* va bajo el título).
+- **Order**: Roche 1, CaixaBank 2, Cupra 3.
+
+### Los agentes
+
+**Agents** tiene un archivo por agente: número, nombre, personaje, *line*, *quote*, *Good at*, *Runs on*, *Allergic to*, *Battery* y los botones (*Opens*). Systems abre dos casos. El color sale del nombre del agente.
 
 ### Imágenes y vídeos
 
-- Formatos: JPG para fotos, PNG para interfaces o transparencias, MP4 para vídeo.
-- Tamaño: máximo 2400 px de ancho, menos de 1 MB por imagen y menos de 6 MB por vídeo.
-- Nombres descriptivos, en minúsculas y con guiones: `cockpit-night.jpg`, no `IMG_2034.jpg`.
-- Escribe siempre la **descripción (alt)**. La lee quien no ve la imagen y también ayuda al SEO.
-- Para cada vídeo, si puedes, sube también una imagen con el mismo nombre terminada en `.poster.jpg`. Es lo que se ve mientras carga.
+- Fotos en JPG; interfaces o transparencias en PNG o WebP.
+- Máximo 2400 px de ancho y menos de 1 MB por imagen.
+- Nombres en minúsculas y con guiones: `cockpit-night.jpg`, no `IMG_2034.jpg`.
+- Escribe siempre la **descripción (alt)**.
+- Pon el **ancho y alto reales** del material: la caja usa su proporción y nunca recorta.
+- **Vídeos:** prepáralos desde el ORIGINAL con `scripts/video.sh original.mov public/images/projects/<caso>/<nombre>`. Saca, con el mismo nombre:
+  - el `.mp4` (H.264);
+  - el `.webm` (AV1, más nítido y ligero);
+  - el `-mobile.mp4` (para móvil);
+  - el `.poster.jpg` (un fotograma con contenido).
+  
+  La web los encuentra sola. Nunca vuelvas a comprimir un vídeo ya comprimido: no mejora.
 
 ---
 
-## 3. La plantilla de proyecto (una sola para todos)
+## 3. Las plantillas
 
-Todos los proyectos, de cliente o propios, usan **la misma plantilla** (`src/pages/work/[slug].astro`). Si cambias algo en ella o en un bloque, cambia en todos los proyectos a la vez.
+| Plantilla | Dónde | Qué es |
+|---|---|---|
+| Home | `pages/index.astro` | Titular y caras (se rehace con los agentes en el Bloque 4) |
+| Play · índice | `pages/play/index.astro` | La diagonal de objetos recortados |
+| Work · índice | `pages/work/index.astro` | Filas: empresa, años, rol, via y una frase |
+| Caso Play | `pages/play/[slug].astro` | Escenario a la izquierda, capítulos numerados a la derecha |
+| Caso Work | `pages/work/[slug].astro` | Manda el texto: contexto, rol, proceso y resultado |
+| Página larga | `pages/how-this-portfolio-is-built.astro` (About aún es el antiguo) | Sobre negro: título de sección a la izquierda, contenido a la derecha |
+| WIP | `pages/library.astro` | Qué es, por qué y un avance |
+| Contact | `pages/contact.astro` | Crucigrama y chat |
 
-**Estructura de la página**
-1. **Panel izquierdo fijo** (*Hero*): imagen o vídeo. *Hero style*: *Fill the panel*, *Centred on a colour* o *Video inside a phone* (con *Phone frame*).
-2. **Tarjeta de título fija** arriba a la derecha, en el color del proyecto: *Title as shown* (admite `**negrita**`), *Intro*, meta cards a la derecha (*Meta cards width*, 200 por defecto) y botones opcionales (*Buttons*).
-3. **Bloques** (ver sección 4).
-4. **Next**: sale solo. Es el siguiente proyecto por *Order*; usa su *Teaser*, *Label when shown as Next* e *Image when shown as Next*.
-
-**Orden recomendado de bloques**
-1. *Image* o *Video* de contexto.
-2. *Image + text card* (rol, arquetipo, necesidades…).
-3. Más *Image* / *Video* / *Carousel* con el trabajo.
-4. Bloques de historia si hacen falta (*Quote*, *Timeline*, *Details*…).
-
-**Reglas de contenido**
-- Siempre visual: cada bloque de texto va junto a algo que se ve.
-- Una idea por bloque. Negrita solo para lo que se lee en diagonal.
-- Nada que no puedas explicar en una entrevista. Nada bajo NDA.
+Todas comparten la cabecera (Play · Work · About · Contact) y el pie (LinkedIn, CV y Let's talk), que pone `layouts/Base.astro`.
 
 ---
 
-## 4. Los bloques disponibles
+## 4. El sistema de diseño
 
-| Bloque | Para qué |
-|---|---|
-| **Image** | Una imagen a todo el ancho, con su proporción. |
-| **Video** | Un vídeo en bucle a todo el ancho, con su proporción. Sube también `nombre.poster.jpg`. |
-| **Image + text card** | Foto + tarjeta con tag y puntos. Sin foto, la tarjeta ocupa todo el ancho. Estilo *Compact* o *Spaced*. |
-| **Carousel** | Galería con flechas y puntos. |
-| **Text** | Un párrafo con eyebrow y pill. |
-| **Quote** | La frase que resume la dirección, con chips. |
-| **List** | Títulos + texto, en 1 a 3 columnas. |
-| **Stats** | Números grandes con una línea de contexto. |
-| **Image or video** · **Two images or videos** | Pieza con ratio fijo, sola o en pareja. |
-| **Mockup · browser** · **Mockup · phones** | Capturas dentro de marcos. |
-| **Collection** | Rejilla de imágenes con etiquetas. |
-| **Video card** | Vídeo en tarjeta oscura con pie. |
-| **Timeline** | Registro de construcción con nota manuscrita. |
-| **Details** | 2 a 4 clips pequeños con título y una línea. |
+Las reglas, en llano, están en **`DESIGN.md`**. Resumen:
 
----
+- **Tres familias:** Instrument Serif (la voz: titulares, secciones y capítulos), Space Grotesk (la interfaz: menú, etiquetas y botones) y Satoshi (el texto).
+- **Cinco tamaños:** display, sección, capítulo, texto y etiqueta. Clases: `.type-display`, `.type-section`, `.type-chapter`, `.type-text` y `.type-label`.
+- **Color:** negro, papel, gris y línea; el rojo; y seis parejas de agente (fondo y texto). Cada caso lleva la de su agente.
+- **Reglas:**
+  - sin blur, acuarelas ni degradados;
+  - sin sombras, salvo la ficha del agente;
+  - los datos van como etiqueta gris en mayúsculas + valor;
+  - los vídeos nunca se recortan;
+  - siempre se respeta «reducir movimiento».
 
-## 5. El sistema de diseño
+**Componentes base** (`src/components/system/`; qué es cada uno, cuándo usarlo y cuándo no, en `manifest.json`):
+- **Estructura:** SiteHeader, Footer, Panel y LongSection.
+- **Texto y datos:** Label, DataPair, TitleCard y ChapterHeading.
+- **Acción y material:** Button y VideoBlock.
+- **Agentes:** AgentCard y AgentChip.
+- **Interacción y navegación:** Disclosure, Tabs y NextCase.
 
-Todo vive en **`src/styles/tokens.css`** y se ve funcionando en **`/styleguide`**. La escala sale del diseño original de Framer.
+Todos se ven funcionando en **`/styleguide`**, que se genera solo.
 
-- **Color**: `--ink`, `--paper`, `--paper-2`, `--surface` (tarjetas oscuras), `--brand`, `--brand-soft` y un acento por proyecto (`--acc-*` + `--on-*`).
-- **Tipografía**: Space Grotesk (títulos, etiquetas), Satoshi (texto), DM Sans (botones). Clases: `.t-display`, `.t-title`, `.t-lead`, `.t-heading`, `.t-label`, `.t-body`, `.t-tab`, `.t-small`, `.t-micro`, `.t-ui`, `.t-eyebrow`, `.t-hand`.
-- **Espacio**: `--s-1` a `--s-8` (4, 8, 12, 16, 24, 32, 40, 64). 8 entre tarjetas, 12 entre paneles, 24 dentro de una tarjeta, 40 dentro de un panel.
-- **Radios**: `--r-xs` 4 (chips), `--r-sm` 8 (tarjetas), `--r-btn` 10 (botones), `--r-md` 12 (paneles), `--r-tab` 18 (pestañas), `--r-pill`.
-- **Layout**: `--frame` 12, `--split` (proporción panel/columna), `--tab-h`.
-- **Motion**: `--dur-fast/base/slow`, `--ease-out`, `--ease-in-out`, `--ease-spring` (las caras de la home).
+**Cambiar algo global**
+- **Un valor de estilo** (color, tamaño…): cámbialo en `estilos/tokens.css` y ejecuta `npm run tokens`. Es una decisión de gusto: la aprueba Ali.
+- **Un componente nuevo**: va en `src/components/system/` y en `manifest.json`. Aparece solo en `/styleguide`.
 
-**Reglas de oro**
-1. Color, tipo, espacio, radio y duración siempre con token. Lo único que se escribe a mano es la geometría propia de un componente (p. ej. dónde va la pantalla dentro del marco del móvil), con un comentario.
-2. Si necesitas algo nuevo, añádelo primero como token y después úsalo.
-3. Si un componente casi sirve, amplíalo. No lo copies.
+**La comprobación.** `npm run build` ejecuta antes `npm run check`, que falla si:
+- algo usa un color, tamaño, fuente, radio, espacio o sombra que no es un token;
+- hay un blur o un degradado;
+- aparecen DM Sans, DM Mono o Caveat;
+- el manifiesto y los componentes no coinciden.
 
-### Cambiar algo global
-- **Un color**: cambia su valor en `tokens.css`.
-- **Un color de acento nuevo**: `--acc-nombre` y `--on-nombre` en `tokens.css`, el nombre en `ACCENTS` (`src/lib/utils.ts`) y la opción en `ACCENT_OPTIONS` (`keystatic.config.ts`).
-- **Un tamaño de texto**: cambia la variable `--fs-…` en `tokens.css`.
+Las páginas viejas tienen una «deuda» apuntada en `system-debt.json` que solo puede bajar. Al rehacer una página: `npm run check:system -- --shrink`. Si mueves un archivo viejo: `npm run check:system -- --move <viejo> <nuevo>`.
 
 ---
 
-## 6. Trabajar en local (opcional)
+## 5. Trabajar en local (opcional)
 
 ```bash
-npm install        # la primera vez
-npm run dev        # abre http://localhost:4321 y http://localhost:4321/keystatic
-npm run build      # comprueba que todo compila antes de subir
+npm install          # la primera vez
+npm run dev          # http://localhost:4321 y http://localhost:4321/keystatic
+npm run check        # el sistema, sin compilar
+npm run build        # comprueba y compila
+npm run build:static # copia estática en dist-static/, para abrir sin servidor
 ```
 
-En local, Keystatic guarda directamente en tus archivos. Después haz commit y push.
-
 ---
 
-## 7. Publicar y dominio
+## 6. Publicar
 
-- **Vercel → Import project → `alidifreijo/portfolio`**. No hay que tocar nada más: detecta Astro solo.
-- Keystatic en la web publicada necesita una **GitHub App**. La primera vez que entres en `/keystatic` en producción, el asistente te guía. Al terminar, añade en Vercel (*Settings → Environment Variables*) las variables que te indique.
-- Las URLs antiguas de Framer (`/cupra`, `/fintech`, `/bank-platform`, `/projecthmi`) redirigen solas a `/work/…` (`redirects` en `astro.config.mjs`).
-- Las imágenes y vídeos traídos de Framer están en `public/images/f/`.
+- La web es la rama **`main`**. Cada pieza se hace en su rama, con vista previa en Vercel, y solo se une a `main` cuando Ali lo aprueba.
+- Keystatic en la web publicada necesita una **GitHub App**. La primera vez que entres en `/keystatic`, el asistente te guía. Las variables que te pida van en *Vercel → Settings → Environment Variables*, nunca en el código.
+- Las direcciones antiguas redirigen solas (`redirects` en `astro.config.mjs`):
+  - las de Framer (`/cupra`, `/bank-platform`…);
+  - las de la v2 (`/work/cut-scenes` → `/play/cut-scenes`, `/work/bank-platform` → `/work/monexa`).
 - Dominio propio: *Vercel → Settings → Domains*.
-
----
-
-## Sistema de diseño v3 (27 nov 2026)
-
-Desde el Bloque 1, el sistema manda sobre lo anterior de esta guía:
-
-- Las reglas, en llano: `DESIGN.md`. Los estilos aprobados: `estilos/`.
-- Los tokens se cambian en `estilos/tokens.css` (con el sí de Ali) y `npm run tokens` genera `src/styles/tokens.css` y `src/styles/tokens.json`.
-- Componentes base en `src/components/system/`, descritos en `manifest.json`. `/styleguide` se genera desde ahí.
-- `npm run build` comprueba antes que no haya colores, tamaños ni fuentes fuera del sistema, ni blur ni degradados.
-- Los colores de acento ahora son los de los agentes: systems, research, creative, ops, empathy y collab.
