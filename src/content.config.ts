@@ -16,8 +16,8 @@ const projects = defineCollection({
     lead: z.string().default(''),
     intro: z.string().default(''),
     teaser: z.string().default(''),
-    cover: z.string(),
-    hero: z.string(),
+    cover: z.string().optional(),
+    hero: z.string().optional(),
     object: z.string().optional(),
     introVideo: z.string().optional(),
     heroLabel: z.string().optional(),
@@ -31,6 +31,21 @@ const projects = defineCollection({
     meta: z.array(z.object({ label: z.string(), value: z.string() })).default([]),
     links: z.array(z.object({ label: z.string(), url: z.string() })).default([]),
     blocks: z.array(z.object({ discriminant: z.string(), value: z.any() })).default([]),
+    // Work (companies) cases: the facts of the row and the four chapters
+    company: z.string().optional(),
+    years: z.string().optional(),
+    role: z.string().optional(),
+    via: z.string().optional(),
+    line: z.string().optional(),
+    context: z.string().optional(),
+    roleText: z.string().optional(),
+    process: z.string().optional(),
+    result: z.string().optional(),
+    media: z.array(z.object({
+      src: z.string(), poster: z.string().optional(), width: z.number(), height: z.number(),
+      alt: z.string(), caption: z.string().optional(),
+      chapter: z.enum(['top', 'context', 'role', 'process', 'result']).default('process'),
+    })).default([]),
   }),
 });
 

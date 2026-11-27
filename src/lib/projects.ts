@@ -8,4 +8,9 @@ export async function getProjects(): Promise<Project[]> {
   return all.sort((a, b) => a.data.order - b.data.order);
 }
 
-export const projectUrl = (p: Project) => `/work/${p.id}`;
+/** Play: Ali's own webs (kind: exploration). */
+export const getPlay = async () => (await getProjects()).filter((p) => p.data.kind === 'exploration');
+/** Work: companies (kind: client). */
+export const getWork = async () => (await getProjects()).filter((p) => p.data.kind === 'client');
+
+export const projectUrl = (p: Project) => `/${p.data.kind === 'exploration' ? 'play' : 'work'}/${p.id}`;

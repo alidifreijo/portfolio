@@ -25,7 +25,7 @@ The portfolio's design system, in plain words, for anyone (person or agent) who 
 - anything uses a v2 legacy token (`src/styles/legacy-tokens.css`) more than it already did;
 - a system component isn't in the manifest, or the manifest lists one that doesn't exist.
 
-Old pages are being rebuilt in blocks 2–4. Until then their breaks are recorded in `system-debt.json`: a file may never go above its count, and a new file must have none. After rebuilding a page, run `npm run check:system -- --shrink` to lower its count. The count can't go up: there is no command for that, on purpose.
+Old pages are being rebuilt in blocks 2–4. Until then their breaks are recorded in `system-debt.json`: a file may never go above its count, and a new file must have none. After rebuilding a page, run `npm run check:system -- --shrink` to lower its count. The count can't go up: there is no command for that, on purpose. If an old file is renamed, `npm run check:system -- --move <old> <new>` hands its debt over.
 
 ## The frame
 

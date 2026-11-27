@@ -126,7 +126,7 @@
       "spacing": 8,
       "blur": 2
     },
-    "src/pages/work/[slug].astro": {
+    "src/pages/play/[slug].astro": {
       "legacy": 5,
       "spacing": 6,
       "shadow": 1,
@@ -134,7 +134,7 @@
       "color": 4,
       "font-size": 2
     },
-    "src/pages/work/index.astro": {
+    "src/pages/play/index.astro": {
       "color": 7,
       "shadow": 1,
       "radius": 1,

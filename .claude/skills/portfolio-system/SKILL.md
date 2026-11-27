@@ -28,6 +28,7 @@ Every agent that builds UI in this repo loads this first. The system is approved
 
 - If it fails in a file you touched, fix the code. Don't touch `src/styles/system-debt.json` by hand, and don't silence the rule.
 - After rebuilding an old page, run `npm run check:system -- --shrink` so its debt goes down for good. Debt never goes up.
+- Renamed or moved an old file? `npm run check:system -- --move <old path> <new path>` hands its debt to the new path.
 
 ## Reviewing a piece
 

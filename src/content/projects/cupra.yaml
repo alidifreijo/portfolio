@@ -57,3 +57,56 @@ blocks:
       alt: ''
     - src: /images/f/cupra/slide-3.jpg
       alt: ''
+company: SEAT | CUPRA
+years: 2023 - Today
+role: Product Designer
+via: North
+line: Embedded in Cupra’s digital design team, balancing hands-on infotainment work with exploratory concepts for the brand’s future vision.
+context: At North, I work embedded in **Cupra’s digital design team,** balancing hands-on infotainment work with exploratory concepts for the **brand’s future vision.**
+roleText: |-
+  My role is to bring clarity, keep alignment, and make sure what we design actually ships as intended.
+
+  **Team coordination.** Keeps the design team aligned and moving, making sure decisions are clear and everyone knows what matters next.
+
+  **Client alignment.** Leads presentations and discussions with Cupra stakeholders, translating messy context into direction the team can act on.
+
+  **Infotainment integration.** Oversees the integration of UX and UI elements into the new infotainment system, ensuring coherence across interactions, components, and behaviors.
+process: '[PLACEHOLDER: how the work moves, with examples of decisions. Only material already published.]'
+result: '[PLACEHOLDER: what shipped, only what is already public.]'
+media:
+- src: /images/f/cupra/hero.jpg
+  width: 1920
+  height: 1286
+  alt: Cupra
+  chapter: top
+- src: /images/f/cupra/building.jpg
+  width: 2048
+  height: 1364
+  alt: The SEAT and CUPRA building in Barcelona
+  chapter: context
+- src: /images/f/cupra/no-drivers.mp4
+  poster: /images/f/cupra/no-drivers.poster.jpg
+  width: 1362
+  height: 646
+  alt: No drivers, no Cupra
+  chapter: context
+- src: /images/f/cupra/team.jpg
+  width: 1280
+  height: 1280
+  alt: The team at work
+  chapter: role
+- src: /images/f/cupra/slide-1.jpg
+  width: 1736
+  height: 925
+  alt: Overview of projects
+  chapter: process
+- src: /images/f/cupra/slide-2.jpg
+  width: 802
+  height: 449
+  alt: Overview of projects
+  chapter: process
+- src: /images/f/cupra/slide-3.jpg
+  width: 2048
+  height: 1365
+  alt: Overview of projects
+  chapter: process

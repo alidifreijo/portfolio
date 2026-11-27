@@ -17,9 +17,12 @@ export default defineConfig({
   redirects: {
     '/cupra': '/work/cupra',
     '/fintech': '/work/fintech',
-    '/bank-platform': '/work/bank-platform',
+    '/bank-platform': '/work/monexa',
     '/projecthmi': '/work/hmi',
     '/work/south': '/work/fintech',
-    '/work/monexa': '/work/bank-platform',
+    // Play / Work split (27 nov 2026): Ali's own webs moved to /play
+    '/work/bank-platform': '/work/monexa',
+    '/work/cut-scenes': '/play/cut-scenes',
+    '/work/cutouts': '/play/cutouts',
   },
 });

@@ -9,6 +9,7 @@ import Base from '../layouts/Base.astro';
 import SiteHeader from '../components/system/SiteHeader.astro';
 import Faces from '../components/Faces.astro';
 import { getEntry, getCollection } from 'astro:content';
+import { projectUrl } from '../lib/projects';
 const home = (await getEntry('pages', 'home'))!.data as any;
 const projects = (await getCollection('projects'))
   .filter((p) => p.data.status === 'published')
@@ -17,7 +18,7 @@ const work = projects.map((p, i) => {
   const type = p.data.meta.find((m) => m.label === 'Project')?.value || '';
   return {
     n: String(i + 1).padStart(2, '0'),
-    href: `/work/${p.id}`,
+    href: projectUrl(p),
     title: p.data.title,
     type: type.toLowerCase() === p.data.title.toLowerCase() ? '' : type,
     year: p.data.meta.find((m) => m.label === 'Year')?.value || '',

@@ -131,6 +131,20 @@ for (const f of Object.keys(counts)) if (f.startsWith(SYSTEM_DIR)) problems.push
 
 // ---------- compare with the debt ----------
 const debt = existsSync(DEBT) ? JSON.parse(readFileSync(DEBT, 'utf8')).files : {};
+// A renamed file keeps its debt: --move <old path> <new path>. Only an old
+// path with debt can hand it over, to a file that has none; the old path then has none.
+const mv = args.indexOf('--move');
+if (mv >= 0) {
+  const [from, to] = [args[mv + 1], args[mv + 2]];
+  if (!debt[from] || !existsSync(to) || debt[to]) {
+    console.error(`✗ --move: needs an old path with debt (${from}) and a new file with none (${to}).`);
+    process.exit(1);
+  }
+  debt[to] = debt[from]; delete debt[from];
+  write(debt);
+  console.log(`✓ debt moved: ${from} → ${to}`);
+  process.exit(0);
+}
 if (init) {
   if (existsSync(DEBT)) { console.error(`✗ ${DEBT} already exists. The debt can only shrink: use --shrink.`); process.exit(1); }
   write(counts);

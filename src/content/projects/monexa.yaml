@@ -67,3 +67,65 @@ blocks:
   value:
     src: /images/f/bank/identity.mp4
     pill: 07 · Identity, day & night
+company: CaixaBank
+years: '2024'
+role: UX/UI
+via: North
+line: Monexa is a banking platform for clients and employees.
+context: '**Monexa** is a bank in two surfaces. **Acadexa**, on mobile, teaches clients to manage their money and turns each lesson into an action. On the web, **Exa**, the pink assistant, guides a client through anything that gets stuck, and a **manager view** shows the bank assistant what the client never sees.'
+roleText: 'I designed both, and the system that keeps them one product. [PLACEHOLDER: my role in the pitch, the team around me and what I owned.]'
+process: |-
+  **Clear.** Clients and employees see the same data with different needs, so hierarchy does the heavy lifting.
+
+  **Consistent.** One token system across both experiences and both themes.
+
+  **Scalable.** Components built to grow with new products without redesigning from scratch.
+result: '[PLACEHOLDER: the pitch to CaixaBank was won. What that meant and what came next.]'
+media:
+- src: /images/f/bank/hero.mp4
+  poster: /images/f/bank/hero.poster.jpg
+  width: 1908
+  height: 1002
+  alt: Monexa, the banking platform
+  chapter: top
+- src: /images/f/bank/phone-hand.jpg
+  width: 2048
+  height: 1536
+  alt: Monexa on a phone
+  caption: The product
+  chapter: context
+- src: /images/f/bank/academia-flow.mp4
+  poster: /images/f/bank/academia-flow.poster.jpg
+  width: 1600
+  height: 1000
+  alt: Acadexa, learn then act
+  caption: Acadexa, learn then act
+  chapter: process
+- src: /images/f/bank/exa-bot.mp4
+  poster: /images/f/bank/exa-bot.poster.jpg
+  width: 1600
+  height: 1000
+  alt: Exa, the assistant
+  caption: Meet Exa
+  chapter: process
+- src: /images/f/bank/laptop.mp4
+  poster: /images/f/bank/laptop.poster.jpg
+  width: 1908
+  height: 1002
+  alt: The web prototype on a laptop, with Exa and the manager view
+  caption: Web prototype
+  chapter: process
+- src: /images/f/bank/variables.mp4
+  poster: /images/f/bank/variables.poster.jpg
+  width: 1600
+  height: 1000
+  alt: Tokens and variables
+  caption: Tokens & variables
+  chapter: process
+- src: /images/f/bank/identity.mp4
+  poster: /images/f/bank/identity.poster.jpg
+  width: 1600
+  height: 1000
+  alt: The identity, day and night
+  caption: Identity, day & night
+  chapter: process
