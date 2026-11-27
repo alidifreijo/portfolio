@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Revisión · Bloque 3 · Media · 27 nov 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:#070707; --paper:#D4D1CB; --paper-2:#ECEAE5; --muted:#4A4744; --muted-ink:#8E8A84;
+    --line:rgba(7,7,7,.14); --red:#E92C30; --red-text:#B0161B;
+    --systems:#A3FFA9; --on-systems:#113830; --ops:#86CBF7; --on-ops:#065486;
+    --creative:#98E7EB; --on-creative:#146D72; --collab:#FFA4BF; --on-collab:#9E194C;
+    --amber:#E89A3C;
+    --serif:'Instrument Serif',Georgia,serif; --ui:'Space Grotesk',system-ui,sans-serif; --body:'Satoshi',system-ui,sans-serif;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--ink); color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.55; padding:12px; }
+  .panel { background:var(--paper); border-radius:12px; padding:40px; max-width:1200px; margin:0 auto 12px; }
+  h1,h2,h3 { font-family:var(--serif); font-weight:400; margin:0; }
+  h1 { font-size:clamp(40px,5vw,64px); line-height:1; }
+  h1 em, h2 em { font-style:italic; }
+  h2 { font-size:clamp(28px,2.6vw,40px); line-height:1.05; margin-bottom:16px; }
+  h3 { font-size:26px; line-height:1.1; }
+  .label { font-family:var(--ui); font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:500; }
+  .top { display:grid; grid-template-columns:auto 1fr; gap:32px; align-items:center; }
+  .light { display:flex; flex-direction:column; gap:8px; background:var(--ink); padding:14px; border-radius:999px; }
+  .light span { width:40px; height:40px; border-radius:50%; background:#2a2a2a; }
+  .light .on { background:var(--red); }
+  .lvl.rompe { background:var(--ink); color:var(--paper); }
+  .ba { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .ba img { width:100%; border-radius:8px; border:1px solid var(--line); display:block; }
+  .ba .tall { max-height:720px; object-fit:cover; object-position:top; }
+  @media (max-width:800px){ .ba { grid-template-columns:1fr; } }
+  .counts { display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
+  .pill { font-family:var(--ui); font-size:13px; padding:6px 12px; border-radius:999px; background:var(--paper-2); }
+  .pill b { font-weight:500; }
+  .pill.r { background:var(--ink); color:var(--paper); }
+  .pill.a { background:var(--amber); color:#261E13; }
+  ul.plain { padding-left:18px; margin:8px 0 0; }
+  .find { border-top:1px solid var(--line); padding:32px 0; display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:32px; }
+  .find:first-of-type { border-top:0; }
+  .find img { width:100%; border-radius:8px; display:block; border:1px solid var(--line); }
+  .find .imgs { display:flex; flex-direction:column; gap:12px; }
+  .cap { font-family:var(--ui); font-size:12px; color:var(--muted); margin-top:4px; }
+  .lvl { display:inline-block; font-family:var(--ui); font-size:12px; letter-spacing:.06em; text-transform:uppercase; padding:3px 10px; border-radius:999px; margin-bottom:10px; }
+  .lvl.nota { background:var(--amber); color:#261E13; }
+  .lvl.det { background:var(--paper-2); color:var(--ink); }
+  .visitor { font-family:var(--serif); font-style:italic; font-size:22px; line-height:1.2; margin:8px 0 12px; }
+  .why { color:var(--muted); font-size:15px; }
+  details { border-top:1px solid var(--line); padding:16px 0; }
+  summary { cursor:pointer; font-family:var(--ui); font-size:14px; letter-spacing:.04em; text-transform:uppercase; }
+  summary:focus-visible, a:focus-visible { outline:2px solid var(--ink); outline-offset:3px; }
+  .ok { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin-top:16px; }
+  .ok div { background:var(--paper-2); border-radius:8px; padding:14px 16px; font-size:15px; }
+  .ok div b { font-family:var(--ui); font-weight:500; display:block; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--on-systems); margin-bottom:4px; }
+  .sw { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; margin:12px 0; }
+  .sw div { border-radius:8px; padding:12px; font-family:var(--ui); font-size:12px; letter-spacing:.06em; text-transform:uppercase; }
+  .sw small { display:block; text-transform:none; letter-spacing:0; font-size:13px; margin-top:6px; }
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .grid3 img { width:100%; border-radius:8px; border:1px solid var(--line); }
+  table { border-collapse:collapse; width:100%; font-size:15px; }
+  td, th { text-align:left; padding:8px 8px 8px 0; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { font-family:var(--ui); font-weight:500; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+  @media (max-width:800px) {
+    .panel { padding:24px 16px; }
+    .find { grid-template-columns:1fr; }
+    .top { grid-template-columns:1fr; }
+    .light { flex-direction:row; width:max-content; }
+    .grid3 { grid-template-columns:1fr; }
+  }
+</style>
+</head><body>
+
+<section class="panel">
+  <div class="top">
+    <div class="light" aria-label="Semáforo: rojo"><span class="on"></span><span></span><span></span></div>
+    <div>
+      <p class="label">Revisión completa · Bloque 3 · Media · 27 nov 2026 · rama bloque-3-media</p>
+      <h1>Casi todo <em>bien</em>; falla en Cut Scenes</h1>
+      <p>Las cajas tienen la proporción real en las tres pantallas, los pósters nuevos tienen contenido, cutouts ya baja su vídeo una sola vez, con «reducir movimiento» nada arranca solo y no se ha recodificado ningún vídeo. <b>Pero en Cut Scenes los vídeos escondidos del escenario se descargan (y en el móvil, dos veces) y se reproducen sin que nadie los vea.</b> Es un arreglo pequeño, pero es justo lo que esta pieza venía a resolver.</p>
+      <div class="counts">
+        <span class="pill r"><b>1</b> rompe algo</span>
+        <span class="pill a"><b>3</b> se nota</span>
+        <span class="pill"><b>5</b> detalles</span>
+      </div>
+      <p class="cap">Revisado sobre la copia estática de http://localhost:4327 (build de las 11:51, commit 48f96f0), con Chromium 158, a 390, 768 y 1440 px, escuchando la red.</p>
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Los cinco más <em>importantes</em></h2>
+
+  <div class="find">
+    <div>
+      <span class="lvl rompe">Rompe algo · criterio de hecho</span>
+      <h3>Cut Scenes baja vídeos que nadie ve</h3>
+      <p class="visitor">«En el móvil, la página de Cut Scenes se come unos 6 MB de más y la batería, sin enseñarme nada nuevo.»</p>
+      <p><b>Móvil y tablet (390 y 768):</b> «Screen flow» y «Architecture» se descargan <b>dos veces</b> (medido: 4,0 + 3,7 MB y 2,2 + 2,2 MB). La segunda copia es la del escenario, que en el móvil está escondido, y además se queda reproduciendo sin verse.</p>
+      <p><b>Escritorio (1440):</b> al abrir la página, mientras está la intro, se bajan y se reproducen «Screen flow» (4,7 MB) y «Architecture» (2,2 MB), que están escondidos detrás de la primera imagen del escenario. El criterio era «al abrir solo los de arriba».</p>
+      <p class="why">Por qué pasa: las capas escondidas del escenario cuentan como «en pantalla» para la carga, y el escenario manda reproducir su vídeo aunque en el móvil esté oculto. Es la misma doble descarga que se arregló en cutouts, ahora en otra página.</p>
+    </div>
+    <div class="imgs">
+      <img style="max-width:320px" src="h1-movil-doble.png" alt="Cut Scenes a 390 px con los vídeos Screen flow y Architecture marcados: cada uno se descarga dos veces">
+      <p class="cap">390 px · marcados los dos vídeos que se bajan dos veces</p>
+      <img src="h1-escritorio-escenario.png" alt="Cut Scenes a 1440 px con el escenario marcado: detrás de la imagen hay dos vídeos que se descargan y reproducen">
+      <p class="cap">1440 px · detrás de esta imagen hay dos vídeos bajando y sonando en mudo</p>
+    </div>
+  </div>
+
+  <div class="find">
+    <div>
+      <span class="lvl nota">Se nota</span>
+      <h3>Con «reducir movimiento» se baja todo al abrir</h3>
+      <p class="visitor">«Tengo el movimiento reducido y, aunque ningún vídeo se mueve, la página me baja varios megas nada más abrirla.»</p>
+      <p>Los vídeos no arrancan y enseñan sus controles (bien), pero al abrir la página empiezan a bajarse <b>todos</b> a la vez (alrededor de 1 MB cada uno). Y la intro se descarga (3–3,7 MB) aunque luego se quita y no se enseña.</p>
+      <table>
+        <tr><th>Página</th><th>Bajado al abrir sin mirar nada</th></tr>
+        <tr><td>Monexa</td><td>≈ 5 MB (los 6 vídeos)</td></tr>
+        <tr><td>Cut Scenes</td><td>≈ 9 MB (intro + 5 vídeos)</td></tr>
+        <tr><td>cutouts</td><td>≈ 3,7 MB (una intro que no se ve)</td></tr>
+      </table>
+    </div>
+    <div class="imgs">
+      <img style="max-width:320px" src="reducir-controles-390.png" alt="Cut Scenes a 390 px con movimiento reducido: los vídeos parados con sus controles">
+      <p class="cap">Lo que sí está bien: parados y con controles</p>
+    </div>
+  </div>
+
+  <div class="find">
+    <div>
+      <span class="lvl nota">Se nota · todavía no se ve</span>
+      <h3>La versión móvil se saltaría en casi todos los móviles</h3>
+      <p class="visitor">«Cuando Ali exporte las versiones ligeras, mi móvil seguirá bajando la grande.»</p>
+      <p>Cuando un vídeo tenga las tres versiones, la caja ofrece primero la AV1 grande (1920 px) y después la ligera para móvil. El navegador coge la primera que sabe leer, y casi todos los Android y los iPhone recientes leen AV1: se bajarían la grande. Hoy no existe ningún archivo «-mobile», por eso no ha pasado aún. Afecta a las cajas de vídeo y a la intro de Play.</p>
+    </div>
+    <div class="imgs">
+      <div class="ok"><div><b>Orden de hoy</b>1. AV1 grande · 2. móvil ligera · 3. MP4 grande</div><div><b>Para móvil haría falta</b>que la ligera vaya antes que la grande en pantallas pequeñas</div></div>
+    </div>
+  </div>
+
+  <div class="find">
+    <div>
+      <span class="lvl nota">Se nota · ya en la lista de Ali</span>
+      <h3>Las intros pesan mucho en el móvil</h3>
+      <p class="visitor">«Abro cutouts con datos y tarda en arrancar.»</p>
+      <p>Al abrir en el móvil, la intro de Cut Scenes baja 6 MB y la de cutouts 9,3 MB (la AV1; la MP4 sería 20 MB). No es un fallo de esta pieza: está en la tabla de «volver a exportar desde el original». Lo dejo aquí para que no se olvide antes de publicar.</p>
+    </div>
+    <div class="imgs">
+      <img src="cutouts-390-arriba.png" alt="Intro de cutouts a 390 px" style="max-width:260px">
+    </div>
+  </div>
+
+  <div class="find">
+    <div>
+      <span class="lvl det">Detalle</span>
+      <h3>Lo vertical se estrecha y se queda a la izquierda</h3>
+      <p class="visitor">«La foto de la chica en Cupra no llega al borde derecho como el resto.»</p>
+      <p>La regla nueva (lo alto no pasa del 70 % de la pantalla) funciona, pero la caja estrecha se queda pegada a la izquierda y deja un hueco a la derecha que no cuadra con las otras imágenes. Centrarla o no es cosa de gusto: lo decide Ali.</p>
+    </div>
+    <div class="imgs">
+      <img src="h-cupra-vertical.png" alt="Cupra a 1440 px: imagen vertical más estrecha que la columna con el hueco marcado a la derecha">
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Pósters: <em>antes y después</em></h2>
+  <p>Izquierda, el póster de antes; derecha, el nuevo. De arriba abajo: Cupra «no drivers», Cut Scenes intro, reveal y empty-state. Ya no hay ninguno liso ni negro. Con los vídeos bloqueados (como si fallaran) se ven todos.</p>
+  <img src="posters-antes-despues.png" alt="Comparación de pósters: los de antes eran negros o rojos lisos; los nuevos tienen fotogramas con contenido" style="width:100%;max-width:870px;border-radius:8px">
+  <div class="ba" style="margin-top:16px">
+    <div><img class="tall" src="sin-video-cut-scenes-390.png" alt="Cut Scenes a 390 px con todos los vídeos bloqueados: se ven los pósters"><p class="cap">Cut Scenes 390 px con los vídeos bloqueados: pósters con contenido</p></div>
+    <div><img class="tall" src="sin-video-cupra-1440.png" alt="Cupra a 1440 px con los vídeos bloqueados"><p class="cap">Cupra 1440 px con los vídeos bloqueados</p></div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Lo que <em>funciona</em></h2>
+  <div class="ok">
+    <div><b>Proporción real</b>Las 13 cajas de vídeo medidas a 390, 768 y 1440 px coinciden con su vídeo (diferencia ≤ 0,3 %). Nada recortado.</div>
+    <div><b>Pósters</b>Todos los vídeos tienen póster y ninguno es liso. Los seis nuevos, con fotograma con contenido.</div>
+    <div><b>Carga al acercarse</b>Monexa, Cupra y /styleguide: al abrir solo baja el de arriba (o el que está a menos de una pantalla). El resto, al bajar.</div>
+    <div><b>cutouts</b>Su vídeo se descarga una sola vez (9,3 MB, AV1).</div>
+    <div><b>AV1</b>Las intros de Cut Scenes y cutouts usan su .webm.</div>
+    <div><b>Reducir movimiento</b>Ningún vídeo arranca, todos enseñan controles y se pueden manejar con teclado. Sin intro a pantalla completa.</div>
+    <div><b>Sin recodificar</b>Ni este commit ni la rama tocan ningún .mp4 ni .webm. Solo cambian los seis pósters.</div>
+    <div><b>Consola y enlaces</b>Cero errores en las 6 páginas a 3 anchos. Ningún enlace interno ni archivo roto. Nada se desborda a lo ancho.</div>
+    <div><b>Sistema</b><code>npm run check</code> pasa. La caja de vídeo de /styleguide es la misma que en los casos.</div>
+  </div>
+</section>
+
+<section class="panel">
+  <details>
+    <summary>Resto de hallazgos (4 detalles)</summary>
+    <div class="find">
+      <div>
+        <span class="lvl det">Detalle</span>
+        <h3>Tres vídeos seguidos empiezan igual</h3>
+        <p class="visitor">«En "How it works" veo tres cajas iguales con CUT SCENES en grande.»</p>
+        <p>«Classified until the end», «Extreme, honestly» y «Empty states in character» arrancan con la misma portada roja. Los pósters son distintos, pero en cuanto empiezan a sonar, durante unos segundos parecen el mismo vídeo. Es del montaje, no del código.</p>
+      </div>
+      <div class="imgs"><img src="cut-scenes-390.png" alt="Cut Scenes a 390 px, página entera" style="max-height:600px;object-fit:cover;object-position:0 62%"></div>
+    </div>
+    <div class="find">
+      <div>
+        <span class="lvl det">Detalle</span>
+        <h3>Dos vídeos de Monexa en un formato delicado</h3>
+        <p class="visitor">«En mi iPhone, "Tokens &amp; variables" se queda quieto.» (posible, no comprobado)</p>
+        <p>«Identity» y «Tokens &amp; variables» están guardados en un formato de color (4:4:4) que algunos navegadores, sobre todo Safari en iPhone, no reproducen. En Chromium sí van. Si fallan, se ve su póster, que tiene contenido. Ya están en la lista de volver a exportar: con <code>scripts/video.sh</code> salen en el formato normal.</p>
+      </div>
+      <div class="imgs"></div>
+    </div>
+    <div class="find">
+      <div>
+        <span class="lvl det">Detalle · de antes</span>
+        <h3>Con la intro puesta, el tabulador va por debajo</h3>
+        <p class="visitor">«Con teclado, pulso Tab y el foco se va a enlaces que no veo.»</p>
+        <p>En Cut Scenes y cutouts, con la intro delante, el foco empieza en «Scroll or skip» (bien), pero al pulsar Tab pasa al pie y a la cabecera y a «View live», que están tapados. No es de esta pieza.</p>
+      </div>
+      <div class="imgs"></div>
+    </div>
+    <div class="find">
+      <div>
+        <span class="lvl det">Detalle · técnico</span>
+        <h3>La caja anuncia el AV1 como 8 bits y el script lo hace en 10</h3>
+        <p class="visitor">Un visitante no lo nota en Chrome.</p>
+        <p>La caja de vídeo dice que el AV1 es de 8 bits; <code>video.sh</code> (y los .webm de hoy) son de 10 bits. La intro de Play sí lo dice bien. Chrome lo acepta igual; algún navegador podría descartar el AV1 y bajar la MP4, más pesada.</p>
+      </div>
+      <div class="imgs"></div>
+    </div>
+  </details>
+  <details>
+    <summary>Todas las capturas</summary>
+    <div class="grid3"><a href="monexa-390.png"><img src="monexa-390-arriba.png" alt="monexa a 390 px, arriba"></a><a href="monexa-768.png"><img src="monexa-768-arriba.png" alt="monexa a 768 px, arriba"></a><a href="monexa-1440.png"><img src="monexa-1440-arriba.png" alt="monexa a 1440 px, arriba"></a><a href="cupra-390.png"><img src="cupra-390-arriba.png" alt="cupra a 390 px, arriba"></a><a href="cupra-768.png"><img src="cupra-768-arriba.png" alt="cupra a 768 px, arriba"></a><a href="cupra-1440.png"><img src="cupra-1440-arriba.png" alt="cupra a 1440 px, arriba"></a><a href="cut-scenes-390.png"><img src="cut-scenes-390-arriba.png" alt="cut-scenes a 390 px, arriba"></a><a href="cut-scenes-768.png"><img src="cut-scenes-768-arriba.png" alt="cut-scenes a 768 px, arriba"></a><a href="cut-scenes-1440.png"><img src="cut-scenes-1440-arriba.png" alt="cut-scenes a 1440 px, arriba"></a><a href="cutouts-390.png"><img src="cutouts-390-arriba.png" alt="cutouts a 390 px, arriba"></a><a href="cutouts-768.png"><img src="cutouts-768-arriba.png" alt="cutouts a 768 px, arriba"></a><a href="cutouts-1440.png"><img src="cutouts-1440-arriba.png" alt="cutouts a 1440 px, arriba"></a><a href="silena-390.png"><img src="silena-390-arriba.png" alt="silena a 390 px, arriba"></a><a href="silena-768.png"><img src="silena-768-arriba.png" alt="silena a 768 px, arriba"></a><a href="silena-1440.png"><img src="silena-1440-arriba.png" alt="silena a 1440 px, arriba"></a><a href="styleguide-390.png"><img src="styleguide-390-arriba.png" alt="styleguide a 390 px, arriba"></a><a href="styleguide-768.png"><img src="styleguide-768-arriba.png" alt="styleguide a 768 px, arriba"></a><a href="styleguide-1440.png"><img src="styleguide-1440-arriba.png" alt="styleguide a 1440 px, arriba"></a></div>
+    <p class="cap">Cada miniatura abre la página entera. Con movimiento reducido: archivos reducir-*.png.</p>
+  </details>
+</section>
+
+<section class="panel">
+  <h2>No he podido <em>comprobar</em></h2>
+  <table>
+    <tr><th>Qué</th><th>Por qué</th></tr>
+    <tr><td>Safari / iPhone y Firefox</td><td>Solo hay Chromium en la sesión. No he visto cómo se comportan el AV1 de 10 bits, los vídeos 4:4:4 de Monexa ni las fuentes «solo móvil».</td></tr>
+    <tr><td>Que se usen las versiones «-mobile.mp4» y el AV1 dentro de las cajas</td><td>No existe ningún «-mobile» todavía, y el único AV1 de caja (hmi/mood) está en una página que no se publica. Lo he revisado leyendo cómo se eligen (ver el hallazgo del orden).</td></tr>
+    <tr><td>Red lenta real</td><td>No he simulado 3G; he medido megas descargados, no tiempos.</td></tr>
+    <tr><td>Enlaces externos de Cut Scenes (web y GitHub)</td><td>La red de la sesión no deja llegar (sin respuesta y 403 del proxy). cut-outs.vercel.app y silena-lamp.vercel.app responden bien.</td></tr>
+    <tr><td>Los 3 commits posteriores de la rama</td><td>La vista previa es la build de las 11:51 (commit 48f96f0). Después hay 3 commits (Library, guía, auditoría) que no tocan vídeos ni la caja de vídeo (comprobado en git), pero no los he visto en pantalla.</td></tr>
+    <tr><td>Fluidez del scroll en un móvil de verdad</td><td>Solo navegador sin pantalla; la reproducción escondida del primer hallazgo probablemente gasta en un móvil real, pero no lo he medido.</td></tr>
+  </table>
+</section>
+</body></html>

@@ -19,17 +19,27 @@ const sib = (ext: string) => { const f = src.replace(/\.mp4$/, ext); return vide
 const webm = Astro.props.webm ?? sib('.webm');
 const mobile = sib('-mobile.mp4');
 const poster = Astro.props.poster ?? sib('.poster.jpg');
+// images: lighter AVIF / WebP copies at 800 and 1600 px (scripts/images.mjs), when they exist
+const ibase = !video ? src.replace(/\.(jpe?g|png)$/i, '') : '';
+const set = (fmt: string) => [800, 1600].filter((w) => existsSync(`public${ibase}-${w}.${fmt}`)).map((w) => `${ibase}-${w}.${fmt} ${Math.min(w, width)}w`).join(', ');
+const avif = ibase ? set('avif') : '';
+const webpSet = ibase ? set('webp') : '';
+const sizes = '(max-width: 1099px) 100vw, 50vw';
 ---
 <figure class="vb" style={`--ar:${width}/${height}; --arn:${(width / height).toFixed(4)}`}>
   <div class="vb__box">
     {video ? (
       <video muted loop playsinline preload="none" poster={poster} data-autoplay data-vb aria-label={alt}>
-        {webm && <source src={webm} type="video/webm; codecs=av01.0.08M.08" />}
         {mobile && <source src={mobile} type="video/mp4" media="(max-width: 809px)" />}
+        {webm && <source src={webm} type="video/webm; codecs=av01.0.08M.10" />}
         <source src={src} type="video/mp4" />
       </video>
     ) : (
-      <img src={src} alt={alt} width={width} height={height} loading="lazy" />
+      <picture>
+        {avif && <source type="image/avif" srcset={avif} sizes={sizes} />}
+        {webpSet && <source type="image/webp" srcset={webpSet} sizes={sizes} />}
+        <img src={src} alt={alt} width={width} height={height} loading="lazy" decoding="async" />
+      </picture>
     )}
   </div>
   {caption && <figcaption><Label>{caption}</Label></figcaption>}
@@ -42,12 +52,14 @@ const poster = Astro.props.poster ?? sib('.poster.jpg');
   function initVideoBlocks() {
     const vids = document.querySelectorAll<HTMLVideoElement>('video[data-vb]:not([data-vb-ready])');
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      vids.forEach((v) => { v.dataset.vbReady = ''; v.removeAttribute('data-autoplay'); v.pause(); v.controls = true; v.preload = 'metadata'; });
+      vids.forEach((v) => { v.dataset.vbReady = ''; v.removeAttribute('data-autoplay'); v.pause(); v.controls = true; });
       return;
     }
     const near = new IntersectionObserver((entries) => entries.forEach((e) => {
       if (!e.isIntersecting) return;
       const v = e.target as HTMLVideoElement;
+      // a hidden layer of a stage loads when its chapter comes up, not before
+      if (v.closest('[data-stage-layer]:not(.is-on)')) return;
       v.preload = 'auto';
       near.unobserve(v);
     }), { rootMargin: '100% 0px' });
@@ -61,5 +73,5 @@ const poster = Astro.props.poster ?? sib('.poster.jpg');
   /* never taller than most of the screen: tall phone screens get narrower instead */
   .vb { margin: 0; display: flex; flex-direction: column; gap: var(--s-2); min-width: 0; width: min(100%, calc(70vh * var(--arn))); }
   .vb__box { aspect-ratio: var(--ar); border-radius: var(--r-sm); overflow: hidden; background: var(--paper-2); }
-  .vb__box video, .vb__box img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .vb__box video, .vb__box img, .vb__box picture { width: 100%; height: 100%; object-fit: contain; display: block; }
 </style>

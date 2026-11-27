@@ -9,7 +9,8 @@
     "check": "node scripts/tokens.mjs --check && node scripts/check-system.mjs",
     "build": "npm run check && astro build",
     "preview": "astro preview",
-    "build:static": "npm run check && PREVIEW=1 astro build && node scripts/relativize.mjs"
+    "build:static": "npm run check && PREVIEW=1 astro build && node scripts/relativize.mjs",
+    "images": "node scripts/images.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^7.1.0",

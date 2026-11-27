@@ -74,6 +74,8 @@ const fullTitle = title ? `${title} · álida díaz de freijo` : 'álida díaz d
       const vids = document.querySelectorAll<HTMLVideoElement>('video[data-autoplay]');
       const vo = new IntersectionObserver((entries) => entries.forEach((e) => {
         const v = e.target as HTMLVideoElement;
+        // a hidden layer of a Play stage waits for its chapter (play/[slug].astro plays it)
+        if (v.closest('[data-stage-layer]:not(.is-on)')) return;
         if (e.isIntersecting) v.play().catch(() => {}); else v.pause();
       }), { threshold: 0.15 });
       vids.forEach((v) => vo.observe(v));

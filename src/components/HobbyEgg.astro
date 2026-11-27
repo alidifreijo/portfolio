@@ -44,13 +44,14 @@ const { title = 'grab to know me', label = 'interests & hobbies' } = Astro.props
         src={`/images/hobbies/${it.n}.png`}
         alt={it.n.replace(/-/g, ' ')}
         draggable="false"
+        loading="lazy"
         style={`--x:${it.x}%;--y:${it.y}%;--w:${it.w}%;--ar:${it.ar};--mx:${it.mx}%;--my:${it.my}%;--mw:${it.mw}%;--r:${(it as any).r || 0}deg;object-fit:${it.fit};z-index:${i + 1}`}
       />
     ))}
   </div>
   <p class="egg__hint">Throw them around · <kbd>Esc</kbd> to put them back</p>
   <button class="egg__close" type="button" data-egg-close aria-label="Close">Close <span aria-hidden="true">×</span></button>
-  <img class="egg__ice" src="/images/hobbies/ice-cream.png" alt="" aria-hidden="true" data-egg-ice />
+  <img class="egg__ice" src="/images/hobbies/ice-cream.png" alt="" aria-hidden="true" loading="lazy" data-egg-ice />
 </div>
 
 <script>
@@ -165,6 +166,9 @@ const { title = 'grab to know me', label = 'interests & hobbies' } = Astro.props
     };
 
     document.querySelectorAll<HTMLElement>('[data-egg-open]').forEach((b) => b.addEventListener('click', () => show(b)));
+    // the collage only downloads when someone heads for the face (it's hidden until then)
+    const warm = () => document.querySelectorAll<HTMLImageElement>('[data-egg] img[loading="lazy"]').forEach((i) => (i.loading = 'eager'));
+    document.querySelectorAll<HTMLElement>('[data-egg-open]').forEach((b) => { b.addEventListener('pointerenter', warm, { once: true }); b.addEventListener('focus', warm, { once: true }); b.addEventListener('touchstart', warm, { once: true, passive: true }); });
     egg.querySelectorAll<HTMLElement>('[data-egg-close]').forEach((b) => b.addEventListener('click', hide));
     addEventListener('keydown', (e) => { if (open && e.key === 'Escape') hide(); });
     // keep the keyboard inside: the close button is the only control
