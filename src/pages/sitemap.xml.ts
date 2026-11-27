@@ -9,7 +9,8 @@ export const prerender = true;
 
 export const GET: APIRoute = async ({ site }) => {
   const base = site || new URL('https://portfolio-alidifreijo.vercel.app');
-  const pages = ['/', '/play', '/work', '/about', '/contact', '/how-this-portfolio-is-built', '/library'];
+  // How it's built and the Library join the sitemap when their drafts are done (they are noindex until then)
+  const pages = ['/', '/play', '/work', '/about', '/contact'];
   const cases = [...(await getPlay()), ...(await getWork())].map(projectUrl);
   const lastmod = new Date().toISOString().slice(0, 10); // the day of the build
   const urls = [...pages, ...cases].map((p) => `  <url><loc>${new URL(p, base).href}</loc><lastmod>${lastmod}</lastmod></url>`).join('\n');

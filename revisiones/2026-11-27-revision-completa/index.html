@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisión completa · toda la web · 27 nov 2026</title>
+<style>
+  :root{--ink:#070707;--paper:#D4D1CB;--paper-2:#ECEAE5;--paper-3:#E2DFD9;--muted:#4A4744;--line:#07070724;--red:#E92C30;--red-text:#B0161B;--systems:#A3FFA9;--on-systems:#113830;--research:#E89A3C;--on-research:#261E13;--ops:#86CBF7;--on-ops:#065486;
+    --serif:"Instrument Serif",Georgia,serif;--ui:"Space Grotesk",system-ui,sans-serif;--body:Satoshi,system-ui,sans-serif}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;color:var(--ink)}
+  .frame{padding:12px}
+  .panel{background:var(--paper);border-radius:12px;padding:40px clamp(16px,4vw,56px);max-width:1280px;margin:0 auto}
+  h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0}
+  h1{font-size:clamp(40px,5vw,64px);line-height:1}
+  h1 em,h2 em{font-style:italic}
+  h2{font-size:clamp(30px,3vw,44px);line-height:1.05;margin:56px 0 16px;padding-top:24px;border-top:1px solid var(--line)}
+  h3{font-size:26px;line-height:1.1;margin:0 0 6px}
+  .label{font-family:var(--ui);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .light{display:inline-flex;align-items:center;gap:10px;font-family:var(--ui);font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:6px 14px 6px 8px;border-radius:999px;background:var(--ink);color:var(--paper)}
+  .dot{width:16px;height:16px;border-radius:50%;display:inline-block;flex:none}
+  .g{background:var(--systems)} .a{background:var(--research)} .r{background:var(--red)}
+  .hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:40px;margin-top:24px}
+  @media(max-width:860px){.hero{grid-template-columns:1fr}}
+  .big{font-family:var(--serif);font-size:30px;line-height:1.15;margin:16px 0}
+  .counts{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}
+  .count{background:var(--paper-2);border-radius:8px;padding:12px 16px;min-width:120px}
+  .count b{display:block;font-family:var(--serif);font-size:40px;font-weight:400;line-height:1}
+  table{width:100%;border-collapse:collapse;font-size:14px;background:var(--paper-2);border-radius:8px;overflow:hidden}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-family:var(--ui);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+  td.c{white-space:nowrap}
+  .find{background:var(--paper-2);border-radius:8px;padding:20px;margin:16px 0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:24px}
+  @media(max-width:860px){.find{grid-template-columns:1fr}}
+  .find img{width:100%;border-radius:8px;display:block;border:1px solid var(--line)}
+  .quote{font-family:var(--serif);font-style:italic;font-size:21px;line-height:1.25;margin:8px 0 10px}
+  .tag{display:inline-block;font-family:var(--ui);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:999px;margin:0 6px 6px 0}
+  .t-r{background:var(--red);color:#fff} .t-a{background:var(--research);color:var(--on-research)} .t-d{background:var(--paper-3);color:var(--ink);border:1px solid var(--line)} .t-old{background:var(--ink);color:var(--paper)} .t-new{background:var(--ops);color:var(--on-ops)}
+  .cap{font-family:var(--ui);font-size:12px;color:var(--muted);margin-top:6px}
+  details{background:var(--paper-2);border-radius:8px;margin:12px 0;padding:0 20px}
+  summary{cursor:pointer;padding:16px 0;font-family:var(--ui);font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+  details[open]{padding-bottom:16px}
+  details .find{background:var(--paper);}
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:12px 0 28px}
+  .pair img{width:100%;border-radius:8px;border:1px solid var(--line)}
+  .ok li{margin:4px 0}
+  ul{padding-left:20px}
+  .pages img{width:100%;border-radius:8px;border:1px solid var(--line);margin:6px 0 20px}
+  a{color:var(--ink)}
+  @media(max-width:600px){table{display:block;overflow-x:auto} code{word-break:break-all}}
+  .note{font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="frame"><div class="panel">
+
+<p class="label">Revisión completa · toda la web · 27 nov 2026 · rama webs-solidas (commit 4dde6ab)</p>
+<h1>Toda la web, <em>de una vez</em></h1>
+
+<div class="hero">
+  <div>
+    <p><span class="light"><span class="dot r"></span>Rojo, pero por algo fuera de la web</span></p>
+    <p class="big">La web en sí está en ámbar: nada se rompe, pero aún no se puede publicar.</p>
+    <p>He pasado las 15 páginas a 390, 768 y 1440 px, con «reducir movimiento», con teclado, con táctil, sin vídeo, con red lenta y con las cabeceras de seguridad de Vercel. <b>Cero errores en la consola, cero bloqueos de la política de seguridad, ningún enlace interno roto y nada se sale de la pantalla.</b> Los arreglos de hoy se notan: la 404, el foco del menú, el hueco de /work, el escenario con «reducir movimiento» y el peso de About y Cut Scenes.</p>
+    <p>El rojo viene de una sola cosa <b>ya apuntada</b> que no está en la web: el nombre interno de la plataforma de Roche sigue en <code>main</code> y en el historial del repo público. Esta rama ya lo quitó; falta tu decisión.</p>
+    <p>Lo que impide publicar la web: <b>18 marcas a la vista</b> (13 «[PLACEHOLDER]» y 5 «[DRAFT FOR ALI]»), texto tapado en móvil en About y Contact, y la home de caras a 768 px.</p>
+  </div>
+  <div>
+    <div class="counts">
+      <div class="count"><b>1</b><span class="label">Rompe algo</span></div>
+      <div class="count"><b>13</b><span class="label">Se nota</span></div>
+      <div class="count"><b>10</b><span class="label">Detalle</span></div>
+    </div>
+    <p class="note">De los 24, <b>8 son nuevos</b> y 16 ya estaban en las revisiones de hoy y siguen abiertos (marcados «ya apuntado»).</p>
+    <p class="note">Revisado sobre la copia estática (localhost:4331) y la build de Vercel con las cabeceras de <code>vercel.json</code> (localhost:4340), con Chromium sin ventana. Las builds son de las 12:21–12:22, después del último commit del producto. Mientras revisaba, la rama activa del repo pasó a <code>exploracion-lupa</code>; solo cambia <code>exploraciones/</code>, el producto es el mismo.</p>
+  </div>
+</div>
+
+<h2>Semáforo <em>por página</em></h2>
+<table>
+<tr><th>Página</th><th>Color</th><th>Marcas</th><th>Por qué</th></tr>
+<tr><td>Home</td><td class="c"><span class="dot a"></span> ámbar</td><td>0</td><td>A 768 px una cara sale cortada arriba y otra se pega al titular. Repite «Now» de Work (ya apuntado). Es la home provisional hasta el Bloque 4.</td></tr>
+<tr><td>Play</td><td class="c"><span class="dot g"></span> verde</td><td>0</td><td>Funciona con ratón, dedo y teclado. Detalles: la lista de casos de abajo a la derecha se lee poco, y los objetos llevan sombra (ya apuntado).</td></tr>
+<tr><td>Cut Scenes</td><td class="c"><span class="dot a"></span> ámbar</td><td>1</td><td>Con la intro delante, el tabulador va a enlaces tapados (ya apuntado). Bajar la página entera descarga ~15 MB.</td></tr>
+<tr><td>cutouts</td><td class="c"><span class="dot a"></span> ámbar</td><td>2</td><td>Lo mismo con la intro y el tabulador. El nombre sobre la intro se lee poco a 1440 (ya apuntado).</td></tr>
+<tr><td>Silena</td><td class="c"><span class="dot a"></span> ámbar</td><td>2</td><td>Las capturas siguen diciendo «Designed by Maria Escarmiento» (ya apuntado).</td></tr>
+<tr><td>Work</td><td class="c"><span class="dot g"></span> verde</td><td>0</td><td>Bien en los tres anchos; el hueco negro de 1440 ya no está.</td></tr>
+<tr><td>Roche</td><td class="c"><span class="dot g"></span> verde</td><td>0</td><td>Tu texto, sin nada de la lista prohibida. Limpia.</td></tr>
+<tr><td>Monexa</td><td class="c"><span class="dot a"></span> ámbar</td><td>3</td><td>Solo por las marcas pendientes.</td></tr>
+<tr><td>Cupra</td><td class="c"><span class="dot a"></span> ámbar</td><td>2</td><td>Marcas pendientes; «2023–Today» frente a «2026–now» de Roche (ya apuntado).</td></tr>
+<tr><td>About</td><td class="c"><span class="dot a"></span> ámbar</td><td>0</td><td>En móvil y tablet el bocadillo tapa dos líneas rojas (ya apuntado). Barcelona dos veces (ya apuntado).</td></tr>
+<tr><td>Contact</td><td class="c"><span class="dot a"></span> ámbar</td><td>0</td><td>En móvil la cara tapa las pistas (ya apuntado). Con teclado hay que pasar por 103 casillas para llegar al chat.</td></tr>
+<tr><td>How it’s built</td><td class="c"><span class="dot a"></span> ámbar</td><td>5</td><td>Borrador a la vista. Nadie enlaza a ella, pero está en el sitemap y Google la puede encontrar.</td></tr>
+<tr><td>Library</td><td class="c"><span class="dot a"></span> ámbar</td><td>3</td><td>Solo marcas. Igual: sin enlace, pero en el sitemap.</td></tr>
+<tr><td>Styleguide</td><td class="c"><span class="dot a"></span> ámbar</td><td>0</td><td>Las notas de los colores siguen en español (ya apuntado).</td></tr>
+<tr><td>404</td><td class="c"><span class="dot g"></span> verde</td><td>0</td><td>Rehecha con el sistema. Detalle técnico en la dirección «canónica».</td></tr>
+</table>
+<p class="note">Marcas = «[PLACEHOLDER…]» y «[DRAFT FOR ALI]» que se ven en la página. Son a propósito, pero ninguna página con marcas puede ir a main.</p>
+
+<h2>Los cinco <em>más importantes</em></h2>
+
+<div class="find">
+  <div>
+    <div style="background:var(--ink);color:var(--paper);border-radius:8px;padding:24px;font-family:var(--ui);font-size:13px;line-height:1.6">
+      <p class="label" style="color:#8E8A84">main · docs/project-brief.md</p>
+      «…una familia de productos de plataforma de salud (<span style="background:var(--red);color:#fff;padding:0 6px">nombre interno</span>), donde…»
+      <p class="label" style="color:#8E8A84;margin-top:16px">esta rama (webs-solidas)</p>
+      «…una familia de productos de plataforma de salud, donde…» ✓
+    </div>
+    <p class="cap">La palabra no se escribe aquí a propósito: este informe también va al repo.</p>
+  </div>
+  <div>
+    <span class="tag t-r">Rompe algo</span><span class="tag t-old">ya apuntado</span>
+    <h3>1 · El nombre interno de Roche sigue en el repo público</h3>
+    <p class="quote">«Abro su GitHub y leo para qué plataforma de Roche trabaja.»</p>
+    <p>No sale en la web ni en esta rama: aquí ya está quitado. Pero <b>sigue en <code>main</code> y en el historial</b>, y el repo es público. Unir esta rama a main lo quita de la versión actual, no del historial. Está en tu lista de webs-sólidas (punto 1: quitarlo en main y/o poner el repo en privado). Tu decisión: está en la lista de riesgos.</p>
+  </div>
+</div>
+
+<div class="find">
+  <div><img src="h-built-draft.jpg" alt="How this portfolio is built a 1440 px con las etiquetas DRAFT FOR ALI"><p class="cap">How it’s built a 1440 px. Hay marcas así en 7 páginas.</p></div>
+  <div>
+    <span class="tag t-a">Se nota</span><span class="tag t-old">a propósito</span>
+    <h3>2 · 18 marcas a la vista: impiden publicar</h3>
+    <p class="quote">«¿“PLACEHOLDER: my role in the pitch”? Esto no está acabado.»</p>
+    <p>El brief pide que no quede ningún «[DRAFT]» ni relleno a la vista. Por página:</p>
+    <table>
+      <tr><th>Página</th><th>Qué falta</th></tr>
+      <tr><td>How it’s built</td><td>5 × [DRAFT FOR ALI] (todo el texto)</td></tr>
+      <tr><td>Monexa</td><td>3 · el reto, tu papel en el pitch, qué vino después</td></tr>
+      <tr><td>Library</td><td>3 · qué es, por qué, el avance</td></tr>
+      <tr><td>cutouts</td><td>2 · por qué abrirlo a otros, cómo se cortan y escanean</td></tr>
+      <tr><td>Silena</td><td>2 · por qué esta lámpara, qué es tuyo y qué de la plantilla</td></tr>
+      <tr><td>Cupra</td><td>2 · cómo se mueve el trabajo, qué salió (solo lo publicado)</td></tr>
+      <tr><td>Cut Scenes</td><td>1 · qué aprendiste</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="find">
+  <div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><img src="h-about-bocadillo.jpg" alt="About a 390 px: el bocadillo verde tapa dos líneas rojas"><img src="h-contact-cara.jpg" alt="Contact a 390 px: la cara del gorro tapa las pistas 01 y 02"></div>
+    <p class="cap">390 px, sin tocar nada. Izquierda: About. Derecha: Contact.</p>
+  </div>
+  <div>
+    <span class="tag t-a">Se nota</span><span class="tag t-old">ya apuntado ×2</span>
+    <h3>3 · En el móvil, dos páginas tapan su propio texto</h3>
+    <p class="quote">«No puedo leer “Galileo’s human” ni la pista 02: hay algo encima.»</p>
+    <p><b>About (390 y 768 px):</b> el bocadillo «Peek inside my head» sale fijo y tapa dos de las líneas rojas. <b>Contact (390 px):</b> la cara del gorro con «let’s talk?» tapa el final de las pistas 01 y 02. Las dos estaban en las revisiones de esta mañana y siguen igual. Es justo el criterio «a 390, 768 y 1440 px no hay nada tapado».</p>
+  </div>
+</div>
+
+<div class="find">
+  <div><img src="h-home-768.jpg" alt="Home a 768 px: una cara cortada arriba y otra pegada al titular"><p class="cap">Home a 768 px (tablet en vertical). Arriba, la cara cortada. Abajo, el pelo revuelto pegado a «Yep».</p></div>
+  <div>
+    <span class="tag t-a">Se nota</span><span class="tag t-new">nuevo</span>
+    <h3>4 · La home a 768 px: caras gigantes, una cortada</h3>
+    <p class="quote">«En el iPad solo veo media cara arriba, y el titular queda pequeño y apretado abajo.»</p>
+    <p>A 768 px las caras se hacen el doble de grandes que en móvil. La de la media melena («I find peace in naming layers», lleva a About) queda casi entera fuera, por encima del panel; la del gorro sale sin la copa; la del pelo revuelto toca la «Y» de «Yep». El titular se lee, pero pequeño y encajado entre dos caras. A 390 y 1440 px se ve bien. Es la home provisional (la de agentes es el Bloque 4), pero mientras sea la que se publica, no cumple «cada personaje lleva a algo con sentido» en tablet.</p>
+  </div>
+</div>
+
+<div class="find">
+  <div><img src="h-crucigrama-foco.jpg" alt="Contact con el foco en la primera casilla del crucigrama"><p class="cap">1440 px. El foco se ve bien (la columna se ilumina), pero cada casilla es una parada.</p></div>
+  <div>
+    <span class="tag t-a">Se nota</span><span class="tag t-new">nuevo</span>
+    <h3>5 · Contact: 103 pulsaciones de tabulador para llegar al chat</h3>
+    <p class="quote">«Navego con teclado y no consigo salir del crucigrama.»</p>
+    <p>Cada una de las 103 casillas del crucigrama es una parada del tabulador. Para llegar al chat, a LinkedIn o al CV del pie hay que pulsar Tab más de cien veces. No es una trampa (se acaba saliendo), pero es lo contrario de lo cómodo. Lo habitual es que el tabulador entre en el crucigrama una vez y las flechas muevan dentro.</p>
+  </div>
+</div>
+
+<h2>El resto, <em>plegado</em></h2>
+
+<details>
+<summary>Se nota · 8 más</summary>
+
+<div class="find">
+  <div><img src="h-library.jpg" alt="Library a 1440 px con tres PLACEHOLDER"></div>
+  <div><span class="tag t-a">Se nota</span><span class="tag t-new">nuevo</span>
+  <h3>6 · Dos borradores que nadie enlaza, pero Google sí puede encontrar</h3>
+  <p class="quote">«Busco su nombre y me sale una página llena de [PLACEHOLDER].»</p>
+  <p>How it’s built y Library no tienen ningún enlace en la web (eso ya estaba apuntado como pregunta para ti). Pero las dos están en el <code>sitemap.xml</code> y la web no pide que no la indexen, así que un buscador puede llegar directo a ellas con sus marcas. En las notas de webs-sólidas está como decisión tuya («noindex mientras no sea el portfolio público»); lo traigo aquí porque afecta a lo que ve un visitante.</p></div>
+</div>
+
+<div class="find">
+  <div><img src="h-intro-tab.jpg" alt="Cut Scenes con la intro delante: el foco está en un enlace tapado"><p class="cap">Cut Scenes, 1440 px, cuarta pulsación de Tab con la intro delante.</p></div>
+  <div><span class="tag t-a">Se nota</span><span class="tag t-old">ya apuntado (como detalle)</span>
+  <h3>7 · Con la intro de Play delante, el tabulador va por debajo</h3>
+  <p class="quote">«Pulso Tab y el foco se va a sitios que no veo.»</p>
+  <p>En Cut Scenes y cutouts el foco empieza en «Scroll or skip» (bien), pero Tab no cierra la intro: pasa a LinkedIn, CV, Let’s talk, el menú, «View live» y «Next case», casi todos tapados por la película. La intro dura 21–25 s. Esc, Enter, flecha abajo o espacio sí la cierran. Lo subo a «se nota» porque Tab es la primera tecla que prueba cualquiera.</p></div>
+</div>
+
+<div class="find">
+  <div><img src="h-silena-credito.jpg" alt="Silena con el texto Designed by Maria Escarmiento marcado en dos capturas"></div>
+  <div><span class="tag t-a">Se nota</span><span class="tag t-old">ya apuntado</span>
+  <h3>8 · Silena: «Designed by Maria Escarmiento»</h3>
+  <p class="quote">«¿Pero esto no lo diseñó ella?»</p>
+  <p>Sigue en la captura de portada y en la del móvil. Uno de los placeholders de Silena («qué es tuyo y qué de la plantilla») debería resolverlo, pero mientras tanto la imagen dice otra cosa que el texto.</p></div>
+</div>
+
+<div class="find"><div><p class="label">Sin captura</p></div><div><span class="tag t-a">Se nota</span><span class="tag t-old">ya apuntado</span>
+  <h3>9 · Datos que salen dos veces</h3>
+  <p>«Barcelona» en la cabecera, en la home y en la primera línea roja de About. «Senior Product Designer · Garaje de Ideas, for Roche» en el «Now» de la home y en la fila de Roche de /work. La frase de cada empresa en /work y en el «Next case». La repetición del capítulo Context de Cupra que había esta mañana <b>ya no está</b>.</p></div></div>
+
+<div class="find"><div><p class="label">Sin captura</p></div><div><span class="tag t-a">Se nota</span><span class="tag t-old">ya apuntado</span>
+  <h3>10 · How it’s built: quién habla</h3>
+  <p>Sigue mezclando «Ali sets the direction… without Ali’s yes» con «how I work». Lo de la home de agentes ya dice «soon», así que eso está resuelto.</p></div></div>
+
+<div class="find"><div><p class="label">Sin captura</p></div><div><span class="tag t-a">Se nota</span><span class="tag t-old">ya apuntado</span>
+  <h3>11 · About y How it’s built: la misma plantilla, dos aspectos</h3>
+  <p>About sigue sobre papel y con tamaños de letra propios (21 fuera de la escala según la auditoría). Pendiente de tu respuesta: ¿About pasa a la plantilla de página larga?</p></div></div>
+
+<div class="find"><div><img src="pagina-styleguide.jpg" alt="Styleguide en los tres anchos"></div><div><span class="tag t-a">Se nota</span><span class="tag t-old">ya apuntado</span>
+  <h3>12 · Styleguide: la página es inglesa, las notas de color en español</h3>
+  <p>«marco, texto principal», «rojo para texto sobre papel»… Vienen tal cual de <code>estilos/tokens.css</code>.</p></div></div>
+
+<div class="find"><div><p class="label">Sin captura</p></div><div><span class="tag t-a">Se nota</span><span class="tag t-old">ya apuntado</span>
+  <h3>13 · Las intros pesan mucho en el móvil</h3>
+  <p>La de Cut Scenes son 6,7 MB (AV1) y la de cutouts 9,3 MB (20 MB en MP4). Con red lenta (1,6 Mbps) Cut Scenes tarda 8 s en terminar de cargar, aunque el póster sale enseguida. Sigue en la lista de «volver a exportar desde el original».</p></div></div>
+</details>
+
+<details>
+<summary>Detalles · 10</summary>
+
+<div class="find"><div><img src="h-play-lista.jpg" alt="Play: la lista de casos de abajo a la derecha, marcada"></div><div><span class="tag t-d">Detalle</span><span class="tag t-new">nuevo</span>
+  <h3>14 · Play: la lista de casos se lee poco</h3>
+  <p>«02 cutouts» y «03 silena» en gris claro sobre papel: 2,6 de contraste (para texto pequeño se pide 4,5). Son botones, no decoración.</p></div></div>
+
+<div class="find"><div><p class="label">Sin captura</p></div><div><span class="tag t-d">Detalle</span><span class="tag t-new">nuevo</span>
+  <h3>15 · About: los números de «How I work» sobre negro</h3>
+  <p>Los «02», «03», «04» de las pestañas no activas quedan en 2,7 de contraste.</p></div></div>
+
+<div class="find"><div><p class="label">Sin captura</p></div><div><span class="tag t-d">Detalle</span><span class="tag t-new">nuevo</span>
+  <h3>16 · Direcciones «oficiales» que no coinciden</h3>
+  <p>Técnico, no lo ve nadie. La 404 dice que su dirección oficial es <code>/404/</code> (lo normal es que no diga ninguna o pida no indexarse). Y el sitemap da las direcciones sin barra final (<code>/work</code>) mientras cada página dice que la suya lleva barra (<code>/work/</code>). A Google le da igual casi siempre; conviene que coincidan.</p></div></div>
+
+<div class="find"><div><p class="label">Sin captura</p></div><div><span class="tag t-d">Detalle</span><span class="tag t-new">nuevo</span>
+  <h3>17 · Sin JavaScript, la intro de Play no se puede quitar</h3>
+  <p>Con JavaScript apagado (raro), Cut Scenes y cutouts se quedan con la intro encima y el botón «Scroll or skip» no hace nada. Solo he mirado sin JavaScript la home, Play, Contact, About y Cut Scenes.</p></div></div>
+
+<div class="find"><div><p class="label">Sin captura</p></div><div><span class="tag t-d">Detalle</span><span class="tag t-new">nuevo</span>
+  <h3>18 · Cut Scenes pesa 15 MB si la recorres entera</h3>
+  <p>Al abrir baja 1,35 MB (bien, como prometía el arreglo). Si bajas hasta el final, los vídeos de los capítulos suman ~15 MB en móvil y escritorio. Monexa: 1,9 MB al abrir, ~5,5 MB entera. No es un fallo (se bajan solo al acercarse), pero en datos móviles se nota. Mejorará con las reexportaciones.</p></div></div>
+
+<div class="find"><div><img src="h-cutouts-nombre.jpg" alt="cutouts: el nombre sobre la intro, marcado"></div><div><span class="tag t-d">Detalle</span><span class="tag t-old">ya apuntado</span>
+  <h3>19 · El nombre de la intro de cutouts casi no se ve a 1440</h3>
+  <p>Rosa apagado sobre el tapete verde.</p></div></div>
+
+<div class="find"><div><p class="label">Sin captura</p></div><div><span class="tag t-d">Detalle</span><span class="tag t-old">ya apuntado</span>
+  <h3>20 · Años: «2023–Today» y «2026–now»</h3>
+  <p>En la home y en /work. Además, según su ficha, Cupra es 2023–2026 y el texto de Cupra habla en presente.</p></div></div>
+
+<div class="find"><div><p class="label">Sin captura</p></div><div><span class="tag t-d">Detalle</span><span class="tag t-old">ya apuntado</span>
+  <h3>21 · Sombras fuera de la ficha del agente</h3>
+  <p>Los objetos de /play y las caras de la home llevan sombra. Las reglas solo la permiten en la ficha del agente. Tu decisión.</p></div></div>
+
+<div class="find"><div><p class="label">Sin captura</p></div><div><span class="tag t-d">Detalle</span><span class="tag t-old">en la auditoría</span>
+  <h3>22 · Un degradado en Contact</h3>
+  <p>La máscara que difumina el chat por arriba es un degradado, y las reglas no los permiten. Quitarlo cambia cómo se ve: tu decisión.</p></div></div>
+
+<div class="find"><div><p class="label">Sin captura</p></div><div><span class="tag t-d">Detalle</span><span class="tag t-old">ya apuntado</span>
+  <h3>23 · La home de caras con colores y foco de antes</h3>
+  <p>Los bocadillos siguen con los tonos sacados del Framer, y el aro de foco de las caras es el granate del sistema viejo (se ve bien sobre papel). Se va con el Bloque 4.</p></div></div>
+
+<div class="find"><div><p class="label">Sin captura</p></div><div><span class="tag t-d">Detalle</span><span class="tag t-old">ya apuntado</span>
+  <h3>24 · Tras cerrar la intro con el teclado, Tab salta al pie</h3>
+  <p>La primera pulsación va a LinkedIn, CV y Let’s talk y solo después vuelve arriba.</p></div></div>
+</details>
+
+<h2>Antes y <em>después</em></h2>
+<p>Cosas que esta mañana estaban mal y ya están bien. Izquierda, la revisión de antes; derecha, ahora.</p>
+
+<p class="label">404 · ahora con el titular en serif y los botones del sistema</p>
+<div class="pair"><img src="antes-404.jpg" alt="404 antes"><img src="despues-404.jpg" alt="404 después"></div>
+
+<p class="label">Foco del teclado en el menú · de granate casi invisible a un aro claro</p>
+<div class="pair"><img src="antes-foco-cabecera.jpg" alt="Foco del menú antes"><img src="despues-foco-cabecera.jpg" alt="Foco del menú después"></div>
+
+<p class="label">/work a 1440 px · sin hueco negro y con aire bajo el título</p>
+<div class="pair"><img src="antes-work.jpg" alt="Work antes"><img src="despues-work.jpg" alt="Work después"></div>
+
+<p class="label">Cut Scenes con «reducir movimiento» · antes el clic iba a un vídeo invisible; ahora el clic cae en el vídeo que ves</p>
+<div class="pair"><img src="antes-escenario-reducido.jpg" alt="Escenario con reducir movimiento antes"><img src="despues-escenario-reducido.jpg" alt="Escenario con reducir movimiento después"></div>
+
+<p>Y sin captura: el borde negro bajo el pie de How it’s built a 768 px ya no está; About pasa de 4,3 MB a 0,19 MB al abrir; Cut Scenes abre con 1,35 MB (antes 4 MB) y no baja vídeos escondidos; con «reducir movimiento» no se baja ninguna película hasta que la pides.</p>
+
+<h2>«Hecho significa», <em>hoy</em></h2>
+<table>
+<tr><th>Criterio</th><th>Estado</th></tr>
+<tr><td>En la home se lee el titular entero y cada personaje lleva a algo con sentido</td><td><span class="dot a"></span> A 390 y 1440 sí; a 768 una cara sale cortada (hallazgo 4). Toque en móvil: primer toque enseña el bocadillo, el segundo abre el caso. La home de agentes es el Bloque 4.</td></tr>
+<tr><td>En el menú se ven Play y Work, y cada caso abre con su plantilla</td><td><span class="dot g"></span> Sí, en los tres anchos. Tres casos Play y tres Work con su plantilla y su color.</td></tr>
+<tr><td>Ningún dato sale dos veces y no hay «[DRAFT]» ni relleno</td><td><span class="dot r"></span> No: 18 marcas y algunos datos repetidos (hallazgos 2 y 9).</td></tr>
+<tr><td>Vídeos nítidos en Retina y que cargan en móvil</td><td><span class="dot a"></span> Por tamaño, sí: cada vídeo y cada imagen tiene píxeles de sobra para su caja a 2× y 3×. Cargan en móvil en Chromium. Las intros siguen pesadas y faltan reexportaciones. Sin iPhone real.</td></tr>
+<tr><td>A 390, 768 y 1440 px nada tapado, cortado ni desbordado</td><td><span class="dot a"></span> Nada se desborda en ninguna página. Tapado: About y Contact en móvil; cortado: la home a 768.</td></tr>
+<tr><td>LinkedIn y el CV desde cualquier página</td><td><span class="dot g"></span> Sí, en el pie de las 15 páginas. El CV descarga.</td></tr>
+<tr><td>El revisor no marca nada como «rompe algo»</td><td><span class="dot r"></span> Uno, fuera de la web y ya apuntado (hallazgo 1).</td></tr>
+</table>
+
+<h2>Lo que <em>está bien</em></h2>
+<ul class="ok">
+<li><b>Consola:</b> cero errores y cero avisos en 15 páginas × 3 anchos, con y sin «reducir movimiento».</li>
+<li><b>Seguridad:</b> con las cabeceras de <code>vercel.json</code> (URLs sin .html), cero bloqueos de la política de seguridad en las 15 páginas a 1440 y 390, abriendo el collage de About, escribiendo en el crucigrama, pulsando el chat, quitando las intros y reproduciendo vídeos. Una dirección que no existe devuelve la 404 con su código de error.</li>
+<li><b>Enlaces:</b> los 35 enlaces internos responden. Las webs en vivo de cutouts y Silena, también.</li>
+<li><b>Desbordes:</b> nada se sale por los lados en ninguna página ni ancho.</li>
+<li><b>Reducir movimiento:</b> ningún vídeo arranca solo, no hay animaciones en marcha, no hay intro a pantalla completa y los vídeos enseñan sus controles.</li>
+<li><b>Cuando falla:</b> con los vídeos bloqueados, todas las cajas y la intro enseñan su póster con contenido, y la intro se puede quitar.</li>
+<li><b>Teclado:</b> el foco se ve en todas las páginas (aro claro sobre negro, oscuro o del color del caso sobre papel). Menú, filas de Work, capítulos, pestañas, desplegables y «Next case» se recorren en orden.</li>
+<li><b>Contenido:</b> nada de búsqueda de empleo, nada prohibido de Roche, nada de Cupra fuera de lo publicado.</li>
+<li><b>Sistema:</b> <code>npm run check</code> pasa (55 tokens, deuda 184). Tres familias de letra en todas las páginas rehechas y los cinco tamaños de la escala en casos, Work, How it’s built, Library y 404. Los componentes del styleguide se ven igual en las páginas (tarjeta de título, capítulos, botón, vídeo, Next case, pie).</li>
+</ul>
+
+<h2>Todas las páginas, <em>en tres anchos</em></h2>
+<p class="note">390 · 768 · 1440 px, lo primero que se ve al entrar. En los casos de Play, con la intro delante.</p>
+<div class="pages">
+<p class="label">Home</p><img src="pagina-index.jpg" alt="Home">
+<p class="label">Play</p><img src="pagina-play.jpg" alt="Play">
+<p class="label">Cut Scenes</p><img src="pagina-play_cut-scenes.jpg" alt="Cut Scenes">
+<p class="label">cutouts</p><img src="pagina-play_cutouts.jpg" alt="cutouts">
+<p class="label">Silena</p><img src="pagina-play_silena.jpg" alt="Silena">
+<p class="label">Work</p><img src="pagina-work.jpg" alt="Work">
+<p class="label">Roche</p><img src="pagina-work_roche.jpg" alt="Roche">
+<p class="label">Monexa</p><img src="pagina-work_monexa.jpg" alt="Monexa">
+<p class="label">Cupra</p><img src="pagina-work_cupra.jpg" alt="Cupra">
+<p class="label">About</p><img src="pagina-about.jpg" alt="About">
+<p class="label">Contact</p><img src="pagina-contact.jpg" alt="Contact">
+<p class="label">How it’s built</p><img src="pagina-how-this-portfolio-is-built.jpg" alt="How it's built">
+<p class="label">Library</p><img src="pagina-library.jpg" alt="Library">
+<p class="label">Styleguide</p><img src="pagina-styleguide.jpg" alt="Styleguide">
+<p class="label">404</p><img src="pagina-404.jpg" alt="404">
+<p class="label">Con «reducir movimiento» · 1440 px</p><img src="reducir-1440.jpg" alt="Reducir movimiento a 1440">
+<p class="label">Con «reducir movimiento» · 390 px</p><img src="reducir-390.jpg" alt="Reducir movimiento a 390">
+<p class="label">Sin vídeo · la intro deja su póster</p><img src="ok-sin-video-intro.jpg" alt="Cut Scenes con los vídeos bloqueados">
+</div>
+
+<h2>Peso <em>al abrir</em></h2>
+<table>
+<tr><th>Página</th><th>Al abrir</th><th>Tras bajar entera</th></tr>
+<tr><td>Home</td><td>0,44 MB</td><td>igual</td></tr>
+<tr><td>Play</td><td>0,34 MB</td><td>igual</td></tr>
+<tr><td>Cut Scenes</td><td>1,35 MB</td><td>~15,6 MB</td></tr>
+<tr><td>cutouts</td><td>0,31 MB + la intro (6,7–9,3 MB según formato)</td><td>igual</td></tr>
+<tr><td>Silena</td><td>0,27 MB</td><td>igual</td></tr>
+<tr><td>Work · Roche</td><td>0,15 MB · 0,15 MB</td><td>igual</td></tr>
+<tr><td>Monexa</td><td>1,9 MB</td><td>~5,5 MB</td></tr>
+<tr><td>Cupra</td><td>0,50 MB</td><td>igual</td></tr>
+<tr><td>About · Contact</td><td>0,19 MB · 0,24 MB</td><td>igual</td></tr>
+<tr><td>How it’s built · Library · Styleguide · 404</td><td>0,13–0,24 MB</td><td>igual</td></tr>
+</table>
+<p class="note">Medido en Chromium. Los vídeos que se bajan poco a poco mientras suenan se cuentan solo en parte, así que las cifras con vídeo son aproximadas (por abajo).</p>
+
+<h2>No he podido <em>comprobar</em></h2>
+<ul>
+<li><b>Pulsar play en un vídeo con «reducir movimiento».</b> En este Chromium sin ventana, los controles nativos del vídeo no responden al clic en ninguna página (tampoco en Monexa ni en los vídeos de los capítulos). Sí he comprobado que el clic cae en el vídeo que ves y no en una capa escondida, que era el fallo de antes.</li>
+<li><b>La web en vivo de Cut Scenes, su repo de GitHub y LinkedIn.</b> La red de esta sesión no deja salir a esas direcciones. Las de cutouts y Silena sí responden.</li>
+<li><b>Las cabeceras en Vercel de verdad.</b> Solo en un servidor local que copia <code>vercel.json</code>; ese servidor quita «upgrade-insecure-requests» (es http) y no sirve los vídeos por trozos como Vercel.</li>
+<li><b>iPhone, Safari y Android reales.</b> Solo Chromium emulando 390 y 768 px con táctil. Los dos vídeos de Monexa en formato delicado (4:4:4) siguen sin probar en Safari.</li>
+<li><b>Nitidez en una pantalla Retina de verdad.</b> Lo he calculado (qué archivo elige cada caja frente a los píxeles que necesita a 2× y 3×), no lo he visto en una pantalla.</li>
+<li><b>Lector de pantalla.</b> Sin VoiceOver ni NVDA; solo nombres y orden del foco.</li>
+<li><b>Equipo lento y la física de la home.</b> La home de agentes aún no existe; la de caras no tiene física que simplificar. No hay 3D en la web.</li>
+<li><b>Scroll fluido en un móvil de verdad.</b> En Chromium no he visto saltos, pero no es una medida fiable.</li>
+</ul>
+
+<p class="note" style="margin-top:40px">Revisor · 27 nov 2026 · capturas en JPEG en esta misma carpeta.</p>
+</div></div>
+</body>
+</html>

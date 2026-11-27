@@ -14,6 +14,8 @@ interface Props {
   image?: string;
   nav?: boolean;
   footer?: boolean;
+  /** keep a draft page out of search engines */
+  noindex?: boolean;
 }
 const {
   title,
@@ -21,6 +23,7 @@ const {
   image = '/images/brand/og.png',
   nav = true,
   footer = true,
+  noindex = false,
 } = Astro.props;
 // The static preview (relative URLs) can't use client-side routing; Vercel can.
 const clientRouter = !process.env.PREVIEW;
@@ -36,6 +39,7 @@ const fullTitle = title ? `${title} · álida díaz de freijo` : 'álida díaz d
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />

@@ -10,8 +10,10 @@ import { emph, rich } from '../lib/utils';
 const b = (await getEntry('pages', 'built'))!.data as any;
 const mark = (html: string) => html.replace(/\[(DRAFT FOR ALI|PLACEHOLDER[^\]]*)\]/g, (m) => `<mark class="ph">${m}</mark>`);
 const slug = (t: string) => t.toLowerCase().replace(/[^a-z]+/g, '-').replace(/^-|-$/g, '');
+// while it still shows [DRAFT…] or [PLACEHOLDER…] marks, search engines don't index it
+const drafty = /\[(DRAFT|PLACEHOLDER)/.test(JSON.stringify(b));
 ---
-<Base title="how this portfolio is built" description="The team of agents, the design system and the method behind this portfolio.">
+<Base title="how this portfolio is built" noindex={drafty} description="The team of agents, the design system and the method behind this portfolio.">
   <article class="hb">
     <header class="hb__head">
       <h1 class="type-section hb__t" set:html={emph(b.title)} />

@@ -14,8 +14,10 @@ import { getEntry } from 'astro:content';
 import { accentVars, emph, rich } from '../lib/utils';
 const l = (await getEntry('pages', 'library'))!.data as any;
 const mark = (html: string) => html.replace(/\[PLACEHOLDER[^\]]*\]/g, (m) => `<mark class="ph">${m}</mark>`);
+// while it still shows [DRAFT…] or [PLACEHOLDER…] marks, search engines don't index it
+const drafty = /\[(DRAFT|PLACEHOLDER)/.test(JSON.stringify(l));
 ---
-<Base title="library" description="The reference library: work in progress.">
+<Base title="library" noindex={drafty} description="The reference library: work in progress.">
   <Panel label="Library">
     <div class="lb" style={accentVars('research')}>
       <header class="lb__head">
