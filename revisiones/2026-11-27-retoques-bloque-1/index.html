@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisión ligera · Retoques del bloque 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:#070707; --paper:#D4D1CB; --paper-2:#ECEAE5; --muted:#4A4744; --muted-ink:#8E8A84;
+    --line:rgba(7,7,7,.14); --red:#E92C30; --red-text:#B0161B;
+    --systems:#A3FFA9; --on-systems:#113830;
+    --creative:#98E7EB; --on-creative:#0F5458; --collab:#FFA4BF; --on-collab:#7E1340;
+    --research:#E89A3C; --on-research:#261E13;
+    --serif:'Instrument Serif',Georgia,serif; --ui:'Space Grotesk',system-ui,sans-serif; --body:'Satoshi',system-ui,sans-serif;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--ink); color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.55; padding:12px; }
+  .panel { background:var(--paper); border-radius:12px; padding:40px; max-width:1200px; margin:0 auto 12px; }
+  h1,h2,h3 { font-family:var(--serif); font-weight:400; margin:0; }
+  h1 { font-size:clamp(40px,5vw,64px); line-height:1; }
+  h1 em, h2 em { font-style:italic; }
+  h2 { font-size:clamp(28px,2.6vw,40px); line-height:1.05; margin-bottom:16px; }
+  h3 { font-size:26px; line-height:1.1; }
+  .label { font-family:var(--ui); font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:500; }
+  .top { display:grid; grid-template-columns:auto 1fr; gap:32px; align-items:center; }
+  .light { display:flex; flex-direction:column; gap:8px; background:var(--ink); padding:14px; border-radius:999px; }
+  .light span { width:40px; height:40px; border-radius:50%; background:#2a2a2a; }
+  .light .on { background:var(--research); }
+  .counts { display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
+  .pill { font-family:var(--ui); font-size:13px; padding:6px 12px; border-radius:999px; background:var(--paper-2); }
+  .pill b { font-weight:500; }
+  .pill.r { background:var(--ink); color:var(--paper); }
+  .pill.a { background:var(--research); color:var(--on-research); }
+  ul.plain { padding-left:18px; margin:8px 0 0; }
+  ul.plain li { margin-bottom:8px; }
+  .ok { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin-top:24px; }
+  .ok div { background:var(--paper-2); border-radius:8px; padding:14px 16px; font-size:15px; }
+  .ok div b { font-family:var(--ui); font-weight:500; display:block; font-size:12px; letter-spacing:.06em; text-transform:uppercase; margin-bottom:4px; }
+  .ok .y b { color:var(--on-systems); }
+  .ok .q b { color:var(--red-text); }
+  .find { border-top:1px solid var(--line); padding:32px 0; display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:32px; }
+  .find:first-of-type { border-top:0; }
+  .find img { width:100%; border-radius:8px; display:block; border:1px solid var(--line); }
+  .cap { font-family:var(--ui); font-size:12px; color:var(--muted); margin-top:6px; }
+  .lvl { display:inline-block; font-family:var(--ui); font-size:12px; letter-spacing:.06em; text-transform:uppercase; padding:3px 10px; border-radius:999px; margin-bottom:10px; }
+  .lvl.nota { background:var(--research); color:var(--on-research); }
+  .lvl.det { background:var(--paper-2); color:var(--ink); }
+  .visitor { font-family:var(--serif); font-style:italic; font-size:22px; line-height:1.2; margin:8px 0 12px; }
+  .why { color:var(--muted); font-size:15px; }
+  details { border-top:1px solid var(--line); padding:16px 0; }
+  summary { cursor:pointer; font-family:var(--ui); font-size:14px; letter-spacing:.04em; text-transform:uppercase; }
+  summary:focus-visible, a:focus-visible { outline:2px solid var(--ink); outline-offset:3px; }
+  .ba { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .ba h4 { font-family:var(--ui); font-weight:500; font-size:12px; letter-spacing:.06em; text-transform:uppercase; margin:0 0 8px; color:var(--muted); }
+  .sw { border-radius:8px; padding:14px; font-family:var(--ui); font-size:12px; letter-spacing:.06em; text-transform:uppercase; margin-bottom:8px; }
+  .sw small { display:block; text-transform:none; letter-spacing:0; font-size:13px; margin-top:6px; }
+  .order { list-style:none; margin:0; padding:0; border-top:1px solid var(--line); }
+  .order li { border-bottom:1px solid var(--line); padding:10px 4px; font-family:var(--serif); font-size:24px; display:flex; gap:12px; align-items:baseline; }
+  .order li span { font-family:var(--ui); font-size:12px; color:var(--muted); }
+  .bubble { display:inline-block; padding:10px 18px; border-radius:999px; font-family:var(--ui); font-size:14px; letter-spacing:.05em; margin:0 8px 8px 0; }
+  .empty { border:1px dashed var(--muted); border-radius:8px; padding:24px; color:var(--muted); font-size:14px; text-align:center; }
+  @media (max-width:800px) {
+    .panel { padding:24px 16px; }
+    .find { grid-template-columns:1fr; }
+    .top { grid-template-columns:1fr; }
+    .light { flex-direction:row; width:max-content; }
+  }
+</style>
+</head>
+<body>
+
+<section class="panel">
+  <div class="top">
+    <div class="light" aria-label="Semáforo: ámbar"><span></span><span class="on"></span><span></span></div>
+    <div>
+      <p class="label">Revisión ligera · 27 nov 2026 · lote de retoques del bloque 1</p>
+      <h1>Ámbar: <em>lo que he podido leer está bien</em>, pero no lo he visto en pantalla.</h1>
+      <p>Los tres retoques están hechos: los dos colores nuevos ya están en los estilos y en la vista previa, /work sale en el orden Roche, CaixaBank, Cupra, y el pie con LinkedIn, CV y «Let’s talk» está en las 12 páginas, también en /play y /work. Nada roto.</p>
+      <p><b>Por qué no es verde:</b> en esta sesión no tenía navegador ni terminal. No he podido abrir la vista previa, hacer capturas, mirar la consola ni lanzar la comprobación del sistema. Así que lo de «el pie no tapa nada y no hay hueco negro» y los tres anchos de pantalla <b>están sin ver</b>. Lo he revisado leyendo el código y las páginas ya generadas.</p>
+      <div class="counts">
+        <span class="pill r"><b>0</b> rompe algo</span>
+        <span class="pill a"><b>1</b> se nota</span>
+        <span class="pill"><b>3</b> detalle</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ok">
+    <div class="y"><b>Hecho</b>Cian y rosa: el texto encima pasa a <b>#0F5458</b> y <b>#7E1340</b>, igual en estilos/, en los tokens de la web y en el archivo de tokens. La vista previa ya lleva los colores nuevos.</div>
+    <div class="y"><b>Hecho</b>/work en orden: Roche, CaixaBank, SEAT | CUPRA. Sale del orden puesto en cada caso, no está escrito a mano en la página.</div>
+    <div class="y"><b>Hecho</b>El pie está en las 12 páginas de la vista previa. Sus tres enlaces van a su sitio: LinkedIn, el CV (el PDF existe) y Contact.</div>
+    <div class="q"><b>Sin ver</b>Que el pie no tape nada, que no quede hueco negro debajo del panel y que todo se vea bien a 390, 768 y 1440 px.</div>
+    <div class="q"><b>Sin ver</b>La consola sin errores y que pase la comprobación del sistema.</div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Antes y <em>después</em></h2>
+
+  <article class="find">
+    <div>
+      <h3>Colores de agente</h3>
+      <p class="why">En la revisión anterior cian y rosa se quedaban cortos para texto pequeño (hace falta 4,5). Ahora los dos van sobrados. Los recuadros están pintados con los colores de verdad, no son capturas.</p>
+    </div>
+    <div class="ba">
+      <div>
+        <h4>Antes</h4>
+        <div class="sw" style="background:#98E7EB;color:#146D72">Creative · 03<small>4,3 · corto</small></div>
+        <div class="sw" style="background:#FFA4BF;color:#9E194C">Collab · 04<small>4,2 · corto</small></div>
+      </div>
+      <div>
+        <h4>Después</h4>
+        <div class="sw" style="background:var(--creative);color:var(--on-creative)">Creative · 03<small>6,2 · bien</small></div>
+        <div class="sw" style="background:var(--collab);color:var(--on-collab)">Collab · 04<small>5,5 · bien</small></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="find">
+    <div>
+      <h3>Orden de /work</h3>
+      <p class="why">Antes salía Monexa primero. Ahora va como pediste.</p>
+    </div>
+    <div class="ba">
+      <div>
+        <h4>Antes</h4>
+        <ol class="order"><li><span>01</span>CaixaBank</li><li><span>02</span>SEAT | CUPRA</li><li><span>03</span>Roche</li></ol>
+      </div>
+      <div>
+        <h4>Después</h4>
+        <ol class="order"><li><span>01</span>Roche</li><li><span>02</span>CaixaBank</li><li><span>03</span>SEAT | CUPRA</li></ol>
+      </div>
+    </div>
+  </article>
+
+  <article class="find">
+    <div>
+      <h3>/work en pantalla grande</h3>
+      <p class="why">La vez anterior el panel se acababa a media pantalla y dejaba un bloque negro. Ahora el panel tiene una altura mínima y el pie va debajo, así que el hueco debería haberse ido. No lo he podido ver.</p>
+    </div>
+    <div class="ba">
+      <div>
+        <h4>Antes</h4>
+        <img src="../2026-11-27-play-work/h-work-espacios.png" alt="Página Work a 1440 px de la revisión anterior, con el hueco negro debajo del panel">
+        <p class="cap">Revisión anterior, 1440 px.</p>
+      </div>
+      <div>
+        <h4>Después</h4>
+        <div class="empty">Sin captura: no tenía navegador en esta sesión.</div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<section class="panel">
+  <h2>Lo que he encontrado</h2>
+
+  <article class="find">
+    <div>
+      <span class="lvl nota">Se nota</span>
+      <h3>1 · Los bocadillos de la home siguen con los tonos de antes</h3>
+      <p class="visitor">«El texto cian del bocadillo cuesta un poco de leer.»</p>
+      <p class="why">Los bocadillos de las caras de la home no usan los colores de los estilos: llevan los suyos escritos a mano, sacados del Framer. Por eso el cambio no les ha llegado. El del gorro sigue con el cian oscuro de antes (#146D72) y el del pelo revuelto con un granate casi igual al de antes (#9F1A4D). El texto claro sobre ese fondo oscuro se queda justo por debajo de lo recomendado, igual que pasaba antes en los casos. Y el cian oscuro ya no es el mismo que el de Cut Scenes. Si quieres que los bocadillos sigan a los colores nuevos, es tu decisión.</p>
+    </div>
+    <div>
+      <span class="bubble" style="background:#146D72;color:#98E7EB">Bocadillo del gorro · 4,3</span>
+      <span class="bubble" style="background:#9F1A4D;color:#FFA4BF">Bocadillo del pelo revuelto · 4,1</span>
+      <p class="cap">Los colores de los bocadillos, pintados aquí tal cual. No es una captura de la home.</p>
+    </div>
+  </article>
+
+  <details>
+    <summary>3 detalles</summary>
+
+    <article class="find">
+      <div>
+        <span class="lvl det">Detalle</span>
+        <h3>2 · En /contact, el pie repite lo que ya está en la página</h3>
+        <p class="visitor">«“Let’s talk” me lleva… a la página en la que ya estoy.»</p>
+        <p class="why">El pie es igual en todas las páginas, también en /contact. Ahí «Let’s talk» enlaza a la misma página, y LinkedIn y CV ya los ofrece el chat justo encima. No falla nada, pero en esa página sobra.</p>
+      </div>
+      <div class="empty">Sin captura.</div>
+    </article>
+
+    <article class="find">
+      <div>
+        <span class="lvl det">Detalle</span>
+        <h3>3 · Lo que quita el hueco negro de /work es un número a ojo</h3>
+        <p class="why">Para que el panel de /work llene la pantalla, su altura es «la pantalla menos 210 px», un número que no está en los estilos (en la revisión anterior era 140). Si cambia la altura de la cabecera o del pie, puede volver a quedar un hueco o sobrar scroll. No se ve hoy. Es de cara a mantenerlo.</p>
+      </div>
+      <div class="empty">Sin captura.</div>
+    </article>
+
+    <article class="find">
+      <div>
+        <span class="lvl det">Detalle</span>
+        <h3>4 · La vista previa tiene páginas viejas que nadie enlaza</h3>
+        <p class="why">En la copia de la vista previa hay archivos de antes (bank-platform, cupra, fintech, work/south, work/cut-scenes…). No los enlaza nadie y en Vercel van por redirección, pero confunden al revisar y alguna podría ser una versión antigua de un caso. Conviene vaciar la carpeta antes de generar la próxima.</p>
+      </div>
+      <div class="empty">Sin captura.</div>
+    </article>
+  </details>
+</section>
+
+<section class="panel">
+  <h2>No he podido comprobar</h2>
+  <ul class="plain">
+    <li><b>Cómo se ven las páginas a 390, 768 y 1440 px.</b> No tenía navegador en esta sesión, así que no hay capturas. Hay que repetir la mirada con capturas.</li>
+    <li><b>Que el pie no tape nada y no deje hueco negro, sobre todo al final de /play, de la home y de los casos de Play.</b> En el código el pie va después del recorrido de scroll, así que debería salir al llegar al final sin pisar el escenario. Pero en las páginas con escenario fijo solo se puede saber mirándolo.</li>
+    <li><b>Errores en la consola.</b> Sin navegador no los puedo ver.</li>
+    <li><b>La comprobación del sistema (<code>npm run check</code>).</b> No tenía terminal para lanzarla. Lo que sí he visto: los tokens de la web coinciden línea a línea con <code>estilos/tokens.css</code> y el archivo de tokens lleva los dos valores nuevos.</li>
+    <li><b>Que la guía (/styleguide) y las páginas pinten el pie igual.</b> Lo pide la revisión del sistema y necesita capturas a 1440 y 390.</li>
+    <li><b>Que la vista previa sea la última.</b> Las páginas generadas ya llevan los colores nuevos, el orden nuevo y el pie, así que todo apunta a que sí. Pero no he podido recargarla en un navegador.</li>
+  </ul>
+</section>
+
+</body>
+</html>
