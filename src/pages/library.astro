@@ -1,0 +1,47 @@
+---
+/**
+ * Library · the reference library, work in progress (DESIGN.md, template 7):
+ * what it is, why, and a preview. The Research agent opens it.
+ * Content in Keystatic (Pages → Library). Built only with the system.
+ */
+import Base from '../layouts/Base.astro';
+import Panel from '../components/system/Panel.astro';
+import Label from '../components/system/Label.astro';
+import ChapterHeading from '../components/system/ChapterHeading.astro';
+import VideoBlock from '../components/system/VideoBlock.astro';
+import Button from '../components/system/Button.astro';
+import { getEntry } from 'astro:content';
+import { accentVars, emph, rich } from '../lib/utils';
+const l = (await getEntry('pages', 'library'))!.data as any;
+const mark = (html: string) => html.replace(/\[PLACEHOLDER[^\]]*\]/g, (m) => `<mark class="ph">${m}</mark>`);
+---
+<Base title="library" description="The reference library: work in progress.">
+  <Panel label="Library">
+    <div class="lb" style={accentVars('research')}>
+      <header class="lb__head">
+        <Label tone="accent">{l.status}</Label>
+        <h1 class="type-section lb__t" set:html={emph(l.title)} />
+        {l.link && <Button href={l.link}>Visit the library</Button>}
+      </header>
+      {l.sections.map((s: any, i: number) => (
+        <section class="lb__s">
+          <ChapterHeading n={i + 1} title={s.title} />
+          <div class="type-text lb__text" set:html={mark(rich(s.text))} />
+          {i === l.sections.length - 1 && l.preview.length > 0 && (
+            <div class="lb__prev">{l.preview.map((m: any) => <VideoBlock src={m.src} width={m.width} height={m.height} alt={m.alt} caption={m.caption} />)}</div>
+          )}
+        </section>
+      ))}
+    </div>
+  </Panel>
+</Base>
+
+<style>
+  .lb { display: flex; flex-direction: column; gap: var(--s-8); max-width: 900px; min-height: calc(100vh - 260px); }
+  .lb__head { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-4); }
+  .lb__t { margin: 0; }
+  .lb__s { display: flex; flex-direction: column; gap: var(--s-4); }
+  .lb__text { max-width: 60ch; }
+  .lb__prev { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--s-4); }
+  .lb :global(.ph) { background: var(--paper-2); color: var(--red-text); font-family: var(--font-ui); font-size: var(--fs-label); letter-spacing: var(--ls-label); padding: 0 var(--s-1); border-radius: var(--r-sm); }
+</style>

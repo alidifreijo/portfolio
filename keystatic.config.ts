@@ -166,9 +166,29 @@ export default config({
     : { kind: 'local' },
   ui: {
     brand: { name: 'álida · portfolio' },
-    navigation: { Projects: ['projects'], Pages: ['home', 'about', 'work', 'contact'] },
+    navigation: { Projects: ['projects'], Agents: ['agents'], Pages: ['home', 'about', 'work', 'contact', 'built', 'library'] },
   },
   collections: {
+    agents: collection({
+      label: 'Agents (home)',
+      path: 'src/content/agents/*',
+      slugField: 'agent',
+      format: { data: 'yaml' },
+      columns: ['n', 'name'],
+      schema: {
+        agent: fields.slug({ name: { label: 'Agent (systems, research, creative, ops, empathy, collab)', description: 'Also its colour.' } }),
+        n: fields.text({ label: 'Number', description: '01 to 06' }),
+        name: fields.text({ label: 'Name', description: 'e.g. Systems agent' }),
+        character: fields.text({ label: 'Character', description: 'e.g. Bob, cap, bucket hat' }),
+        line: fields.text({ label: 'Line' }),
+        quote: fields.text({ label: 'Quote' }),
+        good: fields.text({ label: 'Good at' }),
+        runs: fields.text({ label: 'Runs on' }),
+        allergic: fields.text({ label: 'Allergic to' }),
+        battery: fields.integer({ label: 'Battery (0–100)', validation: { min: 0, max: 100 } }),
+        opens: fields.array(fields.object({ label: fields.text({ label: 'Button' }), href: fields.text({ label: 'Opens (e.g. /work/roche)' }) }), { label: 'Opens', itemLabel: (p) => p.fields.label.value }),
+      },
+    }),
     projects: collection({
       label: 'Projects',
       path: 'src/content/projects/*',
@@ -249,6 +269,28 @@ export default config({
     }),
   },
   singletons: {
+    built: singleton({
+      label: 'How it\'s built',
+      path: 'src/content/pages/built',
+      format: { data: 'yaml' },
+      schema: {
+        title: fields.text({ label: 'Title', description: '*italics* for the important word' }),
+        lead: fields.text({ label: 'Lead', multiline: true }),
+        sections: fields.array(fields.object({ title: fields.text({ label: 'Title' }), text: rich('Text', '**bold**, [links](/path), lines starting with "- " for a list, an empty line for a new paragraph.') }), { label: 'Sections', itemLabel: (p) => p.fields.title.value }),
+      },
+    }),
+    library: singleton({
+      label: 'Library (WIP)',
+      path: 'src/content/pages/library',
+      format: { data: 'yaml' },
+      schema: {
+        title: fields.text({ label: 'Title' }),
+        status: fields.text({ label: 'Status pill', defaultValue: 'Work in progress' }),
+        link: fields.text({ label: 'Link to the library (optional)' }),
+        sections: fields.array(fields.object({ title: fields.text({ label: 'Title' }), text: rich('Text') }), { label: 'Sections', itemLabel: (p) => p.fields.title.value }),
+        preview: fields.array(fields.object({ src: media('Image'), width: fields.integer({ label: 'Width (px)' }), height: fields.integer({ label: 'Height (px)' }), alt: fields.text({ label: 'Description (alt)' }), caption: fields.text({ label: 'Caption' }) }), { label: 'Preview (under the last section)', itemLabel: (p) => p.fields.alt.value }),
+      },
+    }),
     home: singleton({
       label: 'Home',
       path: 'src/content/pages/home',
