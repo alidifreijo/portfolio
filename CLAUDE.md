@@ -41,7 +41,14 @@ Al empezar cada chat, antes de trabajar, lee solo el repo (`ESTADO.md`, `PROYECT
 
 ## Skills de este proyecto
 
-Skills de terceros instaladas solo para este proyecto, con alcance Project. Como se trabaja en la nube, viven en `.claude/skills/` con su licencia y una nota de origen.
+Como se trabaja en la nube, las skills viven en `.claude/skills/` y los agentes en `.claude/agents/`.
+
+**Del método de Ali** (suyas, copiadas de `alidifreijo/metodo` el 27 nov 2026; si cambian allí, se vuelven a copiar):
+
+- `construir`, `cierre`, `jugar` y `definir` → `.claude/skills/`
+- Agente `revisor` → `.claude/agents/revisor.md`
+
+**De terceros** (alcance Project, con su licencia y una nota de origen):
 
 - Ninguna todavía.
 
