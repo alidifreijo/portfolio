@@ -1,0 +1,10 @@
+# Lives in GitHub, not on the website. Checked with grep: the site doesn't use any of it.
+# estilos/ is NOT here on purpose: the build check (scripts/tokens.mjs) reads estilos/tokens.css.
+docs/
+exploraciones/
+revisiones/
+assets/
+.claude/
+dist-static/
+# the old hmi embed: hmi was dropped and nothing links to it
+public/hmi-live/

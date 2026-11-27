@@ -8,11 +8,14 @@ import vercel from '@astrojs/vercel';
 const preview = process.env.PREVIEW === '1';
 
 export default defineConfig({
-  site: 'https://alidadiazdefreijo.vercel.app',
+  site: 'https://portfolio-alidifreijo.vercel.app',
   integrations: preview ? [] : [react(), keystatic()],
   adapter: preview ? undefined : vercel(),
   build: { format: preview ? 'file' : 'directory', assets: preview ? 'assets' : '_astro' },
   outDir: preview ? './dist-static' : './dist',
+  // Every script ships as a file, never inline, so the Content-Security-Policy
+  // (vercel.json) can say script-src 'self' without 'unsafe-inline'.
+  vite: { build: { assetsInlineLimit: 0 } },
   // Old Framer URLs keep working.
   redirects: {
     '/cupra': '/work/cupra',

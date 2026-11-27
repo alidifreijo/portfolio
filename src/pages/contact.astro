@@ -31,7 +31,7 @@ const B = BUBBLES['bucket-hat'];
     <section class="ct3" aria-labelledby="play-h">
       <header class="ct3__head">
         <h1 class="ct3__h" id="play-h">{p1} <em>{p2}</em>.</h1>
-        <button class="ct3__btn" type="button" onclick="document.dispatchEvent(new Event('crossword:resolve'))">Resolve</button>
+        <button class="ct3__btn" type="button" data-cw-resolve>Resolve</button>
       </header>
       <div class="ct3__cw"><Crossword clues={c.clues} /></div>
 
@@ -119,6 +119,15 @@ const B = BUBBLES['bucket-hat'];
   }
   initTalk();
   document.addEventListener('astro:page-load', initTalk);
+  // "Resolve" fills the crossword (no inline handler: the security policy blocks them)
+  function initResolve() {
+    document.querySelectorAll<HTMLElement>('[data-cw-resolve]:not([data-ready])').forEach((b) => {
+      b.dataset.ready = '';
+      b.addEventListener('click', () => document.dispatchEvent(new Event('crossword:resolve')));
+    });
+  }
+  initResolve();
+  document.addEventListener('astro:page-load', initResolve);
 </script>
 
 <style>

@@ -24,6 +24,9 @@ const {
 } = Astro.props;
 // The static preview (relative URLs) can't use client-side routing; Vercel can.
 const clientRouter = !process.env.PREVIEW;
+const site = Astro.site || new URL('https://portfolio-alidifreijo.vercel.app');
+const canonical = new URL(Astro.url.pathname.replace(/index\.html$|\.html$/, ''), site).href;
+const ogImage = new URL(image, site).href;
 const fullTitle = title ? `${title} · álida díaz de freijo` : 'álida díaz de freijo · product designer';
 ---
 <!doctype html>
@@ -33,16 +36,28 @@ const fullTitle = title ? `${title} · álida díaz de freijo` : 'álida díaz d
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="álida díaz de freijo" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={image} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
     <meta name="theme-color" content="#070707" />
     <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap.xml" />
+    {Astro.url.pathname.replace(/index\.html$/, '') === '/' && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebSite', name: 'álida díaz de freijo', url: site.href, author: { '@type': 'Person', name: 'Álida Díaz de Freijo' } })} />
+    )}
     <link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin />
-    <script is:inline>document.documentElement.classList.remove('no-js');
-      // first paint of the home page: hold the panel closed so the entry plays without a flash
-      if (/^\/(index\.html)?$/.test(location.pathname) || /\/index\.html$/.test(location.pathname)) if ( !matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.add('pre-enter'); setTimeout(() => document.documentElement.classList.remove('pre-enter'), 3000); }</script>
+    <script is:inline src="/js/first-paint.js"></script>
     {clientRouter && <ClientRouter />}
   </head>
   <body>
