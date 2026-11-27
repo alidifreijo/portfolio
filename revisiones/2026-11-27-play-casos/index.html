@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisión · casos Play</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:#070707; --paper:#D4D1CB; --paper-2:#ECEAE5; --muted:#4A4744; --muted-ink:#8E8A84;
+    --line:rgba(7,7,7,.14); --red:#E92C30; --red-text:#B0161B;
+    --systems:#A3FFA9; --on-systems:#113830; --ops:#86CBF7; --on-ops:#065486;
+    --creative:#98E7EB; --on-creative:#146D72; --collab:#FFA4BF; --on-collab:#9E194C;
+    --amber:#E89A3C;
+    --serif:'Instrument Serif',Georgia,serif; --ui:'Space Grotesk',system-ui,sans-serif; --body:'Satoshi',system-ui,sans-serif;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--ink); color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.55; padding:12px; }
+  .panel { background:var(--paper); border-radius:12px; padding:40px; max-width:1200px; margin:0 auto 12px; }
+  h1,h2,h3 { font-family:var(--serif); font-weight:400; margin:0; }
+  h1 { font-size:clamp(40px,5vw,64px); line-height:1; }
+  h1 em, h2 em { font-style:italic; }
+  h2 { font-size:clamp(28px,2.6vw,40px); line-height:1.05; margin-bottom:16px; }
+  h3 { font-size:26px; line-height:1.1; }
+  .label { font-family:var(--ui); font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:500; }
+  .top { display:grid; grid-template-columns:auto 1fr; gap:32px; align-items:center; }
+  .light { display:flex; flex-direction:column; gap:8px; background:var(--ink); padding:14px; border-radius:999px; }
+  .light span { width:40px; height:40px; border-radius:50%; background:#2a2a2a; }
+  .light .on { background:var(--red); }
+  .lvl.rompe { background:var(--ink); color:var(--paper); }
+  .ba { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .ba img { width:100%; border-radius:8px; border:1px solid var(--line); display:block; }
+  .ba .tall { max-height:720px; object-fit:cover; object-position:top; }
+  @media (max-width:800px){ .ba { grid-template-columns:1fr; } }
+  .counts { display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
+  .pill { font-family:var(--ui); font-size:13px; padding:6px 12px; border-radius:999px; background:var(--paper-2); }
+  .pill b { font-weight:500; }
+  .pill.r { background:var(--ink); color:var(--paper); }
+  .pill.a { background:var(--amber); color:#261E13; }
+  ul.plain { padding-left:18px; margin:8px 0 0; }
+  .find { border-top:1px solid var(--line); padding:32px 0; display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:32px; }
+  .find:first-of-type { border-top:0; }
+  .find img { width:100%; border-radius:8px; display:block; border:1px solid var(--line); }
+  .find .imgs { display:flex; flex-direction:column; gap:12px; }
+  .cap { font-family:var(--ui); font-size:12px; color:var(--muted); margin-top:4px; }
+  .lvl { display:inline-block; font-family:var(--ui); font-size:12px; letter-spacing:.06em; text-transform:uppercase; padding:3px 10px; border-radius:999px; margin-bottom:10px; }
+  .lvl.nota { background:var(--amber); color:#261E13; }
+  .lvl.det { background:var(--paper-2); color:var(--ink); }
+  .visitor { font-family:var(--serif); font-style:italic; font-size:22px; line-height:1.2; margin:8px 0 12px; }
+  .why { color:var(--muted); font-size:15px; }
+  details { border-top:1px solid var(--line); padding:16px 0; }
+  summary { cursor:pointer; font-family:var(--ui); font-size:14px; letter-spacing:.04em; text-transform:uppercase; }
+  summary:focus-visible, a:focus-visible { outline:2px solid var(--ink); outline-offset:3px; }
+  .ok { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin-top:16px; }
+  .ok div { background:var(--paper-2); border-radius:8px; padding:14px 16px; font-size:15px; }
+  .ok div b { font-family:var(--ui); font-weight:500; display:block; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--on-systems); margin-bottom:4px; }
+  .sw { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; margin:12px 0; }
+  .sw div { border-radius:8px; padding:12px; font-family:var(--ui); font-size:12px; letter-spacing:.06em; text-transform:uppercase; }
+  .sw small { display:block; text-transform:none; letter-spacing:0; font-size:13px; margin-top:6px; }
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .grid3 img { width:100%; border-radius:8px; border:1px solid var(--line); }
+  table { border-collapse:collapse; width:100%; font-size:15px; }
+  td, th { text-align:left; padding:8px 8px 8px 0; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { font-family:var(--ui); font-weight:500; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+  @media (max-width:800px) {
+    .panel { padding:24px 16px; }
+    .find { grid-template-columns:1fr; }
+    .top { grid-template-columns:1fr; }
+    .light { flex-direction:row; width:max-content; }
+    .grid3 { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<section class="panel">
+  <div class="top">
+    <div class="light" aria-label="Semáforo: rojo"><span class="on"></span><span></span><span></span></div>
+    <div>
+      <p class="label">Revisión completa · 27 nov 2026 · Bloque 2, tarea 5: casos Play (Cut Scenes, cutouts, Silena)</p>
+      <h1>Rojo: <em>casi listo</em>, pero hay una cosa rota.</h1>
+      <p>La plantilla nueva funciona: escenario a la izquierda que cambia con cada capítulo, capítulos numerados a la derecha y todo en una columna en móvil y tablet. Los tres casos tienen su enlace en vivo y su material, no hay errores en la consola y nada se desborda a 390, 768 ni 1440 px. El semáforo está en rojo por una sola cosa: con <b>«reducir movimiento»</b> activado y en pantalla grande, los vídeos del escenario no se pueden ver (pulsas play en el que ves y arranca otro invisible). Lo demás que chirría: en Silena, las capturas dicen <b>«Designed by Maria Escarmiento»</b>; la intro de pantalla completa sale negra con «reducir movimiento» y muy recortada en móvil; y Cut Scenes repite una frase.</p>
+      <div class="counts">
+        <span class="pill r"><b>1</b> rompe algo</span>
+        <span class="pill a"><b>6</b> se nota</span>
+        <span class="pill"><b>8</b> detalle</span>
+      </div>
+      <p class="cap">Revisado sobre la copia estática servida en local (http://localhost:4325), rama bloque-2-contenido, último commit 74866e1. Chromium sin ventana, a 390, 768 y 1440 px, con capturas al hacer scroll.</p>
+    </div>
+  </div>
+
+  <div class="ok">
+    <div><b>Hecho</b>Silena nuevo, Cut Scenes en 5 capítulos y cutouts corto en 3. Cada uno con «View live» y material: capturas y clips en Cut Scenes, una captura más la intro en cutouts, siete capturas de su web en Silena.</div>
+    <div><b>Hecho</b>Plantilla 4: a 1440 px el escenario cambia al capítulo que lees (Cut Scenes 1→2→3→4; Silena 1→3; en cutouts solo hay una imagen). A 390 y 768 px, una sola columna y el material dentro de cada capítulo.</div>
+    <div><b>Hecho</b>Hecha con el sistema: la comprobación pasa sin fallos nuevos y la plantilla vieja ya no tiene deuda. Tarjeta de título, encabezado de capítulo, vídeo, botón y «Next case» se ven igual que en /styleguide.</div>
+    <div><b>Hecho</b>Sin [DRAFT]. Los [PLACEHOLDER] se ven a propósito: 1 en Cut Scenes, 2 en cutouts y 2 en Silena.</div>
+    <div><b>Hecho</b>Nada inventado: el texto de Cut Scenes ya estaba publicado en el caso anterior o sale de su ficha; el de cutouts y Silena sale de sus fichas y de la propia web de Silena («a quiet object of light», «the room becomes someone»).</div>
+    <div><b>Hecho</b>Las capturas de móvil ya no pasan del 70% de la pantalla en ningún ancho.</div>
+    <div><b>Hecho</b>Consola limpia y ningún enlace interno roto. «Next case» da la vuelta: Cut Scenes → cutouts → Silena → Cut Scenes. /play enseña las tres.</div>
+    <div><b>Hecho</b>Intro: se quita con la rueda, con el botón, tocando en móvil y con el teclado. Con «reducir movimiento» no arranca sola.</div>
+    <div><b>Hecho</b>Monexa se llama monexa en su página y en /styleguide.</div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Los cinco más importantes</h2>
+
+  <article class="find">
+    <div>
+      <span class="lvl rompe">Rompe algo</span>
+      <h3>1 · Con «reducir movimiento», en pantalla grande, los vídeos del escenario no se pueden ver</h3>
+      <p class="visitor">«Le doy al play y no pasa nada.»</p>
+      <p class="why">Con «reducir movimiento», los vídeos no arrancan solos y enseñan un botón de play: bien. Pero en el escenario las piezas de todos los capítulos están apiladas en el mismo sitio, una encima de otra, y las que no se ven siguen ahí, transparentes. Al pulsar el play del vídeo que ves, el clic lo recibe el de encima, que es invisible. Comprobado en Cut Scenes, capítulo 3: pulsas «Screen flow» y empieza a sonar «Architecture», que no se ve. En pantalla grande esos dos vídeos solo están en el escenario (dentro del capítulo se esconden para no repetirse), así que quien tenga «reducir movimiento» no los puede ver. Además, con el teclado se puede llegar a esos botones escondidos.</p>
+    </div>
+    <div class="imgs">
+      <img src="m-escenario-reducido.png" alt="Escenario de Cut Scenes con controles de vídeo, marcado">
+      <p class="cap">1440 px, «reducir movimiento». Este play no arranca este vídeo: arranca otro invisible.</p>
+    </div>
+  </article>
+
+  <article class="find">
+    <div>
+      <span class="lvl nota">Se nota</span>
+      <h3>2 · Silena: las capturas dicen «Designed by Maria Escarmiento»</h3>
+      <p class="visitor">«¿Pero esto no lo diseñó ella? Aquí pone que lo diseñó otra persona.»</p>
+      <p class="why">La portada de Silena, en escritorio y en móvil, lleva «Designed by Maria Escarmiento». En el caso, el rol de Ali es «Concept, design, direction». Puede ser la diseñadora inventada de la lámpara, o un resto de la plantilla de Framer: desde aquí no lo sé. En cualquier caso, quien lo vea puede pensar que Ali se atribuye trabajo ajeno, y sale el nombre de una persona. La ficha ya pregunta qué viene de la plantilla y de dónde son las fotos («afecta a qué se puede enseñar»), pero las capturas se enseñan antes de tener esa respuesta. Ali tiene que decidir antes de publicar.</p>
+    </div>
+    <div class="imgs">
+      <img src="m-silena-designed-by.png" alt="Caso Silena a 768 px con «Designed by Maria Escarmiento» marcado en dos capturas">
+      <p class="cap">768 px. El nombre sale en la captura de escritorio (pequeño) y en la de móvil (grande).</p>
+    </div>
+  </article>
+
+  <article class="find">
+    <div>
+      <span class="lvl nota">Se nota</span>
+      <h3>3 · Con «reducir movimiento», la intro es una pantalla negra con los controles encima del título</h3>
+      <p class="visitor">«Se ha quedado en negro. ¿Esto carga?»</p>
+      <p class="why">Cut Scenes: con «reducir movimiento», la intro no arranca (bien), pero lo que se ve es su primer fotograma, que es negro. El brief dice que un vídeo enseña siempre un póster con contenido, nunca negro. Además, la barra de controles del vídeo cae justo encima del nombre «cut scenes» y por debajo del botón «Scroll or skip»: se pisan. Pasa a 390 y a 1440 px. En cutouts el póster sí tiene contenido, pero los controles también pisan el nombre.</p>
+    </div>
+    <div class="imgs">
+      <img src="m-intro-reducido-390.png" alt="Intro de Cut Scenes a 390 px en negro, con los controles sobre el título">
+      <p class="cap">390 px, «reducir movimiento». Arriba: todo negro. Abajo: controles, nombre y botón, unos encima de otros.</p>
+    </div>
+  </article>
+
+  <article class="find">
+    <div>
+      <span class="lvl nota">Se nota</span>
+      <h3>4 · En móvil, la intro a pantalla completa recorta el vídeo</h3>
+      <p class="visitor">«¿Qué es esto verde? Solo veo un trozo de letra.»</p>
+      <p class="why">El vídeo de la intro es apaisado y en móvil se estira para llenar una pantalla vertical, así que se corta casi todo. En cutouts se ve el tapete verde y un trozo de la «s» de «cutouts»; en Cut Scenes, «FILM, IN» cortado por los lados. La regla 4 del sistema dice que los vídeos nunca se recortan. Ya pasaba antes de esta pieza (se ha mantenido tal cual); lo apunto porque en móvil es lo primero que se ve.</p>
+    </div>
+    <div class="imgs">
+      <img src="m-intro-recortada-cutouts.png" alt="Intro de cutouts a 390 px: tapete verde y un trozo de letra">
+      <img src="m-intro-recortada-cutscenes.png" alt="Intro de Cut Scenes a 390 px con el texto cortado">
+      <p class="cap">390 px. cutouts y Cut Scenes al entrar.</p>
+    </div>
+  </article>
+
+  <article class="find">
+    <div>
+      <span class="lvl nota">Se nota</span>
+      <h3>5 · Cut Scenes dice dos veces la misma frase en la misma pantalla</h3>
+      <p class="visitor">«Esto lo acabo de leer.»</p>
+      <p class="why">«When the last piece lands, the credits roll.» cierra la intro y vuelve a cerrar el capítulo 1, palabra por palabra, a pocos centímetros. En el capítulo 3, «Every path finishes with the credits» lo dice una tercera vez. El brief pide no repetir y no rellenar.</p>
+    </div>
+    <div class="imgs">
+      <img src="m-frase-repetida.png" alt="Cut Scenes a 1440 px con las dos frases iguales marcadas">
+      <p class="cap">1440 px. Las dos frases marcadas son la misma.</p>
+    </div>
+  </article>
+</section>
+
+<section class="panel">
+  <h2>Antes y después</h2>
+  <p>Comparado con la revisión anterior de estos casos (revisiones/2026-11-27-play-work).</p>
+  <div class="ba" style="margin-top:16px">
+    <div><p class="label">Antes · Cut Scenes, 1440 px (página entera)</p><img class="tall" src="antes-cut-scenes-1440.png" alt="Caso Cut Scenes anterior"></div>
+    <div><p class="label">Después · Cut Scenes, 1440 px</p><img src="cut-scenes-1440-0-top.png" alt="Caso Cut Scenes nuevo, arriba"><img src="cut-scenes-1440-3.png" alt="Caso Cut Scenes nuevo, capítulos 2 a 4" style="margin-top:12px"></div>
+  </div>
+  <div class="ba" style="margin-top:24px">
+    <div><p class="label">Antes · cutouts, solo intro con [DRAFT]</p><img src="antes-cutouts.png" alt="cutouts anterior con DRAFT"></div>
+    <div><p class="label">Después · cutouts, 1440 px</p><img src="cutouts-1440-0-top.png" alt="cutouts nuevo"></div>
+  </div>
+  <div class="ba" style="margin-top:24px">
+    <div><p class="label">Antes · Silena</p><p>No existía.</p></div>
+    <div><p class="label">Después · Silena, 1440 px</p><img src="silena-1440-0-top.png" alt="Silena nuevo"></div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>El resto</h2>
+
+  <details>
+    <summary>Se nota · 2 más</summary>
+    <article class="find">
+      <div>
+        <span class="lvl nota">Se nota</span>
+        <h3>6 · El material sale diminuto y descolocado a 768 px (y los clips, pequeños también a 1440)</h3>
+        <p class="visitor">«No se ve qué pasa en esos vídeos.»</p>
+        <p class="why">A 768 px el capítulo 1 de Cut Scenes pone la captura de escritorio en miniatura al lado de dos móviles enormes, con un hueco debajo, y el tercer móvil se queda solo en otra fila. En el capítulo 3, los cuatro clips miden unos 227 px de ancho, tres en una fila y uno huérfano. A 1440 px los clips del capítulo 3 miden 201 px: se ven como sellos y no se lee nada. Mismo patrón en Silena a 768 px.</p>
+      </div>
+      <div class="imgs">
+        <img src="m-rejilla-768.png" alt="Cut Scenes a 768 px: captura diminuta y móvil huérfano marcados">
+        <img src="m-clips-pequenos-768.png" alt="Cut Scenes a 768 px: clips pequeños marcados">
+        <p class="cap">768 px, capítulos 1 y 3 de Cut Scenes.</p>
+      </div>
+    </article>
+    <article class="find">
+      <div>
+        <span class="lvl nota">Se nota</span>
+        <h3>7 · En pantalla grande, la pieza del escenario pierde su pie de foto y su descripción</h3>
+        <p class="visitor">«¿Qué estoy viendo aquí?»</p>
+        <p class="why">La primera pieza de cada capítulo va al escenario y se esconde dentro del capítulo. Pero en el escenario va sin pie: a 1440 px desaparecen «Black on red, for whoever receives it», «Screen flow», «Architecture» y «The place to be». Además el escenario está escondido para los lectores de pantalla, así que esas imágenes se quedan sin descripción para quien no ve. En móvil sí salen.</p>
+      </div>
+      <div class="imgs">
+        <img src="m-sin-pie-escenario.png" alt="Escenario de Cut Scenes a 1440 px sin pie de foto">
+        <p class="cap">1440 px. Los clips de la derecha llevan pie; el del escenario, no.</p>
+      </div>
+    </article>
+  </details>
+
+  <details>
+    <summary>Detalle · 8</summary>
+    <article class="find">
+      <div><span class="lvl det">Detalle</span><h3>Las capturas de móvil quedan pegadas a la izquierda</h3>
+      <p class="visitor">«Hay un hueco raro a la derecha del móvil.»</p>
+      <p class="why">Al estrecharse para no pasar del 70% de la pantalla, las capturas de móvil se quedan alineadas a la izquierda con un hueco a la derecha (390 y 768 px, Cut Scenes y Silena).</p></div>
+      <div class="imgs"><img src="m-movil-a-la-izquierda.png" alt="Silena a 390 px con el hueco a la derecha del móvil marcado"></div>
+    </article>
+    <article class="find">
+      <div><span class="lvl det">Detalle</span><h3>cutouts dice «Project» donde los otros dicen «Type»</h3>
+      <p class="visitor">«¿Por qué este dato se llama distinto?»</p>
+      <p class="why">En la tarjeta de título, Cut Scenes y Silena ponen TYPE · Personal exploration; cutouts pone PROJECT.</p></div>
+      <div class="imgs"><img src="m-cutouts-project.png" alt="Tarjeta de cutouts con PROJECT marcado"></div>
+    </article>
+    <article class="find">
+      <div><span class="lvl det">Detalle</span><h3>Silena, capítulo 3: el texto empieza por «Feel» y el escenario enseña «The place to be»</h3>
+      <p class="visitor">«Lee una cosa y ve otra.»</p>
+      <p class="why">El texto cuenta las escenas en orden (Feel, The place to be, Light rituals), pero la primera imagen del capítulo, la que va al escenario, es la habitación.</p></div>
+      <div class="imgs"><img src="m-silena-orden.png" alt="Silena capítulo 3 con el escenario y el texto marcados"></div>
+    </article>
+    <article class="find">
+      <div><span class="lvl det">Detalle</span><h3>«It wasn’t made for IKEA.» sin decir antes que la lámpara es de IKEA</h3>
+      <p class="visitor">«¿IKEA? ¿Qué tiene que ver?»</p>
+      <p class="why">La intro de Silena niega un encargo de IKEA, pero el caso no cuenta en ningún sitio que parte de una lámpara de IKEA (la ficha sí: VARMBLIXT). Seguramente lo resuelva la respuesta al placeholder «why this lamp».</p></div>
+      <div></div>
+    </article>
+    <article class="find">
+      <div><span class="lvl det">Detalle</span><h3>Al cerrar la intro con el teclado, el siguiente tabulador salta al pie</h3>
+      <p class="visitor">(Solo con teclado) «He pasado la intro y me ha llevado a LinkedIn.»</p>
+      <p class="why">Tras quitar la intro con la flecha o Enter, la primera pulsación de Tab va a LinkedIn, CV y Let’s talk, y solo después vuelve arriba. El foco se ve bien en todo momento.</p></div>
+      <div></div>
+    </article>
+    <article class="find">
+      <div><span class="lvl det">Detalle</span><h3>El nombre en la intro de cutouts se lee poco</h3>
+      <p class="visitor">«El nombre casi no se distingue del fondo.»</p>
+      <p class="why">El nombre de la intro invierte el color de lo que tiene detrás; sobre el tapete verde sale un rosa apagado con poco contraste.</p></div>
+      <div class="imgs"><img src="cutouts-390-intro.png" alt="Intro de cutouts a 390 px"></div>
+    </article>
+    <article class="find">
+      <div><span class="lvl det">Detalle</span><h3>Algunas medidas puestas a mano en la plantilla</h3>
+      <p class="visitor">(No lo ve un visitante; es para que el sistema no se escape.)</p>
+      <p class="why">La comprobación pasa, pero no mira todo. La plantilla usa medidas que no están en /styleguide: 200 px para la altura del escenario, 110 px de reserva para la intro, 180 px de columna mínima en la rejilla y un modo de mezcla en el nombre de la intro. El bloque de vídeo usa 70% de la altura de pantalla. En cutouts.yaml queda un color suelto (#2B6A4D) que ya no se usa.</p></div>
+      <div></div>
+    </article>
+    <article class="find">
+      <div><span class="lvl det">Detalle</span><h3>En /play, Silena sale como captura recortada, no como objeto</h3>
+      <p class="visitor">«Las otras dos son objetos; esta es una pantalla.»</p>
+      <p class="why">Cut Scenes y cutouts tienen su objeto recortado; Silena usa su captura de portada, recortada. Ya está apuntado en la ficha como recurso pendiente de Ali (la lámpara).</p></div>
+      <div class="imgs"><img src="play-1440-silena.png" alt="/play a 1440 px con Silena en el centro"></div>
+    </article>
+  </details>
+
+  <details>
+    <summary>Todas las capturas</summary>
+    <p class="cap">En esta carpeta: <b>&lt;caso&gt;-&lt;ancho&gt;-intro</b> (entrada), <b>-0-top</b> (arriba, tras la intro), <b>-1 … -5</b> (cada capítulo, al leerlo), <b>-end</b> (final y «Next case»). <b>rm-</b> = con «reducir movimiento». <b>guia-</b> = componentes en /styleguide para comparar. <b>m-</b> = capturas marcadas.</p>
+    <div class="grid3" style="margin-top:12px">
+      <img src="cut-scenes-390-1.png" alt="Cut Scenes 390 capítulo 1"><img src="cut-scenes-768-1.png" alt="Cut Scenes 768 capítulo 1"><img src="cut-scenes-1440-end.png" alt="Cut Scenes 1440 final">
+      <img src="cutouts-390-1.png" alt="cutouts 390 capítulo 1"><img src="cutouts-768-1.png" alt="cutouts 768 capítulo 1"><img src="cutouts-1440-end.png" alt="cutouts 1440 final">
+      <img src="silena-390-3.png" alt="Silena 390 capítulo 3"><img src="silena-768-3.png" alt="Silena 768 capítulo 3"><img src="silena-1440-end.png" alt="Silena 1440 final">
+      <img src="guia-TitleCard-1440.png" alt="TitleCard en styleguide"><img src="guia-ChapterHeading-390.png" alt="ChapterHeading en styleguide"><img src="guia-VideoBlock-1440.png" alt="VideoBlock en styleguide">
+    </div>
+  </details>
+</section>
+
+<section class="panel">
+  <h2>Peso</h2>
+  <table>
+    <tr><th>Caso</th><th>Lo que baja al entrar (móvil)</th><th>Nota</th></tr>
+    <tr><td>Cut Scenes</td><td>≈ 1,4 MB</td><td>La intro y los clips cargan al verlos; ningún archivo suelto pasa de 400 KB al entrar.</td></tr>
+    <tr><td>cutouts</td><td>≈ 0,4 MB</td><td>Ligero.</td></tr>
+    <tr><td>Silena</td><td>≈ 1,0 MB</td><td>Siete capturas en JPG de 70 a 270 KB.</td></tr>
+  </table>
+</section>
+
+<section class="panel">
+  <h2>No he podido comprobar</h2>
+  <ul class="plain">
+    <li><b>El enlace en vivo de Cut Scenes</b> (cut-scenes.vercel.app): la red de esta sesión no deja salir a esa dirección. Los de cutouts y Silena sí responden.</li>
+    <li><b>El botón «Repository» de Cut Scenes</b> (GitHub): no tengo acceso a ese repo desde aquí, así que no sé si es público. Si es privado, el visitante llegaría a una página de error.</li>
+    <li><b>Quién es «Maria Escarmiento»</b> y de dónde salen las fotos de Silena: solo lo sabe Ali.</li>
+    <li><b>Nitidez en pantalla Retina y en un móvil de verdad</b>: las capturas son a densidad normal, en un navegador sin ventana. El scroll fluido y el gesto táctil real tampoco se pueden medir así.</li>
+    <li><b>Safari</b>: solo he probado Chromium. Los vídeos en Safari (formatos y reproducción automática) quedan sin ver.</li>
+    <li><b>Red lenta</b>: no he simulado una conexión lenta. Por lo visto en el código, mientras carga, la intro de Cut Scenes enseñaría su póster negro (hallazgo 3).</li>
+    <li><b>Lector de pantalla real</b>: lo del escenario sin descripción (hallazgo 7) sale de mirar el código y el orden del foco, no de escucharlo.</li>
+  </ul>
+</section>
+
+</body>
+</html>

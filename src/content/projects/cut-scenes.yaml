@@ -31,7 +31,7 @@ links:
 blocks: []
 chapters:
 - title: What it *is*
-  text: Pick a still from the collection, or upload your own, and it becomes a puzzle you can send to someone. Three levels, easy, difficult and **extreme**, where the pieces lose their outlines. When the last piece lands, the credits roll.
+  text: Pick a still from the collection, or upload your own, and it becomes a puzzle you can send to someone. Three levels, easy, difficult and **extreme**, where the pieces lose their outlines.
   media:
   - src: /images/projects/cut-scenes/desktop-puzzle.jpg
     width: 1600
