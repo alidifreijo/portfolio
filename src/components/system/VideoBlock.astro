@@ -6,16 +6,26 @@
  * shows its controls instead. Works for images too (src ending in .jpg/.png/.webp).
  */
 import Label from './Label.astro';
+import { existsSync } from 'node:fs';
 import { isVideo } from '../../lib/utils';
 interface Props { src: string; poster?: string; width: number; height: number; alt: string; caption?: string; webm?: string }
-const { src, poster, width, height, alt, caption, webm } = Astro.props;
+const { src, width, height, alt, caption } = Astro.props;
 const video = isVideo(src);
+// Sibling files, used when they exist (scripts/video.sh makes them from an original):
+//   name.webm         AV1, smaller and sharper where the browser plays it
+//   name-mobile.mp4   a lighter H.264 for phones
+//   name.poster.jpg   a frame with content, shown while it loads
+const sib = (ext: string) => { const f = src.replace(/\.mp4$/, ext); return video && existsSync(`public${f}`) ? f : undefined; };
+const webm = Astro.props.webm ?? sib('.webm');
+const mobile = sib('-mobile.mp4');
+const poster = Astro.props.poster ?? sib('.poster.jpg');
 ---
 <figure class="vb" style={`--ar:${width}/${height}; --arn:${(width / height).toFixed(4)}`}>
   <div class="vb__box">
     {video ? (
-      <video muted loop playsinline preload="metadata" poster={poster} data-autoplay data-vb aria-label={alt}>
-        {webm && <source src={webm} type="video/webm" />}
+      <video muted loop playsinline preload="none" poster={poster} data-autoplay data-vb aria-label={alt}>
+        {webm && <source src={webm} type="video/webm; codecs=av01.0.08M.08" />}
+        {mobile && <source src={mobile} type="video/mp4" media="(max-width: 809px)" />}
         <source src={src} type="video/mp4" />
       </video>
     ) : (
@@ -26,10 +36,22 @@ const video = isVideo(src);
 </figure>
 
 <script>
-  // "reduce motion": no autoplay, the visitor plays it.
+  // Nothing downloads until the film is about a screen away; then it loads
+  // (and Base.astro plays it while it's on screen). "Reduce motion": no
+  // autoplay, the visitor plays it.
   function initVideoBlocks() {
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    document.querySelectorAll<HTMLVideoElement>('video[data-vb]').forEach((v) => { v.removeAttribute('data-autoplay'); v.pause(); v.controls = true; });
+    const vids = document.querySelectorAll<HTMLVideoElement>('video[data-vb]:not([data-vb-ready])');
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      vids.forEach((v) => { v.dataset.vbReady = ''; v.removeAttribute('data-autoplay'); v.pause(); v.controls = true; v.preload = 'metadata'; });
+      return;
+    }
+    const near = new IntersectionObserver((entries) => entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const v = e.target as HTMLVideoElement;
+      v.preload = 'auto';
+      near.unobserve(v);
+    }), { rootMargin: '100% 0px' });
+    vids.forEach((v) => { v.dataset.vbReady = ''; near.observe(v); });
   }
   initVideoBlocks();
   document.addEventListener('astro:page-load', initVideoBlocks);

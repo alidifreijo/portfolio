@@ -33,6 +33,7 @@ const stage = chapters.map((c, i) => ({ n: i + 1, m: c.media[0] })).filter((s) =
 const mark = (html: string) => html.replace(/\[PLACEHOLDER[^\]]*\]/g, (m) => `<mark class="ph">${m}</mark>`);
 const introWebm = sib(d.introVideo, '.webm');
 const introPoster = sib(d.introVideo, '.poster.jpg');
+const introMobile = sib(d.introVideo, '-mobile.mp4');
 ---
 <Base title={d.title} description={d.lead || d.teaser} image={d.cover} nav={false}>
   <SiteHeader current={{ label: `Play ${pad(index)} / ${pad(total)}`, value: d.title }} />
@@ -74,6 +75,7 @@ const introPoster = sib(d.introVideo, '.poster.jpg');
     <div class="intro" data-intro style={accentVars(d.accent)} role="dialog" aria-label={`${d.title}: intro film`}>
       <video muted playsinline autoplay preload="auto" poster={introPoster}>
         {introWebm && <source src={introWebm} type="video/webm; codecs=av01.0.08M.10" />}
+        {introMobile && <source src={introMobile} type="video/mp4" media="(max-width: 809px)" />}
         <source src={d.introVideo} type="video/mp4" />
       </video>
       <div class="intro__bar">
