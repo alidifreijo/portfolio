@@ -11,7 +11,7 @@ interface Props { src: string; poster?: string; width: number; height: number; a
 const { src, poster, width, height, alt, caption, webm } = Astro.props;
 const video = isVideo(src);
 ---
-<figure class="vb" style={`--ar:${width}/${height}`}>
+<figure class="vb" style={`--ar:${width}/${height}; --arn:${(width / height).toFixed(4)}`}>
   <div class="vb__box">
     {video ? (
       <video muted loop playsinline preload="metadata" poster={poster} data-autoplay data-vb aria-label={alt}>
@@ -36,7 +36,8 @@ const video = isVideo(src);
 </script>
 
 <style>
-  .vb { margin: 0; display: flex; flex-direction: column; gap: var(--s-2); min-width: 0; }
+  /* never taller than most of the screen: tall phone screens get narrower instead */
+  .vb { margin: 0; display: flex; flex-direction: column; gap: var(--s-2); min-width: 0; width: min(100%, calc(70vh * var(--arn))); }
   .vb__box { aspect-ratio: var(--ar); border-radius: var(--r-sm); overflow: hidden; background: var(--paper-2); }
   .vb__box video, .vb__box img { width: 100%; height: 100%; object-fit: contain; display: block; }
 </style>

@@ -41,6 +41,12 @@ const projects = defineCollection({
     roleText: z.string().optional(),
     process: z.string().optional(),
     result: z.string().optional(),
+    // Play cases: numbered chapters, each with its text and material (the first one goes on the stage)
+    chapters: z.array(z.object({
+      title: z.string(),
+      text: z.string().default(''),
+      media: z.array(z.object({ src: z.string(), poster: z.string().optional(), width: z.number(), height: z.number(), alt: z.string(), caption: z.string().optional() })).default([]),
+    })).default([]),
     media: z.array(z.object({
       src: z.string(), poster: z.string().optional(), width: z.number(), height: z.number(),
       alt: z.string(), caption: z.string().optional(),

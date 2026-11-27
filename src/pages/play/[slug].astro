@@ -1,66 +1,75 @@
 ---
 /**
- * Play case template · every one of Ali's own webs (Cut Scenes, cutouts…). Big panel pinned on the left, title pinned on top of the
- * right column, content blocks below, then the next project.
- * Change something here and every project changes with it.
+ * Play case · Ali's own webs (DESIGN.md, template 4). The stage on the left
+ * shows the material of the chapter being read; the numbered chapters run
+ * on the right. Cases with an intro film open on it, full screen under the
+ * header; scrolling (or skip, or its end) hands over to the case.
+ * Built only with the system.
  */
 import Base from '../../layouts/Base.astro';
 import SiteHeader from '../../components/system/SiteHeader.astro';
-import ProjectHero from '../../components/project/ProjectHero.astro';
-import ProjectTitle from '../../components/project/ProjectTitle.astro';
-import ProjectNext from '../../components/project/ProjectNext.astro';
-import Blocks from '../../components/Blocks.astro';
+import Panel from '../../components/system/Panel.astro';
+import TitleCard from '../../components/system/TitleCard.astro';
+import ChapterHeading from '../../components/system/ChapterHeading.astro';
+import VideoBlock from '../../components/system/VideoBlock.astro';
+import NextCase from '../../components/system/NextCase.astro';
+import Button from '../../components/system/Button.astro';
+import { existsSync } from 'node:fs';
 import { getPlay, projectUrl } from '../../lib/projects';
-import { accentVars } from '../../lib/utils';
+import { accentVars, rich, emph } from '../../lib/utils';
 
 export async function getStaticPaths() {
-  const projects = await getPlay();
-  // Next = the following project by `order`, looping back to the first.
-  return projects.map((p, i) => ({ params: { slug: p.id }, props: { project: p, next: projects[(i + 1) % projects.length], prev: projects[(i - 1 + projects.length) % projects.length], index: i + 1, total: projects.length } }));
+  const play = await getPlay();
+  return play.map((p, i) => ({ params: { slug: p.id }, props: { project: p, next: play[(i + 1) % play.length], index: i + 1, total: play.length } }));
 }
-
-const { project, next, prev, index, total } = Astro.props;
+const { project, next, index, total } = Astro.props;
 const d = project.data;
-const n = next.data;
-// Chapters with their own left-panel media: the panel follows the reader.
-const chapters = (d.blocks || []).filter((b: any) => b.discriminant === 'chapter' && b.value?.hero).map((b: any) => b.value);
-// the intro film in two encodings: AV1 (smaller, sharper) where the browser
-// plays it, H.264 otherwise; and its first frame while it loads
-import { existsSync } from 'node:fs';
-const sib = (ext: string) => { if (!d.introVideo) return undefined; const f = d.introVideo.replace(/\.mp4$/, ext); return existsSync(`public${f}`) ? f : undefined; };
-const introWebm = sib('.webm');
-const introPoster = sib('.poster.jpg');
-const allChapters = (d.blocks || []).filter((b: any) => b.discriminant === 'chapter').map((b: any) => ({ n: b.value.n, title: b.value.title }));
+const pad = (n: number) => String(n).padStart(2, '0');
+const sib = (src: string | undefined, ext: string) => { if (!src) return undefined; const f = src.replace(/\.mp4$/, ext); return f !== src && existsSync(`public${f}`) ? f : undefined; };
+const facts = d.meta.map((m) => ({ label: m.label, value: m.value }));
+const chapters = d.chapters;
+// the stage: the first piece of material of each chapter
+const stage = chapters.map((c, i) => ({ n: i + 1, m: c.media[0] })).filter((s) => s.m);
+const mark = (html: string) => html.replace(/\[PLACEHOLDER[^\]]*\]/g, (m) => `<mark class="ph">${m}</mark>`);
+const introWebm = sib(d.introVideo, '.webm');
+const introPoster = sib(d.introVideo, '.poster.jpg');
 ---
 <Base title={d.title} description={d.lead || d.teaser} image={d.cover} nav={false}>
-  <SiteHeader current={{ label: `Case ${String(index).padStart(2, '0')} / ${String(total).padStart(2, '0')}`, value: d.title }} />
-  <div class="project" style={accentVars(d.accent)}>
-    <div class="project__left" data-chapters={chapters.length || undefined}>
-      <div class="chlayer is-on" data-for="0">
-        <ProjectHero src={d.hero} style={d.heroStyle} bg={d.heroBg || undefined} frame={d.heroFrame || undefined} label={d.heroLabel || d.title} />
+  <SiteHeader current={{ label: `Play ${pad(index)} / ${pad(total)}`, value: d.title }} />
+  <Panel as="article" label={d.title}>
+    <div class="pc" style={accentVars(d.accent)}>
+      <div class="pc__stage" aria-hidden="true">
+        {stage.map((s, i) => (
+          <div class:list={['pc__layer', { 'is-on': i === 0 }]} data-for={s.n}>
+            <VideoBlock src={s.m!.src} poster={s.m!.poster} webm={sib(s.m!.src, '.webm')} width={s.m!.width} height={s.m!.height} alt="" />
+          </div>
+        ))}
       </div>
-      {chapters.length > 0 && (
-        <nav class="dots" aria-label="Jump to a chapter">
-          {chapters.map((c: any) => <a href={`#chapter-${c.n}`} class="dots__d" data-dot={c.n} aria-label={`${String(c.n).padStart(2, '0')} ${c.title}`}></a>)}
-        </nav>
-      )}
-      {chapters.map((c: any) => (
-        <div class="chlayer" data-for={c.n}>
-          <ProjectHero src={c.hero} style={c.heroStyle || 'contain'} bg={c.heroBg || '#0B1620'} label={c.title} />
-        </div>
-      ))}
+      <div class="pc__main">
+        <header class="pc__head">
+          <TitleCard title={d.display || d.title} facts={facts} />
+          {d.intro && <div class="pc__intro" set:html={mark(rich(d.intro))} />}
+          {d.links.length > 0 && <div class="pc__links">{d.links.map((l) => <Button href={l.url}>{l.label}</Button>)}</div>}
+        </header>
+        {chapters.map((c, i) => (
+          <section class="pc__ch" data-chapter={i + 1} aria-labelledby={`ch-${i + 1}`}>
+            <ChapterHeading n={i + 1} title={c.title} id={`ch-${i + 1}`} />
+            {c.text && <div class="pc__text" set:html={mark(rich(c.text))} />}
+            {c.media.length > 0 && (
+              <div class="pc__media">
+                {c.media.map((m, j) => (
+                  <div class:list={['pc__m', { 'pc__m--stage': j === 0 }]}>
+                    <VideoBlock src={m.src} poster={m.poster} webm={sib(m.src, '.webm')} width={m.width} height={m.height} alt={m.alt} caption={m.caption} />
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+        ))}
+        {total > 1 && <NextCase href={projectUrl(next)} title={next.data.display || next.data.title} line={next.data.teaser} agent={next.data.accent} />}
+      </div>
     </div>
-    <div class="project__right">
-      <div class="project__title">
-        <ProjectTitle part="bar" display={d.display || d.title} intro={d.intro} meta={d.meta} chapters={allChapters} />
-      </div>
-      <div class="project__blocks">
-        <ProjectTitle part="intro" display={d.display || d.title} intro={d.intro} meta={d.meta} links={d.links} />
-        <Blocks blocks={d.blocks} />
-        <ProjectNext href={projectUrl(next)} label={n.nextLabel || n.heroLabel || n.title} line={n.teaser} image={n.nextImage || n.cover} />
-      </div>
-    </div>
-  </div>
+  </Panel>
   {d.introVideo && (
     <div class="intro" data-intro style={accentVars(d.accent)} role="dialog" aria-label={`${d.title}: intro film`}>
       <video muted playsinline autoplay preload="auto" poster={introPoster}>
@@ -68,7 +77,7 @@ const allChapters = (d.blocks || []).filter((b: any) => b.discriminant === 'chap
         <source src={d.introVideo} type="video/mp4" />
       </video>
       <div class="intro__bar">
-        <p class="intro__name" set:html={d.display ? d.display.replace(/\*\*(.+?)\*\*/g, '<em>$1</em>') : d.title} />
+        <p class="intro__name" set:html={emph(d.display || d.title)} />
         <button class="intro__skip" type="button" data-intro-skip>Scroll or skip <span aria-hidden="true">↓</span></button>
       </div>
     </div>
@@ -76,41 +85,38 @@ const allChapters = (d.blocks || []).filter((b: any) => b.discriminant === 'chap
 </Base>
 
 <script>
-  // The left panel shows the chapter being read (only on cases that have chapters).
-  function initChapters() {
-    const left = document.querySelector<HTMLElement>('.project__left[data-chapters]');
-    if (!left || left.dataset.ready) return;
-    left.dataset.ready = '1';
-    const layers = [...left.querySelectorAll<HTMLElement>('.chlayer')];
-    const marks = [...document.querySelectorAll<HTMLElement>('.chap[data-chapter]')].filter((m) => layers.some((l) => l.dataset.for === m.dataset.chapter));
-    let cur = '0';
+  // The stage shows the material of the chapter being read.
+  function initStage() {
+    const stage = document.querySelector<HTMLElement>('.pc__stage');
+    if (!stage || stage.dataset.ready) return;
+    stage.dataset.ready = '1';
+    const layers = [...stage.querySelectorAll<HTMLElement>('.pc__layer')];
+    const marks = [...document.querySelectorAll<HTMLElement>('.pc__ch[data-chapter]')];
+    let cur = '';
     const pick = () => {
-      let id = '0';
-      for (const m of marks) if (m.getBoundingClientRect().top < innerHeight * 0.55) id = m.dataset.chapter!;
+      let id = layers[0]?.dataset.for || '';
+      for (const m of marks) if (m.getBoundingClientRect().top < innerHeight * 0.55 && layers.some((l) => l.dataset.for === m.dataset.chapter)) id = m.dataset.chapter!;
       if (id === cur) return;
       cur = id;
-      document.dispatchEvent(new CustomEvent('chapter:change', { detail: id === '0' ? '1' : id }));
-      left.querySelectorAll<HTMLElement>('[data-dot]').forEach((d) => d.classList.toggle('is-on', d.dataset.dot === id));
       layers.forEach((l) => {
         const on = l.dataset.for === id;
         l.classList.toggle('is-on', on);
         const v = l.querySelector('video');
-        if (v) on ? v.play().catch(() => {}) : v.pause();
+        if (v && !matchMedia('(prefers-reduced-motion: reduce)').matches) on ? v.play().catch(() => {}) : v.pause();
       });
     };
     addEventListener('scroll', pick, { passive: true });
     document.addEventListener('astro:before-swap', () => removeEventListener('scroll', pick), { once: true });
     pick();
   }
-  initChapters();
 
-  // Intro film: on cases that have one it plays full screen when the case
-  // opens. Scrolling (or skip, or the end of the film) sends it into the left
-  // panel, where the case carries on. Also clears the colour we came in with.
+  // The intro film plays full screen under the header until the visitor scrolls,
+  // skips or it ends. With "reduce motion" it waits, with its controls.
+  // It also clears the colour we came in with from /play.
   function initIntro() {
     const ink = document.querySelector<HTMLElement>('html > .ink');
     const intro = document.querySelector<HTMLElement>('[data-intro]');
-    const clearInk = () => { if (!ink) return; if (intro) { ink.classList.add('is-fade'); } else { ink.classList.add('is-out'); } setTimeout(() => ink.remove(), 800); };
+    const clearInk = () => { if (!ink) return; ink.classList.add(intro ? 'is-fade' : 'is-out'); setTimeout(() => ink.remove(), 800); };
     if (!intro || intro.dataset.ready) { setTimeout(clearInk, 150); return; }
     intro.dataset.ready = '1';
     const v = intro.querySelector('video')!;
@@ -119,21 +125,16 @@ const allChapters = (d.blocks || []).filter((b: any) => b.discriminant === 'chap
     scrollTo(0, 0);
     const head = document.querySelector<HTMLElement>('.sh');
     if (head) intro.style.setProperty('--intro-top', `${Math.round(head.getBoundingClientRect().bottom)}px`);
-    // reduce motion: the film waits for the visitor, with its controls
     if (reduce) { v.removeAttribute('autoplay'); v.pause(); v.controls = true; } else v.play().catch(() => {});
     setTimeout(clearInk, 250);
     let done = false;
     const dismiss = () => {
       if (done) return; done = true;
       removeEventListener('wheel', onWheel); removeEventListener('touchmove', dismiss); removeEventListener('keydown', onKey);
-      const left = document.querySelector<HTMLElement>('.project__left');
-      const r = left?.getBoundingClientRect(), b = intro.getBoundingClientRect();
       document.documentElement.classList.remove('intro-on');
-      if (reduce || !r) { intro.remove(); return; }
-      // shrink into the left panel
-      intro.style.clipPath = `inset(${Math.max(0, r.top - b.top)}px ${Math.max(0, b.right - r.right)}px ${Math.max(0, b.bottom - Math.min(r.bottom, innerHeight))}px ${Math.max(0, r.left - b.left)}px round 12px)`;
-      intro.classList.add('is-going');
-      setTimeout(() => { intro.classList.add('is-gone'); setTimeout(() => intro.remove(), 500); }, 750);
+      if (reduce) { intro.remove(); return; }
+      intro.classList.add('is-gone');
+      setTimeout(() => intro.remove(), 600);
     };
     const onWheel = (e: WheelEvent) => { if (e.deltaY > 4) dismiss(); };
     const onKey = (e: KeyboardEvent) => { if (['ArrowDown', 'PageDown', ' ', 'Escape', 'Enter'].includes(e.key)) { e.preventDefault(); dismiss(); } };
@@ -144,49 +145,43 @@ const allChapters = (d.blocks || []).filter((b: any) => b.discriminant === 'chap
     v.addEventListener('ended', dismiss);
     intro.querySelector<HTMLElement>('[data-intro-skip]')!.focus({ preventScroll: true });
   }
-  initIntro();
-  document.addEventListener('astro:page-load', initIntro);
-  document.addEventListener('astro:page-load', initChapters);
+  initStage(); initIntro();
+  document.addEventListener('astro:page-load', () => { initStage(); initIntro(); });
 </script>
 
 <style>
-  .project { display: grid; grid-template-columns: var(--split-case); gap: var(--s-3); align-items: start; }
-  .project__left { position: sticky; top: var(--frame); height: calc(100vh - var(--frame) * 2); }
-  .project__right { min-width: 0; }
-  .chlayer { position: absolute; inset: 0; opacity: 0; transition: opacity 0.7s var(--ease-out); pointer-events: none; }
-  .chlayer.is-on { opacity: 1; pointer-events: auto; }
-  .project__left:not([data-chapters]) .chlayer { position: relative; height: 100%; opacity: 1; }
-  /* the bar stays put while the content scrolls under it */
-  .project__title { position: sticky; top: var(--frame); z-index: 6; padding: 0 0 8px; background: var(--chrome); box-shadow: 0 calc(var(--frame) * -1) 0 var(--chrome); }
-  .project__blocks :global(.chap) { scroll-margin-top: 190px; }
-  /* chapter dots on the left panel: where you are, and a way to jump */
-  .dots { position: absolute; right: 18px; top: 18px; z-index: 4; display: flex; gap: 6px; }
-  .dots__d { display: block; width: 12px; height: 4px; border-radius: 2px; background: rgba(212, 209, 203, 0.35); transition: width 500ms cubic-bezier(.22,.75,.25,1), background 400ms; position: relative; }
-  .dots__d::before { content: ''; position: absolute; inset: -20px -4px; }
-  .dots__d:hover { background: rgba(212, 209, 203, 0.7); }
-  .dots__d.is-on { width: 32px; background: var(--acc); }
-  .dots__d:focus-visible { outline: 2px solid var(--on-chrome); outline-offset: 3px; }
-  .project__blocks { display: flex; flex-direction: column; gap: var(--s-2); }
-  @media (max-width: 1199px) {
-    .project { grid-template-columns: 1fr; }
-    .project__left { position: relative; top: 0; height: min(72vh, 640px); }
-    .project__title { top: 0; }
-    .project__blocks :global(.chap) { scroll-margin-top: 150px; }
+  .pc { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-8); align-items: start; }
+  .pc__stage { position: sticky; top: var(--s-5); display: grid; align-items: center; min-height: calc(100vh - 200px); }
+  .pc__layer { grid-area: 1 / 1; opacity: 0; transition: opacity var(--dur-slow) var(--ease-out); }
+  .pc__layer.is-on { opacity: 1; }
+  .pc__main { display: flex; flex-direction: column; gap: var(--s-8); min-width: 0; }
+  .pc__head { display: flex; flex-direction: column; gap: var(--s-5); }
+  .pc__intro, .pc__text { max-width: 60ch; font-family: var(--font-body); font-size: var(--fs-text); line-height: var(--lh-text); }
+  .pc__intro :global(p + p), .pc__text :global(p + p) { margin-top: var(--s-4); }
+  .pc__links { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+  .pc__ch { display: flex; flex-direction: column; gap: var(--s-5); scroll-margin-top: var(--s-5); }
+  .pc__media { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--s-4); }
+  /* on a wide screen the first piece of each chapter is on the stage, not repeated here */
+  .pc__m--stage { display: none; }
+  .pc :global(.ph) { background: var(--paper-2); color: var(--red-text); font-family: var(--font-ui); font-size: var(--fs-label); letter-spacing: var(--ls-label); padding: 0 var(--s-1); border-radius: var(--r-sm); }
+  @media (max-width: 1099px) {
+    .pc { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); }
+    .pc__stage { display: none; }
+    .pc__m--stage { display: block; }
   }
-  /* the intro film, full screen until you scroll */
-  /* it fills the panel area, under the header (so you still see which case you're in) */
-  .intro { position: fixed; top: var(--intro-top, 110px); left: var(--frame); right: var(--frame); bottom: var(--frame); z-index: 900; border-radius: var(--r-md); overflow: hidden; background: var(--acc); clip-path: inset(0 0 0 0 round var(--r-md)); transition: clip-path 750ms cubic-bezier(.65,0,.35,1), opacity 450ms ease; }
+
+  /* the intro film, full screen under the header */
+  .intro { position: fixed; top: var(--intro-top, 110px); left: var(--frame); right: var(--frame); bottom: var(--frame); z-index: 900; border-radius: var(--r-md); overflow: hidden; background: var(--acc); transition: opacity var(--dur-slow) var(--ease-out); }
   .intro video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .intro.is-gone { opacity: 0; }
-  .intro__bar { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; padding: 20px 24px; transition: opacity 300ms; }
-  .intro.is-going .intro__bar { opacity: 0; }
-  .intro__name { margin: 0; font-family: var(--font-serif); font-size: clamp(40px, 4vw, 72px); line-height: 0.9; letter-spacing: -0.03em; color: var(--paper); mix-blend-mode: difference; }
+  .intro__bar { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; align-items: flex-end; gap: var(--s-4); padding: var(--s-5); }
+  .intro__name { margin: 0; font-family: var(--font-serif); font-size: var(--fs-section); line-height: var(--lh-section); color: var(--paper); mix-blend-mode: difference; }
   .intro__name :global(em) { font-style: italic; }
   .intro__skip {
-    all: unset; cursor: pointer; box-sizing: border-box; min-height: 44px; padding: 0 18px; border-radius: 22px; display: inline-flex; align-items: center; gap: 8px;
-    background: var(--paper); color: #070707; font-family: var(--font-body); font-size: var(--fs-print);
+    all: unset; cursor: pointer; box-sizing: border-box; min-height: 44px; padding: 0 var(--s-4); border-radius: var(--r-pill); display: inline-flex; align-items: center; gap: var(--s-2);
+    background: var(--paper); color: var(--ink); font-family: var(--font-ui); font-weight: 500; font-size: var(--fs-label); letter-spacing: var(--ls-label); text-transform: uppercase;
   }
-  .intro__skip:hover { background: #070707; color: var(--paper); }
+  .intro__skip:hover { background: var(--ink); color: var(--paper); }
   .intro__skip:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
   :global(html.intro-on) { overflow: hidden; }
 </style>

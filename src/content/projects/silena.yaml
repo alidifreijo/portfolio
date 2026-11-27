@@ -1,0 +1,62 @@
+title: silena
+kind: exploration
+status: published
+order: 3
+accent: empathy
+display: '**silena**'
+lead: A concept product site for a lamp, told in one continuous scroll.
+intro: '**A quiet object of light.** A concept product site for a lamp, told in one continuous scroll. It wasn’t made for IKEA.'
+teaser: A concept product site for a lamp, told in one continuous scroll.
+cover: /images/projects/silena/hero.jpg
+meta:
+- label: Year
+  value: '2026'
+- label: Type
+  value: Personal exploration
+- label: Role
+  value: Concept, design, direction
+- label: Built
+  value: Figma, then Framer, then code
+links:
+- label: View live
+  url: https://silena-lamp.vercel.app/
+blocks: []
+chapters:
+- title: What it *is*
+  text: One lamp and one long scroll. You feel the light first, then find your place at home, then follow the lamp through the day, from morning to night.
+  media:
+  - src: /images/projects/silena/hero.jpg
+    width: 1600
+    height: 1000
+    alt: The Silena home, the lamp glowing over the name
+  - src: /images/projects/silena/mobile-hero.jpg
+    width: 780
+    height: 1688
+    alt: The Silena home on mobile
+- title: Why it *exists*
+  text: '[PLACEHOLDER: why this lamp, and what Silena shows that Cut Scenes and cutouts don’t.]'
+- title: How it *works*
+  text: Three scenes. **Feel:** the light, before anything else. **The place to be:** a room with a sofa, a table, a bookshelf and a record player; tap one and the room becomes someone. **Light rituals:** the same room through the day, as the light changes.
+  media:
+  - src: /images/projects/silena/room.jpg
+    width: 1600
+    height: 1000
+    alt: 'The place to be: an isometric room you tap to furnish'
+    caption: The place to be
+  - src: /images/projects/silena/feel.jpg
+    width: 1600
+    height: 1000
+    alt: 'Feel: the lamp among photographs of rooms'
+    caption: Feel
+  - src: /images/projects/silena/morning.jpg
+    width: 1600
+    height: 1000
+    alt: 'Light rituals: the room in the morning'
+    caption: Morning
+  - src: /images/projects/silena/evening.jpg
+    width: 1600
+    height: 1000
+    alt: 'Light rituals: the room in the evening'
+    caption: Evening
+- title: How it was *made*
+  text: 'Drawn in Figma, built first in Framer on a template, then moved to my own code so it doesn’t depend on Framer. [PLACEHOLDER: what is mine and what came from the template, and where the photos come from.]'

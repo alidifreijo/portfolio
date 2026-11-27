@@ -1,26 +1,24 @@
-title: bank platform
+title: monexa
 kind: client
 status: published
 order: 2
 accent: systems
-display: '**bank** platform'
+display: '**monexa**'
 lead: A banking platform used by both clients and bank employees.
 intro: '**Monexa** is a bank in two surfaces. **Acadexa**, on mobile, teaches clients to manage their money and turns each lesson into an action. On the web, **Exa**, the pink assistant, guides a client through anything that gets stuck, and a **manager view** shows the bank assistant what the client never sees. I designed both, and the system that keeps them one product.'
-teaser: Monexa is a banking platform for clients and employees
+teaser: A challenge inside CaixaBank. A bank in two surfaces, with an assistant that guides the client.
 cover: /images/f/work/cover-bank.jpg
 object: /images/objects/bank.webp
 hero: /images/f/bank/hero.mp4
 heroStyle: cover
 heroBg: '#E7E7E7'
-heroLabel: bank platform
-nextLabel: bank platform
+heroLabel: monexa
+nextLabel: monexa
 nextImage: /images/f/work/cover-bank.jpg
 metaWidth: 170
 meta:
 - label: Year
   value: '2024'
-- label: Project
-  value: Bank Platform
 - label: Service
   value: UX/UI
 links: []
@@ -71,8 +69,11 @@ company: CaixaBank
 years: '2024'
 role: UX/UI
 via: North
-line: Monexa is a banking platform for clients and employees.
-context: '**Monexa** is a bank in two surfaces. **Acadexa**, on mobile, teaches clients to manage their money and turns each lesson into an action. On the web, **Exa**, the pink assistant, guides a client through anything that gets stuck, and a **manager view** shows the bank assistant what the client never sees.'
+line: A challenge inside CaixaBank, and we won it. A bank in two surfaces, with an assistant that guides the client.
+context: |-
+  [PLACEHOLDER: the challenge inside CaixaBank, and what the proposal had to prove.]
+
+  **Monexa** is a bank in two surfaces. **Acadexa**, on mobile, teaches clients to manage their money and turns each lesson into an action. On the web, **Exa**, the pink assistant, guides a client through anything that gets stuck, and a **manager view** shows the bank assistant what the client never sees.
 roleText: 'I designed both, and the system that keeps them one product. [PLACEHOLDER: my role in the pitch, the team around me and what I owned.]'
 process: |-
   **Clear.** Clients and employees see the same data with different needs, so hierarchy does the heavy lifting.
@@ -80,7 +81,7 @@ process: |-
   **Consistent.** One token system across both experiences and both themes.
 
   **Scalable.** Components built to grow with new products without redesigning from scratch.
-result: '[PLACEHOLDER: the pitch to CaixaBank was won. What that meant and what came next.]'
+result: 'We won it. [PLACEHOLDER: what that meant and what came next, without confidential data.]'
 media:
 - src: /images/f/bank/hero.mp4
   poster: /images/f/bank/hero.poster.jpg
