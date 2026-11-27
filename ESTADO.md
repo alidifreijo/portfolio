@@ -1,64 +1,101 @@
 # Estado del proyecto
 
-Actualizado: 2026-11-27
+Actualizado: 2026-11-27 (noche)
 
 ## Dónde estamos
 
-Modo Construir, rama `bloque-1-base`. Las dos piezas del Bloque 1 están construidas, revisadas y subidas. Falta que Ali las vea y decida.
+Modo Construir. Hoy se han construido los bloques 1 a 3 y una exploración del Bloque 4, en ramas encadenadas. La última, `exploracion-lupa`, contiene todo. **Nada está unido a `main`.**
+
+Cadena de ramas, cada una sale de la anterior: `bloque-1-base` → `bloque-2-contenido` → `bloque-3-media` → `pagina-how-built` → `pagina-biblioteca` → `guia-keystatic` → `auditorias` → `webs-solidas` → `exploracion-lupa`.
 
 ## Última pieza cerrada
 
-Bloque 1 · Base (tareas 1 y 2), 27 nov, en la rama `bloque-1-base`. No está unida a `main`. Revisiones:
+Webs sólidas (cabeceras de seguridad, SEO, README y licencia), 27 nov, rama `webs-solidas`. La revisión completa de toda la web está en `revisiones/2026-11-27-revision-completa/index.html`:
+- **la web, en ámbar:** nada se rompe, pero hay 18 marcas de borrador que impiden publicar;
+- **el repo, en rojo,** por el nombre interno de Roche que sigue en `main`.
 
-- `revisiones/2026-11-27-sistema-de-diseno/index.html`: ámbar, 0 rompe algo.
-- `revisiones/2026-11-27-play-work/index.html`: ámbar, 0 rompe algo.
+## Resumen de hoy
 
-Vista previa: la de la rama `bloque-1-base` en el panel de Vercel. En local, `npm run build:static` genera una copia en `dist-static/`.
+1. **Bloque 1 · Base.** Sistema de diseño agéntico:
+   - tokens en CSS y DTCG generados desde `estilos/`, `DESIGN.md` y un manifiesto de 15 componentes;
+   - la skill `portfolio-system`;
+   - una comprobación en cada build;
+   - `/styleguide` generado.
+   
+   Además: menú Play · Work, plantilla de empresa y pie común en todas las páginas. Cambios en estilos: contraste de creative y collab oscurecido; orden de Work: Roche, CaixaBank, Cupra.
+2. **Bloque 2 · Contenido.**
+   - Roche con el texto de Ali, tal cual.
+   - Plantilla Play rehecha con el sistema: Cut Scenes recortado, cutouts corto y Silena nuevo, con capturas de su web.
+   - Monexa renombrado.
+   - About limpio: fuera el dato «BCN»; Garaje y North enlazan a sus casos; sin blur.
+   - Quitado el nombre interno de Roche de `docs/project-brief.md` (solo en las ramas nuevas).
+3. **Bloque 3 · Media.**
+   - Vídeos con su proporción real y pósters con contenido (se cambiaron 6).
+   - Cada vídeo carga solo al acercarse a la pantalla, y la web usa AV1 y versión móvil si existen.
+   - `scripts/video.sh`, para exportar desde los originales.
+   - Imágenes en AVIF y WebP (`npm run images`).
+   - Peso al abrir: About pasa de 4,3 a 0,2 MB; Cupra, de 1,9 a 0,5 MB; Cut Scenes, de 4 a 1,3 MB.
+4. **Páginas nuevas:**
+   - «How this portfolio is built», con el texto en borrador `[DRAFT FOR ALI]`;
+   - la página WIP de la Biblioteca, con `[PLACEHOLDER]`.
+   
+   Ninguna sale en el menú y las dos llevan `noindex` mientras tengan marcas.
+5. **Keystatic y guía:** se pueden editar las empresas (con «via»), los capítulos de Play, How it's built, la Biblioteca y una colección «Agents» con los seis textos aprobados. `docs/GUIA.md` está reescrita.
+6. **Auditorías** (`docs/auditorias/2026-11-27.md`):
+   - deuda del sistema de 550 a 184, sin cambiar nada visible (capturas idénticas píxel a píxel);
+   - contenido: ni palabras prohibidas en la web ni frases de búsqueda de trabajo;
+   - Lighthouse en local.
+7. **Webs sólidas** (`docs/webs-solidas.md`):
+   - CSP estricta sin scripts inline, probada con Playwright con cero violaciones;
+   - SEO completo, README como portada, licencia MIT solo para el código y `.vercelignore`.
+8. **Exploración de la lupa** (`exploraciones/2026-11-27-lupa/`): 5 variantes sin degradado ni brillo, a 1440 y 390, y la idea de móvil en tres toques.
 
 ## A medias
 
-- `bloque-1-base` no se une a `main` hasta que Ali apruebe el texto de Roche (Bloque 2). La fila de Roche y su caso enseñan `[PLACEHOLDER]` a propósito.
-- La «deuda» del sistema son 576 usos fuera de los tokens en las páginas viejas (`src/styles/system-debt.json`). Baja cada vez que se rehace una página en los bloques 2 a 4.
-- Páginas viejas con blur o degradado, contra la identidad, apuntadas como deuda: entrada de la home y del About (blur), Media y ProjectTitle (blur) y Contact (degradado en la máscara del chat). Se quitan al rehacerlas.
-- Hallazgos «se nota» de los revisores que siguen abiertos:
-  - el foco de teclado no tiene token propio;
-  - en `/styleguide`, el email de la cabecera de ejemplo sale cortado a 1440 px y las descripciones de los tokens están en español;
-  - en Contact, a 390 px, la cara tapa las pistas 02 y 03 (ya pasaba antes);
-  - la comprobación no mira espacios en rem/em, duraciones, alturas de línea ni estilos puestos desde JS.
-- Ramas antiguas sin cerrar: `hmi-case`, `hmi-lab`, `ui-taupe`, `v2-extras`, `home-v2` (ya unida).
+- **Copy pendiente de Ali,** que sale como marcas visibles:
+  - Monexa: 3;
+  - Cupra: 2;
+  - cutouts: 2;
+  - Silena: 2;
+  - Cut Scenes: 1;
+  - Library: 3;
+  - How it's built: 5 `[DRAFT FOR ALI]`.
+- **Vídeos que hay que exportar desde los originales:**
+  - Monexa (todos);
+  - Cupra «no drivers»;
+  - intro de cutouts (20 MB);
+  - AV1 y versiones móviles de Cut Scenes;
+  - Silena, que no tiene vídeo.
+  
+  Tabla en `docs/notas-sesion-2026-11-27.md`.
+- **Deuda del sistema** (184): About, Contact, home de caras, índice de Play, crucigrama y collage. Baja al rehacer esas páginas.
+- **Bloque 4 · Home de agentes:** sin empezar. La lupa está explorada.
 
 ## Siguiente paso
 
-Ali mira la vista previa de `bloque-1-base` (`/styleguide`, `/work`, `/work/monexa`, `/work/cupra`, `/work/roche`, `/play`) y responde a «Esperando a Ali». Después, en Claude Code y en modo Construir: Bloque 2 · Contenido (tareas 4, 5 y 6, y la página WIP de la Biblioteca de referencias), en una rama nueva `bloque-2-contenido` que sale de `bloque-1-base`. Cada página rehecha usa solo `src/components/system/` y baja su deuda con `npm run check:system -- --shrink`. Está hecho cuando se cumplen los criterios de las tareas 4, 5 y 6 y el revisor no marca nada como «rompe algo».
+En el chat del Proyecto, Ali contesta la lista de «Esperando a Ali». Lo primero es lo de Roche (punto 1). Después, en Claude Code y modo Construir, desde la rama `exploracion-lupa`:
+- se aplican sus respuestas;
+- se rellenan los `[PLACEHOLDER]` con su material;
+- se pasa el revisor.
+
+Está hecho cuando ninguna página publicada tiene marcas y el revisor no marca «rompe algo». Entonces Ali decide qué ramas se unen a `main`.
 
 ## Tareas
 
-- **Bloque 1 · Base:** tareas 1 y 2. Hecho, pendiente de que lo vea Ali.
-- **Bloque 2 · Contenido:** tareas 4, 5 y 6, más la página WIP de la Biblioteca de referencias.
-- **Bloque 3 · Media:** tareas 3 y 7.
-- **Bloque 4 · Home de agentes:** tareas 8 y 9.
+- [x] **Bloque 1 · Base:** tareas 1 y 2.
+- [~] **Bloque 2 · Contenido:** tareas 4, 5 y 6 y la página WIP. Construido; falta el copy de Ali.
+- [~] **Bloque 3 · Media:** tareas 3 y 7. Hecha la parte de código y la página 7 (en borrador); falta exportar los vídeos desde los originales.
+- [ ] **Bloque 4 · Home de agentes:** tareas 8 y 9. Exploración de la lupa hecha.
 
-1. [x] Sistema de diseño agéntico y guía de estilo nuevos:
-   - tokens en `src/styles/tokens.css` y en `src/styles/tokens.json` (DTCG), generados desde `estilos/tokens.css` con `npm run tokens`;
-   - `DESIGN.md`;
-   - manifiesto en `src/components/system/manifest.json`, con 14 componentes base;
-   - skill `portfolio-system`;
-   - comprobación en cada build (`npm run check`);
-   - `/styleguide` generado;
-   - el revisor compara con `/styleguide`.
-2. [x] Navegación Play / Work y plantilla de empresa:
-   - menú Play · Work · About · Contact;
-   - `/play` con Cut Scenes y cutouts;
-   - `/work` en filas (empresa, años, rol, via y una frase);
-   - Monexa (`/work/monexa`), Cupra y Roche con la plantilla de empresa (Contexto, Rol, Proceso y Resultado);
-   - las direcciones viejas redirigen.
-3. [ ] Vídeos reexportados. Hecho: nítidos en Retina, póster con contenido, versión móvil.
-4. [ ] Work: Monexa (reto → resultado), Cupra (rol y proceso), Roche (texto). Hecho: sin datos confidenciales; Ali aprueba el copy. Se rellenan los `[PLACEHOLDER]` de `src/content/projects/monexa.yaml`, `cupra.yaml` y `roche.yaml`, y Monexa deja de llamarse «bank platform».
-5. [ ] Play: Silena nuevo, Cut Scenes recortado, cutouts corto. Hecho: cada uno con enlace en vivo y vídeo.
-6. [ ] About limpio y pie común. Hecho: ningún dato repetido; LinkedIn y CV en todas las páginas. El pie ya existe: `src/components/system/Footer.astro`.
-7. [ ] «How this portfolio is built». Hecho: el equipo de agentes, el sistema y el proceso, en una página.
-8. [ ] Home de agentes (v8) con versión móvil. Hecho: titular legible; cada agente lleva a algo con sentido; funciona en 390 px. La ficha y el chip ya existen: `AgentCard` y `AgentChip`.
-9. [ ] Revisión completa. Hecho: el revisor sin «rompe algo» en 390, 768 y 1440 px.
+1. [x] Sistema de diseño agéntico y guía de estilo nuevos.
+2. [x] Navegación Play / Work y plantilla de empresa.
+3. [~] Vídeos: proporción, pósters, carga perezosa y soporte AV1/móvil hechos. Falta exportarlos desde los originales.
+4. [~] Work: Roche hecho. Faltan Monexa (reto → resultado) y Cupra (rol y proceso) con el material de Ali.
+5. [~] Play: Silena, Cut Scenes y cutouts montados con enlace en vivo. Faltan los textos de Ali y el vídeo de Silena.
+6. [x] About limpio y pie común.
+7. [~] «How this portfolio is built»: página hecha; el texto está en borrador para Ali.
+8. [ ] Home de agentes (v8) con versión móvil. Lupa explorada; falta elegir.
+9. [ ] Revisión completa final. Hecha hoy una intermedia: `revisiones/2026-11-27-revision-completa/`.
 
 ## Listo para traspaso
 
@@ -70,19 +107,69 @@ Sí.
 
 ## Probado y descartado en esta sesión
 
-- Hacer las capturas con `astro dev`: falla la primera carga (504 «Outdated Optimize Dep»). Se usa la copia estática (`npm run build:static`) servida en local.
-- Un estilo puesto en la etiqueta `class` de un componente de sistema (por ejemplo `<Panel class="wk">`) no se aplica desde la página, porque Astro aísla los estilos de cada archivo. Se envuelve el contenido en un `div` propio o se usa `:global`.
-- El agente `revisor` del método declara las herramientas `mcp__playwright__*`, pero aquí Playwright se llama de otra forma y el agente no tiene terminal. Por eso se lanza como agente general con las instrucciones de `revisor.md`. Conviene corregirlo en `alidifreijo/metodo`.
+- **Capturas con `astro dev`:** falla la primera carga. Se usa `npm run build:static` servido en local, y `.vercel/output/static` con las cabeceras de `vercel.json` para probar la CSP.
+- **Cambiar `#070707` por `var(--ink)` en Contact, About y el crucigrama** cambiaba colores, porque esas zonas redefinen `--ink` en local. Se dejó el valor escrito y se comprobó píxel a píxel.
+- **Capas ocultas del escenario Play:** con `visibility: hidden` siguen contando como visibles para el detector, y descargaban vídeo. Ahora llevan `data-stage-layer` y esperan a su capítulo.
+- **La imagen `hero2x.jpg` del prototipo** lleva escrita la cabecera vieja («Open to senior and lead product roles»): no se puede usar tal cual en la home.
+- **El revisor nuevo** (con terminal) solo se carga en una sesión nueva. En esta se lanzó como agente aparte, con sus instrucciones.
 
 ## Esperando a Ali
 
-- Ver el Bloque 1 en la vista previa.
-- Contraste de dos colores de agente: el texto en cian (creative, 4,3:1) y en rosa (collab, 4,2:1) se queda justo por debajo del 4,5:1 recomendado para letra pequeña. Opciones: dejarlo, oscurecer el texto de esas dos parejas o no usar letra pequeña sobre ellos. Es una duda de gusto.
-- Cómo se mapeó el estilo, para que lo confirme:
-  - menú en Space Grotesk a tamaño texto, en mayúsculas;
-  - la «á» a tamaño capítulo;
-  - los números de capítulo en una píldora del color del agente, porque el color sobre papel no se lee.
-- En `/work`, la fila de Monexa enseña «CaixaBank» como empresa (sale del brief). Confirmar que se puede nombrar.
+Por prioridad. Pasos exactos en `docs/webs-solidas.md`, apartado «Lista para Ali».
+
+1. **[Urgente] El nombre interno de Roche está en `main` y en el historial del repo público.** Elige: (a) sí a un commit en `main` que solo quita esas dos palabras; (b) además, poner el repo en privado. Ver `revisiones/2026-11-27-roche-about/`.
+2. **«minor account» aparece en CLAUDE.md** (en la propia regla) y el repo es público. ¿Lo reescribimos como «el término interno para cuentas de menores»?
+3. **Copy de los casos:**
+   - Monexa: el reto dentro de CaixaBank, tu papel, el equipo y el tiempo, el resultado, y si los nombres son inventados;
+   - Cupra: el problema, un ejemplo de decisión, el resultado, si las slides se pueden usar y el rol;
+   - cutouts y Cut Scenes: las preguntas de `docs/casos/`;
+   - Library: qué es, por qué y el avance.
+4. **Silena:** las capturas dicen «Designed by Maria Escarmiento». ¿Quién es? Junto con la pregunta de las fotos.
+5. **«How this portfolio is built»:**
+   - revisar el borrador;
+   - ¿primera persona o hablando de «Ali»?;
+   - ¿desde dónde se enlaza (pie, About)?
+6. **Elegir la lupa** para la home (A a E): `exploraciones/2026-11-27-lupa/capturas/`.
+7. **Exportar los vídeos** desde los originales con `scripts/video.sh`. Lista en `docs/notas-sesion-2026-11-27.md`.
+8. **Paneles (pasos en `docs/webs-solidas.md`):**
+   - GitHub Pages apagado;
+   - secret scanning;
+   - barra About del repo;
+   - borrar las ramas viejas;
+   - Vercel Analytics (si lo activas, hace falta la página de privacidad);
+   - UptimeRobot;
+   - 2FA.
+9. **Decisiones de web:**
+   - `noindex` para toda la web mientras no sea el portfolio público;
+   - el dominio de `astro.config.mjs` (puse `portfolio-alidifreijo.vercel.app`);
+   - las sombras de los objetos de `/play` y de las caras de la home, que van contra DESIGN.md;
+   - el degradado de la máscara del chat de Contact.
+10. **Contenido:**
+    - Barcelona sale en la cabecera y en las líneas rojas del About;
+    - inglés británico o americano (`organised` / `organized`);
+    - «Engineer first, designer since» parece cortada;
+    - Cupra: «2023–Today» o «2023–2026».
+11. **Retoques vistos por el revisor:**
+    - el bocadillo del About tapa líneas rojas en móvil;
+    - la cara de Contact tapa pistas a 390 px;
+    - la home a 768 px saca una cara del panel (Bloque 4);
+    - el crucigrama tiene 103 paradas de tabulador;
+    - con la intro de Play delante, Tab va a enlaces tapados;
+    - el salto de letra en How it's built (CLS 0,27).
+12. **Repo:** `revisiones/` ya ocupa ~106 MB de capturas PNG. ¿El revisor guarda en JPEG a partir de ahora (cambio en `alidifreijo/metodo`)?
+
+### Webs sólidas: resumen
+
+| Sección | Estado | Quién |
+| --- | --- | --- |
+| 1 · Repositorio (README, LICENSE, árbol, `.vercelignore`) | Hecho en código. Faltan la barra About, las ramas viejas, el secret scanning y el nombre de Roche en `main` | Claude hecho / Ali paneles |
+| 2 · Hosting y cabeceras (CSP estricta, sin inline, 404) | Hecho y probado en local; falta comprobarlo en Vercel tras unir a `main`. GitHub Pages sin comprobar | Claude / Ali |
+| 3 · Dependencias (todo autoalojado) | Hecho | — |
+| 4 · Supabase · 5 · Tareas programadas | No aplica | — |
+| 6 · Cuentas (2FA) | Sin comprobar | Ali |
+| 7 · Privacidad | Falta decidir: solo hace falta con Vercel Analytics (texto propuesto) | Ali |
+| 8 · SEO (canonical, OG, JSON-LD, robots, sitemap) | Hecho. Faltan `favicon.ico`, los iconos 48/192, la decisión de `noindex` y Search Console | Claude / Ali |
+| 9 · Vigilancia (Analytics, UptimeRobot, plan de incidentes) | Plan hecho; lo demás falta | Ali |
 
 ## Aparcamiento
 
