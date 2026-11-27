@@ -1,0 +1,64 @@
+/* Portfolio de Ali · estilo v3 (cerrado el 27 nov 2026)
+   Fuente de verdad para Construir. Ningún componente escribe un color,
+   un tamaño, un radio o una duración a mano: usa una de estas variables.
+   Prohibido: blur decorativo, acuarelas, degradados. */
+
+:root {
+  /* ---------- Color · base ---------- */
+  --ink: #070707;          /* marco, texto principal */
+  --paper: #D4D1CB;        /* panel, texto sobre negro */
+  --paper-2: #ECEAE5;      /* tarjetas claras, ficha de agente */
+  --paper-3: #E2DFD9;      /* hover sobre tarjetas claras */
+  --muted: #4A4744;        /* texto secundario sobre papel */
+  --muted-ink: #8E8A84;    /* texto secundario sobre negro */
+  --line: rgba(7, 7, 7, 0.14);
+  --line-ink: rgba(212, 209, 203, 0.14);
+
+  /* ---------- Color · marca ---------- */
+  --red: #E92C30;          /* acento */
+  --red-text: #B0161B;     /* rojo para texto sobre papel */
+
+  /* ---------- Color · agentes (fondo / texto encima) ----------
+     Cada caso hereda la pareja de su agente (decisión provisional). */
+  --systems: #A3FFA9;   --on-systems: #113830;   /* Bob · Roche, Monexa */
+  --research: #E89A3C;  --on-research: #261E13;  /* gorra · Biblioteca (WIP) */
+  --creative: #98E7EB;  --on-creative: #146D72;  /* gorro · Cut Scenes */
+  --ops: #86CBF7;       --on-ops: #065486;       /* melena · Cupra */
+  --empathy: #F0FDAB;   --on-empathy: #301D15;   /* brote · Silena */
+  --collab: #FFA4BF;    --on-collab: #9E194C;    /* pelo revuelto · cutouts */
+
+  /* ---------- Tipografía: solo tres familias ---------- */
+  --font-serif: 'Instrument Serif', Georgia, serif;          /* la voz: titulares, secciones, capítulos, notas */
+  --font-ui: 'Space Grotesk', system-ui, sans-serif;         /* la interfaz: menú, etiquetas, botones, fichas */
+  --font-body: 'Satoshi', system-ui, sans-serif;             /* el texto */
+
+  /* Escala de cinco tamaños */
+  --fs-display: clamp(64px, 11vw, 200px);  --lh-display: 0.9;   /* titular de la home */
+  --fs-section: clamp(40px, 4vw, 64px);    --lh-section: 1;     /* «In short», «Work» */
+  --fs-chapter: clamp(26px, 2.2vw, 36px);  --lh-chapter: 1.05;  /* capítulos, con número en el color del agente */
+  --fs-text: clamp(13px, 0.98vw, 16px);    --lh-text: 1.55;     /* texto y valores */
+  --fs-label: 12px;  --lh-label: 1.2;  --ls-label: 0.06em;      /* etiquetas en mayúsculas */
+
+  /* ---------- Espacio (escala de 4) ---------- */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px;  --s-4: 16px;
+  --s-5: 24px; --s-6: 32px; --s-7: 40px;  --s-8: 64px;
+  --frame: 12px;           /* marco negro alrededor del panel */
+
+  /* ---------- Radios ---------- */
+  --r-sm: 8px;    /* tarjetas */
+  --r-btn: 10px;  /* botones */
+  --r-md: 12px;   /* panel, ficha de agente */
+  --r-pill: 999px;
+
+  /* ---------- Sombra: solo la ficha del agente ---------- */
+  --shadow-card: 0 0 0 1px var(--line), 0 8px 16px -8px rgba(7, 7, 7, 0.25);
+
+  /* ---------- Movimiento ---------- */
+  --dur-fast: 150ms;  --dur-base: 300ms;  --dur-slow: 600ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-spring: linear(0, 0.23 12.5%, 0.66 25%, 1 37.5%, 1.17 50%, 1.18 62.5%, 1.12 75%, 1.05 87.5%, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-fast: 0ms; --dur-base: 0ms; --dur-slow: 0ms; }
+}

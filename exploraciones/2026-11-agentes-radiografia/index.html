@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yep, that's me · agent scan</title>
+<style>
+@font-face{font-family:"DM Mono";src:url(dmmono.woff2) format("woff2")}
+@font-face{font-family:"Space Grotesk";font-weight:400;src:url(sg.woff2) format("woff2")}
+@font-face{font-family:"Space Grotesk";font-weight:500;src:url(sg5.woff2) format("woff2")}
+@font-face{font-family:"Instrument Serif";font-style:italic;src:url(isi.woff2) format("woff2")}
+/* portfolio tokens */
+:root{--ink:#070707;--paper:#d4d1cb;--paper-2:#eceae5;--paper-3:#e2dfd9;--muted:#4a4744;--muted-ink:#8e8a84;--line:#07070724;
+  --r-xs:4px;--r-sm:8px;--r-btn:10px;--r-md:12px;--ease-out:cubic-bezier(.2,.8,.2,1);--ease-spring:linear(0,.23 12.5%,.66 25%,1 37.5%,1.17 50%,1.18 62.5%,1.12 75%,1.05 87.5%,1)}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#070707;overflow:hidden}
+.frame{position:absolute;left:50%;top:50%;width:1440px;height:900px;translate:-50% -50%;scale:var(--k,1);--acc:#ccc;--on:#111}
+.img{position:absolute;inset:0;background:url(hero2x.jpg) 0 0/1440px 900px}
+
+/* the rest of the hero steps back: softer grey, not a hard cut */
+.grey{background-image:url(notext2x.jpg);filter:grayscale(1) brightness(1.07) contrast(.86);opacity:0;transition:opacity .4s var(--ease-out)}
+.frame.scan .grey{opacity:1}
+/* the headline empties out while scanning: only its outline stays */
+.type{position:absolute;inset:0;background:url(type-ghost.png) 0 0/1440px 900px,url(type-outline.png) 0 0/1440px 900px;opacity:0;transition:opacity .45s var(--ease-out) .05s;pointer-events:none}
+.frame.scan .type{opacity:1}
+.keep{background-image:url(notext2x.jpg);clip-path:inset(var(--t) var(--rr) var(--b) var(--l));opacity:0;transition:opacity .2s}
+.frame.scan .keep{opacity:1}
+
+/* x-ray lens */
+.xray{position:absolute;inset:0;background:url(notext2x.jpg) 0 0/1440px 900px;clip-path:circle(var(--r,0px) at var(--x,0) var(--y,0))}
+.xray svg{position:absolute;inset:0;width:1440px;height:900px}
+.bones{opacity:0;transition:opacity .2s}
+.bones.on{opacity:1}
+.ring{position:absolute;left:0;top:0;width:calc(var(--R)*2);height:calc(var(--R)*2);margin:calc(var(--R)*-1) 0 0 calc(var(--R)*-1);
+  translate:var(--x) var(--y);pointer-events:none;opacity:0;scale:.6;transition:opacity .2s,scale .45s var(--ease-spring)}
+.ring.on{opacity:1;scale:1}
+.ring::before{content:"";position:absolute;inset:-3px;border-radius:50%;border:3px solid var(--acc);box-shadow:0 10px 30px rgba(7,7,7,.22)}
+.ring::after{content:"";position:absolute;left:12%;right:12%;height:1.5px;top:0;background:linear-gradient(90deg,transparent,var(--acc),transparent);
+  animation:sweep 2.6s ease-in-out infinite}
+@keyframes sweep{0%,100%{top:14%;opacity:0}12%{opacity:.9}50%{top:84%;opacity:.9}62%{opacity:0}}
+
+/* one detection frame: corner brackets in ink + a pill tag in the agent colour */
+.box{position:absolute;opacity:0;scale:1.04;transition:opacity .2s,scale .35s var(--ease-out);pointer-events:none;--L:24px;--w:2.5px;border-radius:6px;box-shadow:inset 0 0 0 1px rgba(7,7,7,.28);
+  background:
+   linear-gradient(var(--ink) 0 0) 0 0/var(--L) var(--w),linear-gradient(var(--ink) 0 0) 0 0/var(--w) var(--L),
+   linear-gradient(var(--ink) 0 0) 100% 0/var(--L) var(--w),linear-gradient(var(--ink) 0 0) 100% 0/var(--w) var(--L),
+   linear-gradient(var(--ink) 0 0) 0 100%/var(--L) var(--w),linear-gradient(var(--ink) 0 0) 0 100%/var(--w) var(--L),
+   linear-gradient(var(--ink) 0 0) 100% 100%/var(--L) var(--w),linear-gradient(var(--ink) 0 0) 100% 100%/var(--w) var(--L);
+  background-repeat:no-repeat}
+.box.on{opacity:1;scale:1}
+.tag{position:absolute;left:0;bottom:calc(100% + 8px);display:flex;gap:8px;align-items:center;white-space:nowrap;
+  background:var(--acc);color:var(--on);border-radius:var(--r-xs);padding:6px 9px 5px;font:400 11px/1 "DM Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
+.tag em{font-style:normal;opacity:.6}
+
+/* labels under the toys: quiet by default, pill in the agent colour when scanned */
+.chip{position:absolute;top:686px;translate:-50% 0;display:flex;align-items:center;gap:7px;white-space:nowrap;border-radius:999px;
+  font:400 11px/1 "DM Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:6px 10px 5px;transition:background .25s,color .25s}
+.chip i{width:7px;height:7px;border-radius:50%;background:var(--c);outline:1px solid color-mix(in oklab,var(--c),#000 25%);outline-offset:-1px}
+.chip.on{background:var(--c);color:var(--o)}
+.chip.on i{background:var(--o);outline:none}
+
+.hit{position:absolute;cursor:none;outline:none}
+.hit:focus-visible{outline:1.5px dashed var(--ink);outline-offset:8px;border-radius:var(--r-md)}
+
+/* the card: same paper, radius and ink button as the rest of the portfolio */
+.card{position:absolute;z-index:5;width:286px;background:var(--paper-2);color:var(--ink);border-radius:var(--r-md);pointer-events:none;overflow:hidden;
+  box-shadow:0 0 0 1px var(--line),0 18px 40px -12px rgba(7,7,7,.28);
+  opacity:0;translate:0 8px;transition:opacity .2s .12s,translate .45s var(--ease-spring) .12s}
+.card.on{opacity:1;translate:0 0}
+.card .head{display:flex;align-items:center;gap:8px;padding:14px 16px 0;font:400 10px/1 "DM Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.card .head i{width:8px;height:8px;border-radius:50%;background:var(--acc);outline:1px solid color-mix(in oklab,var(--acc),#000 25%);outline-offset:-1px}
+.card .head span:last-child{margin-left:auto;color:var(--muted-ink)}
+.card .hi{font:500 18px/1.2 "Space Grotesk",system-ui,sans-serif;letter-spacing:-.005em;margin:10px 16px 6px}
+.card .q{font:italic 400 17px/1.15 "Instrument Serif",Georgia,serif;color:var(--muted);margin:0 16px 14px}
+.card dl{margin:0 16px;padding:12px 0 14px;border-top:1px solid var(--line);display:grid;grid-template-columns:78px 1fr;row-gap:7px;
+  font:400 11px/1.35 "DM Mono",monospace;letter-spacing:.02em}
+.card dt{color:var(--muted-ink);text-transform:uppercase;font-size:9.5px;letter-spacing:.08em;padding-top:1px}
+.card dd{margin:0}
+.card .meter{display:flex;align-items:center;gap:8px}
+.card .meter span{flex:1;height:6px;border-radius:999px;background:var(--paper-3);overflow:hidden;box-shadow:inset 0 0 0 1px var(--line)}
+.card .meter span b{display:block;height:100%;width:0;border-radius:999px;background:var(--acc);transition:width .9s var(--ease-out) .35s}
+.card.on .meter span b{width:var(--w)}
+.card .go{display:flex;justify-content:space-between;align-items:center;margin:0 8px 8px;padding:12px 12px 11px;border-radius:var(--r-btn);
+  background:var(--ink);color:var(--paper);font:400 11px/1 "DM Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
+.card .go b{font:500 13px/1 "Space Grotesk",sans-serif;color:var(--acc)}
+
+@media (prefers-reduced-motion:reduce){.ring::after{animation:none;opacity:0}*{transition-duration:0s!important}}
+</style>
+</head>
+<body>
+<div class="frame" id="frame">
+  <div class="img"></div>
+  <div class="img grey"></div>
+  <div class="img keep" id="keep"></div>
+  <div class="type" aria-hidden="true"></div>
+  <div class="xray" id="xray"><svg viewBox="0 0 1440 900" id="bones" aria-hidden="true"></svg></div>
+    <div class="det" id="det"></div>
+  <div class="ring" id="ring"></div>
+  <div id="hits"></div>
+  <div class="card" id="card" role="status" aria-live="polite"></div>
+</div>
+<script>
+(function(){
+'use strict';
+var LIVE = 'https://portfolio-alidifreijo.vercel.app';
+var R = 92;
+// boxes in Figma frame px: [x, y, w, h]
+var AGENTS = [
+  {id:'bob', n:'01', name:'Systems agent', c:'#a3ffa9', o:'#113830', conf:'.97', box:[12,390,105,276],
+   sub:[['glasses',[14,486,104,44],'.99'],['pocket',[38,582,32,36],'.88']],
+   hi:'I keep things tidy so the team can move fast.', q:'I find peace in naming layers.',
+   spec:'Tokens, components, naming', runs:'Tidy layers', allergic:'“Frame 4582”', fuel:72, href:'/about', opens:'About'},
+  {id:'cap', n:'02', name:'Research agent', c:'#e89a3c', o:'#261e13', conf:'.98', box:[195,400,191,266],
+   sub:[['cap',[195,405,190,72],'.97'],['glasses',[240,490,135,40],'.99'],['pocket',[313,575,36,38],'.92']],
+   hi:'I ask “why?” until the real problem shows up.', q:'Research is my love language.',
+   spec:'Interviews, synthesis, journeys', runs:'Curiosity', allergic:'Assumptions', fuel:91, href:'/work/cupra', opens:'Cupra'},
+  {id:'bucket', n:'03', name:'Creative agent', c:'#98e7eb', o:'#146d72', conf:'.96', box:[479,398,192,268],
+   sub:[['bucket hat',[479,398,192,100],'.98'],['glasses',[520,488,125,40],'.99'],['pocket',[588,573,36,38],'.90']],
+   hi:'I make a mess first, then I make it make sense.', q:'Creative mess, but beautifully organized.',
+   spec:'Sketches, moodboards, wild ideas', runs:'Organised chaos', allergic:'Lorem ipsum', fuel:64, href:'/contact', opens:'Contact'},
+  {id:'long', n:'04', name:'Ops agent', c:'#86cbf7', o:'#065486', conf:'.99', box:[741,385,241,281],
+   sub:[['hair',[748,402,227,258],'.95'],['glasses',[805,488,120,40],'.99'],['pocket',[870,573,36,38],'.91']],
+   hi:'I spot the edge cases before they spot you.', q:'Chaos? Not on my watch.',
+   spec:'Flows, edge cases, checklists', runs:'Deadlines', allergic:'Scope creep', fuel:83, href:'/work/cutouts', opens:'Cutouts'},
+  {id:'sprout', n:'05', name:'Empathy agent', c:'#f0fdab', o:'#301d15', conf:'.95', box:[1052,368,169,298],
+   sub:[['leaf',[1140,370,60,45],'.88'],['glasses',[1070,478,140,45],'.99'],['pocket',[1153,570,36,38],'.93']],
+   hi:'I’m here for the humans on the other side of the screen.', q:'Empathetic, caffeinated, slightly existential.',
+   spec:'Listening, accessibility, needs', runs:'Coffee', allergic:'Dark patterns', fuel:47, href:'/work/bank-platform', opens:'Bank platform'},
+  {id:'messy', n:'06', name:'Collab agent', c:'#ffa4bf', o:'#9e194c', conf:'.94', box:[1298,405,130,261],
+   sub:[['hair',[1298,405,130,150],'.96'],['glasses',[1360,488,68,40],'.98']],
+   hi:'Better ideas happen when we’re all in the room.', q:'Teamwork is my coping mechanism.',
+   spec:'Workshops, feedback, FigJam', runs:'Teamwork', allergic:'Silos', fuel:88, href:'/work/cut-scenes', opens:'Cut scenes'}
+];
+
+var frame = document.getElementById('frame'), keep = document.getElementById('keep'), xray = document.getElementById('xray');
+var bonesSvg = document.getElementById('bones'), det = document.getElementById('det'), ring = document.getElementById('ring');
+var card = document.getElementById('card'), hits = document.getElementById('hits');
+var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+var NS = 'http://www.w3.org/2000/svg';
+ring.style.setProperty('--R', R + 'px');
+
+/* ---------- a little toy skeleton inside each agent ---------- */
+function skeleton(a){
+  // one shared skeleton (from Gemini), fitted to each toy: glasses on the glasses, feet on the floor
+  var gl = a.sub.filter(function(s){ return s[0] === 'glasses'; })[0][1];
+  var gx = gl[0] + gl[2] / 2, gy = gl[1] + gl[3] / 2, fy = a.box[1] + a.box[3] - 6;
+  if(a.id === 'bob') gx = 58; if(a.id === 'messy') gx = 1372;
+  var k = (fy - gy) / 718, w = 834 * k, h = 1183 * k;
+  var g = document.createElementNS(NS, 'g'); g.setAttribute('class', 'bones');
+  g.innerHTML = '<rect x="0" y="0" width="1440" height="900" fill="#4f8aa3" opacity=".62"/><image href="type-xray.png" x="0" y="0" width="1440" height="900" opacity=".9"/>' +
+    '<image href="skeleton.png" x="' + (gx - 400 * k) + '" y="' + (gy - 425 * k) + '" width="' + w + '" height="' + h + '" style="filter:drop-shadow(0 0 2px rgba(20,60,80,.35))"/>';
+  bonesSvg.appendChild(g); return g;
+}
+var st = document.createElementNS(NS, 'style');
+st.textContent = '.hole{fill:#04101d}.heart{fill:#ff9db5;stroke:#ffd3de;stroke-width:1.5;filter:drop-shadow(0 0 6px #ff9db5)}.bones>*{filter:drop-shadow(0 0 3px rgba(190,240,255,.8))}';
+bonesSvg.appendChild(st);
+
+function mk(b, html){
+  var d = document.createElement('div'); d.className = 'box';
+  d.style.left = b[0] + 'px'; d.style.top = b[1] + 'px'; d.style.width = b[2] + 'px'; d.style.height = b[3] + 'px';
+  d.innerHTML = '<span class="tag">' + html + '</span>'; det.appendChild(d); return d;
+}
+AGENTS.forEach(function(a){
+  a.bones = skeleton(a);
+  a.main = mk(a.box, a.name + ' <em>' + a.conf + '</em>');
+  var cx = a.box[0] + a.box[2] / 2;
+  if(a.box[0] > 20 && a.box[0] + a.box[2] < 1420){
+    var chip = document.createElement('div'); chip.className = 'chip'; chip.style.left = cx + 'px'; chip.style.setProperty('--c', a.c); chip.style.setProperty('--o', a.o);
+    chip.innerHTML = '<i></i>' + a.name; frame.appendChild(chip); a.chip = chip;
+  }
+  var h = document.createElement('a'); h.className = 'hit'; h.href = LIVE + a.href;
+  h.style.left = a.box[0] + 'px'; h.style.top = a.box[1] + 'px'; h.style.width = a.box[2] + 'px'; h.style.height = a.box[3] + 'px';
+  h.setAttribute('aria-label', a.name + '. ' + a.hi + ' Opens ' + a.opens + '.');
+  hits.appendChild(h); a.hit = h;
+});
+
+/* ---------- card ---------- */
+function showCard(a){
+  var b = a.box, right = b[0] + b[2] / 2 < 820;
+  var W = 286, x = right ? b[0] + b[2] + 28 : b[0] - 28 - W;
+  x = Math.max(28, Math.min(1412 - W, x));
+  card.innerHTML =
+    '<div class="head"><i></i><span>' + a.name + '</span><span>' + a.n + '/06</span></div>' +
+    '<p class="hi">' + a.hi + '</p><p class="q">' + a.q + '</p>' +
+    '<dl><dt>Good at</dt><dd>' + a.spec + '</dd><dt>Runs on</dt><dd>' + a.runs + '</dd><dt>Allergic to</dt><dd>' + a.allergic + '</dd>' +
+    '<dt>Battery</dt><dd class="meter"><span><b style="--w:' + a.fuel + '%"></b></span>' + a.fuel + '%</dd></dl>' +
+    '<div class="go"><span>Open ' + a.opens + '</span><b>↗</b></div>';
+  card.style.left = x + 'px'; card.style.top = Math.max(430, 718 - card.offsetHeight) + 'px';
+  card.classList.remove('on'); void card.offsetWidth; card.classList.add('on');
+}
+
+/* ---------- scanning ---------- */
+var cur = null, pos = {x:0, y:0}, tgt = {x:0, y:0}, rr = 0, rt = 0, raf = 0, K = 1;
+function fit(){ K = Math.min(innerWidth / 1440, innerHeight / 900); frame.style.setProperty('--k', K); }
+fit(); addEventListener('resize', fit);
+function focus(a){
+  if(a === cur) return;
+  if(cur){ cur.main.classList.remove('on'); cur.bones.classList.remove('on'); if(cur.chip) cur.chip.classList.remove('on'); }
+  cur = a;
+  if(!a){ frame.classList.remove('scan'); card.classList.remove('on'); ring.classList.remove('on'); rt = 0; go(); return; }
+  var b = a.box;
+  keep.style.setProperty('--t', b[1] + 'px'); keep.style.setProperty('--l', b[0] + 'px');
+  keep.style.setProperty('--rr', (1440 - b[0] - b[2]) + 'px'); keep.style.setProperty('--b', (900 - b[1] - b[3]) + 'px');
+  frame.classList.add('scan');
+  frame.style.setProperty('--acc', a.c); frame.style.setProperty('--on', a.o); a.main.classList.add('on'); a.bones.classList.add('on'); if(a.chip) a.chip.classList.add('on');
+  ring.classList.add('on'); rt = R;
+  showCard(a);
+}
+function tick(){
+  var e = reduced ? 1 : .2;
+  pos.x += (tgt.x - pos.x) * e; pos.y += (tgt.y - pos.y) * e; rr += (rt - rr) * (reduced ? 1 : .22);
+  xray.style.setProperty('--x', pos.x + 'px'); xray.style.setProperty('--y', pos.y + 'px'); xray.style.setProperty('--r', rr + 'px');
+  ring.style.setProperty('--x', pos.x + 'px'); ring.style.setProperty('--y', pos.y + 'px');
+  raf = (Math.abs(tgt.x - pos.x) + Math.abs(tgt.y - pos.y) + Math.abs(rt - rr) > .3) ? requestAnimationFrame(tick) : 0;
+}
+function go(){ if(!raf) raf = requestAnimationFrame(tick); }
+function aim(x, y, a){
+  var b = a.box;
+  tgt.x = Math.max(b[0] + 20, Math.min(b[0] + b[2] - 20, x));
+  tgt.y = Math.max(b[1] + 40, Math.min(b[1] + b[3] - 40, y));
+  if(!cur){ pos.x = tgt.x; pos.y = tgt.y; }
+  go();
+}
+frame.addEventListener('pointermove', function(e){
+  if(e.pointerType === 'touch') return;
+  var r = frame.getBoundingClientRect(), x = (e.clientX - r.left) / K, y = (e.clientY - r.top) / K, hit = null;
+  AGENTS.forEach(function(a){ var b = a.box; if(x >= b[0] && x <= b[0] + b[2] && y >= b[1] && y <= b[1] + b[3]) hit = a; });
+  if(hit){ aim(x, y, hit); focus(hit); } else focus(null);
+});
+frame.addEventListener('pointerleave', function(){ focus(null); });
+AGENTS.forEach(function(a){
+  var b = a.box;
+  a.hit.addEventListener('focus', function(){ aim(b[0] + b[2]/2, b[1] + b[3]*.45, a); focus(a); });
+  a.hit.addEventListener('blur', function(){ if(cur === a) focus(null); });
+  a.hit.addEventListener('click', function(e){
+    if(matchMedia('(hover: none)').matches && cur !== a){ e.preventDefault(); aim(b[0] + b[2]/2, b[1] + b[3]*.45, a); focus(a); }
+  });
+});
+})();
+</script>
+</body>
+</html>
