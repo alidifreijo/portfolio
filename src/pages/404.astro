@@ -1,18 +1,23 @@
 ---
+/** 404 · built with the system (Panel, type classes, Button). */
 import Base from '../layouts/Base.astro';
-import Button from '../components/Button.astro';
+import Panel from '../components/system/Panel.astro';
+import Button from '../components/system/Button.astro';
 ---
 <Base title="not found">
-  <section class="nf">
+  <Panel class="nf" label="Page not found">
     <img src="/images/faces/messy-hair.png" alt="" width="140" height="140" />
-    <h1 class="t-display">this page is still in a Figma graveyard</h1>
-    <p class="t-body-l muted">Or it never existed. Either way, let’s get you somewhere useful.</p>
-    <div class="nf__b"><Button href="/">Home</Button><Button href="/work" variant="secondary">See the work</Button></div>
-  </section>
+    <h1 class="type-section">This page is still in a <em>Figma graveyard</em></h1>
+    <p class="type-text nf__p">Or it never existed. Either way, let’s get you somewhere useful.</p>
+    <div class="nf__b"><Button href="/" arrow="→">Home</Button><Button href="/play" arrow="→">Play</Button><Button href="/work" arrow="→">Work</Button></div>
+  </Panel>
 </Base>
 
 <style>
-  .nf { min-height: calc(100vh - var(--frame) * 2); background: var(--paper); border-radius: var(--r-md); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--s-4); text-align: center; padding: var(--s-6); }
-  .nf h1 { max-width: 16ch; }
-  .nf__b { display: flex; gap: var(--s-2); margin-top: var(--s-3); }
+  .nf__b { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-2); margin-top: var(--s-3); }
+</style>
+<style is:global>
+  .panel.nf { min-height: calc(100vh - 140px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--s-4); text-align: center; }
+  .panel.nf h1 { max-width: 16ch; margin: 0; }
+  .panel.nf .nf__p { color: var(--muted); }
 </style>

@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisión · Sistema de diseño</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #070707; --paper: #D4D1CB; --paper-2: #ECEAE5; --muted: #4A4744; --muted-ink: #8E8A84;
+    --line: rgba(7,7,7,.14); --red: #E92C30; --red-text: #B0161B;
+    --amber: #E89A3C; --on-amber: #261E13; --mint: #A3FFA9; --on-mint: #113830;
+    --serif: 'Instrument Serif', Georgia, serif; --ui: 'Space Grotesk', system-ui, sans-serif; --body: 'Satoshi', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ink); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.55; padding: 12px; }
+  .panel { background: var(--paper); border-radius: 12px; padding: 40px clamp(16px, 4vw, 64px); max-width: 1200px; margin: 0 auto; }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 400; margin: 0; }
+  h1 { font-size: clamp(40px, 6vw, 80px); line-height: 1; }
+  h2 { font-size: clamp(30px, 3vw, 44px); line-height: 1.05; margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line); }
+  h3 { font-size: 26px; line-height: 1.1; }
+  em { font-style: italic; }
+  .lab { font-family: var(--ui); font-weight: 500; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  .light { display: flex; gap: 24px; align-items: center; margin: 24px 0; flex-wrap: wrap; }
+  .dot { width: 64px; height: 64px; border-radius: 999px; background: var(--amber); flex: none; }
+  .verdict { font-family: var(--serif); font-size: 32px; line-height: 1.1; }
+  .counts { display: flex; gap: 12px; flex-wrap: wrap; margin: 16px 0 8px; }
+  .pill { font-family: var(--ui); font-weight: 500; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; background: var(--paper-2); }
+  .pill.r { background: var(--ink); color: var(--paper); }
+  .pill.a { background: var(--amber); color: var(--on-amber); }
+  .summary { max-width: 70ch; }
+  .f { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 32px; padding: 32px 0; border-top: 1px solid var(--line); }
+  .f:first-of-type { border-top: 0; }
+  .f img { width: 100%; height: auto; border-radius: 8px; outline: 1px solid var(--line); background: var(--paper-2); }
+  .f p { margin: 8px 0 0; }
+  .visitor { font-family: var(--serif); font-style: italic; font-size: 22px; line-height: 1.25; }
+  .tag { display: inline-block; font-family: var(--ui); font-weight: 500; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: var(--amber); color: var(--on-amber); margin-bottom: 8px; }
+  .tag.d { background: var(--paper-2); color: var(--ink); }
+  details { border-top: 1px solid var(--line); padding: 16px 0; }
+  details:last-of-type { border-bottom: 1px solid var(--line); }
+  summary { cursor: pointer; font-family: var(--ui); font-weight: 500; }
+  ul { padding-left: 20px; } li { margin: 8px 0; }
+  .ok { background: var(--paper-2); border-radius: 8px; padding: 16px 24px; }
+  .ok li::marker { content: '✓  '; }
+  .gal { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 16px; }
+  .gal a { display: block; font-family: var(--ui); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+  .gal img { width: 100%; height: 180px; object-fit: cover; object-position: top; border-radius: 8px; outline: 1px solid var(--line); display: block; margin-bottom: 4px; }
+  :focus-visible { outline: 2px solid var(--red-text); outline-offset: 3px; }
+  @media (max-width: 809px) { .f { grid-template-columns: 1fr; gap: 16px; } }
+</style>
+</head>
+<body>
+<main class="panel">
+  <p class="lab">Revisión completa · 27 nov 2026 · Tarea 1 · Sistema de diseño agéntico</p>
+  <h1>El sistema, <em>revisado</em></h1>
+
+  <div class="light">
+    <div class="dot" aria-hidden="true"></div>
+    <div>
+      <p class="verdict">Ámbar: nada roto, pero hay cosas que se notan.</p>
+      <div class="counts"><span class="pill r">Rompe algo · 0</span><span class="pill a">Se nota · 7</span><span class="pill">Detalle · 9</span></div>
+    </div>
+  </div>
+
+  <div class="summary">
+    <p>La pieza cumple lo que prometía: los tokens salen de <code>estilos/</code> en los dos formatos, las reglas están escritas en palabras llanas, cada componente tiene su ficha, la guía de estilo se genera sola y la comprobación automática pasa. Los 14 componentes de <code>/styleguide</code> se ven bien a 390, 768 y 1440 px, con tres familias, cinco tamaños y una sola sombra (la de la ficha del agente). Con «reducir movimiento» se paran los vídeos y las animaciones. Las páginas antiguas siguen funcionando tras quitar DM Sans, DM Mono y Caveat, y no hay errores en la consola.</p>
+    <p>Lo que más se nota: <strong>dos parejas de color de agente (creative y collab) se leen justo por debajo de lo recomendable</strong> en letra pequeña, <strong>el recuadro de foco del teclado apenas se ve sobre la cabecera negra</strong> (y usa un color del sistema viejo), y a la comprobación automática se le escapan algunas cosas (espacios en otras unidades, duraciones, código JavaScript).</p>
+    <p class="lab">Conocido, no cuenta como fallo: el enlace «Play» del menú lleva a una página que aún no existe (es la siguiente tarea).</p>
+  </div>
+
+  <h2>Los cinco más importantes</h2>
+
+  <section class="f">
+    <div>
+      <span class="tag">Se nota</span>
+      <h3>Dos colores de agente se leen justos</h3>
+      <p class="visitor">«Las letras pequeñas de “creative” y “collab” cuestan un poco de leer.»</p>
+      <p>Texto sobre su fondo: creative 4,3 y collab 4,2 a 1. Para letra pequeña (las etiquetas de 12 px) se recomienda al menos 4,5. Ops queda justo en 4,5; el resto, de sobra. Es una cuestión de gusto (los colores son tuyos y están marcados como provisionales): basta con oscurecer un poco el color del texto de esas dos parejas.</p>
+    </div>
+    <img src="h-contraste.png" alt="Las seis tarjetas de agente; creative y collab marcadas en rojo">
+  </section>
+
+  <section class="f">
+    <div>
+      <span class="tag">Se nota</span>
+      <h3>El foco del teclado casi no se ve en la cabecera</h3>
+      <p class="visitor">«Navego con el tabulador y no sé en qué enlace del menú estoy.»</p>
+      <p>Las pestañas y la fila desplegable funcionan bien con el teclado (flechas, Enter). Pero el recuadro que marca dónde estás es granate oscuro, un color del sistema viejo que ya no está en los tokens. Sobre papel se ve bien; sobre la cabecera negra se queda en 2,6 a 1 (lo mínimo es 3). Falta un token de «foco» en el sistema.</p>
+    </div>
+    <img src="h-foco.png" alt="Menú de la cabecera con el foco del teclado en Play: un recuadro granate muy poco visible sobre negro">
+  </section>
+
+  <section class="f">
+    <div>
+      <span class="tag">Se nota</span>
+      <h3>La 404 tiene la cabecera nueva pero el cuerpo viejo</h3>
+      <p class="visitor">«Esta página parece de otra web: el titular es de palo seco y en negrita.»</p>
+      <p>El titular va en Space Grotesk negrita, a un tamaño que no está en la escala, y los botones son los antiguos (sin la flecha de color). Según <code>estilos/</code>, los titulares van en Instrument Serif con la parte importante en cursiva. Además la comprobación no lo detecta porque la página usa clases antiguas en vez de escribir los valores.</p>
+    </div>
+    <img src="h-404.png" alt="Página 404: titular en Space Grotesk negrita y botones antiguos, marcados en rojo">
+  </section>
+
+  <section class="f">
+    <div>
+      <span class="tag">Se nota</span>
+      <h3>En móvil, la cara de Contact tapa las pistas</h3>
+      <p class="visitor">«No puedo leer las pistas 02 y 03 del crucigrama: la cabeza del gorro está encima.»</p>
+      <p>A 390 px la cara flotante y su nota «let’s talk?» quedan encima del texto de las pistas. La nota antes iba en Caveat y ahora sale en Instrument Serif (es lo esperado). Lo de tapar el texto probablemente ya pasaba antes de esta pieza; lo dejo apuntado porque un visitante lo ve.</p>
+    </div>
+    <img src="h-contacto.png" alt="Contact a 390 px: la cara con gorro tapa parte de las pistas 02 y 03">
+  </section>
+
+  <section class="f">
+    <div>
+      <span class="tag">Se nota</span>
+      <h3>A la comprobación automática se le escapan cosas</h3>
+      <p class="visitor">(Esto no lo ve un visitante, pero es la promesa de la pieza: que los agentes «no puedan saltarse» el sistema.)</p>
+      <p>Lo comprobé leyendo el vigilante. No salta si alguien:</p>
+      <ul>
+        <li>pone un espacio en otra unidad (por ejemplo «2rem» en vez de píxeles), o uno de 1–2 px;</li>
+        <li>escribe una duración a mano («400ms») o una altura de línea propia;</li>
+        <li>mete estilos desde código JavaScript, que no se lee;</li>
+        <li>usa clases antiguas (como en la 404), o escribe una regla correcta que luego no se aplica (como el texto en otra letra de la guía, abajo).</li>
+      </ul>
+      <p>Eso sí: colores, tamaños de letra, familias, radios, sombras, blur y degradados los pilla bien, y la deuda de las páginas viejas solo puede bajar.</p>
+    </div>
+    <div class="ok">
+      <p class="lab">Lo que sí cumple (criterios de «hecho»)</p>
+      <ul>
+        <li>Tokens en CSS y en formato estándar (DTCG), generados desde <code>estilos/</code> (55 tokens, coinciden)</li>
+        <li><code>DESIGN.md</code> con las reglas en palabras llanas</li>
+        <li>Ficha de los 14 componentes: para qué, cuándo, cuándo no y un ejemplo</li>
+        <li>Skill <code>portfolio-system</code> en su sitio</li>
+        <li><code>npm run check</code> pasa: «no new breaks · old debt 578»</li>
+        <li><code>/styleguide</code> generada desde tokens y fichas, no escrita a mano</li>
+        <li>Menú Play · Work · About · Contact en todas las páginas, también en la 404 y la guía</li>
+        <li>Movimiento reducido: el vídeo se para y enseña controles; las entradas de la home no se animan</li>
+        <li>Sin errores en la consola en ninguna página</li>
+      </ul>
+    </div>
+  </section>
+
+  <h2>El resto</h2>
+
+  <details>
+    <summary>Se nota · La cabecera de ejemplo de la guía corta el email (1440 px)</summary>
+    <section class="f">
+      <div>
+        <p class="visitor">«En la guía, el email de la cabecera se sale de su caja.»</p>
+        <p>Solo pasa en el ejemplo de <code>/styleguide</code>, porque ahí la cabecera vive en una caja más estrecha que la pantalla. En las páginas de verdad el email cabe bien a 810, 1024, 1100, 1280 y 1440 px.</p>
+      </div>
+      <img src="h-cabecera-cortada.png" alt="Ejemplo de la cabecera en la guía con el email cortado por la derecha">
+    </section>
+  </details>
+
+  <details>
+    <summary>Se nota · La guía mezcla español e inglés</summary>
+    <section class="f">
+      <div>
+        <p class="visitor">«La página está en inglés, pero las descripciones de los colores salen en español.»</p>
+        <p>Las notas de los tokens («marco, texto principal», «gorra · Biblioteca (WIP)»…) vienen tal cual de <code>estilos/tokens.css</code>, que está en español. El copy de la web va en inglés.</p>
+      </div>
+      <img src="h-idioma.png" alt="Muestras de color con las descripciones en español marcadas">
+    </section>
+  </details>
+
+  <details>
+    <summary>Detalle · Un cuarto tipo de letra en la propia guía</summary>
+    <section class="f">
+      <div>
+        <p>Los nombres de archivo de la entradilla (<code>estilos/tokens.css</code>, <code>DESIGN.md</code>) salen en la letra monoespaciada del navegador, justo en la página que dice «tres familias». La regla para ponerlos en Space Grotesk está escrita, pero no llega a aplicarse.</p>
+      </div>
+      <img src="h-codigo.png" alt="Entradilla de la guía con un nombre de archivo en letra monoespaciada marcado">
+    </section>
+  </details>
+
+  <details>
+    <summary>Detalle · Valores a mano dentro de un componente del sistema</summary>
+    <p>La cabecera usa una separación de 2 px entre los enlaces del menú, alturas de línea propias (1,3 y 0,8) y alturas mínimas de 22 y 36 px (también las pestañas). Nada de eso está en los tokens. No se ve raro, pero es justo lo que el sistema dice que no se hace.</p>
+  </details>
+
+  <details>
+    <summary>Detalle · Las instrucciones para la cursiva no coinciden</summary>
+    <p>La ficha de la tarjeta de título dice «escribe la parte en cursiva entre <code>**…**</code>», pero el ejemplo del encabezado de capítulo usa <code>*…*</code>. Se ve bien en los dos casos, pero un agente puede dudar cuál usar.</p>
+  </details>
+
+  <details>
+    <summary>Detalle · Pequeñas cosas de la guía</summary>
+    <ul>
+      <li>El radio «pill» enseña «999px ·» con un punto que no lleva nada detrás.</li>
+      <li>El color «line» aparece como «#07070724», un código de ocho cifras difícil de leer; en la fuente es negro al 14 %.</li>
+      <li>A 390 px, la barra de <code>--s-8</code> toca su etiqueta.</li>
+      <li>La demostración de movimiento solo funciona pasando el ratón: en el móvil no se mueve nada.</li>
+      <li>La guía descarga un vídeo de 3,7 MB nada más abrirla, también en el móvil.</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>Detalle · «Up for» desaparece en pantallas medianas</summary>
+    <p>Entre 810 y 1099 px la cabecera esconde «Up for: Meeting people and good collabs»; en móvil también esconde «Based in» y el email. Parece hecho a propósito, pero <code>estilos/</code> no lo dice.</p>
+  </details>
+
+  <details>
+    <summary>Detalle · Las páginas viejas aún tienen blur (deuda registrada)</summary>
+    <p>La home y About entran con un desenfoque al cargar; Work tiene una sombra difusa bajo las piezas. Está en la «deuda» que aprobaste y desaparecerá al rehacer esas páginas, pero ahora mismo un visitante lo ve, y va contra «nada de blur». Con movimiento reducido no aparece.</p>
+  </details>
+
+  <details>
+    <summary>Todas las capturas (7 páginas × 3 anchos)</summary>
+    <div class="gal">
+      <a href="styleguide-1440.png"><img src="styleguide-1440.png" alt="">Styleguide 1440</a>
+      <a href="styleguide-768.png"><img src="styleguide-768.png" alt="">Styleguide 768</a>
+      <a href="styleguide-390.png"><img src="styleguide-390.png" alt="">Styleguide 390</a>
+      <a href="index-1440.png"><img src="index-1440.png" alt="">Home 1440</a>
+      <a href="index-768.png"><img src="index-768.png" alt="">Home 768</a>
+      <a href="index-390.png"><img src="index-390.png" alt="">Home 390</a>
+      <a href="about-1440.png"><img src="about-1440.png" alt="">About 1440</a>
+      <a href="about-768.png"><img src="about-768.png" alt="">About 768</a>
+      <a href="about-390.png"><img src="about-390.png" alt="">About 390</a>
+      <a href="contact-1440.png"><img src="contact-1440.png" alt="">Contact 1440</a>
+      <a href="contact-768.png"><img src="contact-768.png" alt="">Contact 768</a>
+      <a href="contact-390.png"><img src="contact-390.png" alt="">Contact 390</a>
+      <a href="work-1440.png"><img src="work-1440.png" alt="">Work 1440</a>
+      <a href="work-768.png"><img src="work-768.png" alt="">Work 768</a>
+      <a href="work-390.png"><img src="work-390.png" alt="">Work 390</a>
+      <a href="work-cupra-1440.png"><img src="work-cupra-1440.png" alt="">Cupra 1440</a>
+      <a href="work-cupra-768.png"><img src="work-cupra-768.png" alt="">Cupra 768</a>
+      <a href="work-cupra-390.png"><img src="work-cupra-390.png" alt="">Cupra 390</a>
+      <a href="404-1440.png"><img src="404-1440.png" alt="">404 1440</a>
+      <a href="404-768.png"><img src="404-768.png" alt="">404 768</a>
+      <a href="404-390.png"><img src="404-390.png" alt="">404 390</a>
+      <a href="sg390-AgentCard.png"><img src="sg390-AgentCard.png" alt="">Ficha agente 390</a>
+      <a href="sg390-Tabs.png"><img src="sg390-Tabs.png" alt="">Pestañas 390</a>
+      <a href="foco-tabs.png"><img src="foco-tabs.png" alt="">Pestañas con teclado</a>
+      <a href="foco-desplegable.png"><img src="foco-desplegable.png" alt="">Desplegable con teclado</a>
+    </div>
+  </details>
+
+  <h2>No he podido comprobar</h2>
+  <ul>
+    <li><strong>Un móvil de verdad con el dedo:</strong> solo he simulado los anchos en un navegador de escritorio.</li>
+    <li><strong>Nitidez en pantalla Retina:</strong> las capturas son a densidad normal.</li>
+    <li><strong>Red lenta y vídeos que fallan:</strong> la vista previa es local y carga al instante.</li>
+    <li><strong>El texto «NO DRIVERS, NO CUPRA.» del caso Cupra a 768 px</strong> sale a medias en la captura; parece una animación pillada a mitad, no lo doy por roto.</li>
+    <li><strong>La compilación en Vercel:</strong> he revisado una copia estática ya compilada; no he lanzado la compilación.</li>
+    <li><strong>Lectores de pantalla:</strong> he mirado que pestañas y desplegable estén bien etiquetados, pero no los he probado con uno.</li>
+    <li><strong>Revisión anterior:</strong> no hay otra de esta pieza, así que no hay «antes y después».</li>
+  </ul>
+</main>
+</body>
+</html>
