@@ -9,12 +9,18 @@ import Base from '../layouts/Base.astro';
 import SiteHeader from '../components/system/SiteHeader.astro';
 import HobbyEgg from '../components/HobbyEgg.astro';
 import { getEntry } from 'astro:content';
+import { getWork, projectUrl } from '../lib/projects';
 import { rich } from '../lib/utils';
 import { BUBBLES } from '../data/bubbles';
 const BB = BUBBLES.bob;
+// jobs that have cases in Work link to them instead of repeating role, years and story
+const work = await getWork();
+const firstPlainOf = (list: any[]) => list.findIndex((e) => !(e.cases || []).length);
+const casesOf = (e: any) => (e.cases || []).map((id: string) => work.find((w) => w.id === id)).filter(Boolean).map((w: any) => ({ href: projectUrl(w), label: w.data.company || w.data.title }));
 const a = (await getEntry('pages', 'about'))!.data as any;
 const quirks: string[] = a.quirks || [];
 const born = String(a.born || '');
+const firstPlain = firstPlainOf(a.experience || []);
 const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''];
 ---
 <Base title="about" nav={false}>
@@ -52,7 +58,9 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
     <div class="ab__cols">
       <div class="ab-in" style="--d: 1700ms">
         <p class="ab__lab">Experience</p>
-        {a.experience.map((e: any) => <p class="ab__val">{e.company.replace(', for Roche', '')} <span class="ab__dim">— {e.years.replace(/\s/g, '').replace('—', '–')}</span></p>)}
+        {a.experience.map((e: any) => casesOf(e).length
+          ? <p class="ab__val">{e.company.replace(', for Roche', '')} <span class="ab__dim">— {casesOf(e).map((c: any, i: number) => <>{i > 0 && ', '}<a class="ab__u" href={c.href}>{c.label}</a></>)}</span></p>
+          : <p class="ab__val">{e.company.replace(', for Roche', '')} <span class="ab__dim">— {e.years.replace(/\s/g, '').replace('—', '–')}</span></p>)}
       </div>
       <div class="ab-in" style="--d: 1780ms">
         <p class="ab__lab">{a.skillsTitle}</p>
@@ -84,8 +92,15 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
     <div class="abx__block">
       <h2 class="abx__h">Experience</h2>
       <div class="abx__body">
-        {a.experience.map((e: any, i: number) => (
-          <details class="abx__job" open={i === 0}>
+        {a.experience.map((e: any, i: number) => casesOf(e).length ? (
+          <div class="abx__job abx__job--work">
+            <p class="abx__row">
+              <span class="abx__role">{e.company.replace(', for Roche', '')}</span>
+              <span class="abx__co">See it in Work: {casesOf(e).map((c: any, j: number) => <>{j > 0 && ' · '}<a href={c.href}>{c.label} →</a></>)}</span>
+            </p>
+          </div>
+        ) : (
+          <details class="abx__job" open={i === firstPlain}>
             <summary>
               <span class="abx__yr">{e.years}</span>
               <span class="abx__role">{e.role}</span>
@@ -222,12 +237,12 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
 
   .ab__cols { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 16px; row-gap: 20px; }
 
-  /* entry: the year rises from a mask, the face pops, words blur in */
+  /* entry: the year rises from a mask, the face pops, words rise in */
   .ab-rise { animation: ab-rise 1.05s cubic-bezier(.22,.75,.25,1) var(--d, 0ms) both; }
   .ab-in { animation: ab-in 800ms cubic-bezier(.22,.75,.25,1) var(--d, 0ms) both; }
   .ab__face { animation: ab-pop 900ms cubic-bezier(.3,1.3,.5,1) 650ms both; }
   @keyframes ab-rise { from { translate: 0 105%; } to { translate: 0 0; } }
-  @keyframes ab-in { from { opacity: 0; filter: blur(12px); translate: 0 8px; } to { opacity: 1; filter: blur(0); translate: 0 0; } }
+  @keyframes ab-in { from { opacity: 0; translate: 0 8px; } to { opacity: 1; translate: 0 0; } }
   @keyframes ab-pop { 0% { opacity: 0; scale: .2; rotate: -25deg; } 60% { opacity: 1; scale: 1.1; rotate: 6deg; } 100% { opacity: 1; scale: 1; rotate: 0deg; } }
   @media (prefers-reduced-motion: reduce) { .ab-rise, .ab-in, .ab__face, .ab__img { animation: none; } }
 
@@ -254,6 +269,9 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
     padding: 18px 0; font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.4; transition: opacity 200ms var(--ease-out);
   }
   .abx__job summary::-webkit-details-marker { display: none; }
+  .abx__row { display: grid; grid-template-columns: 9em minmax(0, 1.3fr) minmax(0, 1fr) 24px; gap: var(--s-4); align-items: baseline; padding: var(--s-4) 0; margin: 0; font-family: var(--font-body); font-size: var(--fs-text); line-height: var(--lh-text); }
+  .abx__row .abx__role { grid-column: 2; }
+  .abx__row a { color: var(--paper); text-decoration: underline; text-underline-offset: 0.2em; }
   .abx__job summary:focus-visible { outline: 2px solid var(--on-chrome); outline-offset: 4px; }
   .abx__body:has(.abx__job summary:hover) .abx__job:not(:hover) summary { opacity: 0.45; }
   .abx__yr, .abx__co { color: var(--muted-ink); }
@@ -265,7 +283,7 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
   .abx__more { display: grid; grid-template-columns: 9em minmax(0, 1fr); gap: 16px; padding: 0 0 26px; }
   .abx__more > * { grid-column: 2; }
   .abx__job[open] .abx__more { animation: abx-open 450ms var(--ease-out) both; }
-  @keyframes abx-open { from { opacity: 0; translate: 0 -6px; filter: blur(6px); } to { opacity: 1; translate: 0 0; filter: blur(0); } }
+  @keyframes abx-open { from { opacity: 0; translate: 0 -6px; } to { opacity: 1; translate: 0 0; } }
   .abx__text { font-family: var(--font-body); font-size: clamp(16px, 1.15vw, 19px); line-height: 1.55; max-width: 60ch; color: var(--muted-ink); }
   .abx__text :global(strong) { font-weight: 400; color: var(--white); }
   .abx__tags { margin-top: 12px !important; font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.5; color: var(--muted-ink); }
@@ -301,6 +319,8 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
     .abx { gap: 56px; }
     .abx__facts { grid-template-columns: 1fr 1fr; row-gap: 24px; }
     .abx__job summary { grid-template-columns: minmax(0, 1fr) 24px; row-gap: 4px; }
+    .abx__row { grid-template-columns: minmax(0, 1fr); row-gap: var(--s-1); }
+    .abx__row .abx__role { grid-column: 1; }
     .abx__yr, .abx__co { grid-column: 1; }
     .abx__role { grid-column: 1; grid-row: 2; }
     .abx__plus { grid-column: 2; grid-row: 1 / span 3; }

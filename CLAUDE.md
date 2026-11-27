@@ -19,7 +19,9 @@ Web en Vercel: https://portfolio-alidifreijo.vercel.app/ (rama `main`). Todavía
 
 - No decir que Ali busca trabajo. Como mucho, que está abierta a conocer gente y a colaboraciones.
 - Cupra está bajo NDA: solo se usa el material ya publicado.
-- Roche: nada confidencial; solo el texto genérico que Ali apruebe.
+- Roche: nada confidencial; solo el texto genérico que Ali apruebe. El texto aprobado está en `src/content/projects/roche.yaml` y se usa tal cual.
+  - **Nunca pueden salir:** el nombre interno de la plataforma o de sus productos, el del sistema de diseño nuevo o el antiguo, el de la librería de Figma, nombres de archivos, repos, equipos o personas, herramientas internas, «minor account», y cifras o fechas de planificación.
+  - **Sí pueden salir:** Roche, Accu-Chek y mySugr.
 - Material de cliente (por ejemplo, la RFP de North) sirve para entender, nunca para publicar.
 - Nada de blur, acuarelas ni degradados.
 - No inventar datos de Ali. Si falta algo, se pregunta o se deja un `[PLACEHOLDER]` visible.

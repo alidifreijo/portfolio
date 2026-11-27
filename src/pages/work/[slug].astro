@@ -30,10 +30,10 @@ const facts = [
   { label: 'Via', value: d.via || '' },
 ].filter((f) => f.value);
 const chapters = [
-  { key: 'context', title: 'Context', text: d.context },
-  { key: 'role', title: 'Role', text: d.roleText },
-  { key: 'process', title: 'Process', text: d.process },
-  { key: 'result', title: 'Result', text: d.result },
+  { key: 'context', title: d.titles.context || 'Context', text: d.context },
+  { key: 'role', title: d.titles.role || 'Role', text: d.roleText },
+  { key: 'process', title: d.titles.process || 'Process', text: d.process },
+  { key: 'result', title: d.titles.result || 'Result', text: d.result },
 ].filter((c) => c.text);
 const webm = (src: string) => { const f = src.replace(/\.mp4$/, '.webm'); return src.endsWith('.mp4') && existsSync(`public${f}`) ? f : undefined; };
 const mediaFor = (key: string) => d.media.filter((m) => m.chapter === key);
@@ -85,7 +85,8 @@ const mark = (html: string) => html.replace(/\[PLACEHOLDER[^\]]*\]/g, (m) => `<m
   .wc__main { display: flex; flex-direction: column; gap: var(--s-8); min-width: 0; }
   .wc__ch { display: flex; flex-direction: column; gap: var(--s-5); scroll-margin-top: var(--s-5); }
   .wc__text { max-width: 64ch; font-family: var(--font-body); font-size: var(--fs-text); line-height: var(--lh-text); }
-  .wc__text :global(p + p) { margin-top: var(--s-4); }
+  .wc__text :global(p + p), .wc__text :global(p + ul), .wc__text :global(ul + p) { margin-top: var(--s-4); }
+  .wc__text :global(ul) { margin: 0; padding-left: var(--s-5); display: flex; flex-direction: column; gap: var(--s-3); }
   .wc__media { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--s-4); }
   .wc__grid :global(.ph) { background: var(--paper-2); color: var(--red-text); font-family: var(--font-ui); font-size: var(--fs-label); letter-spacing: var(--ls-label); padding: 0 var(--s-1); border-radius: var(--r-sm); }
 

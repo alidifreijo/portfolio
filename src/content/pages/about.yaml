@@ -15,8 +15,6 @@ facts:
   label: years designing products, physical first, digital since 2020
 - value: '3'
   label: languages · Spanish, Galician, English
-- value: BCN
-  label: based in Barcelona, made in Galicia
 intro: 'Research, UX and UI, with an industrial designer’s habit of **thinking in systems, not just screens.** Curious by default, allergic to unnecessary complexity, and very into the small details that make people go “oh, nice.”
 
 
@@ -89,6 +87,8 @@ experience:
 - years: 2026 — now
   role: Senior Product Designer
   company: Garaje de Ideas, for Roche
+  cases:
+  - roche
   tags:
   - Ways of Working
   - Requirements
@@ -97,6 +97,9 @@ experience:
 - years: 2023 — 2026
   role: Team Lead · Senior Product Designer
   company: North Digital Studio
+  cases:
+  - monexa
+  - cupra
   tags:
   - Team Coordination
   - Client Pitching

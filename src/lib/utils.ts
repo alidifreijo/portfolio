@@ -23,7 +23,11 @@ export function rich(text: string = '', paragraphs = true): string {
   return text
     .trim()
     .split(/\n\s*\n/)
-    .map((p) => `<p>${inline(p.trim())}</p>`)
+    .map((p) => {
+      const lines = p.trim().split('\n');
+      if (lines.every((l) => /^\s*- /.test(l))) return `<ul>${lines.map((l) => `<li>${inline(l.replace(/^\s*- /, ''))}</li>`).join('')}</ul>`;
+      return `<p>${inline(p.trim())}</p>`;
+    })
     .join('');
 }
 

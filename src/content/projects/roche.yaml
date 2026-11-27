@@ -4,17 +4,34 @@ status: published
 order: 1
 accent: systems
 display: '**roche**'
-lead: '[PLACEHOLDER: one sentence for link previews.]'
-teaser: '[PLACEHOLDER: one line about the work at Roche.]'
+lead: |-
+  Design systems, migration and AI in a place where "move fast and break things" is not the vibe.
+teaser: |-
+  Design systems, migration and AI in a place where "move fast and break things" is not the vibe.
 company: Roche
 years: 2026–now
 role: Senior Product Designer
 via: Garaje de Ideas
-line: '[PLACEHOLDER: one line about the work at Roche.]'
-context: '[PLACEHOLDER: generic text approved by Ali. Regulated environment, design system, governance, AI. No product names, no screens.]'
-roleText: '[PLACEHOLDER]'
-process: '[PLACEHOLDER]'
-result: '[PLACEHOLDER]'
+line: |-
+  Design systems, migration and AI in a place where "move fast and break things" is not the vibe.
+titles:
+  role: My role
+  process: How we worked
+  result: Outcome
+context: |-
+  The platform behind Roche's diabetes apps, like Accu-Chek and mySugr: creating accounts for different kinds of profiles, signing in, and the plumbing patients never see but always notice when it breaks. Several product teams, a regulated environment, and a move from an older design system to a new company-wide one.
+roleText: |-
+  I look after UX for one of the platform products, without the title that usually comes with it. Beyond the screens, I work on how the team works: clearer requirements, a single place for decisions, and documentation people actually open.
+
+  I also look after the team itself. I make room for calm: coffee sessions where we show what we've learned and how to apply it, with space for everyone to speak up and feel comfortable doing it.
+process: |-
+  - **Measure the gap before planning.** Before moving a single screen, we ran an intensive compatibility analysis between the old system and the new one. Every token and component was a match, a partial match or a gap. That gave us a plan based on reality, with the holes found before they found us.
+  - **A migration as an excuse to do it better.** Instead of moving the old pieces across, our team built a new, more modern library on top of the company system. Every component is a template with documented slots: what can go inside, and where.
+  - **Documentation that writes itself (almost).** I built Claude Code skills that read the Figma pages through MCP and document each component and slot the same way, every time. The library lives in Figma, and the agents keep up with it.
+  - **Guidelines written twice.** In Markdown for the AI agents doing the migration, and in Figma for designers. Same structure, same source of truth, human review on everything.
+  - **Governance.** One decision log for decisions taken and pending, which also catches blockers and dependencies early.
+result: |-
+  Most of the migration is done. The rest is planned sprint by sprint, based on real team capacity and agreed with front-end, so nobody promises what can't be shipped.
 meta: []
 links: []
 blocks: []

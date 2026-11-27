@@ -52,6 +52,10 @@ Las entradas anteriores al 27 nov salen de `docs/historial.md` y de los commits.
 - 2026-11-27 · Orden de Work: Roche, CaixaBank y Cupra.
 - 2026-11-27 · El pie común (LinkedIn, CV, Let's talk) entra ya en el Bloque 1, en todas las páginas. Antes estaba en la tarea 6.
 
+- 2026-11-27 · Roche: texto aprobado por Ali y escrito con ella, en `src/content/projects/roche.yaml`, que se usa tal cual. Va sin material visual. La lista de lo que nunca puede salir está en CLAUDE.md.
+- 2026-11-27 · About: se mantiene como está (collage, «19 [cara] 94»…) y solo se limpian datos. Fuera el dato «BCN»; Garaje y North enlazan a sus casos de Work en vez de repetir rol, años e historia. Sin blur en la entrada (también en la home).
+- 2026-11-27 · Cut Scenes: fuera la cuadrícula de fotogramas con opiniones y el timeline de commits.
+
 ## Aparcamiento de ideas
 
 - Plantillas de front-end reutilizables para las otras webs de Ali, a partir del sistema del portfolio.

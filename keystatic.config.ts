@@ -205,10 +205,34 @@ export default config({
         role: fields.text({ label: 'Work · Role' }),
         via: fields.text({ label: 'Work · Via', description: 'The agency or studio, e.g. North.' }),
         line: fields.text({ label: 'Work · One line', description: 'The sentence in the row and under the title.' }),
+        titles: fields.object({
+          context: fields.text({ label: '01 title', description: 'Leave empty for "Context"' }),
+          role: fields.text({ label: '02 title', description: 'Leave empty for "Role"' }),
+          process: fields.text({ label: '03 title', description: 'Leave empty for "Process"' }),
+          result: fields.text({ label: '04 title', description: 'Leave empty for "Result"' }),
+        }, { label: 'Work · Chapter titles' }),
         context: rich('Work · 01 Context'),
         roleText: rich('Work · 02 Role'),
         process: rich('Work · 03 Process'),
         result: rich('Work · 04 Result'),
+        chapters: fields.array(
+          fields.object({
+            title: fields.text({ label: 'Title', description: '*italics* for the important word' }),
+            text: rich('Text', 'Use **bold**, an empty line for a new paragraph, and lines starting with "- " for a list.'),
+            media: fields.array(
+              fields.object({
+                src: media('Image or video'),
+                poster: media('Poster (videos)'),
+                width: fields.integer({ label: 'Width (px)' }),
+                height: fields.integer({ label: 'Height (px)' }),
+                alt: fields.text({ label: 'Description (alt)' }),
+                caption: fields.text({ label: 'Caption' }),
+              }),
+              { label: 'Material (the first one goes on the stage)', itemLabel: (p) => p.fields.alt.value },
+            ),
+          }),
+          { label: 'Play · Chapters', itemLabel: (p) => p.fields.title.value },
+        ),
         media: fields.array(
           fields.object({
             src: media('Image or video'),

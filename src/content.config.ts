@@ -37,6 +37,7 @@ const projects = defineCollection({
     role: z.string().optional(),
     via: z.string().optional(),
     line: z.string().optional(),
+    titles: z.object({ context: z.string().optional(), role: z.string().optional(), process: z.string().optional(), result: z.string().optional() }).default({}),
     context: z.string().optional(),
     roleText: z.string().optional(),
     process: z.string().optional(),
