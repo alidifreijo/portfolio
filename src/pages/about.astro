@@ -59,7 +59,7 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
       <div class="ab-in" style="--d: 1700ms">
         <p class="ab__lab">Experience</p>
         {a.experience.map((e: any) => casesOf(e).length
-          ? <p class="ab__val">{e.company.replace(', for Roche', '')} <span class="ab__dim">— {casesOf(e).map((c: any, i: number) => <>{i > 0 && ', '}<a class="ab__u" href={c.href}>{c.label}</a></>)}</span></p>
+          ? <p class="ab__val">{e.company.replace(', for Roche', '')} <span class="ab__dim">— {casesOf(e).map((c: any, i: number) => <>{i > 0 && ', '}<a class="ab__case" href={c.href}>{c.label}</a></>)}</span></p>
           : <p class="ab__val">{e.company.replace(', for Roche', '')} <span class="ab__dim">— {e.years.replace(/\s/g, '').replace('—', '–')}</span></p>)}
       </div>
       <div class="ab-in" style="--d: 1780ms">
@@ -195,6 +195,7 @@ const [b1, b2] = born.length === 4 ? [born.slice(0, 2), born.slice(2)] : ['', ''
   .ab__lab { color: #57534d; margin-bottom: 4px !important; }
   .ab__dim { color: #57534d; }
   .ab__u { display: inline-block; margin-top: 10px; text-decoration: underline; text-underline-offset: 2px; }
+  .ab__case { text-decoration: underline; text-underline-offset: 0.2em; }
 
   .ab__intro { grid-column: 1 / span 6; }
   .ab__lead { font-family: var(--font-serif); font-size: clamp(30px, 2.9vw, 52px); line-height: 1; letter-spacing: -0.02em; max-width: 18ch; text-wrap: balance; }

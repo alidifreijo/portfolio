@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisión · Roche y About · 27 nov 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:#070707; --paper:#D4D1CB; --paper-2:#ECEAE5; --muted:#4A4744; --muted-ink:#8E8A84;
+    --line:rgba(7,7,7,.14); --red:#E92C30; --red-text:#B0161B;
+    --systems:#A3FFA9; --on-systems:#113830; --amber:#E89A3C;
+    --serif:'Instrument Serif',Georgia,serif; --ui:'Space Grotesk',system-ui,sans-serif; --body:'Satoshi',system-ui,sans-serif;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--ink); color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.55; padding:12px; }
+  .panel { background:var(--paper); border-radius:12px; padding:40px; max-width:1200px; margin:0 auto 12px; }
+  h1,h2,h3 { font-family:var(--serif); font-weight:400; margin:0; }
+  h1 { font-size:clamp(40px,5vw,64px); line-height:1; }
+  h1 em, h2 em { font-style:italic; }
+  h2 { font-size:clamp(28px,2.6vw,40px); line-height:1.05; margin-bottom:16px; }
+  h3 { font-size:26px; line-height:1.1; }
+  .label { font-family:var(--ui); font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:500; }
+  .top { display:grid; grid-template-columns:auto 1fr; gap:32px; align-items:start; }
+  .light { display:flex; flex-direction:column; gap:8px; background:var(--ink); padding:14px; border-radius:999px; }
+  .light span { width:40px; height:40px; border-radius:50%; background:#2a2826; }
+  .light .on { background:var(--red); }
+  .pills { display:flex; flex-wrap:wrap; gap:8px; margin:16px 0; }
+  .pill { font-family:var(--ui); font-size:13px; padding:6px 12px; border-radius:999px; background:var(--paper-2); }
+  .pill b { font-weight:500; }
+  .pill.r { background:var(--red); color:#fff; }
+  .pill.a { background:var(--amber); color:#261E13; }
+  ul.ok { margin:8px 0 0; padding-left:20px; }
+  .find { border-top:1px solid var(--line); padding:32px 0; display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:32px; }
+  .find:first-of-type { border-top:0; }
+  .find img { width:100%; border-radius:8px; display:block; border:1px solid var(--line); }
+  .imgs { display:flex; flex-direction:column; gap:12px; }
+  .cap { font-family:var(--ui); font-size:12px; color:var(--muted); margin-top:4px; }
+  .lvl { display:inline-block; font-family:var(--ui); font-size:12px; letter-spacing:.06em; text-transform:uppercase; padding:3px 10px; border-radius:999px; margin-bottom:10px; }
+  .lvl.rompe { background:var(--red); color:#fff; }
+  .lvl.nota { background:var(--amber); color:#261E13; }
+  .lvl.det { background:var(--paper-2); color:var(--ink); }
+  .visitor { font-family:var(--serif); font-style:italic; font-size:22px; line-height:1.2; margin:8px 0 12px; }
+  .why { color:var(--muted); font-size:15px; }
+  .why code { font-family:var(--ui); font-size:13px; background:var(--paper-2); padding:1px 6px; border-radius:4px; }
+  .card { background:var(--ink); color:var(--paper); border-radius:8px; padding:20px; font-family:var(--ui); font-size:14px; }
+  .card .hide { background:var(--red); color:#fff; padding:0 6px; border-radius:4px; }
+  details.more { margin-top:8px; }
+  details.more > summary { cursor:pointer; font-family:var(--ui); font-size:14px; text-transform:uppercase; letter-spacing:.06em; padding:16px 0; border-top:1px solid var(--line); }
+  .ba { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .ba img { width:100%; border-radius:8px; border:1px solid var(--line); display:block; }
+  .ba .scroll { max-height:720px; overflow:auto; border-radius:8px; }
+  .grid3 { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; align-items:start; }
+  .grid3 img { width:100%; border-radius:6px; border:1px solid var(--line); }
+  .grid3 .scroll { max-height:520px; overflow:auto; border-radius:6px; }
+  table { width:100%; border-collapse:collapse; font-size:15px; }
+  td { padding:10px 8px; border-top:1px solid var(--line); vertical-align:top; }
+  td:first-child { font-family:var(--ui); font-size:13px; white-space:nowrap; }
+  @media (max-width:760px) { .panel { padding:22px; } .find, .ba, .grid3 { grid-template-columns:1fr; } .top { grid-template-columns:1fr; } .light { flex-direction:row; width:max-content; } }
+</style>
+</head>
+<body>
+
+<section class="panel">
+  <div class="top">
+    <div class="light" aria-label="Semáforo: rojo"><span class="on"></span><span></span><span></span></div>
+    <div>
+      <p class="label">Revisión completa · Roche (tarea 4) y About (tarea 6) · 27 nov 2026 · rama bloque-2-contenido</p>
+      <h1>Rojo, <em>pero por una sola palabra</em> y fuera de la web.</h1>
+      <p style="max-width:62ch">La web está bien: el caso de Roche lleva tu texto exacto, con sus cuatro capítulos y la lista nueva, sin imágenes y sin nada de la lista prohibida. El About ya no repite datos de Work, «BCN» ha desaparecido, Garaje y North llevan a sus casos y la entrada ya no tiene blur. Lo que pone el semáforo en rojo es que el nombre interno de la plataforma de Roche está escrito en un documento del repo, y <strong>el repo de GitHub es público</strong>.</p>
+      <div class="pills">
+        <span class="pill r"><b>1</b> rompe algo</span>
+        <span class="pill a"><b>3</b> se nota</span>
+        <span class="pill"><b>6</b> detalles</span>
+      </div>
+      <p class="label">Lo que está bien</p>
+      <ul class="ok">
+        <li>Roche: texto idéntico al aprobado, capítulos Context · My role · How we worked · Outcome, lista con negritas, cero imágenes.</li>
+        <li>Ni en la web, ni en la carpeta publicada (dist-static), ni en títulos o metadatos aparece nada prohibido. Solo Roche, Accu-Chek y mySugr.</li>
+        <li>About: sin «BCN»; Garaje → Roche y North → CaixaBank y SEAT | CUPRA, arriba y en la versión larga. Los enlaces funcionan con ratón, dedo y teclado (foco visible).</li>
+        <li>Sin blur en la entrada de la home ni del About (comprobado también durante la animación). Con «reducir movimiento», nada se mueve.</li>
+        <li>LinkedIn, CV y «Let’s talk» en el pie de las cuatro páginas; el CV descarga.</li>
+        <li>Nada cortado ni desbordado a 390, 768 y 1440 px. Consola limpia, ningún enlace roto. La comprobación del sistema pasa.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Los <em>cinco</em> más importantes</h2>
+
+  <article class="find">
+    <div class="imgs">
+      <div class="card">docs/project-brief.md · línea 44<br><br>«…en una familia de productos de plataforma de salud (<span class="hide">nombre interno</span>), donde…»</div>
+      <p class="cap">No pongo la palabra aquí a propósito: este informe también está en el repo público.</p>
+    </div>
+    <div>
+      <span class="lvl rompe">Rompe algo</span>
+      <h3>1 · El nombre interno de la plataforma de Roche, en un archivo público</h3>
+      <p class="visitor">«Abro su GitHub por curiosidad y leo para qué plataforma de Roche trabaja.»</p>
+      <p class="why">No sale en la web. Está en el brief antiguo, <code>docs/project-brief.md</code>, línea 44, entre paréntesis. El repo <code>alidifreijo/portfolio</code> es público, así que cualquiera puede leerlo. La lista de CLAUDE.md dice que eso no puede salir nunca. Basta con borrar el paréntesis. Aun así, la palabra se queda en el historial de commits antiguos: limpiar el historial o poner el repo en privado es decisión tuya, porque está en la lista de riesgos.</p>
+    </div>
+  </article>
+
+  <article class="find">
+    <div class="imgs">
+      <img src="m-bocadillo-390.png" alt="About a 390 px: el bocadillo verde tapa dos de las líneas rojas">
+      <img src="m-bocadillo-768.png" alt="About a 768 px: el bocadillo tapa tres líneas rojas">
+      <p class="cap">390 px y 768 px, sin tocar nada.</p>
+    </div>
+    <div>
+      <span class="lvl nota">Se nota</span>
+      <h3>2 · En móvil y tablet, el bocadillo tapa las líneas rojas</h3>
+      <p class="visitor">«“Galileo’s human (he’s a cat)” y “Sarcastic, curious…” quedan debajo del bocadillo verde: no se pueden leer.»</p>
+      <p class="why">El bocadillo «Peek inside my head» sale fijo en pantallas táctiles y se coloca encima del texto. En escritorio no pasa porque solo aparece al pasar el ratón. Ya pasaba antes de esta pieza (se ve igual en la revisión del sistema de diseño), pero nadie lo había apuntado.</p>
+    </div>
+  </article>
+
+  <article class="find">
+    <div class="imgs">
+      <img src="m-barcelona-1440.png" alt="Cabecera con Barcelona y la línea roja del About con Barcelona">
+    </div>
+    <div>
+      <span class="lvl nota">Se nota</span>
+      <h3>3 · «Barcelona» sigue saliendo dos veces en el About</h3>
+      <p class="visitor">«Pone Barcelona arriba y Barcelona justo debajo.»</p>
+      <p class="why">Se quitó el dato «BCN», pero la primera línea roja (From A Coruña, in Barcelona since 2017) repite lo que dice la cabecera (Based in Barcelona). La home también lo dice («A product designer in Barcelona»). Como acordasteis que el collage se queda tal cual, aquí solo lo señalo: el criterio de «ningún dato repetido entre el About y la cabecera» no se cumple del todo. Decides tú.</p>
+    </div>
+  </article>
+
+  <article class="find">
+    <div class="imgs">
+      <div class="card">About · imágenes que se descargan al entrar<br><br>390 px: 21 imágenes, 4,2 MB<br>La más grande: 825 KB<br><br>Roche, en cambio: 146 KB en total</div>
+    </div>
+    <div>
+      <span class="lvl nota">Se nota</span>
+      <h3>4 · El About pesa 4 MB por un collage escondido</h3>
+      <p class="visitor">«Con datos móviles el About tarda en cargar y se come los datos.»</p>
+      <p class="why">Las fotos del collage de aficiones (las que salen al pulsar la cara) se descargan todas nada más entrar, aunque nadie las abra. Algunas pesan casi 1 MB. Tampoco es de esta pieza, pero es el mayor peso de las cuatro páginas revisadas.</p>
+    </div>
+  </article>
+
+  <article class="find">
+    <div class="imgs">
+      <img src="m-columna-1440.png" alt="Columna Experience: más aire encima de las líneas con enlace">
+      <img src="m-columna-390.png" alt="Columna Experience a 390 px">
+      <p class="cap">1440 px arriba; 390 px abajo.</p>
+    </div>
+    <div>
+      <span class="lvl det">Detalle</span>
+      <h3>5 · La columna «Experience» ha perdido el ritmo</h3>
+      <p class="visitor">«Las dos primeras líneas están más separadas que las otras dos.»</p>
+      <p class="why">Los enlaces nuevos (Roche, CaixaBank, SEAT | CUPRA) reutilizan el estilo de «The long version ↓», que lleva un margen arriba. Eso empuja hacia abajo las líneas de Garaje y North. En 390 px, además, «North Digital Studio —» se queda sola y los enlaces bajan a la línea siguiente con un hueco.</p>
+    </div>
+  </article>
+
+  <details class="more">
+    <summary>Ver los otros cinco detalles</summary>
+
+    <article class="find">
+      <div class="imgs"><img src="m-larga-1440.png" alt="Versión larga: filas de Garaje y North"></div>
+      <div>
+        <span class="lvl det">Detalle</span>
+        <h3>6 · En la versión larga, las filas con caso se leen distinto</h3>
+        <p class="visitor">«En las dos primeras filas, donde va el cargo, sale el nombre de la empresa.»</p>
+        <p class="why">En las filas de Capgemini y Ciclus, la columna grande es el cargo, y la empresa va en gris a la derecha. En Garaje y North, la columna grande es la empresa y no hay años, así que hay un hueco a la izquierda. En 390 px, «See it in Work» va encima del nombre, al revés que el resto. Se entiende, pero no es la misma fila.</p>
+      </div>
+    </article>
+
+    <article class="find">
+      <div class="imgs"><img src="m-home-390.png" alt="Índice de la home: 2023 - Today y Garaje de Ideas, for Roche"></div>
+      <div>
+        <span class="lvl det">Detalle</span>
+        <h3>7 · Años escritos de dos maneras</h3>
+        <p class="visitor">«Cupra pone “2023 - Today” y Roche “2026–now”.»</p>
+        <p class="why">En /work, Cupra sale «2023–Today» con raya; en el índice de la home, «2023 - Today» con guion y espacios. Y Cupra dice «Today» mientras Roche dice «now». Viene del texto de <code>cupra.yaml</code>.</p>
+      </div>
+    </article>
+
+    <article class="find">
+      <div class="imgs"><img src="m-home-390.png" alt="Bloque Now de la home"></div>
+      <div>
+        <span class="lvl det">Detalle</span>
+        <h3>8 · La home de caras repite cargo y empresa</h3>
+        <p class="visitor">«“Senior Product Designer · Garaje de Ideas, for Roche” está en la home y otra vez en Work.»</p>
+        <p class="why">El bloque «Now / Before» del índice de la home repite lo de la fila de Roche en /work. La home de caras es provisional y la sustituirá la de agentes, así que lo dejo como recordatorio para esa pieza.</p>
+      </div>
+    </article>
+
+    <article class="find">
+      <div class="imgs"><img src="m-lista-roche-1440.png" alt="Lista con viñetas de How we worked"></div>
+      <div>
+        <span class="lvl det">Detalle</span>
+        <h3>9 · La lista nueva no está en la guía de estilo</h3>
+        <p class="visitor">Un visitante no lo notaría. Es para que no se desvíe más adelante.</p>
+        <p class="why">La lista de «How we worked» se ve bien y usa los espacios del sistema, pero no aparece en /styleguide. Si otro caso usa listas, nada obliga a que se vean igual. Las viñetas son puntos negros normales.</p>
+      </div>
+    </article>
+
+    <article class="find">
+      <div class="imgs"><img src="m-barcelona-1440.png" alt="Líneas rojas del About"></div>
+      <div>
+        <span class="lvl det">Detalle</span>
+        <h3>10 · «Engineer first, designer since» parece cortada</h3>
+        <p class="visitor">«¿Designer since… cuándo?»</p>
+        <p class="why">La segunda línea roja termina en «since». Puede que sea un guiño, pero leída de golpe parece que falta un trozo. Es anterior a esta pieza, y el collage se queda tal cual por acuerdo: lo dejo solo para que lo veas.</p>
+      </div>
+    </article>
+  </details>
+</section>
+
+<section class="panel">
+  <h2>Antes y <em>después</em></h2>
+  <p class="label" style="margin-bottom:12px">Roche · 1440 px · antes (bloque 1, con huecos de texto) y ahora</p>
+  <div class="ba">
+    <div class="scroll"><img src="antes-roche-1440.png" alt="Roche antes"></div>
+    <div class="scroll"><img src="roche-1440.png" alt="Roche ahora"></div>
+  </div>
+  <p class="label" style="margin:28px 0 12px">About · 390 px · antes (con BCN y la experiencia repetida) y ahora</p>
+  <div class="ba">
+    <div class="scroll"><img src="antes-about-390.png" alt="About antes a 390 px"></div>
+    <div class="scroll"><img src="about-390.png" alt="About ahora a 390 px"></div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Las <em>tres</em> anchuras</h2>
+  <details class="more" open>
+    <summary>Roche</summary>
+    <div class="grid3"><div class="scroll"><img src="roche-390.png" alt="Roche 390"></div><div class="scroll"><img src="roche-768.png" alt="Roche 768"></div><div class="scroll"><img src="roche-1440.png" alt="Roche 1440"></div></div>
+  </details>
+  <details class="more">
+    <summary>About</summary>
+    <div class="grid3"><div class="scroll"><img src="about-390.png" alt="About 390"></div><div class="scroll"><img src="about-768.png" alt="About 768"></div><div class="scroll"><img src="about-1440.png" alt="About 1440"></div></div>
+  </details>
+  <details class="more">
+    <summary>Work</summary>
+    <div class="grid3"><div class="scroll"><img src="work-390.png" alt="Work 390"></div><div class="scroll"><img src="work-768.png" alt="Work 768"></div><div class="scroll"><img src="work-1440.png" alt="Work 1440"></div></div>
+  </details>
+  <details class="more">
+    <summary>Home</summary>
+    <div class="grid3"><div class="scroll"><img src="home-390-vista.png" alt="Home 390"></div><div class="scroll"><img src="home-768-vista.png" alt="Home 768"></div><div class="scroll"><img src="home-1440-vista.png" alt="Home 1440"></div></div>
+  </details>
+  <details class="more">
+    <summary>Teclado, movimiento reducido y guía</summary>
+    <div class="grid3">
+      <div><img src="teclado-about.png" alt="Foco en el enlace Roche del About"><p class="cap">Foco visible en «Roche» (About, arriba)</p></div>
+      <div><img src="teclado-about-larga.png" alt="Foco en la versión larga"><p class="cap">Foco visible en la versión larga</p></div>
+      <div><img src="teclado-roche-indice.png" alt="Foco en el índice de capítulos de Roche"><p class="cap">Índice de capítulos de Roche con teclado</p></div>
+      <div class="scroll"><img src="reducido-about-390.png" alt="About con movimiento reducido"><p class="cap">About con «reducir movimiento»: todo visible al momento</p></div>
+      <div><img src="reducido-home-390.png" alt="Home con movimiento reducido"><p class="cap">Home con «reducir movimiento»</p></div>
+      <div class="scroll"><img src="styleguide-390.png" alt="Guía de estilo a 390"><p class="cap">/styleguide a 390 px, para comparar: capítulos, datos y «Next case» de Roche son los mismos componentes</p></div>
+    </div>
+  </details>
+</section>
+
+<section class="panel">
+  <h2>No he podido <em>comprobar</em></h2>
+  <table>
+    <tr><td>Revisión en local</td><td>He mirado la copia estática que me disteis (localhost:4326), no la vista previa de Vercel. Si la de Vercel es otra versión, puede haber diferencias.</td></tr>
+    <tr><td>Lista prohibida completa</td><td>No conozco los nombres internos del sistema de diseño, de la librería de Figma, de equipos, personas o herramientas de Roche: no están en el repo. He buscado lo que sí se podía (el nombre de la plataforma, «minor account», cifras y fechas) y he leído el texto entero a ojo. Lo genérico (Claude Code, Figma, MCP, Markdown) son herramientas públicas, no internas.</td></tr>
+    <tr><td>Iconos y lector de pantalla</td><td>No he probado con VoiceOver ni con un lector real; solo que la cara del About tiene nombre y que el año se lee como «Born in 1994».</td></tr>
+    <tr><td>Red lenta y móvil de verdad</td><td>No he simulado 3G ni he probado en un teléfono físico; el peso del About lo he medido, no lo he sufrido.</td></tr>
+    <tr><td>Keystatic</td><td>No he abierto el panel para ver cómo se editan los títulos de capítulo nuevos ni si la lista con «- » se escribe cómoda desde ahí.</td></tr>
+    <tr><td>Cómo se ve el enlace al compartirlo</td><td>Las etiquetas para compartir de Roche ya tienen tu frase, pero no he visto la tarjeta en WhatsApp ni en LinkedIn.</td></tr>
+  </table>
+</section>
+
+</body>
+</html>

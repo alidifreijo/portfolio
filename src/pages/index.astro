@@ -21,7 +21,7 @@ const work = projects.map((p, i) => {
     href: projectUrl(p),
     title: p.data.title,
     type: type.toLowerCase() === p.data.title.toLowerCase() ? '' : type,
-    year: p.data.years || p.data.meta.find((m) => m.label === 'Year')?.value || '',
+    year: (p.data.years || '').replace(/\s*[-–—]\s*/g, '–') || p.data.meta.find((m) => m.label === 'Year')?.value || '',
     exploration: p.data.kind === 'exploration',
   };
 });

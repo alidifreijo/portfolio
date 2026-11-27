@@ -41,7 +41,7 @@
 
 **Álida Díaz de Freijo Valiño**, firma como **Ali**. Product designer. Nació en 1994 en A Coruña y vive en Barcelona desde 2017, cuando llegó para hacer un máster.
 
-**Ahora.** Senior Product Designer en **Garaje de Ideas**, como contractor externa en **Roche**. Allí trabaja en una familia de productos de plataforma de salud (navify), donde:
+**Ahora.** Senior Product Designer en **Garaje de Ideas**, como contractor externa en **Roche**. Allí trabaja en una familia de productos de plataforma de salud, donde:
 - lleva las necesidades de UX de uno de los productos, como diseñadora y sin cargo formal;
 - impulsa mejoras en la forma de trabajar del equipo;
 - trabaja en la migración del design system: tokens y variables, gobernanza y migración apoyada por IA.
