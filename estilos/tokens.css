@@ -22,10 +22,10 @@
      Cada caso hereda la pareja de su agente (decisión provisional). */
   --systems: #A3FFA9;   --on-systems: #113830;   /* Bob · Roche, Monexa */
   --research: #E89A3C;  --on-research: #261E13;  /* gorra · Biblioteca (WIP) */
-  --creative: #98E7EB;  --on-creative: #146D72;  /* gorro · Cut Scenes */
+  --creative: #98E7EB;  --on-creative: #0F5458;  /* gorro · Cut Scenes */
   --ops: #86CBF7;       --on-ops: #065486;       /* melena · Cupra */
   --empathy: #F0FDAB;   --on-empathy: #301D15;   /* brote · Silena */
-  --collab: #FFA4BF;    --on-collab: #9E194C;    /* pelo revuelto · cutouts */
+  --collab: #FFA4BF;    --on-collab: #7E1340;    /* pelo revuelto · cutouts */
 
   /* ---------- Tipografía: solo tres familias ---------- */
   --font-serif: 'Instrument Serif', Georgia, serif;          /* la voz: titulares, secciones, capítulos, notas */

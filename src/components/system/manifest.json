@@ -15,7 +15,7 @@
       "name": "Footer",
       "file": "src/components/system/Footer.astro",
       "purpose": "The same footer on every page: LinkedIn, the CV and Let's talk.",
-      "use": "At the bottom of every page, on the black frame (task 6 places it).",
+      "use": "At the bottom of every page, on the black frame. Base.astro adds it (footer={false} to leave it out).",
       "avoid": "Repeating these links elsewhere on a page: they live here.",
       "props": {},
       "example": { "props": {} },

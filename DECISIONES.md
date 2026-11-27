@@ -46,6 +46,12 @@ Las entradas anteriores al 27 nov salen de `docs/historial.md` y de los commits.
 - 2026-11-27 · Cada caso usa el color de su agente: Roche y Monexa menta (Systems), Cupra azul cielo (Ops), Cut Scenes cian (Creative), cutouts rosa (Collab). Silena, amarillo lima (Empathy), cuando entre.
 - 2026-11-27 · Las páginas viejas pueden seguir con valores fuera de los tokens mientras se rehacen: la comprobación del build guarda un listado de lo que ya incumplen, que no puede crecer y se vacía al rehacerlas.
 
+- 2026-11-27 · Contraste: el texto sobre creative pasa a #0F5458 y sobre collab a #7E1340 (6,2:1 y 5,5:1), en `estilos/tokens.css`. Por qué: las parejas anteriores se quedaban por debajo de 4,5:1 en letra pequeña.
+- 2026-11-27 · Aprobado cómo se pasó el estilo a código: menú a tamaño texto en mayúsculas, la «á» a tamaño capítulo y los números de capítulo en una píldora del color del agente.
+- 2026-11-27 · CaixaBank se puede nombrar. Monexa fue un proyecto dentro de CaixaBank: un reto.
+- 2026-11-27 · Orden de Work: Roche, CaixaBank y Cupra.
+- 2026-11-27 · El pie común (LinkedIn, CV, Let's talk) entra ya en el Bloque 1, en todas las páginas. Antes estaba en la tarea 6.
+
 ## Aparcamiento de ideas
 
 - Plantillas de front-end reutilizables para las otras webs de Ali, a partir del sistema del portfolio.
