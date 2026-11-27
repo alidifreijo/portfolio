@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisión · Play / Work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:#070707; --paper:#D4D1CB; --paper-2:#ECEAE5; --muted:#4A4744; --muted-ink:#8E8A84;
+    --line:rgba(7,7,7,.14); --red:#E92C30; --red-text:#B0161B;
+    --systems:#A3FFA9; --on-systems:#113830; --ops:#86CBF7; --on-ops:#065486;
+    --creative:#98E7EB; --on-creative:#146D72; --collab:#FFA4BF; --on-collab:#9E194C;
+    --amber:#E89A3C;
+    --serif:'Instrument Serif',Georgia,serif; --ui:'Space Grotesk',system-ui,sans-serif; --body:'Satoshi',system-ui,sans-serif;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--ink); color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.55; padding:12px; }
+  .panel { background:var(--paper); border-radius:12px; padding:40px; max-width:1200px; margin:0 auto 12px; }
+  h1,h2,h3 { font-family:var(--serif); font-weight:400; margin:0; }
+  h1 { font-size:clamp(40px,5vw,64px); line-height:1; }
+  h1 em, h2 em { font-style:italic; }
+  h2 { font-size:clamp(28px,2.6vw,40px); line-height:1.05; margin-bottom:16px; }
+  h3 { font-size:26px; line-height:1.1; }
+  .label { font-family:var(--ui); font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:500; }
+  .top { display:grid; grid-template-columns:auto 1fr; gap:32px; align-items:center; }
+  .light { display:flex; flex-direction:column; gap:8px; background:var(--ink); padding:14px; border-radius:999px; }
+  .light span { width:40px; height:40px; border-radius:50%; background:#2a2a2a; }
+  .light .on { background:var(--amber); }
+  .counts { display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
+  .pill { font-family:var(--ui); font-size:13px; padding:6px 12px; border-radius:999px; background:var(--paper-2); }
+  .pill b { font-weight:500; }
+  .pill.r { background:var(--ink); color:var(--paper); }
+  .pill.a { background:var(--amber); color:#261E13; }
+  ul.plain { padding-left:18px; margin:8px 0 0; }
+  .find { border-top:1px solid var(--line); padding:32px 0; display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:32px; }
+  .find:first-of-type { border-top:0; }
+  .find img { width:100%; border-radius:8px; display:block; border:1px solid var(--line); }
+  .find .imgs { display:flex; flex-direction:column; gap:12px; }
+  .cap { font-family:var(--ui); font-size:12px; color:var(--muted); margin-top:4px; }
+  .lvl { display:inline-block; font-family:var(--ui); font-size:12px; letter-spacing:.06em; text-transform:uppercase; padding:3px 10px; border-radius:999px; margin-bottom:10px; }
+  .lvl.nota { background:var(--amber); color:#261E13; }
+  .lvl.det { background:var(--paper-2); color:var(--ink); }
+  .visitor { font-family:var(--serif); font-style:italic; font-size:22px; line-height:1.2; margin:8px 0 12px; }
+  .why { color:var(--muted); font-size:15px; }
+  details { border-top:1px solid var(--line); padding:16px 0; }
+  summary { cursor:pointer; font-family:var(--ui); font-size:14px; letter-spacing:.04em; text-transform:uppercase; }
+  summary:focus-visible, a:focus-visible { outline:2px solid var(--ink); outline-offset:3px; }
+  .ok { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin-top:16px; }
+  .ok div { background:var(--paper-2); border-radius:8px; padding:14px 16px; font-size:15px; }
+  .ok div b { font-family:var(--ui); font-weight:500; display:block; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--on-systems); margin-bottom:4px; }
+  .sw { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; margin:12px 0; }
+  .sw div { border-radius:8px; padding:12px; font-family:var(--ui); font-size:12px; letter-spacing:.06em; text-transform:uppercase; }
+  .sw small { display:block; text-transform:none; letter-spacing:0; font-size:13px; margin-top:6px; }
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .grid3 img { width:100%; border-radius:8px; border:1px solid var(--line); }
+  table { border-collapse:collapse; width:100%; font-size:15px; }
+  td, th { text-align:left; padding:8px 8px 8px 0; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { font-family:var(--ui); font-weight:500; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+  @media (max-width:800px) {
+    .panel { padding:24px 16px; }
+    .find { grid-template-columns:1fr; }
+    .top { grid-template-columns:1fr; }
+    .light { flex-direction:row; width:max-content; }
+    .grid3 { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<section class="panel">
+  <div class="top">
+    <div class="light" aria-label="Semáforo: ámbar"><span></span><span class="on"></span><span></span></div>
+    <div>
+      <p class="label">Revisión completa · 27 nov 2026 · pieza 2: navegación Play / Work y plantilla de empresa</p>
+      <h1>Ámbar: <em>funciona</em>, pero se notan cosas.</h1>
+      <p>Nada está roto. El menú enseña Play y Work, los tres casos de empresa abren con su plantilla nueva, cada uno con su color, y todos los enlaces llevan a su sitio. No hay errores en la consola en ninguna página ni a ningún ancho. Lo que chirría: la página <b>/work</b> sale apretada y corta en pantalla grande, la misma frase se repite varias veces en Cupra, los vídeos de Cut Scenes y cutouts no respetan «reducir movimiento», y dos colores de agente se leen justos.</p>
+      <div class="counts">
+        <span class="pill r"><b>0</b> rompe algo</span>
+        <span class="pill a"><b>6</b> se nota</span>
+        <span class="pill"><b>8</b> detalle</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ok">
+    <div><b>Hecho</b>Play y Work en el menú, a 390, 768 y 1440 px.</div>
+    <div><b>Hecho</b>Monexa (en /work/monexa) y Cupra abren con la plantilla de empresa: tarjeta de título con datos, Context / Role / Process / Result y «Next case» dentro de Work.</div>
+    <div><b>Hecho</b>Roche sale como fila con solo lo público (2026–now · Senior Product Designer · via Garaje de Ideas) y su frase como [PLACEHOLDER] visible.</div>
+    <div><b>Hecho</b>Campo «Via»: North en Monexa y Cupra, Garaje de Ideas en Roche.</div>
+    <div><b>Hecho</b>Colores: Monexa y Roche menta, Cupra azul cielo, Cut Scenes cian, cutouts rosa.</div>
+    <div><b>Hecho</b>Las caras de la home llevan a las direcciones nuevas. Ningún enlace roto en /work, los casos, /play ni la home.</div>
+    <div><b>Hecho</b>Cupra y Roche no enseñan nada nuevo: todo el texto y las imágenes de Cupra ya estaban publicados en el caso anterior; Roche solo tiene sus datos públicos y [PLACEHOLDER]s. No hay texto inventado.</div>
+    <div><b>Hecho</b>En los casos de empresa, con «reducir movimiento» los vídeos no arrancan solos y enseñan sus controles. Teclado: las filas y la lista de capítulos se recorren con foco visible.</div>
+    <div><b>Hecho</b>La comprobación del sistema pasa. Tarjeta de título, encabezado de capítulo y «Next case» se ven igual que en /styleguide.</div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Los cinco más importantes</h2>
+
+  <article class="find">
+    <div>
+      <span class="lvl nota">Se nota</span>
+      <h3>1 · /work: el título pegado a la tabla y media pantalla negra debajo</h3>
+      <p class="visitor">«El título casi pisa la línea, y la página se acaba a mitad de la pantalla.»</p>
+      <p class="why">En pantalla grande, «Work» queda encima de la raya de la tabla, sin aire, y las etiquetas COMPANY / YEARS… salen justo debajo. El panel de papel acaba en la mitad y deja un bloque negro vacío. Los ajustes de espacio de esta página (la separación entre título y tabla, y que el panel llene la pantalla) están escritos pero no le llegan al panel, así que no se aplican. En móvil se nota menos.</p>
+    </div>
+    <div class="imgs">
+      <img src="h-work-espacios.png" alt="Página Work a 1440 px con el título marcado y el hueco negro marcado">
+      <p class="cap">1440 px. Recuadro rojo: el título sin aire. Discontinuo: el hueco negro.</p>
+    </div>
+  </article>
+
+  <article class="find">
+    <div>
+      <span class="lvl nota">Se nota</span>
+      <h3>2 · La misma frase, tres y cuatro veces</h3>
+      <p class="visitor">«Esto ya lo he leído… dos veces en la misma pantalla.»</p>
+      <p class="why">La frase de cada empresa sale en la fila de /work, otra vez bajo la tarjeta de título del caso y otra en el «Next case» del caso anterior. En Cupra además el capítulo Context repite casi palabra por palabra la frase de arriba. El brief dice que ningún dato salga dos veces. El texto es del Bloque 2, pero la plantilla pone la frase en tres sitios fijos: conviene decidir ahora en cuál vive.</p>
+    </div>
+    <div class="imgs">
+      <img src="h-cupra-repite.png" alt="Caso Cupra con la frase de la tarjeta y la del capítulo Context marcadas">
+      <p class="cap">Cupra a 1440 px: las dos frases marcadas dicen lo mismo.</p>
+    </div>
+  </article>
+
+  <article class="find">
+    <div>
+      <span class="lvl nota">Se nota</span>
+      <h3>3 · Cut Scenes y cutouts no respetan «reducir movimiento»</h3>
+      <p class="visitor">«He pedido menos movimiento y aquí todo se mueve solo, sin botón de pausa.»</p>
+      <p class="why">Con «reducir movimiento» activado, la intro de Cut Scenes y la de cutouts arrancan solas y no enseñan controles. En Cut Scenes también arranca un segundo vídeo al bajar. En Monexa y Cupra sí está bien: se quedan quietos con su póster y con controles. Son las páginas de Play que se han movido de sitio sin rehacerlas, pero la regla dice «siempre».</p>
+    </div>
+    <div class="imgs">
+      <img src="h-movimiento-cutscenes.png" alt="Intro de Cut Scenes reproduciéndose con movimiento reducido activado">
+      <p class="cap">Cut Scenes con movimiento reducido: el vídeo de fondo va solo.</p>
+      <img src="movimiento-reducido-monexa.png" alt="Monexa con movimiento reducido: vídeo parado y con controles">
+      <p class="cap">Así lo hace bien Monexa: vídeo quieto y con controles.</p>
+    </div>
+  </article>
+
+  <article class="find">
+    <div>
+      <span class="lvl nota">Se nota</span>
+      <h3>4 · Dos colores de agente se leen justos</h3>
+      <p class="visitor">«El número del capítulo en rosa casi no se lee.»</p>
+      <p class="why">El texto pequeño (12 px) sobre su color de agente necesita un contraste de 4,5 para leerse bien. Menta va sobrado y azul cielo pasa por poco, pero cian (Cut Scenes) y rosa (cutouts) se quedan cortos. Se ven en las píldoras de capítulo y en los hovers. Cambiar un color de agente es tu decisión de gusto: se apunta para cuando revises la paleta, como ya dice DECISIONES.</p>
+      <div class="sw">
+        <div style="background:var(--systems);color:var(--on-systems)">Systems · 01<small>10,7 · muy bien</small></div>
+        <div style="background:var(--ops);color:var(--on-ops)">Ops · 02<small>4,5 · justo</small></div>
+        <div style="background:var(--creative);color:var(--on-creative)">Creative · 03<small>4,3 · corto</small></div>
+        <div style="background:var(--collab);color:var(--on-collab)">Collab · 04<small>4,2 · corto</small></div>
+      </div>
+    </div>
+    <div class="imgs">
+      <img src="hover-fila-1.png" alt="Fila de Cupra en /work al pasar el ratón, en azul cielo">
+      <p class="cap">Hover de Cupra en /work: azul cielo, legible pero en el límite.</p>
+    </div>
+  </article>
+
+  <article class="find">
+    <div>
+      <span class="lvl nota">Se nota</span>
+      <h3>5 · Roche sale en la home sin año</h3>
+      <p class="visitor">«¿Por qué este es el único que no tiene año?»</p>
+      <p class="why">En la lista de casos de la home (al bajar), Roche aparece como «05 Roche» con el hueco del año vacío, y el contador dice «Cases 05». La lista de la home lee el año del sitio antiguo, y Roche solo lo tiene en el nuevo. Además, «Now: Senior Product Designer · Garaje de Ideas, for Roche» repite justo al lado lo que ya dice la fila de /work.</p>
+    </div>
+    <div class="imgs">
+      <img src="h-home-roche.png" alt="Lista de casos de la home con Roche sin año marcado">
+      <p class="cap">Home a 1440 px, después de bajar.</p>
+    </div>
+  </article>
+</section>
+
+<section class="panel">
+  <details>
+    <summary>Uno más que se nota y 8 detalles</summary>
+
+    <article class="find">
+      <div>
+        <span class="lvl nota">Se nota</span>
+        <h3>6 · Los años escritos de dos maneras</h3>
+        <p class="visitor">«2023 - Today» y «2026—now», uno encima del otro.</p>
+        <p class="why">En la columna de años de /work se ve la diferencia: guion con espacios y «Today» con mayúscula frente a raya larga y «now» en minúscula. La home también usa «2023 - Today». Es texto, pero está en la misma columna.</p>
+      </div>
+      <div class="imgs"><img src="h-work-anos.png" alt="Columna de años de /work marcada"></div>
+    </article>
+
+    <article class="find">
+      <div>
+        <span class="lvl det">Detalle</span>
+        <h3>7 · El [PLACEHOLDER] de Roche no siempre se ve como aviso</h3>
+        <p class="why">Dentro del caso, los [PLACEHOLDER] salen en rojo sobre una etiqueta clara: se ve que falta texto. Pero en la fila de /work y en el «Next case» que sale al final de Cupra, el de Roche sale en gris normal, como si fuera la frase de verdad.</p>
+      </div>
+      <div class="imgs"><img src="h-roche-sin-marca.png" alt="Next case de Roche con el placeholder en gris normal"></div>
+    </article>
+
+    <article class="find">
+      <div>
+        <span class="lvl det">Detalle</span>
+        <h3>8 · El aro del foco casi no se ve en la cabecera negra</h3>
+        <p class="why">Si navegas con el teclado, el aro que marca dónde estás es granate. Sobre papel se ve bien, pero sobre el negro de la cabecera se lee muy poco (2,3 de contraste, piden 3).</p>
+      </div>
+      <div class="imgs"><img src="teclado-menu.png" alt="Foco de teclado sobre WORK en la cabecera negra"><img src="teclado-capitulos.png" alt="Foco de teclado en la lista de capítulos"></div>
+    </article>
+
+    <article class="find">
+      <div>
+        <span class="lvl det">Detalle</span>
+        <h3>9 · Al saltar a un capítulo con el teclado, el foco se queda arriba</h3>
+        <p class="why">En la lista de capítulos, al pulsar Intro sobre «Process» la página baja bien, pero el siguiente Tab vuelve a empezar por el menú en vez de seguir dentro del capítulo.</p>
+      </div>
+      <div class="imgs"><img src="capitulo-process-cupra.png" alt="Cupra después de saltar a Process"></div>
+    </article>
+
+    <article class="find">
+      <div>
+        <span class="lvl det">Detalle</span>
+        <h3>10 · Las filas de /work no usan las piezas de la guía</h3>
+        <p class="why">Los datos de cada fila (Years, Role, Via) se ven como el patrón de datos de la guía, pero están hechos a mano en la página en vez de usar la pieza «DataPair», y la fila de empresa no está en la guía como componente. Hoy se ven igual; si mañana cambias el patrón en la guía, estas filas no cambiarían. Además, la altura mínima del panel tiene un número escrito a mano (140 px).</p>
+      </div>
+      <div class="imgs"><img src="work-390.png" alt="/work a 390 px"></div>
+    </article>
+
+    <article class="find">
+      <div>
+        <span class="lvl det">Detalle</span>
+        <h3>11 · «[DRAFT]» visible en cutouts</h3>
+        <p class="why">La ficha de cutouts dice «[DRAFT: the full case is still to come.]». El brief pide que no se vea ningún [DRAFT]. Es contenido del Bloque 2, se apunta para no olvidarlo.</p>
+      </div>
+      <div class="imgs"><img src="h-cutouts-draft.png" alt="Ficha de cutouts con la marca DRAFT"></div>
+    </article>
+
+    <article class="find">
+      <div>
+        <span class="lvl det">Detalle</span>
+        <h3>12 · Monexa ha perdido la foto del portátil en la mesa</h3>
+        <p class="why">El caso anterior tenía una foto de Monexa en un portátil sobre una mesa, junto a «clear / consistent / scalable». En la plantilla nueva no sale en ningún capítulo. Puede ser a propósito; si no, falta.</p>
+      </div>
+      <div class="imgs"><img src="work-monexa-1440.png" alt="Caso Monexa completo a 1440 px"></div>
+    </article>
+
+    <article class="find">
+      <div>
+        <span class="lvl det">Detalle</span>
+        <h3>13 · Los objetos de /play llevan sombra</h3>
+        <p class="why">La regla es «sin sombras, salvo la ficha del agente». La diagonal de /play conserva la sombra suave de antes debajo de cada objeto. Es la página vieja, que está en la lista de cosas por rehacer.</p>
+      </div>
+      <div class="imgs"><img src="play-1440.png" alt="/play a 1440 px"></div>
+    </article>
+
+    <article class="find">
+      <div>
+        <span class="lvl det">Detalle</span>
+        <h3>14 · Tres direcciones antiguas mandan a páginas que no existen</h3>
+        <p class="why">Ya estaba así antes de esta pieza: /fintech y /work/south mandan a /work/fintech, y /projecthmi a /work/hmi, que no existen (South y hmi están descartados). Quien tenga un enlace viejo del Framer acabaría en la página de «no encontrado».</p>
+      </div>
+      <div class="imgs"></div>
+    </article>
+  </details>
+
+  <details>
+    <summary>Todas las capturas (390, 768 y 1440 px)</summary>
+    <table>
+      <tr><th>Página</th><th>390</th><th>768</th><th>1440</th></tr>
+      <tr><td>/work</td><td><a href="work-390.png">ver</a></td><td><a href="work-768.png">ver</a></td><td><a href="work-1440.png">ver</a></td></tr>
+      <tr><td>/work/monexa</td><td><a href="work-monexa-390.png">ver</a></td><td><a href="work-monexa-768.png">ver</a></td><td><a href="work-monexa-1440.png">ver</a></td></tr>
+      <tr><td>/work/cupra</td><td><a href="work-cupra-390.png">ver</a></td><td><a href="work-cupra-768.png">ver</a></td><td><a href="work-cupra-1440.png">ver</a></td></tr>
+      <tr><td>/work/roche</td><td><a href="work-roche-390.png">ver</a></td><td><a href="work-roche-768.png">ver</a></td><td><a href="work-roche-1440.png">ver</a></td></tr>
+      <tr><td>/play</td><td><a href="play-scroll-390.png">ver</a></td><td><a href="play-768.png">ver</a></td><td><a href="play-vista-1440.png">ver</a></td></tr>
+      <tr><td>/play/cut-scenes</td><td><a href="vista-play-cut-scenes-390.png">ver</a></td><td><a href="play-cut-scenes-768.png">ver</a></td><td><a href="vista-play-cut-scenes-1440.png">ver</a></td></tr>
+      <tr><td>/play/cutouts</td><td><a href="vista-play-cutouts-390.png">ver</a></td><td><a href="play-cutouts-768.png">ver</a></td><td><a href="play-cutouts-1440.png">ver</a></td></tr>
+      <tr><td>Home</td><td><a href="home-indice-390.png">ver</a></td><td><a href="index-768.png">ver</a></td><td><a href="home-indice-1440.png">ver</a></td></tr>
+      <tr><td>Guía: tarjeta de título</td><td><a href="guia-TitleCard-390.png">ver</a></td><td></td><td><a href="guia-TitleCard-1440.png">ver</a></td></tr>
+      <tr><td>Guía: capítulo</td><td><a href="guia-ChapterHeading-390.png">ver</a></td><td></td><td><a href="guia-ChapterHeading-1440.png">ver</a></td></tr>
+      <tr><td>Guía: Next case</td><td><a href="guia-NextCase-390.png">ver</a></td><td></td><td><a href="guia-NextCase-1440.png">ver</a></td></tr>
+      <tr><td>Hover de filas</td><td colspan="3"><a href="hover-fila-0.png">Monexa</a> · <a href="hover-fila-1.png">Cupra</a> · <a href="hover-fila-2.png">Roche</a> · <a href="teclado-work.png">foco de teclado en Roche</a></td></tr>
+    </table>
+    <p class="cap">Nota: en las capturas de página entera de /play, los casos de Play y la home, la parte de abajo sale negra porque esas páginas se mueven con el scroll. Las capturas «vista» y «scroll» enseñan cómo se ven de verdad.</p>
+  </details>
+</section>
+
+<section class="panel">
+  <h2>No he podido comprobar</h2>
+  <ul class="plain">
+    <li><b>Las redirecciones en la web real.</b> /work/bank-platform → /work/monexa, /work/cut-scenes → /play/cut-scenes y /work/cutouts → /play/cutouts están bien declaradas (también /bank-platform → /work/monexa), pero solo funcionan en Vercel, no en esta vista previa. Hay que probarlas en la vista previa de Vercel.</li>
+    <li><b>El peso real en móvil.</b> El servidor de esta vista previa descarga los vídeos enteros (Monexa pesó 9,5 MB a 390 px), cosa que Vercel no debería hacer. Hay que medirlo en Vercel.</li>
+    <li><b>Un móvil de verdad con el dedo.</b> He probado a 390 px en el ordenador: las filas y capítulos son enlaces normales y no dependen del hover, pero no lo he tocado en un teléfono.</li>
+    <li><b>La nitidez de los vídeos en una pantalla Retina.</b> Es de la pieza de vídeos (Bloque 3).</li>
+    <li><b>Red lenta y lector de pantalla.</b> No los he simulado.</li>
+  </ul>
+</section>
+
+</body>
+</html>

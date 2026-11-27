@@ -119,7 +119,8 @@ const allChapters = (d.blocks || []).filter((b: any) => b.discriminant === 'chap
     scrollTo(0, 0);
     const head = document.querySelector<HTMLElement>('.sh');
     if (head) intro.style.setProperty('--intro-top', `${Math.round(head.getBoundingClientRect().bottom)}px`);
-    v.play().catch(() => {});
+    // reduce motion: the film waits for the visitor, with its controls
+    if (reduce) { v.removeAttribute('autoplay'); v.pause(); v.controls = true; } else v.play().catch(() => {});
     setTimeout(clearInk, 250);
     let done = false;
     const dismiss = () => {

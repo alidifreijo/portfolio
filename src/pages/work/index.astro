@@ -12,7 +12,7 @@ import { accentVars, emph } from '../../lib/utils';
 const rows = (await getWork()).map((p) => ({
   href: projectUrl(p),
   company: p.data.company || p.data.title,
-  years: p.data.years || '',
+  years: (p.data.years || '').replace(/\s*[-–—]\s*/g, '–'),
   role: p.data.role || '',
   via: p.data.via || '',
   line: p.data.line || p.data.teaser || '',
@@ -21,7 +21,8 @@ const rows = (await getWork()).map((p) => ({
 const cols = ['Company', 'Years', 'Role', 'Via'];
 ---
 <Base title="work" description="Teams Ali has designed with: the companies, her role and how she works.">
-  <Panel class="wk" label="Work">
+  <Panel label="Work">
+   <div class="wk">
     <h1 class="type-section">Work</h1>
     <div class="wk__head" aria-hidden="true">{cols.map((c) => <Label>{c}</Label>)}<span></span></div>
     <ol class="wk__list">
@@ -40,11 +41,13 @@ const cols = ['Company', 'Years', 'Role', 'Via'];
         </li>
       ))}
     </ol>
+   </div>
   </Panel>
 </Base>
 
 <style>
-  .wk { display: flex; flex-direction: column; gap: var(--s-6); min-height: calc(100vh - 140px); }
+  .wk { display: flex; flex-direction: column; gap: var(--s-6); min-height: calc(100vh - 210px); }
+  .wk__head { padding-top: var(--s-2); }
   .wk__list { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--line); }
   .wk__list li { border-top: 1px solid var(--line); padding: var(--s-1) 0; }
   .wk__head, .wr { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 1.2fr) minmax(0, 2fr) minmax(0, 1.5fr) minmax(0, 4fr) 32px; gap: var(--s-4); align-items: baseline; }
