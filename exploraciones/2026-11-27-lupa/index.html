@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lupa · variants</title>
+<!-- Exploration for Block 4, not product. Built by build.mjs from the real agents and tokens.
+     ?v=A…E (lens) · &a=systems… (agent) · &w=desk|phone · &step=rest|scan|open (phone) -->
+<style>
+@font-face { font-family: 'Instrument Serif'; src: url(isi.woff2) format('woff2'); font-style: italic; }
+@font-face { font-family: 'Instrument Serif'; src: url(isi.woff2) format('woff2'); }
+@font-face { font-family: 'Space Grotesk'; src: url(sg5.woff2) format('woff2'); font-weight: 300 700; }
+@font-face { font-family: 'Satoshi'; src: url(satoshi.woff2) format('woff2'); font-weight: 300 900; }
+:root {
+  /* ---------- Color · base ---------- */
+  --ink: #070707;          /* marco, texto principal */
+  --paper: #D4D1CB;        /* panel, texto sobre negro */
+  --paper-2: #ECEAE5;      /* tarjetas claras, ficha de agente */
+  --paper-3: #E2DFD9;      /* hover sobre tarjetas claras */
+  --muted: #4A4744;        /* texto secundario sobre papel */
+  --muted-ink: #8E8A84;    /* texto secundario sobre negro */
+  --line: rgba(7, 7, 7, 0.14);
+  --line-ink: rgba(212, 209, 203, 0.14);
+
+  /* ---------- Color · marca ---------- */
+  --red: #E92C30;          /* acento */
+  --red-text: #B0161B;     /* rojo para texto sobre papel */
+
+  /* ---------- Color · agentes (fondo / texto encima) ----------
+     Cada caso hereda la pareja de su agente (decisión provisional). */
+  --systems: #A3FFA9;   --on-systems: #113830;   /* Bob · Roche, Monexa */
+  --research: #E89A3C;  --on-research: #261E13;  /* gorra · Biblioteca (WIP) */
+  --creative: #98E7EB;  --on-creative: #0F5458;  /* gorro · Cut Scenes */
+  --ops: #86CBF7;       --on-ops: #065486;       /* melena · Cupra */
+  --empathy: #F0FDAB;   --on-empathy: #301D15;   /* brote · Silena */
+  --collab: #FFA4BF;    --on-collab: #7E1340;    /* pelo revuelto · cutouts */
+
+  /* ---------- Tipografía: solo tres familias ---------- */
+  --font-serif: 'Instrument Serif', Georgia, serif;          /* la voz: titulares, secciones, capítulos, notas */
+  --font-ui: 'Space Grotesk', system-ui, sans-serif;         /* la interfaz: menú, etiquetas, botones, fichas */
+  --font-body: 'Satoshi', system-ui, sans-serif;             /* el texto */
+
+  /* Escala de cinco tamaños */
+  --fs-display: clamp(64px, 11vw, 200px);  --lh-display: 0.9;   /* titular de la home */
+  --fs-section: clamp(40px, 4vw, 64px);    --lh-section: 1;     /* «In short», «Work» */
+  --fs-chapter: clamp(26px, 2.2vw, 36px);  --lh-chapter: 1.05;  /* capítulos, con número en el color del agente */
+  --fs-text: clamp(13px, 0.98vw, 16px);    --lh-text: 1.55;     /* texto y valores */
+  --fs-label: 12px;  --lh-label: 1.2;  --ls-label: 0.06em;      /* etiquetas en mayúsculas */
+
+  /* ---------- Espacio (escala de 4) ---------- */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px;  --s-4: 16px;
+  --s-5: 24px; --s-6: 32px; --s-7: 40px;  --s-8: 64px;
+  --frame: 12px;           /* marco negro alrededor del panel */
+
+  /* ---------- Radios ---------- */
+  --r-sm: 8px;    /* tarjetas */
+  --r-btn: 10px;  /* botones */
+  --r-md: 12px;   /* panel, ficha de agente */
+  --r-pill: 999px;
+
+  /* ---------- Sombra: solo la ficha del agente ---------- */
+  --shadow-card: 0 0 0 1px var(--line), 0 8px 16px -8px rgba(7, 7, 7, 0.25);
+
+  /* ---------- Movimiento ---------- */
+  --dur-fast: 150ms;  --dur-base: 300ms;  --dur-slow: 600ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-spring: linear(0, 0.23 12.5%, 0.66 25%, 1 37.5%, 1.17 50%, 1.18 62.5%, 1.12 75%, 1.05 87.5%, 1);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--ink); }
+body { font-family: var(--font-body); }
+
+/* ---------- desktop scene: 1440 × 900, the prototype's coordinates ---------- */
+.scene { position: relative; width: 1440px; height: 900px; overflow: hidden; background: var(--paper); }
+.layer { position: absolute; left: 0; top: 0; width: 1440px; height: 900px; background: url(hero2x.jpg) 0 0 / 1440px 900px; }
+.scan .grey { filter: grayscale(1); opacity: .45; }
+.keep { clip-path: inset(var(--t) var(--r) var(--b) var(--l)); }
+/* the lens: a window onto the toy with its skeleton */
+.lens { position: absolute; overflow: hidden; }
+.lens .photo { position: absolute; width: 1440px; height: 900px; background: url(notext2x.jpg) 0 0 / 1440px 900px; }
+.lens .tint { position: absolute; inset: 0; }
+.lens .bones { position: absolute; -webkit-mask: url(skeleton-flat.png) 0 0 / 100% 100% no-repeat; mask: url(skeleton-flat.png) 0 0 / 100% 100% no-repeat; }
+.lens .bones.img { -webkit-mask: none; mask: none; background: url(skeleton.png) 0 0 / 100% 100% no-repeat; }
+.lens .lines { position: absolute; inset: 0; }
+.outline { position: absolute; pointer-events: none; }
+.tab { position: absolute; left: 0; bottom: 100%; margin-bottom: var(--s-1); }
+
+/* chips and card, as in the system (AgentChip, AgentCard) */
+.chip { position: absolute; top: 686px; translate: -50% 0; display: inline-flex; align-items: center; gap: var(--s-2); padding: var(--s-1) var(--s-2); border-radius: var(--r-pill);
+  font-family: var(--font-ui); font-weight: 500; font-size: var(--fs-label); line-height: var(--lh-label); letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.chip i { width: 8px; height: 8px; border-radius: var(--r-pill); background: var(--acc); outline: 1px solid var(--line); }
+.chip.on { background: var(--acc); color: var(--on-acc); }
+.chip.on i { background: var(--on-acc); outline: 0; }
+.ac { position: absolute; width: 300px; background: var(--paper-2); color: var(--ink); border-radius: var(--r-md); box-shadow: var(--shadow-card); padding: var(--s-4) var(--s-4) var(--s-2); display: flex; flex-direction: column; gap: var(--s-2); }
+.ac__h, .ac dt { font-family: var(--font-ui); font-weight: 500; font-size: var(--fs-label); line-height: var(--lh-label); letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--muted); }
+.ac__h { display: flex; align-items: center; gap: var(--s-2); }
+.ac__h i { width: 8px; height: 8px; border-radius: var(--r-pill); background: var(--acc); outline: 1px solid var(--line); }
+.ac__n { margin-left: auto; }
+.ac p { margin: 0; }
+.ac__line { font-family: var(--font-ui); font-weight: 500; font-size: var(--fs-text); line-height: var(--lh-text); }
+.ac__q { font-family: var(--font-serif); font-style: italic; font-size: var(--fs-text); line-height: var(--lh-text); color: var(--muted); }
+.ac dl { display: grid; grid-template-columns: max-content 1fr; gap: var(--s-2) var(--s-4); margin: 0; padding: var(--s-3) 0; border-top: 1px solid var(--line); font-family: var(--font-ui); font-size: var(--fs-label); line-height: var(--lh-label); }
+.ac dd { margin: 0; }
+.meter { display: flex; align-items: center; gap: var(--s-2); }
+.meter span { flex: 1; height: 6px; border-radius: var(--r-pill); background: var(--paper-3); outline: 1px solid var(--line); overflow: hidden; }
+.meter b { display: block; height: 100%; background: var(--acc); }
+.btn { display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: var(--s-3) var(--s-4); border-radius: var(--r-btn); background: var(--ink); color: var(--paper);
+  font-family: var(--font-ui); font-weight: 500; font-size: var(--fs-label); letter-spacing: var(--ls-label); text-transform: uppercase; margin-bottom: var(--s-1); }
+.btn b { color: var(--acc); font-size: var(--fs-text); }
+.hdr { position: absolute; left: 0; top: 0; width: 1440px; height: 105px; background: var(--ink); color: var(--paper); display: grid; grid-template-columns: 117px 352px 352px 352px 1fr; padding: var(--s-1) var(--s-3); font-family: var(--font-body); font-size: var(--fs-text); line-height: var(--lh-text); }
+.hdr b { font-family: var(--font-ui); font-weight: 500; font-size: var(--fs-chapter); line-height: 0.8; }
+.hdr nav { display: flex; flex-direction: column; font-family: var(--font-ui); font-weight: 500; text-transform: uppercase; line-height: 1.3; }
+.hdr small { display: block; font-size: var(--fs-text); color: var(--muted-ink); }
+.hint { font-family: var(--font-ui); font-weight: 500; font-size: var(--fs-label); letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--muted); text-align: center; padding: var(--s-1) 0 var(--s-2); }
+.vname { position: absolute; right: var(--s-5); top: 120px; font-family: var(--font-ui); font-weight: 500; font-size: var(--fs-label); letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--ink); background: var(--paper-2); padding: var(--s-1) var(--s-2); border-radius: var(--r-pill); }
+
+/* ---------- phone: 390 × 844 ---------- */
+.phone { position: relative; width: 390px; height: 844px; overflow: hidden; background: var(--ink); color: var(--paper); }
+.phone .bar { display: flex; justify-content: space-between; align-items: center; padding: var(--s-3) var(--s-4); font-family: var(--font-ui); font-weight: 500; font-size: var(--fs-text); text-transform: uppercase; }
+.phone .bar nav { display: flex; gap: var(--s-4); }
+.phone .panel { position: absolute; left: var(--frame); right: var(--frame); top: 56px; bottom: var(--frame); border-radius: var(--r-md); background: var(--paper); overflow: hidden; color: var(--ink); }
+.phone h1 { position: absolute; left: var(--s-4); top: var(--s-4); margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: 64px; line-height: var(--lh-display); }
+.phone h1 em { font-style: italic; }
+.phone .viewport { position: absolute; left: 0; right: 0; top: 150px; height: 420px; overflow: hidden; }
+.phone .viewport .scene { position: absolute; transform-origin: 0 0; }
+/* on the phone the headline is real text above, so the scene uses the picture without it */
+.phone .layer { background-image: url(notext2x.jpg); }
+.phone .hdr { display: none; }
+.sheet { position: absolute; left: var(--s-2); right: var(--s-2); bottom: var(--s-2); }
+.sheet .ac { position: static; width: auto; }
+.dots { position: absolute; left: 0; right: 0; top: 584px; display: flex; justify-content: center; gap: var(--s-2); flex-wrap: wrap; padding: 0 var(--s-3); }
+.dots .chip { position: static; translate: 0 0; }
+.step { position: absolute; right: var(--s-3); top: 64px; z-index: 5; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const AGENTS = [{"n":"01","agent":"systems","name":"Systems agent","character":"Bob","line":"I keep the system honest so the team can move fast.","quote":"I find peace in naming layers.","good":"Tokens, governance, AI-assisted migration","runs":"Tidy layers","allergic":"“Frame 4582”","battery":72,"opens":[{"label":"Open Roche","href":"/work/roche"},{"label":"Open Monexa","href":"/work/monexa"}],"box":[12,390,105,276],"gl":[14,486,104,44]},{"n":"02","agent":"research","name":"Research agent","character":"Cap","line":"I collect references like other people collect mugs.","quote":"Research is my love language.","good":"References, synthesis, connecting dots","runs":"Curiosity","allergic":"Assumptions","battery":91,"opens":[{"label":"Peek at the library · WIP","href":"/library"}],"box":[195,400,191,266],"gl":[240,490,135,40]},{"n":"03","agent":"creative","name":"Creative agent","character":"Bucket hat","line":"I make a mess first, then I make it make sense.","quote":"Creative mess, but beautifully organized.","good":"Concepts, art direction, wild ideas","runs":"Organised chaos","allergic":"Lorem ipsum","battery":64,"opens":[{"label":"Open Cut Scenes","href":"/play/cut-scenes"}],"box":[479,398,192,268],"gl":[520,488,125,40]},{"n":"04","agent":"ops","name":"Ops agent","character":"Long hair","line":"I make sure what we design actually ships.","quote":"Chaos? Not on my watch.","good":"Flows, edge cases, handoffs","runs":"Deadlines","allergic":"Scope creep","battery":83,"opens":[{"label":"Open Cupra","href":"/work/cupra"}],"box":[741,385,241,281],"gl":[805,488,120,40]},{"n":"05","agent":"empathy","name":"Empathy agent","character":"Sprout","line":"I design for whoever lives there, not for the product shot.","quote":"Empathetic, caffeinated, slightly existential.","good":"Listening, personas, accessibility","runs":"Coffee","allergic":"Dark patterns","battery":47,"opens":[{"label":"Open Silena","href":"/play/silena"}],"box":[1052,368,169,298],"gl":[1070,478,140,45]},{"n":"06","agent":"collab","name":"Collab agent","character":"Messy hair","line":"Better ideas happen when everyone gets the scissors.","quote":"Teamwork is my coping mechanism.","good":"Workshops, feedback, shared canvases","runs":"Post-its","allergic":"Silos","battery":88,"opens":[{"label":"Open cutouts","href":"/play/cutouts"}],"box":[1298,405,130,261],"gl":[1360,488,68,40]}];
+const q = new URLSearchParams(location.search);
+const V = q.get('v') || 'A', W = q.get('w') || 'desk', STEP = q.get('step') || 'scan';
+const A = AGENTS.find((a) => a.agent === (q.get('a') || 'systems'));
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const NAMES = { A: 'A · Ring', B: 'B · Viewfinder', C: 'C · Sticker', D: 'D · Lines', E: 'E · Film frame' };
+
+function skeletonBox(a) {
+  const [gx0, gy0, gw, gh] = a.gl; let gx = gx0 + gw / 2; const gy = gy0 + gh / 2;
+  if (a.agent === 'systems') gx = 58; if (a.agent === 'collab') gx = 1372;
+  const fy = a.box[1] + a.box[3] - 6, k = (fy - gy) / 718;
+  return { x: gx - 400 * k, y: gy - 425 * k, w: 834 * k, h: 1183 * k };
+}
+function lens(a, v) {
+  const [bx, by, bw, bh] = a.box, cx = Math.min(Math.max(bx + bw / 2, 100), 1340), cy = by + bh * 0.55;
+  const round = v === 'A' || v === 'C' || v === 'D';
+  const w = round ? 190 : 200, h = round ? 190 : 250, x = cx - w / 2, y = cy - h / 2;
+  const sk = skeletonBox(a);
+  const el = document.createElement('div');
+  el.className = 'lens'; Object.assign(el.style, { left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px', borderRadius: round ? '50%' : 'var(--r-sm)' });
+  if (v === 'C') el.style.rotate = '-4deg';
+  const photo = `<div class="photo" style="left:${-x}px;top:${-y}px"></div>`;
+  const bones = (color) => `<div class="bones${color ? '' : ' img'}" style="left:${sk.x - x}px;top:${sk.y - y}px;width:${sk.w}px;height:${sk.h}px;${color ? `background:${color}` : ''}"></div>`;
+  const lines = `<svg class="lines" width="${w}" height="${h}"><defs><pattern id="ln" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="1" fill="${css('--ink')}" opacity=".35"/></pattern></defs><rect width="100%" height="100%" fill="url(#ln)"/></svg>`;
+  const T = {
+    A: photo + `<div class="tint" style="background:var(--ink);opacity:.62"></div>` + bones('var(--paper)'),
+    B: photo + `<div class="tint" style="background:var(--paper-2);opacity:.86"></div>` + bones('var(--ink)'),
+    C: `<div class="tint" style="background:var(--paper-2)"></div>` + bones('var(--ink)'),
+    D: `<div class="tint" style="background:var(--acc)"></div>` + lines + bones('var(--on-acc)'),
+    E: photo + `<div class="tint" style="background:var(--ink);opacity:.74"></div>` + bones('var(--acc)'),
+  };
+  el.innerHTML = T[v];
+  // the outline sits outside the lens (not clipped)
+  const o = document.createElement('div'); o.className = 'outline';
+  Object.assign(o.style, { left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px', borderRadius: el.style.borderRadius, rotate: el.style.rotate || '0deg' });
+  const O = {
+    A: 'box-shadow: 0 0 0 3px var(--acc), 0 0 0 4px var(--ink)',
+    B: '',
+    C: 'box-shadow: 0 0 0 3px var(--acc)',
+    D: 'box-shadow: 0 0 0 2px var(--ink)',
+    E: 'box-shadow: 0 0 0 4px var(--acc)',
+  };
+  o.style.cssText += O[v];
+  if (v === 'B') o.innerHTML = ['0 0', '100% 0', '0 100%', '100% 100%'].map((p, i) => `<span style="position:absolute;width:24px;height:24px;${i % 2 ? 'right' : 'left'}:-2px;${i > 1 ? 'bottom' : 'top'}:-2px;border:0 solid var(--ink);border-${i > 1 ? 'bottom' : 'top'}-width:2.5px;border-${i % 2 ? 'right' : 'left'}-width:2.5px"></span>`).join('');
+  if (v === 'E') o.innerHTML = `<span class="chip on tab" style="position:absolute;top:auto;translate:0 0;left:-4px">${a.name} · ${a.n}/06</span>`;
+  return [el, o];
+}
+function card(a, extra = '') {
+  return `<div class="ac" style="--acc:var(--${a.agent});--on-acc:var(--on-${a.agent})">
+    <div class="ac__h"><i></i><span>${a.name}</span><span class="ac__n">${a.n}/06</span></div>
+    <p class="ac__line">${a.line}</p><p class="ac__q">${a.quote}</p>
+    <dl><dt>Good at</dt><dd>${a.good}</dd><dt>Runs on</dt><dd>${a.runs}</dd><dt>Allergic to</dt><dd>${a.allergic}</dd>
+    <dt>Battery</dt><dd class="meter"><span><b style="width:${a.battery}%"></b></span>${a.battery}%</dd></dl>
+    ${a.opens.map((o) => `<div class="btn">${o.label}<b>↗</b></div>`).join('')}${extra}</div>`;
+}
+function scene(scan) {
+  const s = document.createElement('div'); s.className = 'scene' + (scan ? ' scan' : '');
+  s.style.setProperty('--acc', `var(--${A.agent})`); s.style.setProperty('--on-acc', `var(--on-${A.agent})`);
+  s.innerHTML = `<div class="layer grey"></div>`;
+  s.dataset.hdr = '1';
+  if (scan) {
+    const [bx, by, bw, bh] = A.box, keep = document.createElement('div'); keep.className = 'layer keep';
+    keep.style.cssText = `--t:${by - 10}px;--r:${1440 - bx - bw - 10}px;--b:${900 - by - bh - 10}px;--l:${bx - 10}px`;
+    s.appendChild(keep); lens(A, V).forEach((e) => s.appendChild(e));
+  }
+  s.insertAdjacentHTML('beforeend', `<div class="hdr"><b>á</b><nav><span>Play</span><span>Work</span><span>About</span><span>Contact</span></nav><span><small>Based in</small>Barcelona</span><span><small>Up for</small>Meeting people and good collabs</span><span></span></div>`);
+  AGENTS.forEach((a) => {
+    const cx = a.box[0] + a.box[2] / 2; if (cx < 60 || cx > 1380) return;
+    const c = document.createElement('span'); c.className = 'chip' + (scan && a === A ? ' on' : '');
+    c.style.left = cx + 'px'; c.style.setProperty('--acc', `var(--${a.agent})`); c.style.setProperty('--on-acc', `var(--on-${a.agent})`);
+    c.innerHTML = `<i></i>${a.name}`; s.appendChild(c);
+  });
+  return s;
+}
+const root = document.getElementById('root');
+if (W === 'desk') {
+  const s = scene(true);
+  const [bx, , bw] = A.box, right = bx + bw / 2 < 820;
+  s.insertAdjacentHTML('beforeend', card(A).replace('class="ac"', `class="ac" style="left:${right ? bx + bw + 40 : bx - 340}px;top:300px;--acc:var(--${A.agent});--on-acc:var(--on-${A.agent})"`));
+  s.insertAdjacentHTML('beforeend', `<span class="vname">${NAMES[V]}</span>`);
+  root.appendChild(s);
+} else {
+  const p = document.createElement('div'); p.className = 'phone';
+  p.innerHTML = `<div class="bar"><span>á</span><nav><span>Play</span><span>Work</span><span>About</span><span>Contact</span></nav></div><div class="panel"><h1><em>Yep,</em> that's me.</h1><div class="viewport"></div><div class="dots"></div></div>`;
+  const vp = p.querySelector('.viewport'), s = scene(STEP !== 'rest'), k = 0.62;
+  const cx = A.box[0] + A.box[2] / 2; s.style.transform = `scale(${k})`;
+  s.style.left = Math.min(0, Math.max(366 - 1440 * k, 183 - cx * k)) + 'px'; s.style.top = (-(A.box[1] - 150) * k) + 'px';
+  s.querySelectorAll('.chip').forEach((c) => c.remove()); vp.appendChild(s);
+  p.querySelector('.dots').innerHTML = AGENTS.map((a) => `<span class="chip${STEP !== 'rest' && a === A ? ' on' : ''}" style="--acc:var(--${a.agent});--on-acc:var(--on-${a.agent})"><i></i>${a.name.replace(' agent', '')}</span>`).join('');
+  const steps = { rest: '1 · Swipe the row, tap a toy', scan: '2 · First tap scans', open: '3 · Second tap opens' };
+  p.insertAdjacentHTML('beforeend', `<span class="vname step" style="position:absolute">${steps[STEP]}${STEP === 'scan' ? '' : ''}</span>`);
+  if (STEP !== 'rest') p.insertAdjacentHTML('beforeend', `<div class="sheet">${card(A, `<p class="hint">${STEP === 'scan' ? 'Tap the toy again to open' : 'Opening…'}</p>`)}</div>`);
+  if (STEP === 'rest') p.insertAdjacentHTML('beforeend', `<div class="sheet"><p class="hint" style="color:var(--paper)">Tap a toy to scan it</p></div>`);
+  root.appendChild(p);
+}
+</script>
+</body>
+</html>

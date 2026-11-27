@@ -7,6 +7,7 @@ Variantes y pruebas técnicas hechas en Claude Code, también las descartadas. U
 | Carpeta | Qué es | Estado |
 | --- | --- | --- |
 | `2026-11-agentes-radiografia/` | Prototipo HTML del hover de la home de agentes (1440×900), con su vídeo v8, el esqueleto y los scripts de captura | Elegida para la home; última pieza |
+| `2026-11-27-lupa/` | Cinco lupas sin degradado ni brillo para la home de agentes, con los componentes y textos reales; idea de móvil en tres toques | Para que Ali elija (Bloque 4) |
 | `2026-11-bob/` | Bob, el muñeco vivo: clips de Gemini, motor, cojines de mohair y chat | Mini proyecto aparcado |
 
 Los recortes de los seis muñecos van en `assets/personajes/`.

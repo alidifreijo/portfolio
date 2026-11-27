@@ -1,0 +1,186 @@
+[
+  {
+    "n": "01",
+    "agent": "systems",
+    "name": "Systems agent",
+    "character": "Bob",
+    "line": "I keep the system honest so the team can move fast.",
+    "quote": "I find peace in naming layers.",
+    "good": "Tokens, governance, AI-assisted migration",
+    "runs": "Tidy layers",
+    "allergic": "“Frame 4582”",
+    "battery": 72,
+    "opens": [
+      {
+        "label": "Open Roche",
+        "href": "/work/roche"
+      },
+      {
+        "label": "Open Monexa",
+        "href": "/work/monexa"
+      }
+    ],
+    "box": [
+      12,
+      390,
+      105,
+      276
+    ],
+    "gl": [
+      14,
+      486,
+      104,
+      44
+    ]
+  },
+  {
+    "n": "02",
+    "agent": "research",
+    "name": "Research agent",
+    "character": "Cap",
+    "line": "I collect references like other people collect mugs.",
+    "quote": "Research is my love language.",
+    "good": "References, synthesis, connecting dots",
+    "runs": "Curiosity",
+    "allergic": "Assumptions",
+    "battery": 91,
+    "opens": [
+      {
+        "label": "Peek at the library · WIP",
+        "href": "/library"
+      }
+    ],
+    "box": [
+      195,
+      400,
+      191,
+      266
+    ],
+    "gl": [
+      240,
+      490,
+      135,
+      40
+    ]
+  },
+  {
+    "n": "03",
+    "agent": "creative",
+    "name": "Creative agent",
+    "character": "Bucket hat",
+    "line": "I make a mess first, then I make it make sense.",
+    "quote": "Creative mess, but beautifully organized.",
+    "good": "Concepts, art direction, wild ideas",
+    "runs": "Organised chaos",
+    "allergic": "Lorem ipsum",
+    "battery": 64,
+    "opens": [
+      {
+        "label": "Open Cut Scenes",
+        "href": "/play/cut-scenes"
+      }
+    ],
+    "box": [
+      479,
+      398,
+      192,
+      268
+    ],
+    "gl": [
+      520,
+      488,
+      125,
+      40
+    ]
+  },
+  {
+    "n": "04",
+    "agent": "ops",
+    "name": "Ops agent",
+    "character": "Long hair",
+    "line": "I make sure what we design actually ships.",
+    "quote": "Chaos? Not on my watch.",
+    "good": "Flows, edge cases, handoffs",
+    "runs": "Deadlines",
+    "allergic": "Scope creep",
+    "battery": 83,
+    "opens": [
+      {
+        "label": "Open Cupra",
+        "href": "/work/cupra"
+      }
+    ],
+    "box": [
+      741,
+      385,
+      241,
+      281
+    ],
+    "gl": [
+      805,
+      488,
+      120,
+      40
+    ]
+  },
+  {
+    "n": "05",
+    "agent": "empathy",
+    "name": "Empathy agent",
+    "character": "Sprout",
+    "line": "I design for whoever lives there, not for the product shot.",
+    "quote": "Empathetic, caffeinated, slightly existential.",
+    "good": "Listening, personas, accessibility",
+    "runs": "Coffee",
+    "allergic": "Dark patterns",
+    "battery": 47,
+    "opens": [
+      {
+        "label": "Open Silena",
+        "href": "/play/silena"
+      }
+    ],
+    "box": [
+      1052,
+      368,
+      169,
+      298
+    ],
+    "gl": [
+      1070,
+      478,
+      140,
+      45
+    ]
+  },
+  {
+    "n": "06",
+    "agent": "collab",
+    "name": "Collab agent",
+    "character": "Messy hair",
+    "line": "Better ideas happen when everyone gets the scissors.",
+    "quote": "Teamwork is my coping mechanism.",
+    "good": "Workshops, feedback, shared canvases",
+    "runs": "Post-its",
+    "allergic": "Silos",
+    "battery": 88,
+    "opens": [
+      {
+        "label": "Open cutouts",
+        "href": "/play/cutouts"
+      }
+    ],
+    "box": [
+      1298,
+      405,
+      130,
+      261
+    ],
+    "gl": [
+      1360,
+      488,
+      68,
+      40
+    ]
+  }
+]
