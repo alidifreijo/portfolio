@@ -5,12 +5,8 @@
 @import '@fontsource/space-grotesk/400.css';
 @import '@fontsource/space-grotesk/500.css';
 @import '@fontsource/space-grotesk/700.css';
-@import '@fontsource/dm-mono/400.css';
-@import '@fontsource/dm-mono/500.css';
-@import '@fontsource/caveat/500.css';
 @import '@fontsource/instrument-serif/400.css';
 @import '@fontsource/instrument-serif/400-italic.css';
-@import '@fontsource/dm-sans/400.css';
 @import './tokens.css';
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -37,14 +33,14 @@ strong, b { font-weight: 700; }
 * { scrollbar-width: thin; scrollbar-color: rgba(212, 209, 203, 0.35) transparent; }
 
 /* ---------- Type styles (use these classes, never ad-hoc sizes) ---------- */
-.t-display { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-display); line-height: var(--lh-display); }
+.t-display { font-family: var(--font-display); font-weight: 700; font-size: var(--old-fs-display); line-height: var(--old-lh-display); }
 .t-display--tight { line-height: var(--lh-display-tight); }
 .t-title   { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-title); line-height: var(--lh-title); }
 .t-lead    { font-family: var(--font-display); font-weight: 300; font-size: var(--fs-lead); line-height: var(--lh-lead); }
 .t-heading { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-heading); line-height: var(--lh-heading); letter-spacing: var(--ls-heading); }
-.t-label   { font-family: var(--font-display); font-weight: 400; font-size: var(--fs-label); line-height: var(--lh-label); letter-spacing: var(--ls-label); }
+.t-label   { font-family: var(--font-display); font-weight: 400; font-size: var(--old-fs-label); line-height: var(--old-lh-label); letter-spacing: var(--old-ls-label); }
 .t-body    { font-size: var(--fs-body); line-height: var(--lh-body); letter-spacing: var(--ls-body); }
-.t-body-l  { font-size: var(--fs-label); line-height: var(--lh-body); letter-spacing: var(--ls-body); }
+.t-body-l  { font-size: var(--old-fs-label); line-height: var(--lh-body); letter-spacing: var(--ls-body); }
 .t-tab     { font-size: var(--fs-body); line-height: var(--lh-body); letter-spacing: var(--ls-tab); }
 .t-small   { font-size: var(--fs-small); line-height: var(--lh-small); letter-spacing: var(--ls-small); }
 .t-micro   { font-size: var(--fs-micro); line-height: var(--lh-micro); letter-spacing: var(--ls-micro); }
@@ -107,3 +103,12 @@ html > .ink.is-in::after { opacity: 1; }
 html > .ink.is-out::after { opacity: 0; transition: opacity 80ms linear; }
 html > .ink.is-out svg { scale: 0; transition: scale 650ms cubic-bezier(.65,0,.35,1); }
 html > .ink.is-fade { opacity: 0; transition: opacity 450ms ease; }
+
+/* ---------- v3 type styles: the five sizes (DESIGN.md) ----------
+   New pages use these classes or the system components; never ad-hoc sizes. */
+.type-display { font-family: var(--font-serif); font-size: var(--fs-display); line-height: var(--lh-display); }
+.type-section { font-family: var(--font-serif); font-size: var(--fs-section); line-height: var(--lh-section); }
+.type-chapter { font-family: var(--font-serif); font-size: var(--fs-chapter); line-height: var(--lh-chapter); }
+.type-text    { font-family: var(--font-body); font-size: var(--fs-text); line-height: var(--lh-text); }
+.type-label   { font-family: var(--font-ui); font-weight: 500; font-size: var(--fs-label); line-height: var(--lh-label); letter-spacing: var(--ls-label); text-transform: uppercase; }
+.type-display em, .type-section em, .type-chapter em { font-style: italic; }

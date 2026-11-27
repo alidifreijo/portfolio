@@ -1,11 +1,11 @@
 /** Shared helpers. */
 
-/** The accent options available to projects. Must match tokens.css. */
-export const ACCENTS = ['copper', 'mint', 'lime', 'sky', 'red', 'mat', 'amber', 'cyan'] as const;
+/** Each case wears the colour of its agent (DECISIONES.md, 27 nov). Must match the agent pairs in tokens.css. */
+export const ACCENTS = ['systems', 'research', 'creative', 'ops', 'empathy', 'collab'] as const;
 export type Accent = (typeof ACCENTS)[number];
 
-export const accentVars = (accent: string = 'copper') =>
-  `--acc: var(--acc-${accent}); --on-acc: var(--on-${accent});`;
+export const accentVars = (accent: string = 'systems') =>
+  `--acc: var(--${accent}); --on-acc: var(--on-${accent});`;
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
 
@@ -28,3 +28,10 @@ export function rich(text: string = '', paragraphs = true): string {
 }
 
 export const isVideo = (src?: string) => !!src && /\.(mp4|webm|mov)$/i.test(src);
+
+/**
+ * For serif titles (Instrument Serif): the important part goes in italics.
+ * `**part**` or `*part*` → <em>part</em>. Everything else is escaped.
+ */
+export const emph = (text: string = '') =>
+  esc(text.trim()).replace(/\*\*(.+?)\*\*|\*(.+?)\*/g, (_m, a, b) => `<em>${a ?? b}</em>`);

@@ -1,0 +1,31 @@
+---
+/**
+ * Button · the black button with an arrow in the agent colour.
+ * A link (href) or a button. Set --acc on a parent to colour the arrow;
+ * without one, the arrow is red.
+ */
+interface Props { href?: string; arrow?: '↗' | '→' | '↓'; external?: boolean; download?: boolean; type?: 'button' | 'submit'; class?: string }
+const { href, arrow = '↗', external, download, type = 'button', class: cls = '' } = Astro.props;
+const ext = external ?? (!!href && /^https?:/.test(href));
+---
+{href ? (
+  <a href={href} class:list={['btn', cls]} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined} download={download || undefined}>
+    <span><slot /></span><b class="btn__a" aria-hidden="true">{arrow}</b>
+  </a>
+) : (
+  <button type={type} class:list={['btn', cls]}><span><slot /></span><b class="btn__a" aria-hidden="true">{arrow}</b></button>
+)}
+
+<style>
+  .btn {
+    display: inline-flex; align-items: center; justify-content: space-between; gap: var(--s-5);
+    min-height: 44px; padding: var(--s-3) var(--s-4); border: 0; border-radius: var(--r-btn); cursor: pointer;
+    background: var(--ink); color: var(--paper); text-decoration: none;
+    font-family: var(--font-ui); font-weight: 500; font-size: var(--fs-label); line-height: var(--lh-label);
+    letter-spacing: var(--ls-label); text-transform: uppercase;
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+  .btn__a { font-family: var(--font-ui); font-weight: 500; font-size: var(--fs-text); line-height: 1; color: var(--acc, var(--red)); transition: transform var(--dur-base) var(--ease-out); }
+  .btn:hover .btn__a, .btn:focus-visible .btn__a { transform: translate(2px, -2px); }
+  .btn:active { transform: scale(0.97); }
+</style>

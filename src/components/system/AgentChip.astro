@@ -1,0 +1,23 @@
+---
+/**
+ * AgentChip · the name under each agent. At rest: grey text with a dot in
+ * the agent colour. Active (being scanned, or the current case): a pill in
+ * its colour.
+ */
+import { accentVars } from '../../lib/utils';
+interface Props { agent: 'systems' | 'research' | 'creative' | 'ops' | 'empathy' | 'collab'; label: string; active?: boolean }
+const { agent, label, active = false } = Astro.props;
+---
+<span class:list={['chip', { 'is-on': active }]} style={accentVars(agent)}><i aria-hidden="true"></i>{label}</span>
+
+<style>
+  .chip {
+    display: inline-flex; align-items: center; gap: var(--s-2); padding: var(--s-1) var(--s-2); border-radius: var(--r-pill);
+    font-family: var(--font-ui); font-weight: 500; font-size: var(--fs-label); line-height: var(--lh-label);
+    letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--muted);
+    transition: background var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+  }
+  .chip i { width: 8px; height: 8px; border-radius: var(--r-pill); background: var(--acc); outline: 1px solid var(--line); }
+  .chip.is-on { background: var(--acc); color: var(--on-acc); }
+  .chip.is-on i { background: var(--on-acc); outline: 0; }
+</style>

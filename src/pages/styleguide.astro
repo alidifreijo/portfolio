@@ -1,165 +1,196 @@
 ---
 /**
- * Styleguide · the living design system. Everything here is rendered with
- * the real tokens and components, so if it looks right here it looks
- * right everywhere.
+ * Styleguide · GENERATED from the system, not written by hand.
+ * Tokens come from src/styles/tokens.json (made from estilos/tokens.css) and
+ * the components from src/components/system/manifest.json: add a token or a
+ * component there and it shows up here. Nothing on this page has its own
+ * values; it is checked like any other page.
  */
 import Base from '../layouts/Base.astro';
-import Card from '../components/Card.astro';
-import Tag from '../components/Tag.astro';
-import Button from '../components/Button.astro';
-import Media from '../components/Media.astro';
-import DeviceFrame from '../components/DeviceFrame.astro';
-import Tab from '../components/Tab.astro';
-import Blocks from '../components/Blocks.astro';
-import Carousel from '../components/Carousel.astro';
-import ProjectTitle from '../components/project/ProjectTitle.astro';
-import ProjectNext from '../components/project/ProjectNext.astro';
-import { ACCENTS } from '../lib/utils';
+import Panel from '../components/system/Panel.astro';
+import Label from '../components/system/Label.astro';
+import tokens from '../styles/tokens.json';
+import manifest from '../components/system/manifest.json';
+import { accentVars } from '../lib/utils';
 
-const core = [
-  ['--ink', '#070707', 'Frame, main text'], ['--paper', '#D4D1CB', 'Cards, text on ink'], ['--paper-2', '#ECEAE5', 'Inner tiles'],
-  ['--surface', '#111212', 'Dark cards, media'], ['--muted', '#4A4744', 'Secondary text'], ['--brand', '#9E194C', 'Dates, links, focus'], ['--brand-soft', '#FFA4BF', 'Tags, about panel'],
-];
-const accentUse: Record<string, string> = { copper: 'cupra', mint: 'fintech', lime: 'bank platform', sky: 'hmi', red: 'cut scenes', mat: 'cutouts', amber: 'silena', cyan: 'contact' };
-const type = [
-  ['t-display', 'Display · Space Grotesk 700 · 45/1 (titles: --tight 0.78)', 'cut scenes'],
-  ['t-title', 'Title · Space Grotesk 700 · 32/1.05', 'explorations'],
-  ['t-lead', 'Lead · Space Grotesk 300 · 25', 'interests & hobbies'],
-  ['t-heading', 'Heading · Space Grotesk 700 · 16 · +0.6', 'Senior Product Designer'],
-  ['t-label', 'Label · Space Grotesk 400 · 16 · +0.6', 'about   work   contact'],
-  ['t-body', 'Body · Satoshi 400/700 · 14/22.4 · +0.5', 'Turning **messy ideas** into things people actually use.'],
-  ['t-tab', 'Tab · Satoshi 400 · 14/22.4 · +1', 'seat | cupra'],
-  ['t-small', 'Small · Satoshi 400/700 · 12/19.2 · +0.6', 'Year 2023 · Company SEAT | CUPRA'],
-  ['t-micro', 'Micro · Satoshi 400 · 10/12', 'employees'],
-  ['t-ui', 'UI · DM Sans 400 · 14', 'View Project'],
-  ['t-eyebrow', 'Eyebrow · Space Grotesk 700 · 12 · caps', 'Role responsibilities'],
-];
-const space = [4, 8, 12, 16, 24, 32, 40, 64];
-const radii = [['--r-xs', 'Chips'], ['--r-sm', 'Cards, media'], ['--r-btn', 'Buttons'], ['--r-md', 'Panels'], ['--r-tab', 'Tab corners'], ['--r-pill', 'Tags']];
-const motion = [
-  ['reveal', 'Fade and rise 12px on scroll. --dur-slow, --ease-out, staggered.'],
-  ['lift', 'Cards rise 3px on hover. --dur-base, --ease-out.'],
-  ['press', 'Buttons scale to 0.97 while pressed. --dur-fast.'],
-  ['raise', 'Faces grow 1.18× with a spring (--ease-spring, 2s) and show a bubble.'],
-];
-const sampleBlocks = [
-  { discriminant: 'split', value: { src: '/images/f/cupra/team.jpg', imageWidth: 45, height: 373, tag: 'Role Responsibilities', style: 'compact', items: [{ title: 'Image + text card', text: 'Photo on the left, card with a tag and items. Without a photo the card takes the full width.' }, { title: 'Compact style', text: 'Bold title and one line, for roles or archetypes.' }] } },
-  { discriminant: 'split', value: { src: '', tag: 'User Needs', style: 'spaced', items: [{ title: 'spaced', text: 'Big titles for needs or requirements.' }] } },
-  { discriminant: 'quote', value: { eyebrow: 'Why I made it', pill: 'The idea', quote: 'It has to feel like cinema.', body: 'A **quote** block: the one rule that holds a project together.', chips: ['Simple, loud', 'Made to gift'] } },
-  { discriminant: 'stats', value: { items: [{ value: '83%', label: 'A stats block' }, { value: '10', label: 'Big number + context' }, { value: '2M€', label: 'Uses the accent' }] } },
-];
+const mods = import.meta.glob('../components/system/*.astro', { eager: true }) as Record<string, { default: any }>;
+const comp = (file: string) => mods[file.replace('src/components/system/', '../components/system/')]?.default;
+
+type T = { $value: any; $description?: string; $extensions: { 'portfolio.css': { variable: string; value?: string } } };
+const list = (group: Record<string, any>) => Object.entries(group).map(([key, t]) => ({ key, ...(t as T), v: (t as T).$extensions['portfolio.css'].variable }));
+const agents = Object.keys(tokens.agent);
+const colours = list(tokens.color).filter((c) => !agents.includes(c.key) && !agents.some((a) => c.key === `on-${a}`));
+const type = list(tokens.type).filter((t) => t.key.startsWith('fs-'));
+const families = list(tokens.fontFamily);
+const space = list(tokens.space);
+const radii = list(tokens.radius);
+const durations = list(tokens.duration);
+const easings = list(tokens.easing);
+const familyOf: Record<string, string> = { 'fs-display': '--font-serif', 'fs-section': '--font-serif', 'fs-chapter': '--font-serif', 'fs-text': '--font-body', 'fs-label': '--font-ui' };
+const sample: Record<string, string> = { 'fs-display': '<em>Yep,</em> that’s me.', 'fs-section': 'In <em>short</em>', 'fs-chapter': 'The <em>role</em>', 'fs-text': 'Turning messy ideas into things people actually use.', 'fs-label': 'Systems agent · 2024' };
+const val = (t: any) => t.$extensions['portfolio.css'].value || (typeof t.$value === 'object' && t.$value?.unit ? `${t.$value.value}${t.$value.unit}` : String(t.$value));
+const sections = ['Colour', 'Agents', 'Type', 'Space', 'Radius', 'Shadow', 'Motion', 'Components'];
 ---
-<Base title="styleguide" description="The design system behind this portfolio.">
-  <div class="sg" style="--acc: var(--acc-red); --on-acc: var(--on-red)">
-    <header class="sg__hero" style="--acc: var(--brand); --on-acc: var(--paper)">
-      <p class="t-eyebrow">Design system</p>
-      <h1 class="t-display">styleguide</h1>
-      <p class="t-body-l">Tokens, type, motion and components behind this site. Everything below is rendered with the real code, so if it looks right here, it looks right everywhere.</p>
+<Base title="styleguide" description="The design system behind this portfolio, generated from its tokens and components.">
+  <Panel class="sg" label="Styleguide">
+    <header class="sg__top">
+      <h1 class="type-display">The <em>system</em></h1>
+      <p class="type-text sg__lead">Generated from the tokens (<code>estilos/tokens.css</code>) and the component manifest. If it is not here, it is not part of the site. Rules in plain words: <code>DESIGN.md</code>.</p>
+      <nav class="sg__nav" aria-label="Sections">{sections.map((s) => <a href={`#${s.toLowerCase()}`} class="type-label">{s}</a>)}</nav>
     </header>
 
-    <Card eyebrow="Tokens" pill="Colour">
+    <section id="colour" class="sg__sec">
+      <h2 class="type-section">Colour</h2>
       <div class="sw">
-        {core.map(([t, hex, use]) => (
-          <div class="sw__i"><div class="sw__c" style={`background:var(${t})`}></div><span class="t-mono">{t}</span><span class="t-small muted">{hex} · {use}</span></div>
+        {colours.map((c) => (
+          <figure class="sw__i">
+            <div class="sw__c" style={`background: var(${c.v})`}></div>
+            <figcaption><Label tone="ink">{c.v}</Label><span class="type-text">{c.$value}</span><span class="type-text sg__muted">{c.$description}</span></figcaption>
+          </figure>
         ))}
       </div>
-      <p class="t-small muted">Project accents: each project picks one, with its own text colour.</p>
-      <div class="acc">
-        {ACCENTS.map((a) => (
-          <div class="acc__i" style={`background:var(--acc-${a});color:var(--on-${a})`}><span class="t-heading">{accentUse[a]}</span><span class="t-mono">--acc-{a}</span></div>
+    </section>
+
+    <section id="agents" class="sg__sec">
+      <h2 class="type-section">Agents</h2>
+      <p class="type-text sg__muted">Each case wears the pair of its agent: background and the text that reads on it.</p>
+      <div class="ag">
+        {agents.map((a) => (
+          <div class="ag__i" style={accentVars(a)}>
+            <span class="type-chapter">{a}</span>
+            <span class="type-label">--{a} · --on-{a}</span>
+            <span class="type-text">{(tokens.agent as any)[a].$description}</span>
+          </div>
         ))}
       </div>
-    </Card>
+    </section>
 
-    <Card eyebrow="Three families, one scale from the original site" pill="Typography">
-      {type.map(([cls, spec, sample]) => (
-        <div class="ty"><span class="t-mono muted">{spec}</span><span class={cls} set:html={sample.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')} /></div>
-      ))}
-    </Card>
-
-    <div class="row">
-      <Card eyebrow="4px scale" pill="Space">
-        {space.map((v, i) => (
-          <div class="sp"><span class="t-mono">--s-{i + 1}</span><span class="t-mono muted">{v}px</span><i style={`width:${v * 4}px`}></i></div>
+    <section id="type" class="sg__sec">
+      <h2 class="type-section">Type</h2>
+      <p class="type-text sg__muted">Three families, five sizes. Nothing outside the scale.</p>
+      <dl class="fam">{families.map((f) => <div><dt><Label>{f.v}</Label></dt><dd class="type-text" style={`font-family: var(${f.v})`}>{f.$value[0]} · {f.$description}</dd></div>)}</dl>
+      <div class="ty">
+        {type.map((t) => (
+          <div class="ty__i">
+            <div class="ty__m"><Label tone="ink">{t.v}</Label><span class="type-text sg__muted">{val(t)} · {familyOf[t.key]}</span><span class="type-text sg__muted">{t.$description}</span></div>
+            <p class:list={[`type-${t.key.replace('fs-', '')}`, 'ty__s']} set:html={sample[t.key]} />
+          </div>
         ))}
-      </Card>
-      <Card eyebrow="Six radii, each with a job" pill="Radius">
-        <div class="rd">
-          {radii.map(([t, use]) => (
-            <div><div class="rd__b" style={`border-radius:var(${t})`}></div><span class="t-mono">{t}</span><span class="t-small muted">{use}</span></div>
-          ))}
-        </div>
-      </Card>
-    </div>
+      </div>
+    </section>
 
-    <Card eyebrow="Three durations, two curves, four patterns" pill="Motion">
+    <section id="space" class="sg__sec">
+      <h2 class="type-section">Space</h2>
+      <div class="sp">{space.map((s) => <div class="sp__i"><span class="sp__b" style={`width: var(${s.v})`}></span><Label tone="ink">{s.v}</Label><span class="type-text sg__muted">{val(s)}{s.$description ? ` · ${s.$description}` : ''}</span></div>)}</div>
+    </section>
+
+    <section id="radius" class="sg__sec">
+      <h2 class="type-section">Radius</h2>
+      <div class="rd">{radii.map((r) => <div class="rd__i"><span class="rd__b" style={`border-radius: var(${r.v})`}></span><Label tone="ink">{r.v}</Label><span class="type-text sg__muted">{val(r)} · {r.$description}</span></div>)}</div>
+    </section>
+
+    <section id="shadow" class="sg__sec">
+      <h2 class="type-section">Shadow</h2>
+      <div class="sh-demo"><span class="sh-demo__b"></span><div><Label tone="ink">--shadow-card</Label><p class="type-text sg__muted">{tokens.shadow.card.$description} No other shadow, no blur, no gradient.</p></div></div>
+    </section>
+
+    <section id="motion" class="sg__sec">
+      <h2 class="type-section">Motion</h2>
+      <p class="type-text sg__muted">With “reduce motion”, every duration is 0.</p>
       <div class="mo">
-        {motion.map(([n, d]) => (
-          <button class:list={['mo__i', `mo--${n}`]} type="button"><span class="mo__box"><i></i></span><span class="t-mono">{n}</span><span class="t-small muted">{d}</span></button>
-        ))}
+        {durations.map((d) => <div class="mo__i"><span class="mo__dot" style={`--d: var(${d.v})`}></span><Label tone="ink">{d.v}</Label><span class="type-text sg__muted">{val(d)}</span></div>)}
+        {easings.map((e) => <div class="mo__i"><span class="mo__dot" style={`--e: var(${e.v})`}></span><Label tone="ink">{e.v}</Label><span class="type-text sg__muted">{e.$description || 'curve'}</span></div>)}
       </div>
-      <p class="t-small muted">Hover or press each tile. All motion turns off for people who ask their system to reduce motion.</p>
-    </Card>
+    </section>
 
-    <Card eyebrow="Built once, used everywhere" pill="Components">
-      <div class="cmp">
-        <div class="cmp__i"><span class="t-mono muted">Button</span><div class="cmp__row"><Button href="#">Primary</Button><Button href="#" variant="secondary">Secondary</Button><Button href="#" variant="ghost">Ghost</Button></div></div>
-        <div class="cmp__i" style="--acc: var(--acc-cyan); --on-acc: var(--on-cyan)"><span class="t-mono muted">Button · tile</span><Button href="#" variant="tile" icon="download">Download CV</Button></div>
-        <div class="cmp__i"><span class="t-mono muted">Tag</span><div class="cmp__row"><Tag variant="brand">brand</Tag><Tag variant="accent">accent</Tag><Tag variant="ink" size="sm">ink</Tag><Tag variant="outline" size="sm">outline</Tag></div></div>
-        <div class="cmp__i"><span class="t-mono muted">Tab · corners</span><div class="tabdemo"><Tab corner="top-left"><span class="t-tab">top-left</span></Tab><Tab corner="bottom-right"><span class="t-tab">bottom-right</span></Tab></div></div>
-        <div class="cmp__i"><span class="t-mono muted">Carousel · arrows, dots, View Project</span><div class="cardemo"><Carousel slides={[{ src: '/images/f/work/slide-fintech.jpg', href: '#' }, { src: '/images/f/work/slide-bank.jpg', href: '#' }]} tab="overview projects" autoplay={0} /></div></div>
-        <div class="cmp__i"><span class="t-mono muted">Media · image with label</span><Media src="/images/f/cupra/building.jpg" alt="" ratio="16/10" label="cupra" /></div>
-        <div class="cmp__i"><span class="t-mono muted">DeviceFrame · browser and phone</span><div class="cmp__dev"><DeviceFrame src="/images/projects/cut-scenes/desktop-puzzle.jpg" url="cut-scenes.vercel.app" /><DeviceFrame kind="phone" src="/images/projects/cut-scenes/mobile-home.jpg" /></div></div>
+    <section id="components" class="sg__sec">
+      <h2 class="type-section">Components</h2>
+      <p class="type-text sg__muted">{manifest.components.length} base components. Each one: what it is for, when to use it, when not, and a live example.</p>
+      <div class="cp">
+        {manifest.components.map((c: any) => {
+          const Comp = comp(c.file);
+          const examples = [c.example, ...(c.variants || [])];
+          return (
+            <article class="cp__i" id={`c-${c.name}`}>
+              <div class="cp__info">
+                <h3 class="type-chapter">{c.name}</h3>
+                <p class="type-text">{c.purpose}</p>
+                <dl class="cp__dl">
+                  <div><dt><Label>Use</Label></dt><dd class="type-text">{c.use}</dd></div>
+                  <div><dt><Label>Avoid</Label></dt><dd class="type-text">{c.avoid}</dd></div>
+                </dl>
+                <Label>{c.file}</Label>
+              </div>
+              <div class:list={['cp__stage', { 'cp__stage--ink': c.background === 'ink' }]} style={c.example.accent ? accentVars(c.example.accent) : undefined}>
+                {examples.map((ex: any) => Comp && (
+                  c.example.wrap === 'dl'
+                    ? <dl class="cp__wrap"><Comp {...ex.props}>{ex.slot}</Comp></dl>
+                    : <Comp {...ex.props}>{ex.slot}</Comp>
+                ))}
+              </div>
+            </article>
+          );
+        })}
       </div>
-    </Card>
-
-    <Card eyebrow="One template for every project" pill="Project">
-      <p class="t-body">Every project page uses the same template: hero panel on the left, title card pinned on top of the right column, blocks, then <strong>Next</strong>. Blocks: image, video, image + text card, carousel, and the story set (text, quote, list, stats, media, media pair, browser, phones, collection, video card, timeline, details).</p>
-    </Card>
-    <div class="pj" style="--acc: var(--acc-mint); --on-acc: var(--on-mint)">
-      <ProjectTitle display="**fintech** app" intro="The **title card** in the project colour, with the meta cards on the right." meta={[{ label: 'Year', value: '2024' }, { label: 'Project', value: 'Concept' }, { label: 'Service', value: 'UX/UI' }]} />
-      <Blocks blocks={sampleBlocks} />
-      <ProjectNext href="#" label="bank platform" line="The Next card closes every project." image="/images/f/work/cover-bank.jpg" />
-    </div>
-  </div>
+    </section>
+  </Panel>
 </Base>
 
 <style>
-  .sg { display: flex; flex-direction: column; gap: var(--s-2); max-width: 1200px; margin: 0 auto; padding-top: var(--s-8); }
-  .sg__hero { background: var(--brand); color: var(--paper); border-radius: var(--r-lg); padding: var(--s-7) var(--s-6) var(--s-6); display: flex; flex-direction: column; gap: var(--s-3); }
-  .sg__hero .t-body-l { max-width: 60ch; }
-  .sw { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--s-2); }
-  .sw__i { display: flex; flex-direction: column; gap: var(--s-1); }
-  .sw__c { height: 72px; border-radius: var(--r-md); box-shadow: inset 0 0 0 1px var(--line); }
-  .acc { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-2); }
-  .acc__i { border-radius: var(--r-md); padding: var(--s-4); display: flex; flex-direction: column; gap: var(--s-5); }
-  .ty { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: var(--s-4); align-items: baseline; padding: var(--s-3) 0; border-top: 1px solid var(--line); }
-  .sp { display: grid; grid-template-columns: 56px 40px minmax(0, 1fr); gap: var(--s-3); align-items: center; }
-  .sp i { height: 10px; background: var(--ink); border-radius: 2px; }
-  .rd { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--s-2); }
-  .rd > div { display: flex; flex-direction: column; gap: var(--s-1); }
-  .rd__b { aspect-ratio: 1; background: var(--ink); }
-  .mo { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-2); }
-  .mo__i { all: unset; cursor: pointer; background: var(--paper-2); border-radius: var(--r-md); padding: var(--s-3); display: flex; flex-direction: column; gap: var(--s-2); }
-  .mo__box { height: 96px; border-radius: var(--r-sm); background: var(--paper-3); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  .mo__box i { width: 52px; height: 52px; border-radius: var(--r-md); background: var(--brand); transition: transform var(--dur-base) var(--ease-out), opacity var(--dur-slow) var(--ease-out); }
-  .mo--reveal:hover i { animation: rv var(--dur-slow) var(--ease-out); }
-  @keyframes rv { from { opacity: 0; transform: translateY(12px); } }
-  .mo--lift:hover i { transform: translateY(-6px); }
-  .mo--press:active i { transform: scale(0.9); }
-  .mo--raise:hover i { transform: scale(1.2) rotate(-4deg); transition-timing-function: var(--ease-in-out); }
-  .cmp { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); }
-  .cmp__i { display: flex; flex-direction: column; gap: var(--s-2); }
-  .cmp__row { display: flex; gap: var(--s-2); flex-wrap: wrap; align-items: center; }
-  .tabdemo { position: relative; height: 120px; background: var(--paper-2); border-radius: var(--r-lg); overflow: hidden; }
-  .cmp__dev { display: flex; gap: var(--s-4); align-items: flex-end; background: var(--paper-2); border-radius: var(--r-lg); padding: var(--s-4); }
-  .cmp__dev :global(.browser) { flex: 1; }
-  .cmp__dev :global(.phone) { width: 22%; }
-  .cardemo { height: 300px; }
-  .pj { display: flex; flex-direction: column; gap: var(--s-2); max-width: 554px; background: var(--ink); padding: var(--s-3); border-radius: var(--r-md); }
-  @media (max-width: 900px) {
-    .sw, .acc, .mo, .rd { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .ty, .cmp { grid-template-columns: 1fr; }
+  .sg { display: flex; flex-direction: column; gap: var(--s-8); }
+  .sg code { font-family: var(--font-ui); font-size: var(--fs-label); }
+  .sg__top { display: flex; flex-direction: column; gap: var(--s-5); }
+  .sg__lead { max-width: 60ch; }
+  .sg__muted { color: var(--muted); }
+  .sg__nav { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); }
+  .sg__nav a { text-decoration: underline; text-underline-offset: 0.3em; }
+  .sg__sec { display: flex; flex-direction: column; gap: var(--s-5); padding-top: var(--s-6); border-top: 1px solid var(--line); }
+
+  .sw { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: var(--s-4); }
+  .sw__i { margin: 0; display: flex; flex-direction: column; gap: var(--s-2); }
+  .sw__c { height: 72px; border-radius: var(--r-sm); outline: 1px solid var(--line); }
+  .sw__i figcaption { display: flex; flex-direction: column; gap: var(--s-1); }
+
+  .ag { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--s-3); }
+  .ag__i { display: flex; flex-direction: column; gap: var(--s-2); padding: var(--s-5) var(--s-4); border-radius: var(--r-sm); background: var(--acc); color: var(--on-acc); }
+
+  .fam { display: grid; gap: var(--s-3); margin: 0; }
+  .fam div { display: grid; grid-template-columns: 140px 1fr; gap: var(--s-4); align-items: baseline; }
+  .fam dd { margin: 0; }
+  .ty { display: flex; flex-direction: column; }
+  .ty__i { display: grid; grid-template-columns: minmax(180px, 1fr) 3fr; gap: var(--s-5); padding: var(--s-5) 0; border-top: 1px solid var(--line); align-items: baseline; }
+  .ty__m { display: flex; flex-direction: column; gap: var(--s-1); }
+  .ty__s { margin: 0; overflow-wrap: anywhere; }
+
+  .sp, .rd, .mo { display: grid; gap: var(--s-3); }
+  .sp__i { display: grid; grid-template-columns: 72px 100px 1fr; gap: var(--s-4); align-items: center; }
+  .sp__b { display: block; height: 16px; background: var(--ink); }
+  .rd { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--s-4); }
+  .rd__i { display: flex; flex-direction: column; gap: var(--s-2); }
+  .rd__b { display: block; height: 72px; background: var(--paper-2); outline: 1px solid var(--line); }
+  .sh-demo { display: flex; gap: var(--s-6); align-items: center; flex-wrap: wrap; }
+  .sh-demo__b { width: 160px; height: 100px; border-radius: var(--r-md); background: var(--paper-2); box-shadow: var(--shadow-card); }
+  .mo { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--s-4); }
+  .mo__i { display: flex; flex-direction: column; gap: var(--s-2); }
+  .mo__dot { display: block; width: 24px; height: 24px; border-radius: var(--r-pill); background: var(--red); transition: transform var(--d, var(--dur-slow)) var(--e, var(--ease-out)); }
+  .mo__i:hover .mo__dot { transform: translateX(80px); }
+
+  .cp { display: flex; flex-direction: column; }
+  .cp__i { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: var(--s-6); padding: var(--s-6) 0; border-top: 1px solid var(--line); }
+  .cp__info { display: flex; flex-direction: column; gap: var(--s-3); }
+  .cp__dl { display: grid; gap: var(--s-3); margin: 0; }
+  .cp__dl div { display: flex; flex-direction: column; gap: var(--s-1); }
+  .cp__dl dd { margin: 0; }
+  .cp__stage { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: var(--s-4); padding: var(--s-6); border-radius: var(--r-sm); background: var(--paper-2); min-height: 160px; }
+  .cp__stage > :global(*) { max-width: 100%; }
+  .cp__stage :global(.vb), .cp__stage :global(.nc), .cp__stage :global(.tc), .cp__stage :global(.dc), .cp__stage :global(.panel), .cp__stage :global(.sh), .cp__stage :global(.ft) { width: 100%; }
+  .cp__stage--ink { background: var(--ink); }
+  .cp__wrap { margin: 0; }
+
+  @media (max-width: 809px) {
+    .ty__i, .cp__i { grid-template-columns: 1fr; gap: var(--s-4); }
+    .sp__i { grid-template-columns: 48px 90px 1fr; }
+    .fam div { grid-template-columns: 1fr; gap: var(--s-1); }
+    .cp__stage { padding: var(--s-4); }
   }
 </style>

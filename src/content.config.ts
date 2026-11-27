@@ -12,7 +12,7 @@ const projects = defineCollection({
     kind: z.enum(['client', 'exploration']).default('client'),
     status: z.enum(['published', 'draft']).default('published'),
     order: z.number().default(99),
-    accent: z.string().default('copper'),
+    accent: z.enum(['systems', 'research', 'creative', 'ops', 'empathy', 'collab']).default('systems'),
     lead: z.string().default(''),
     intro: z.string().default(''),
     teaser: z.string().default(''),

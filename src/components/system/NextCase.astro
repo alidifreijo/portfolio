@@ -1,0 +1,31 @@
+---
+/**
+ * NextCase · the way out of a case, into the next one in its zone.
+ * Wears the colour of the NEXT case's agent on hover.
+ */
+import Label from './Label.astro';
+import { accentVars, emph } from '../../lib/utils';
+interface Props { href: string; title: string; line?: string; agent: 'systems' | 'research' | 'creative' | 'ops' | 'empathy' | 'collab' }
+const { href, title, line, agent } = Astro.props;
+---
+<a class="nc" href={href} style={accentVars(agent)}>
+  <Label>Next case</Label>
+  <span class="nc__t" set:html={emph(title)} />
+  {line && <span class="nc__l">{line}</span>}
+  <span class="nc__a" aria-hidden="true">→</span>
+</a>
+
+<style>
+  .nc {
+    position: relative; display: flex; flex-direction: column; gap: var(--s-2); padding: var(--s-6) var(--s-5);
+    border-radius: var(--r-md); background: var(--paper-2); color: var(--ink); text-decoration: none;
+    transition: background var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+  }
+  .nc__t { font-family: var(--font-serif); font-size: var(--fs-section); line-height: var(--lh-section); }
+  .nc__t :global(em) { font-style: italic; }
+  .nc__l { font-family: var(--font-body); font-size: var(--fs-text); line-height: var(--lh-text); color: var(--muted); max-width: 48ch; }
+  .nc__a { position: absolute; top: var(--s-5); right: var(--s-5); font-family: var(--font-ui); font-size: var(--fs-chapter); line-height: 1; transition: transform var(--dur-base) var(--ease-out); }
+  .nc:hover, .nc:focus-visible { background: var(--acc); color: var(--on-acc); }
+  .nc:hover .nc__l, .nc:focus-visible .nc__l, .nc:hover :global(.lbl), .nc:focus-visible :global(.lbl) { color: var(--on-acc); }
+  .nc:hover .nc__a { transform: translateX(4px); }
+</style>

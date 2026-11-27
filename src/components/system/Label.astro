@@ -1,0 +1,24 @@
+---
+/**
+ * Label · the small capitals of the interface (Space Grotesk, --fs-label).
+ * tone: muted (default, grey) · ink · paper (on black) · accent (a pill in the agent colour)
+ */
+interface Props { tone?: 'muted' | 'ink' | 'paper' | 'accent'; as?: 'span' | 'p' | 'dt'; class?: string }
+const { tone = 'muted', as: Tag = 'span', class: cls = '' } = Astro.props;
+---
+<Tag class:list={['lbl', `lbl--${tone}`, cls]}><slot /></Tag>
+
+<style>
+  .lbl {
+    font-family: var(--font-ui); font-weight: 500; font-size: var(--fs-label); line-height: var(--lh-label);
+    letter-spacing: var(--ls-label); text-transform: uppercase; margin: 0;
+  }
+  .lbl--muted { color: var(--muted); }
+  .lbl--ink { color: var(--ink); }
+  .lbl--paper { color: var(--muted-ink); }
+  .lbl--accent {
+    display: inline-flex; align-items: center; align-self: flex-start; width: max-content;
+    background: var(--acc, var(--paper-2)); color: var(--on-acc, var(--ink));
+    border-radius: var(--r-pill); padding: var(--s-1) var(--s-2);
+  }
+</style>

@@ -1,0 +1,34 @@
+---
+/**
+ * Disclosure · a row that opens: a title and, inside, its text.
+ * Built on <details>, so it works with keyboard and without JavaScript.
+ * Stack several for lists (experience, FAQs).
+ */
+import { rich } from '../../lib/utils';
+interface Props { title: string; meta?: string; text?: string; open?: boolean }
+const { title, meta, text, open = false } = Astro.props;
+---
+<details class="dc" open={open}>
+  <summary class="dc__s">
+    <span class="dc__t">{title}</span>
+    {meta && <span class="dc__m">{meta}</span>}
+    <span class="dc__i" aria-hidden="true">+</span>
+  </summary>
+  <div class="dc__b">{text ? <Fragment set:html={rich(text)} /> : <slot />}</div>
+</details>
+
+<style>
+  .dc { border-top: 1px solid var(--line); }
+  .dc:last-of-type { border-bottom: 1px solid var(--line); }
+  .dc__s {
+    display: flex; align-items: baseline; gap: var(--s-4); padding: var(--s-4) 0; cursor: pointer; list-style: none;
+    font-family: var(--font-ui); font-weight: 500; font-size: var(--fs-text); line-height: var(--lh-text);
+  }
+  .dc__s::-webkit-details-marker { display: none; }
+  .dc__t { flex: 1; }
+  .dc__m { font-family: var(--font-body); font-size: var(--fs-text); color: var(--muted); }
+  .dc__i { font-family: var(--font-ui); font-size: var(--fs-text); line-height: 1; transition: transform var(--dur-base) var(--ease-out); }
+  .dc[open] .dc__i { transform: rotate(45deg); }
+  .dc__b { padding: 0 0 var(--s-5); max-width: 64ch; font-family: var(--font-body); font-size: var(--fs-text); line-height: var(--lh-text); }
+  .dc__b :global(p + p) { margin-top: var(--s-3); }
+</style>

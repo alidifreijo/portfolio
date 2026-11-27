@@ -1,0 +1,16 @@
+---
+/**
+ * Panel · the paper sheet that sits inside the black frame (radius 12).
+ * tone: paper (default) · ink (long pages: About, How this portfolio is built)
+ */
+interface Props { tone?: 'paper' | 'ink'; as?: 'section' | 'div' | 'article'; label?: string; class?: string }
+const { tone = 'paper', as: Tag = 'section', label, class: cls = '' } = Astro.props;
+---
+<Tag class:list={['panel', `panel--${tone}`, cls]} aria-label={label}><slot /></Tag>
+
+<style>
+  .panel { border-radius: var(--r-md); padding: var(--s-7); min-width: 0; }
+  .panel--paper { background: var(--paper); color: var(--ink); }
+  .panel--ink { background: var(--ink); color: var(--paper); }
+  @media (max-width: 809px) { .panel { padding: var(--s-5) var(--s-4); } }
+</style>

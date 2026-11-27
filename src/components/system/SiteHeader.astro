@@ -1,7 +1,6 @@
 ---
 /**
- * SiteHeader · the new top bar, sitting on the black frame (home first;
- * the other pages move to it later). Label + value pairs on a 12-column
+ * SiteHeader · the top bar on the black frame, on every page. Label + value pairs on a 12-column
  * grid: the á, the menu stacked in capitals (no label), a live Barcelona clock, a status
  * line and the email. The á keeps the class nav__logo, so on the home page it
  * still replays the entry of the faces.
@@ -15,6 +14,7 @@ const mail = (contact.links || []).find((l: any) => String(l.url).startsWith('ma
 const email = mail ? String(mail.url).replace('mailto:', '') : '';
 const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
 const links = [
+  { href: '/play', label: 'Play' },
   { href: '/work', label: 'Work' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
@@ -65,25 +65,24 @@ const isCurrent = (href: string) => path === href || path.startsWith(href + '/')
 
 <style>
   .sh {
-    display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 16px; align-items: start;
-    padding: 6px 12px 14px; color: var(--on-chrome);
+    display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--s-4); align-items: start;
+    padding: var(--s-1) var(--s-3) var(--s-3); color: var(--paper);
   }
   .sh p { margin: 0; }
-  .sh__lab, .sh__val { font-family: var(--font-body); font-size: var(--fs-print); line-height: 1.45; letter-spacing: 0.02em; }
+  .sh__lab, .sh__val { font-family: var(--font-body); font-size: var(--fs-text); line-height: var(--lh-text); }
   .sh__lab { color: var(--muted-ink); }
-  .sh__val { color: var(--on-chrome); }
-  .sh__case { font-family: var(--font-display); font-weight: 500; text-transform: uppercase; font-size: 18px; line-height: 1.1; }
-  .sh__u { text-decoration: underline; text-underline-offset: 2px; }
-  .sh__u:hover { color: var(--white); }
-  .sh__logo { grid-column: span 1; font-family: var(--font-display); font-weight: 500; font-size: 34px; line-height: 0.8; width: max-content; }
+  .sh__val { color: var(--paper); }
+  .sh__case { font-family: var(--font-ui); font-weight: 500; text-transform: uppercase; }
+  .sh__u { text-decoration: underline; text-underline-offset: 0.2em; }
+  .sh__logo { grid-column: span 1; font-family: var(--font-ui); font-weight: 500; font-size: var(--fs-chapter); line-height: 0.8; width: max-content; }
   .sh__menu { grid-column: span 3; }
   .sh__menu ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
   .sh__link {
     display: inline-flex; align-items: baseline; min-height: 22px;
-    font-family: var(--font-display); font-weight: 500; font-size: 18px; line-height: 1; text-transform: uppercase; letter-spacing: -0.01em;
+    font-family: var(--font-ui); font-weight: 500; font-size: var(--fs-text); line-height: 1.3; text-transform: uppercase;
   }
   /* the arrow marks the page you're on, and slides in on hover */
-  .sh__arrow { display: inline-block; width: 0; overflow: hidden; opacity: 0; transition: width 280ms var(--ease-out), opacity 280ms var(--ease-out); }
+  .sh__arrow { display: inline-block; width: 0; overflow: hidden; opacity: 0; transition: width var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out); }
   .sh__link[aria-current='page'] .sh__arrow, .sh__link:hover .sh__arrow, .sh__link:focus-visible .sh__arrow { width: 1.35em; opacity: 1; }
   .sh__where, .sh__status { grid-column: span 3; }
   .sh__mail { grid-column: span 2; text-align: right; }
@@ -96,11 +95,11 @@ const isCurrent = (href: string) => path === href || path.startsWith(href + '/')
   }
   /* phone: the á and the menu in one row, the rest hides (it's on the contact page) */
   @media (max-width: 809px) {
-    .sh { display: flex; justify-content: space-between; align-items: center; padding: 4px 6px 12px; }
+    .sh { display: flex; justify-content: space-between; align-items: center; padding: var(--s-1) var(--s-1) var(--s-3); }
     .sh__where, .sh__mail { display: none; }
-    .sh__menu ul { flex-direction: row; gap: 18px; margin: 0; }
-    .sh__link { font-size: 15px; }
+    .sh__menu ul { flex-direction: row; gap: var(--s-4); margin: 0; }
+    .sh__link { min-height: 44px; align-items: center; }
     .sh__arrow { display: none; }
-    .sh__link[aria-current='page'] { text-decoration: underline; text-underline-offset: 4px; }
+    .sh__link[aria-current='page'] { text-decoration: underline; text-underline-offset: 0.3em; }
   }
 </style>

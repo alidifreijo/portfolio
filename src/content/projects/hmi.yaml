@@ -2,7 +2,7 @@ title: hmi display
 kind: client
 status: draft
 order: 4
-accent: sky
+accent: ops
 display: '**hmi** display'
 lead: A fully digital cockpit for an electric sports car.
 intro: A concept for the driver display of an electric sports car. **No analog parts**, everything readable at a glance, and a bold, sporty identity built from the shape of the dashboard itself.

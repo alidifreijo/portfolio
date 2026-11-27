@@ -1,0 +1,49 @@
+/* ==========================================================================
+   LEGACY TOKENS · v2 names that old pages still use while they are rebuilt
+   (blocks 2-4). Nothing new may use them: scripts/check-system.mjs counts
+   every use and the count can only go down. Delete each one when its count
+   reaches zero. The approved tokens are in tokens.css (from estilos/).
+   ========================================================================== */
+:root {
+  /* colour */
+  --chrome: var(--ink);
+  --on-chrome: var(--paper);
+  --surface: #111212;
+  --muted-soft: rgba(14, 16, 17, 0.6);
+  --scrim: rgba(0, 0, 0, 0.2);
+  --white: #FFFFFF;
+  --brand: #9E194C;
+  --brand-soft: #FFA4BF;
+
+  /* fonts that left the system: they now fall back to the v3 families */
+  --font-display: var(--font-ui);
+  --font-mono: var(--font-ui);
+  --font-hand: var(--font-serif);
+
+  /* the v2 type scale (v3 has five sizes: display, section, chapter, text, label) */
+  --fs-print: clamp(13px, 0.98vw, 16px);
+  --old-fs-display: 45px;  --old-lh-display: 1;  --lh-display-tight: 0.78;
+  --fs-title: 32px;    --lh-title: 1.05;
+  --fs-lead: 25px;     --lh-lead: 0.85;
+  --fs-heading: 16px;  --lh-heading: 1.2;    --ls-heading: 0.6px;
+  --old-fs-label: 16px; --old-lh-label: 1.2; --old-ls-label: 0.6px;
+  --fs-body: 14px;     --lh-body: 1.6;       --ls-body: 0.5px;
+  --ls-tab: 1px;
+  --fs-small: 12px;    --lh-small: 1.6;      --ls-small: 0.6px;
+  --fs-micro: 10px;    --lh-micro: 1.2;      --ls-micro: 0.5px;
+  --fs-eyebrow: 12px;  --ls-eyebrow: 0.08em;
+
+  /* radius and layout */
+  --r-xs: 4px;
+  --r-tab: 18px;
+  --tab-corner: 18px;
+  --tab-h: 42px;
+  --split: 850fr 554fr;
+  --split-case: minmax(0, 1fr) minmax(0, 1fr);
+
+  /* motion */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --stagger: 60ms;
+}
+@media (max-width: 809px) { :root { --fs-title: 28px; } }
+@media (prefers-reduced-motion: reduce) { :root { --stagger: 0ms; } }

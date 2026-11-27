@@ -1,0 +1,54 @@
+---
+/**
+ * AgentCard · the agent's card, shown when an agent is scanned on the home.
+ * The only thing on the site with a shadow. Paper-2, radius 12, a dot and
+ * the agent's name, its line, its quote, its data and a black button that
+ * opens its case.
+ */
+import Button from './Button.astro';
+import { accentVars } from '../../lib/utils';
+interface Props {
+  agent: 'systems' | 'research' | 'creative' | 'ops' | 'empathy' | 'collab';
+  name: string; n: string; line: string; quote: string;
+  good: string; runs: string; allergic: string; battery: number;
+  href: string; opens: string;
+}
+const p = Astro.props;
+---
+<article class="ac" style={accentVars(p.agent)} aria-label={p.name}>
+  <header class="ac__h"><i aria-hidden="true"></i><span>{p.name}</span><span class="ac__n">{p.n}</span></header>
+  <p class="ac__line">{p.line}</p>
+  <p class="ac__q">{p.quote}</p>
+  <dl class="ac__d">
+    <dt>Good at</dt><dd>{p.good}</dd>
+    <dt>Runs on</dt><dd>{p.runs}</dd>
+    <dt>Allergic to</dt><dd>{p.allergic}</dd>
+    <dt>Battery</dt><dd class="ac__m"><span style={`--w:${p.battery}%`}><b></b></span>{p.battery}%</dd>
+  </dl>
+  <Button href={p.href} class="ac__go">Open {p.opens}</Button>
+</article>
+
+<style>
+  .ac {
+    width: min(100%, 300px); background: var(--paper-2); color: var(--ink); border-radius: var(--r-md);
+    box-shadow: var(--shadow-card); padding: var(--s-4) var(--s-4) var(--s-2); display: flex; flex-direction: column; gap: var(--s-2);
+  }
+  .ac__h, .ac dt {
+    font-family: var(--font-ui); font-weight: 500; font-size: var(--fs-label); line-height: var(--lh-label);
+    letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--muted);
+  }
+  .ac__h { display: flex; align-items: center; gap: var(--s-2); }
+  .ac__h i { width: 8px; height: 8px; border-radius: var(--r-pill); background: var(--acc); outline: 1px solid var(--line); }
+  .ac__n { margin-left: auto; }
+  .ac__line { margin: 0; font-family: var(--font-ui); font-weight: 500; font-size: var(--fs-text); line-height: var(--lh-text); }
+  .ac__q { margin: 0; font-family: var(--font-serif); font-style: italic; font-size: var(--fs-text); line-height: var(--lh-text); color: var(--muted); }
+  .ac__d {
+    display: grid; grid-template-columns: max-content 1fr; gap: var(--s-2) var(--s-4); margin: 0; padding: var(--s-3) 0;
+    border-top: 1px solid var(--line); font-family: var(--font-ui); font-size: var(--fs-label); line-height: var(--lh-label);
+  }
+  .ac dd { margin: 0; }
+  .ac__m { display: flex; align-items: center; gap: var(--s-2); }
+  .ac__m span { flex: 1; height: 6px; border-radius: var(--r-pill); background: var(--paper-3); outline: 1px solid var(--line); overflow: hidden; }
+  .ac__m b { display: block; height: 100%; width: var(--w); background: var(--acc); }
+  .ac :global(.ac__go) { width: 100%; }
+</style>

@@ -6,7 +6,7 @@
  * the same screen; after that the page ends.
  */
 import Base from '../layouts/Base.astro';
-import SiteHeader from '../components/SiteHeader.astro';
+import SiteHeader from '../components/system/SiteHeader.astro';
 import Faces from '../components/Faces.astro';
 import { getEntry, getCollection } from 'astro:content';
 const home = (await getEntry('pages', 'home'))!.data as any;

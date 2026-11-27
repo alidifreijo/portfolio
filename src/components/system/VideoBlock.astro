@@ -1,0 +1,42 @@
+---
+/**
+ * VideoBlock · a film in a box with its own proportions (never cropped),
+ * with a poster that has content while it loads or if it fails. Plays
+ * muted when on screen; with "reduce motion" it doesn't play by itself and
+ * shows its controls instead. Works for images too (src ending in .jpg/.png/.webp).
+ */
+import Label from './Label.astro';
+import { isVideo } from '../../lib/utils';
+interface Props { src: string; poster?: string; width: number; height: number; alt: string; caption?: string; webm?: string }
+const { src, poster, width, height, alt, caption, webm } = Astro.props;
+const video = isVideo(src);
+---
+<figure class="vb" style={`--ar:${width}/${height}`}>
+  <div class="vb__box">
+    {video ? (
+      <video muted loop playsinline preload="metadata" poster={poster} data-autoplay data-vb aria-label={alt}>
+        {webm && <source src={webm} type="video/webm" />}
+        <source src={src} type="video/mp4" />
+      </video>
+    ) : (
+      <img src={src} alt={alt} width={width} height={height} loading="lazy" />
+    )}
+  </div>
+  {caption && <figcaption><Label>{caption}</Label></figcaption>}
+</figure>
+
+<script>
+  // "reduce motion": no autoplay, the visitor plays it.
+  function initVideoBlocks() {
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.querySelectorAll<HTMLVideoElement>('video[data-vb]').forEach((v) => { v.removeAttribute('data-autoplay'); v.pause(); v.controls = true; });
+  }
+  initVideoBlocks();
+  document.addEventListener('astro:page-load', initVideoBlocks);
+</script>
+
+<style>
+  .vb { margin: 0; display: flex; flex-direction: column; gap: var(--s-2); min-width: 0; }
+  .vb__box { aspect-ratio: var(--ar); border-radius: var(--r-sm); overflow: hidden; background: var(--paper-2); }
+  .vb__box video, .vb__box img { width: 100%; height: 100%; object-fit: contain; display: block; }
+</style>

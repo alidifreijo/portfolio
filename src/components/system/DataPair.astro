@@ -1,0 +1,25 @@
+---
+/**
+ * DataPair · the one data pattern of the site: a label in grey capitals
+ * (Space Grotesk) and its value in Satoshi. Use a list of them for facts
+ * (year, role, company, via…).
+ */
+interface Props { label: string; value: string; href?: string; tone?: 'paper' | 'ink' }
+const { label, value, href, tone = 'paper' } = Astro.props;
+---
+<div class:list={['dp', `dp--${tone}`]}>
+  <dt class="dp__l">{label}</dt>
+  <dd class="dp__v">{href ? <a href={href}>{value}</a> : value}</dd>
+</div>
+
+<style>
+  .dp { display: flex; flex-direction: column; gap: var(--s-1); min-width: 0; }
+  .dp__l {
+    font-family: var(--font-ui); font-weight: 500; font-size: var(--fs-label); line-height: var(--lh-label);
+    letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--muted);
+  }
+  .dp__v { margin: 0; font-family: var(--font-body); font-size: var(--fs-text); line-height: var(--lh-text); color: var(--ink); }
+  .dp__v a { text-decoration: underline; text-underline-offset: 0.2em; }
+  .dp--ink .dp__l { color: var(--muted-ink); }
+  .dp--ink .dp__v { color: var(--paper); }
+</style>

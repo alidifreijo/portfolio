@@ -7,14 +7,12 @@
 import { config, fields, collection, singleton } from '@keystatic/core';
 
 const ACCENT_OPTIONS = [
-  { label: 'Copper (cupra)', value: 'copper' },
-  { label: 'Mint (south)', value: 'mint' },
-  { label: 'Lime (monexa)', value: 'lime' },
-  { label: 'Sky (hmi)', value: 'sky' },
-  { label: 'Red (cut scenes)', value: 'red' },
-  { label: 'Mat green (cutouts)', value: 'mat' },
-  { label: 'Amber (silena)', value: 'amber' },
-  { label: 'Cyan (contact)', value: 'cyan' },
+  { label: 'Systems · mint (Roche, Monexa)', value: 'systems' },
+  { label: 'Research · amber (reference library)', value: 'research' },
+  { label: 'Creative · cyan (Cut Scenes)', value: 'creative' },
+  { label: 'Ops · sky (Cupra)', value: 'ops' },
+  { label: 'Empathy · lime (Silena)', value: 'empathy' },
+  { label: 'Collab · pink (cutouts)', value: 'collab' },
 ];
 
 /** Any image or video file. Stored under public/images/projects. */
@@ -182,7 +180,7 @@ export default config({
         kind: fields.select({ label: 'Type', options: [{ label: 'Client case', value: 'client' }, { label: 'Exploration', value: 'exploration' }], defaultValue: 'client' }),
         status: fields.select({ label: 'Status', options: [{ label: 'Published', value: 'published' }, { label: 'Draft (hidden)', value: 'draft' }], defaultValue: 'draft' }),
         order: fields.integer({ label: 'Order', description: 'Lower numbers come first. Client work 1–9, explorations 10+.', defaultValue: 99 }),
-        accent: fields.select({ label: 'Accent colour', options: ACCENT_OPTIONS, defaultValue: 'copper' }),
+        accent: fields.select({ label: 'Accent colour', options: ACCENT_OPTIONS, defaultValue: 'systems' }),
         lead: fields.text({ label: 'SEO description', description: 'One sentence for Google and link previews. Not shown on the page.' }),
         intro: rich('Intro', 'The text in the title card. **Bold** works.'),
         teaser: fields.text({ label: 'Teaser', description: 'One line for cards and the Next block.' }),

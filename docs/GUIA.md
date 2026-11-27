@@ -145,3 +145,15 @@ En local, Keystatic guarda directamente en tus archivos. Después haz commit y p
 - Las URLs antiguas de Framer (`/cupra`, `/fintech`, `/bank-platform`, `/projecthmi`) redirigen solas a `/work/…` (`redirects` en `astro.config.mjs`).
 - Las imágenes y vídeos traídos de Framer están en `public/images/f/`.
 - Dominio propio: *Vercel → Settings → Domains*.
+
+---
+
+## Sistema de diseño v3 (27 nov 2026)
+
+Desde el Bloque 1, el sistema manda sobre lo anterior de esta guía:
+
+- Las reglas, en llano: `DESIGN.md`. Los estilos aprobados: `estilos/`.
+- Los tokens se cambian en `estilos/tokens.css` (con el sí de Ali) y `npm run tokens` genera `src/styles/tokens.css` y `src/styles/tokens.json`.
+- Componentes base en `src/components/system/`, descritos en `manifest.json`. `/styleguide` se genera desde ahí.
+- `npm run build` comprueba antes que no haya colores, tamaños ni fuentes fuera del sistema, ni blur ni degradados.
+- Los colores de acento ahora son los de los agentes: systems, research, creative, ops, empathy y collab.
