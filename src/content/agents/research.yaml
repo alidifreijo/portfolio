@@ -1,0 +1,13 @@
+n: '02'
+agent: research
+name: Research agent
+character: Cap
+line: "I collect references like other people collect mugs."
+quote: "Research is my love language."
+good: "References, synthesis, connecting dots"
+runs: "Curiosity"
+allergic: "Assumptions"
+battery: 91
+opens:
+- label: "Peek at the library · WIP"
+  href: /library

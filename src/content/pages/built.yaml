@@ -1,0 +1,36 @@
+title: How this portfolio is *built*
+lead: '[DRAFT FOR ALI] A portfolio built like a product: a brief, a design system, a small team of agents and a method that keeps all of them honest.'
+sections:
+- title: The *team*
+  text: |-
+    [DRAFT FOR ALI] One person decides; a few agents do the rest, each with one job.
+
+    - **Ali** sets the direction and the taste, and approves the brief, the art direction and every release.
+    - **Claude, in the project chat**, turns ideas into a one-page brief and explores visual directions.
+    - **Claude Code, in the cloud**, builds the site piece by piece, one branch per piece.
+    - **The reviewer** looks at every finished piece like a first-time visitor, at three screen sizes, and writes a report with a traffic light.
+    - **The closing step** writes down where things stand, so the next session starts from the repo and not from memory.
+
+    And on the home, six agents that are six sides of how I work: Systems, Research, Creative, Ops, Empathy and Collab. Each one opens the case that proves it.
+- title: The *system*
+  text: |-
+    [DRAFT FOR ALI] The design system is written for people and for agents, and agents can’t skip it.
+
+    - **Tokens** live in one approved file and become CSS variables and a DTCG tokens file that any tool can read.
+    - **DESIGN.md** says the rules in plain words: three type families, five sizes, the agent colours, no blur, no gradients, one shadow.
+    - **A component manifest** says what each base component is for, when to use it and when not.
+    - **A skill** loads all of that into every agent that builds or reviews a page.
+    - **A check runs before every build** and fails if a colour, size or font isn’t a token. Old pages carry a recorded debt that can only go down.
+    - **The [styleguide](/styleguide)** is generated from the tokens and the manifest, not written by hand.
+- title: The *process*
+  text: |-
+    [DRAFT FOR ALI] Decide in the chat, build in Claude Code, review, close.
+
+    - **Decide.** A brief, a closed style and a task list before anything gets built.
+    - **Build.** One piece at a time, each on its own branch, with a preview.
+    - **Review.** The reviewer passes every piece; anything that breaks something gets fixed before Ali sees it.
+    - **Close.** Every session ends by writing down what’s done, what’s open and the next step.
+
+    Nothing reaches the live site without Ali’s yes.
+- title: The *stack*
+  text: '[DRAFT FOR ALI] Astro for the site, Keystatic to edit the content without touching code, GitHub to keep everything, and Vercel to publish it.'

@@ -1,0 +1,13 @@
+n: '03'
+agent: creative
+name: Creative agent
+character: Bucket hat
+line: "I make a mess first, then I make it make sense."
+quote: "Creative mess, but beautifully organized."
+good: "Concepts, art direction, wild ideas"
+runs: "Organised chaos"
+allergic: "Lorem ipsum"
+battery: 64
+opens:
+- label: "Open Cut Scenes"
+  href: /play/cut-scenes

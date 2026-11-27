@@ -10,12 +10,13 @@ export const accentVars = (accent: string = 'systems') =>
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
 
 /**
- * Tiny formatter for text fields: **bold**, *italic* and blank lines as
+ * Tiny formatter for text fields: **bold**, *italic*, [links](/path), "- " lists and blank lines as
  * paragraphs. Keeps editing in Keystatic simple (plain text, no editor).
  */
 export function rich(text: string = '', paragraphs = true): string {
   const inline = (t: string) =>
     esc(t)
+      .replace(/\[([^\]]+)\]\(((?:\/|https:\/\/)[^)\s]*)\)/g, '<a href="$2">$1</a>')
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/(^|[^*])\*(?!\s)(.+?)\*(?!\*)/g, '$1<em>$2</em>')
       .replace(/\n/g, '<br>');

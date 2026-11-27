@@ -3,7 +3,7 @@
  * AgentCard · the agent's card, shown when an agent is scanned on the home.
  * The only thing on the site with a shadow. Paper-2, radius 12, a dot and
  * the agent's name, its line, its quote, its data and a black button that
- * opens its case.
+ * opens its case (or two buttons, for two cases).
  */
 import Button from './Button.astro';
 import { accentVars } from '../../lib/utils';
@@ -11,7 +11,8 @@ interface Props {
   agent: 'systems' | 'research' | 'creative' | 'ops' | 'empathy' | 'collab';
   name: string; n: string; line: string; quote: string;
   good: string; runs: string; allergic: string; battery: number;
-  href: string; opens: string;
+  /** one button per case it opens (Systems opens two) */
+  opens: { label: string; href: string }[];
 }
 const p = Astro.props;
 ---
@@ -25,7 +26,7 @@ const p = Astro.props;
     <dt>Allergic to</dt><dd>{p.allergic}</dd>
     <dt>Battery</dt><dd class="ac__m"><span style={`--w:${p.battery}%`}><b></b></span>{p.battery}%</dd>
   </dl>
-  <Button href={p.href} class="ac__go">Open {p.opens}</Button>
+  <div class="ac__go">{p.opens.map((o) => <Button href={o.href}>{o.label}</Button>)}</div>
 </article>
 
 <style>
@@ -50,5 +51,6 @@ const p = Astro.props;
   .ac__m { display: flex; align-items: center; gap: var(--s-2); }
   .ac__m span { flex: 1; height: 6px; border-radius: var(--r-pill); background: var(--paper-3); outline: 1px solid var(--line); overflow: hidden; }
   .ac__m b { display: block; height: 100%; width: var(--w); background: var(--acc); }
-  .ac :global(.ac__go) { width: 100%; }
+  .ac__go { display: flex; flex-direction: column; gap: var(--s-1); }
+  .ac__go :global(.btn) { width: 100%; }
 </style>

@@ -1,0 +1,30 @@
+---
+/**
+ * LongSection · one section of a long page (About, How this portfolio is
+ * built), on black: the section title in the serif on the left, the content
+ * on the right. Stacks on narrow screens.
+ */
+import { emph } from '../../lib/utils';
+interface Props { title: string; id?: string }
+const { title, id } = Astro.props;
+---
+<section class="ls" id={id} aria-labelledby={id ? `${id}-t` : undefined}>
+  <h2 class="ls__t" id={id ? `${id}-t` : undefined} set:html={emph(title)} />
+  <div class="ls__b"><slot /></div>
+</section>
+
+<style>
+  .ls { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--s-6); padding: var(--s-8) 0; border-top: 1px solid var(--line-ink); color: var(--paper); }
+  .ls__t { margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: var(--fs-section); line-height: var(--lh-section); position: sticky; top: var(--s-5); align-self: start; }
+  .ls__t :global(em) { font-style: italic; }
+  .ls__b { display: flex; flex-direction: column; gap: var(--s-5); min-width: 0; font-family: var(--font-body); font-size: var(--fs-text); line-height: var(--lh-text); }
+  .ls__b :global(p) { margin: 0; max-width: 64ch; }
+  .ls__b :global(p + p) { margin-top: var(--s-3); }
+  .ls__b :global(strong) { font-weight: 700; }
+  .ls__b :global(a) { color: var(--paper); text-decoration: underline; text-underline-offset: 0.2em; }
+  .ls__b :global(ul) { margin: 0; padding-left: var(--s-5); display: flex; flex-direction: column; gap: var(--s-2); max-width: 64ch; }
+  @media (max-width: 1099px) {
+    .ls { grid-template-columns: minmax(0, 1fr); gap: var(--s-5); padding: var(--s-7) 0; }
+    .ls__t { position: static; }
+  }
+</style>

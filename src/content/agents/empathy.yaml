@@ -1,0 +1,13 @@
+n: '05'
+agent: empathy
+name: Empathy agent
+character: Sprout
+line: "I design for whoever lives there, not for the product shot."
+quote: "Empathetic, caffeinated, slightly existential."
+good: "Listening, personas, accessibility"
+runs: "Coffee"
+allergic: "Dark patterns"
+battery: 47
+opens:
+- label: "Open Silena"
+  href: /play/silena

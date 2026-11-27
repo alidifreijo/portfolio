@@ -1,0 +1,32 @@
+---
+/**
+ * How this portfolio is built · a long page on black (DESIGN.md, template 6).
+ * Content in Keystatic (Pages → How it's built). Built only with the system.
+ */
+import Base from '../layouts/Base.astro';
+import LongSection from '../components/system/LongSection.astro';
+import { getEntry } from 'astro:content';
+import { emph, rich } from '../lib/utils';
+const b = (await getEntry('pages', 'built'))!.data as any;
+const mark = (html: string) => html.replace(/\[(DRAFT FOR ALI|PLACEHOLDER[^\]]*)\]/g, (m) => `<mark class="ph">${m}</mark>`);
+const slug = (t: string) => t.toLowerCase().replace(/[^a-z]+/g, '-').replace(/^-|-$/g, '');
+---
+<Base title="how this portfolio is built" description="The team of agents, the design system and the method behind this portfolio.">
+  <article class="hb">
+    <header class="hb__head">
+      <h1 class="type-section hb__t" set:html={emph(b.title)} />
+      <p class="type-text hb__lead" set:html={mark(rich(b.lead, false))} />
+    </header>
+    {b.sections.map((s: any) => (
+      <LongSection title={s.title} id={slug(s.title)}><Fragment set:html={mark(rich(s.text))} /></LongSection>
+    ))}
+  </article>
+</Base>
+
+<style>
+  .hb { padding: var(--s-6) var(--s-3) 0; color: var(--paper); }
+  .hb__head { display: flex; flex-direction: column; gap: var(--s-4); padding-bottom: var(--s-8); }
+  .hb__t { margin: 0; color: var(--paper); }
+  .hb__lead { max-width: 56ch; color: var(--paper); }
+  .hb :global(.ph) { background: var(--paper-2); color: var(--red-text); font-family: var(--font-ui); font-size: var(--fs-label); letter-spacing: var(--ls-label); padding: 0 var(--s-1); border-radius: var(--r-sm); }
+</style>

@@ -1,0 +1,13 @@
+n: '04'
+agent: ops
+name: Ops agent
+character: Long hair
+line: "I make sure what we design actually ships."
+quote: "Chaos? Not on my watch."
+good: "Flows, edge cases, handoffs"
+runs: "Deadlines"
+allergic: "Scope creep"
+battery: 83
+opens:
+- label: "Open Cupra"
+  href: /work/cupra

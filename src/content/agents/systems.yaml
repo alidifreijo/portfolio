@@ -1,0 +1,15 @@
+n: '01'
+agent: systems
+name: Systems agent
+character: Bob
+line: "I keep the system honest so the team can move fast."
+quote: "I find peace in naming layers."
+good: "Tokens, governance, AI-assisted migration"
+runs: "Tidy layers"
+allergic: "“Frame 4582”"
+battery: 72
+opens:
+- label: "Open Roche"
+  href: /work/roche
+- label: "Open Monexa"
+  href: /work/monexa

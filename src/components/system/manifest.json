@@ -7,8 +7,17 @@
       "purpose": "The top bar on the black frame: the á (home), the menu (Play, Work, About, Contact), 'Based in' with the Barcelona time, 'Up for' and the email.",
       "use": "Once per page, at the top of the frame. Base.astro adds it unless the page places it itself (nav={false}). On a case, pass current={label, value} to show which case you're in.",
       "avoid": "Adding links to the menu (it is in the brief: Play and Work, plus About and Contact). Writing the status line by hand: it comes from Keystatic (home → status).",
-      "props": { "current": "optional { label, value }" },
-      "example": { "props": { "current": { "label": "Case 01 / 03", "value": "monexa" } } },
+      "props": {
+        "current": "optional { label, value }"
+      },
+      "example": {
+        "props": {
+          "current": {
+            "label": "Case 01 / 03",
+            "value": "monexa"
+          }
+        }
+      },
       "background": "ink"
     },
     {
@@ -18,7 +27,9 @@
       "use": "At the bottom of every page, on the black frame. Base.astro adds it (footer={false} to leave it out).",
       "avoid": "Repeating these links elsewhere on a page: they live here.",
       "props": {},
-      "example": { "props": {} },
+      "example": {
+        "props": {}
+      },
       "background": "ink"
     },
     {
@@ -27,8 +38,17 @@
       "purpose": "The paper sheet inside the black frame, radius 12.",
       "use": "The main surface of a page. tone='ink' for long pages (About, How this portfolio is built).",
       "avoid": "Panels inside panels; shadows on it.",
-      "props": { "tone": "paper | ink", "as": "section | div | article", "label": "aria-label" },
-      "example": { "props": { "tone": "paper" }, "slot": "A paper panel. Everything sits on one of these." }
+      "props": {
+        "tone": "paper | ink",
+        "as": "section | div | article",
+        "label": "aria-label"
+      },
+      "example": {
+        "props": {
+          "tone": "paper"
+        },
+        "slot": "A paper panel. Everything sits on one of these."
+      }
     },
     {
       "name": "Label",
@@ -36,8 +56,17 @@
       "purpose": "The small capitals of the interface (Space Grotesk, --fs-label).",
       "use": "Above values, on captions, in rows. tone='accent' makes a pill in the case's agent colour.",
       "avoid": "Sentences in capitals; labels in Satoshi or the serif.",
-      "props": { "tone": "muted | ink | paper | accent", "as": "span | p | dt" },
-      "example": { "props": { "tone": "accent" }, "slot": "Systems agent", "accent": "systems" }
+      "props": {
+        "tone": "muted | ink | paper | accent",
+        "as": "span | p | dt"
+      },
+      "example": {
+        "props": {
+          "tone": "accent"
+        },
+        "slot": "Systems agent",
+        "accent": "systems"
+      }
     },
     {
       "name": "DataPair",
@@ -45,8 +74,19 @@
       "purpose": "The one data pattern: a grey capital label (Space Grotesk) and its value (Satoshi).",
       "use": "Every fact: year, role, company, via. Inside a <dl>.",
       "avoid": "Any other way of showing facts (bold value, inline 'Year: 2024').",
-      "props": { "label": "string", "value": "string", "href": "optional", "tone": "paper | ink" },
-      "example": { "props": { "label": "Via", "value": "North" }, "wrap": "dl" }
+      "props": {
+        "label": "string",
+        "value": "string",
+        "href": "optional",
+        "tone": "paper | ink"
+      },
+      "example": {
+        "props": {
+          "label": "Via",
+          "value": "North"
+        },
+        "wrap": "dl"
+      }
     },
     {
       "name": "TitleCard",
@@ -54,8 +94,35 @@
       "purpose": "How a case introduces itself: its name in the serif (the important part in italics) and its facts.",
       "use": "At the top of every case. Write the title with **…** around the part in italics.",
       "avoid": "More than five facts; facts that repeat what another page already says.",
-      "props": { "title": "string, **italics**", "facts": "[{label, value}]", "level": "1 | 2" },
-      "example": { "props": { "title": "**monexa**", "level": 2, "facts": [ { "label": "Company", "value": "CaixaBank" }, { "label": "Years", "value": "2024" }, { "label": "Role", "value": "UX/UI" }, { "label": "Via", "value": "North" } ] } }
+      "props": {
+        "title": "string, **italics**",
+        "facts": "[{label, value}]",
+        "level": "1 | 2"
+      },
+      "example": {
+        "props": {
+          "title": "**monexa**",
+          "level": 2,
+          "facts": [
+            {
+              "label": "Company",
+              "value": "CaixaBank"
+            },
+            {
+              "label": "Years",
+              "value": "2024"
+            },
+            {
+              "label": "Role",
+              "value": "UX/UI"
+            },
+            {
+              "label": "Via",
+              "value": "North"
+            }
+          ]
+        }
+      }
     },
     {
       "name": "ChapterHeading",
@@ -63,8 +130,18 @@
       "purpose": "A numbered chapter: the number in the agent colour, the title in the serif.",
       "use": "Each chapter of a case (Context, Role, Process, Result in Work cases). Put accentVars(agent) on a parent.",
       "avoid": "Numbers in plain text; chapter titles in Space Grotesk.",
-      "props": { "n": "number | string", "title": "string, **italics**", "id": "anchor" },
-      "example": { "props": { "n": 2, "title": "The *role*" }, "accent": "ops" }
+      "props": {
+        "n": "number | string",
+        "title": "string, **italics**",
+        "id": "anchor"
+      },
+      "example": {
+        "props": {
+          "n": 2,
+          "title": "The *role*"
+        },
+        "accent": "ops"
+      }
     },
     {
       "name": "Button",
@@ -72,8 +149,19 @@
       "purpose": "The black button with an arrow in the agent colour (red when there is no agent).",
       "use": "Actions and links that open something: open a case, download, visit the live site.",
       "avoid": "Other button colours or shapes; more than one button per block.",
-      "props": { "href": "optional (a link)", "arrow": "↗ | → | ↓", "external": "boolean", "download": "boolean" },
-      "example": { "props": { "href": "#" }, "slot": "Open Cupra", "accent": "ops" }
+      "props": {
+        "href": "optional (a link)",
+        "arrow": "↗ | → | ↓",
+        "external": "boolean",
+        "download": "boolean"
+      },
+      "example": {
+        "props": {
+          "href": "#"
+        },
+        "slot": "Open Cupra",
+        "accent": "ops"
+      }
     },
     {
       "name": "VideoBlock",
@@ -81,17 +169,67 @@
       "purpose": "A film (or an image) in a box with its own proportions, never cropped, with a poster that has content.",
       "use": "Every video. Give its real width and height. With 'reduce motion' it shows controls instead of playing.",
       "avoid": "Cropping a film into a square box; a black or empty poster.",
-      "props": { "src": "mp4 or image", "poster": "jpg", "width": "number", "height": "number", "alt": "string", "caption": "optional", "webm": "optional" },
-      "example": { "props": { "src": "/images/f/bank/laptop.mp4", "poster": "/images/f/bank/laptop.poster.jpg", "width": 1908, "height": 1002, "alt": "The Monexa web prototype on a laptop", "caption": "05 · Web prototype" } }
+      "props": {
+        "src": "mp4 or image",
+        "poster": "jpg",
+        "width": "number",
+        "height": "number",
+        "alt": "string",
+        "caption": "optional",
+        "webm": "optional"
+      },
+      "example": {
+        "props": {
+          "src": "/images/f/bank/laptop.mp4",
+          "poster": "/images/f/bank/laptop.poster.jpg",
+          "width": 1908,
+          "height": 1002,
+          "alt": "The Monexa web prototype on a laptop",
+          "caption": "05 · Web prototype"
+        }
+      }
     },
     {
       "name": "AgentCard",
       "file": "src/components/system/AgentCard.astro",
       "purpose": "The agent's card on the home: name, line, quote, data and a button to its case. The only thing with a shadow.",
-      "use": "Next to the agent being scanned (home, block 4).",
+      "use": "Next to the agent being scanned (home, block 4). Its texts come from the agents collection in Keystatic (src/content/agents).",
       "avoid": "Using its shadow anywhere else; more than one card at a time.",
-      "props": { "agent": "systems | research | creative | ops | empathy | collab", "name": "string", "n": "01/06", "line": "string", "quote": "string", "good": "string", "runs": "string", "allergic": "string", "battery": "0-100", "href": "string", "opens": "string" },
-      "example": { "props": { "agent": "systems", "name": "Systems agent", "n": "01/06", "line": "I keep things tidy so the team can move fast.", "quote": "I find peace in naming layers.", "good": "Tokens, components, naming", "runs": "Tidy layers", "allergic": "“Frame 4582”", "battery": 72, "href": "#", "opens": "Monexa" } }
+      "props": {
+        "agent": "systems | research | creative | ops | empathy | collab",
+        "name": "string",
+        "n": "01/06",
+        "line": "string",
+        "quote": "string",
+        "good": "string",
+        "runs": "string",
+        "allergic": "string",
+        "battery": "0-100",
+        "opens": "[{label, href}] — one button per case"
+      },
+      "example": {
+        "props": {
+          "agent": "systems",
+          "name": "Systems agent",
+          "n": "01/06",
+          "line": "I keep the system honest so the team can move fast.",
+          "quote": "I find peace in naming layers.",
+          "good": "Tokens, governance, AI-assisted migration",
+          "runs": "Tidy layers",
+          "allergic": "“Frame 4582”",
+          "battery": 72,
+          "opens": [
+            {
+              "label": "Open Roche",
+              "href": "#"
+            },
+            {
+              "label": "Open Monexa",
+              "href": "#"
+            }
+          ]
+        }
+      }
     },
     {
       "name": "AgentChip",
@@ -99,9 +237,27 @@
       "purpose": "The name under each agent: grey with a coloured dot at rest, a pill in its colour when active.",
       "use": "Under the agents on the home; to mark which agent a case belongs to.",
       "avoid": "Using it as a button by itself.",
-      "props": { "agent": "systems | research | creative | ops | empathy | collab", "label": "string", "active": "boolean" },
-      "example": { "props": { "agent": "collab", "label": "Collab agent", "active": true } },
-      "variants": [ { "props": { "agent": "collab", "label": "Collab agent", "active": false } } ]
+      "props": {
+        "agent": "systems | research | creative | ops | empathy | collab",
+        "label": "string",
+        "active": "boolean"
+      },
+      "example": {
+        "props": {
+          "agent": "collab",
+          "label": "Collab agent",
+          "active": true
+        }
+      },
+      "variants": [
+        {
+          "props": {
+            "agent": "collab",
+            "label": "Collab agent",
+            "active": false
+          }
+        }
+      ]
     },
     {
       "name": "Disclosure",
@@ -109,8 +265,20 @@
       "purpose": "A row that opens to show its text.",
       "use": "Lists where each item has detail most people skip: experience, FAQs.",
       "avoid": "Hiding the one thing everyone needs to read.",
-      "props": { "title": "string", "meta": "optional (years)", "text": "string, **bold**", "open": "boolean" },
-      "example": { "props": { "title": "A row that opens", "meta": "2024", "text": "Inside, the text in **Satoshi**. It works with the keyboard and without JavaScript.", "open": true } }
+      "props": {
+        "title": "string",
+        "meta": "optional (years)",
+        "text": "string, **bold**",
+        "open": "boolean"
+      },
+      "example": {
+        "props": {
+          "title": "A row that opens",
+          "meta": "2024",
+          "text": "Inside, the text in **Satoshi**. It works with the keyboard and without JavaScript.",
+          "open": true
+        }
+      }
     },
     {
       "name": "Tabs",
@@ -118,8 +286,25 @@
       "purpose": "A few short texts behind labels; one open at a time. Arrow keys move between them.",
       "use": "Two to five short, parallel texts (How I work).",
       "avoid": "Long texts or anything that has to be compared side by side.",
-      "props": { "items": "[{label, text}]", "label": "aria-label of the list" },
-      "example": { "props": { "label": "Example tabs", "items": [ { "label": "First", "text": "One short text per tab." }, { "label": "Second", "text": "Only one is **open** at a time." } ] } }
+      "props": {
+        "items": "[{label, text}]",
+        "label": "aria-label of the list"
+      },
+      "example": {
+        "props": {
+          "label": "Example tabs",
+          "items": [
+            {
+              "label": "First",
+              "text": "One short text per tab."
+            },
+            {
+              "label": "Second",
+              "text": "Only one is **open** at a time."
+            }
+          ]
+        }
+      }
     },
     {
       "name": "NextCase",
@@ -127,8 +312,39 @@
       "purpose": "The way out of a case, into the next one of its zone (Play or Work). Takes the next case's colour on hover.",
       "use": "At the end of every case.",
       "avoid": "Linking across zones (Play → Work).",
-      "props": { "href": "string", "title": "string, **italics**", "line": "optional", "agent": "the next case's agent" },
-      "example": { "props": { "href": "#", "title": "**cupra**", "line": "Embedded in Cupra’s digital design team.", "agent": "ops" } }
+      "props": {
+        "href": "string",
+        "title": "string, **italics**",
+        "line": "optional",
+        "agent": "the next case's agent"
+      },
+      "example": {
+        "props": {
+          "href": "#",
+          "title": "**cupra**",
+          "line": "Embedded in Cupra’s digital design team.",
+          "agent": "ops"
+        }
+      }
+    },
+    {
+      "name": "LongSection",
+      "file": "src/components/system/LongSection.astro",
+      "purpose": "One section of a long page on black: the section title in the serif on the left, the content on the right.",
+      "use": "Long pages (template 6): About, How this portfolio is built. One per topic.",
+      "avoid": "Using it on paper, or for short pages with one block of text.",
+      "props": {
+        "title": "string, **italics**",
+        "id": "anchor"
+      },
+      "example": {
+        "props": {
+          "title": "The *system*",
+          "id": "example"
+        },
+        "slot": "Content on the right, in Satoshi. Lists, links and paragraphs keep the same rhythm."
+      },
+      "background": "ink"
     }
   ]
 }

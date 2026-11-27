@@ -1,0 +1,13 @@
+n: '06'
+agent: collab
+name: Collab agent
+character: Messy hair
+line: "Better ideas happen when everyone gets the scissors."
+quote: "Teamwork is my coping mechanism."
+good: "Workshops, feedback, shared canvases"
+runs: "Post-its"
+allergic: "Silos"
+battery: 88
+opens:
+- label: "Open cutouts"
+  href: /play/cutouts

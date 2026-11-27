@@ -61,4 +61,22 @@ const pages = defineCollection({
   schema: z.any(),
 });
 
-export const collections = { projects, pages };
+// The six agents of the home (Bloque 4): one file per agent, in Keystatic.
+const agents = defineCollection({
+  loader: glob({ pattern: '*.yaml', base: './src/content/agents' }),
+  schema: z.object({
+    n: z.string(),
+    agent: z.enum(['systems', 'research', 'creative', 'ops', 'empathy', 'collab']),
+    name: z.string(),
+    character: z.string(),
+    line: z.string(),
+    quote: z.string(),
+    good: z.string(),
+    runs: z.string(),
+    allergic: z.string(),
+    battery: z.number().min(0).max(100),
+    opens: z.array(z.object({ label: z.string(), href: z.string() })).min(1),
+  }),
+});
+
+export const collections = { projects, pages, agents };
